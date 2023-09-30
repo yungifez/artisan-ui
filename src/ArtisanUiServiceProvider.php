@@ -2,10 +2,9 @@
 
 namespace Yungifez\ArtisanUi;
 
-use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
-use Yungifez\ArtisanUi\Commands\ArtisanUiCommand;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Yungifez\ArtisanUi\Commands\ArtisanUiCommand;
 
 class ArtisanUiServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +18,7 @@ class ArtisanUiServiceProvider extends PackageServiceProvider
         $package
             ->name('artisan-ui')
             ->hasConfigFile()
-            ->hasViews("artisan-ui")
+            ->hasViews('artisan-ui')
             ->hasCommand(ArtisanUiCommand::class);
     }
 }
