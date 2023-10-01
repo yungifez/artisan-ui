@@ -2,6 +2,10 @@
 
 This package includes some useful blade and livewire components for your Laravel application.
 
+It is still super early in development, so please don't use it in production.
+
+In fact I wrote this readme a day after I started the project
+
 ## Installation
 
 Coming soon...
