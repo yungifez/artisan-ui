@@ -1,84 +1,39 @@
-# A livewire blade UI component library
+## Arrtisan UI
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/yungifez/artisan-ui.svg?style=flat-square)](https://packagist.org/packages/yungifez/artisan-ui)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/yungifez/artisan-ui/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/yungifez/artisan-ui/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/yungifez/artisan-ui/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/yungifez/artisan-ui/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/yungifez/artisan-ui.svg?style=flat-square)](https://packagist.org/packages/yungifez/artisan-ui)
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/artisan-ui.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/artisan-ui)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package includes some useful blade and livewire components for your Laravel application.
 
 ## Installation
 
-You can install the package via composer:
-
-```bash
-composer require yungifez/artisan-ui
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="artisan-ui-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="artisan-ui-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="artisan-ui-views"
-```
+Coming soon...
 
 ## Usage
 
+You can use like so 
+
 ```php
-$artisanUi = new Yungifez\ArtisanUi();
-echo $artisanUi->echoPhrase('Hello, Yungifez!');
+
+<x-artisan-ui::button label="Button" /> or
+<x-artisan-ui::button>
+    Button
+</x-artisan-ui::button>
+<x-artisan-ui::input label="Name" placeholder="name"/>
+<x-artisan-ui::textarea label="" />
+
+//add multiple to use the custom built multiple select
+<x-artisan-ui::select label="">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+</x-artisan-ui::select>
+
+<x-artisan-ui::toggle /> 
+//which returns a 1 or 0
+
+// the best part is, it still feels and works like normal html tags
+
+// I call it HTML with super powers
 ```
 
-## Testing
+The input components support old values and error messages
 
-```bash
-composer test
-```
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Marvellous](https://github.com/yungifez)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
