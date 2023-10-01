@@ -40,4 +40,5 @@ You can use like so
 
 The input components support old values and error messages
 
+![image](https://github.com/yungifez/artisan-ui/assets/63137056/a39effd3-0966-4795-8455-a63ee324337a)
 
