@@ -8,7 +8,11 @@ In fact I wrote this readme a day after I started the project
 
 ## Installation
 
-Coming soon...
+You can install the package via composer:
+
+```bash
+composer require yungifez/artisan-ui
+```
 
 ## Usage
 
