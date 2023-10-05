@@ -19,22 +19,41 @@ composer require yungifez/artisan-ui
 You can use like so 
 
 ```php
+ <div class=" m-4">
+        <x-artisan-ui::alert title="hi"/>
+        <x-artisan-ui::button>
+            Button
+        </x-artisan-ui::button>
+        <x-artisan-ui::input placeholder="Hello" label="Hello"/>
+        <x-artisan-ui::textarea placeholder="Hello" label="Hello"/>
+        <x-artisan-ui::toggle label="Toggle"/>
 
-<x-artisan-ui::button label="Button" /> or
-<x-artisan-ui::button>
-    Button
-</x-artisan-ui::button>
-<x-artisan-ui::input label="Name" placeholder="name"/>
-<x-artisan-ui::textarea label="" />
+        //a custom built multiple select box
+        <x-artisan-ui::select label="" multiple>
+            <option value="hh">Hey</option>
+            <option value="K">Hey</option>
+            <option value="POLKJ">Hey</option>
+            <option value="KK">Hey</option>
+            <option value="">Hey</option>
+        </x-artisan-ui::select>
+        <x-artisan-ui::accordion :group-together="true" :items="[
+            [
+                'title' => 'Hello world',
+                'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam deleniti reprehenderit provident porro quo! Mollitia omnis suscipit, quaerat minima aliquam inventore, ex, sapiente fugit molestias dolor magni amet sit ducimus.'
+            ],
+            [
+                'title' => 'What we do',
+                'body' => 'Hello'
+            ],
+            [
+                'title' => 'Why we do it',
+                'body' => 'Hello'
+            ]
+        ]">
 
-//add multiple to use the custom built multiple select
-<x-artisan-ui::select label="">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-</x-artisan-ui::select>
-
-<x-artisan-ui::toggle /> 
+        </x-artisan-ui::accordion>
+        <x-artisan-ui::loading-spinner />
+    </div>
 //which returns a 1 or 0
 
 // the best part is, it still feels and works like normal html tags
