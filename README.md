@@ -63,5 +63,6 @@ You can use like so
 
 The input components support old values and error messages
 
-![image](https://github.com/yungifez/artisan-ui/assets/63137056/a39effd3-0966-4795-8455-a63ee324337a)
+![image](https://github.com/yungifez/artisan-ui/assets/63137056/bc1aa03b-b363-428f-8533-2a9ffb057e0d)
+
 
