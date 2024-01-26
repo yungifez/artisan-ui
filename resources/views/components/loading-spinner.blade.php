@@ -1,4 +1,4 @@
-@props(['class' => "", 'color' => "fill-blue-600"])
+@props(['class' => "", 'color' => "fill-black"])
 
 <div class="w-full" {{$attributes}}>
     <div role="status" class="flex justify-center w-full" >

@@ -1,13 +1,13 @@
-@props(['id' => '', 'name' => '', 'label' => '', 'value' => null, 'class' => '', 'groupClass' => 'my-3', 'labelClass' => '', 'errorBag' => 'default', 'errorName' => '', 'oldName' => '', 'inputBlockClass' => '', 'defaultClass' => 'border border-gray-500 p-3 rounded disabled:bg-gray-50'])
+@props(['id' => '', 'name' => '', 'label' => '', 'value' => null, 'class' => '', 'groupClass' => 'my-3', 'labelClass' => '', 'errorBag' => 'default', 'errorName' => '', 'oldName' => '', 'inputBlockClass' => '', 'defaultClass' => 'flex py-3 px-4 accent-black rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'])
 
 @php($isCheckbox = in_array($attributes->get('type'), [ 'checkbox', 'radio'])  )
 @php($errorName = $errorName == $errorName ?? $name)
 @php($oldName = $oldName == '' ? $oldName : $name)
 <div @class([ 'flex-row w-fit flex-wrap' => $isCheckbox,  'flex-col w-full' => !$isCheckbox, "$groupClass flex"])>
     @if (!empty($label))
-        <label for="{{$id}}" @class(["$labelClass font-semibold text-gray-700", 'order-2 mx-2 cursor-pointer' => $isCheckbox,  'my-3' => !$isCheckbox])>{{$label}}</label>
+        <label for="{{$id}}" @class(["$labelClass font-semibold text-gray-700", 'order-2 mx-2 cursor-pointer' => $isCheckbox,  'my-2' => !$isCheckbox])>{{$label}}</label>
     @endif
-    <input id={{$id}} name="{{$name}}" @class(["$class $defaultClass", 'border-red-500 ' => $errors->$errorBag->has($errorName),'w-full' => !$isCheckbox]) {{$attributes}} @if(!$isCheckbox) value="{{old($oldName) ?? ($value != null ? $value : '')}}" @else @checked(old($oldName) ?? $attributes->get('checked')) @endif>
+    <input id="{{$id}}" name="{{$name}}" @class(["$class $defaultClass", 'border-red-500 ' => $errors->$errorBag->has($errorName),'w-full' => !$isCheckbox]) {{$attributes}} @if(!$isCheckbox) value="{{old($oldName) ?? ($value != null ? $value : '')}}" @else @checked(old($oldName) ?? $attributes->get('checked')) @endif>
     @error($errorName, $errorBag)
         <p class="text-red-500 my-2 order-3 ">{{$message}}</p>
     @enderror
