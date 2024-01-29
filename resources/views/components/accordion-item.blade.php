@@ -5,7 +5,7 @@
     x-effect="active != $id('accordion-item') ? open = false : open = true"
     class="w-full scroll-smooth" {{$attributes}}>
     <div
-        class="w-full border-b my-1"
+        class="w-full my-1"
         @click="
             if(open){
                 open = false;
@@ -17,7 +17,7 @@
         "
     >
         <div class="">
-            <button class="font-semibold capitalize flex justify-between p-3 items-center w-full">
+            <button class="flex items-center justify-between w-full p-2 px-4 text-left select-none group-hover:underline">
                 <div>
                     {{$title}}
                 </div>
@@ -25,7 +25,7 @@
                 </span>
             </button>
             <div x-show="active == $id('accordion-item')"
-                class="scroll-smooth p-4 text-gray-500"
+                class="scroll-smooth p-4 text-gray-500 pt-0"
                 x-collapse
                 x-cloak
             >
