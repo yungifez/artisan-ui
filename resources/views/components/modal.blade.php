@@ -18,8 +18,8 @@
         }
     @endphp
 
-    <div class=" w-screen h-screen fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center" @click="modal = false" x-show="modal" style="display: none" x-transition.opacity {{$attributes}}>
-        <div class="{{$sizeClass}} flex justify-between flex-col bg-white rounded-xl border p-4 overflow-y-scroll" @click.stop>
+    <div class=" w-screen h-screen fixed inset-0 z-50 bg-black dark:bg-white dark:bg-opacity-5 bg-opacity-80 flex items-center justify-center" @click="modal = false" x-show="modal" style="display: none" x-transition.opacity {{$attributes}}>
+        <div class="{{$sizeClass}} flex justify-between flex-col bg-white dark:bg-black dark:text-gray-200 dark:borders-gray-500 rounded-xl border p-4 overflow-y-scroll" @click.stop>
             <div class="{{$themeColor}} h-16 md:h-20 rounded-t-xl flex justify-between p-2 items-center">
                 <div class="flex gap-4 overflow-y-scroll beautify-scrollbar">
                     <i class="{{$icon}} text-2xl" aria-hidden="true" ></i>

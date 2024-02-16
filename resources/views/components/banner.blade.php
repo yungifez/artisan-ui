@@ -1,9 +1,9 @@
-@props(['color' => 'bg-white', 'canDismiss' => false, 'position' => 'top', 'positionClass', 'transitionEnterStart' => '', 'transitionEnterEnd' => '', 'transitionLeaveStart' => '', 'transitionLeaveEnd' => '', 'bannerVisibleAfter' => 300])
+@props(['color' => 'bg-white dark:bg-black dark:text-white dark:border-gray-500', 'canDismiss' => false, 'position' => 'top', 'positionClass', 'transitionEnterStart' => '', 'transitionEnterEnd' => '', 'transitionLeaveStart' => '', 'transitionLeaveEnd' => '', 'bannerVisibleAfter' => 300])
 
 @php
     $positionClass = $positionClass ?? match($position){
-        'top' => 'top-0 left-0 ',
-        'bottom' => 'bottom-0 left-0 ',
+        'top' => 'top-0 left-0 border-b',
+        'bottom' => 'bottom-0 left-0 border-t',
         default => 'top-0 left-0'
     };
     $transitionEnterStart .= match($position){

@@ -25,7 +25,7 @@
                 </span>
             </button>
             <div x-show="active == $id('accordion-item')"
-                class="scroll-smooth p-4 text-gray-500 pt-0"
+                class="scroll-smooth p-4 text-gray-500 dark:text-gray-50 pt-0"
                 x-collapse
                 x-cloak
             >
