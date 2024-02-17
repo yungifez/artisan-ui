@@ -34,10 +34,8 @@ The available components are
 
 Screenshots of current progress
 
-![Screenshot_20240128_183452-1](https://github.com/yungifez/artisan-ui/assets/63137056/bb16c186-fbc7-43f2-a46b-189f9b6dc940)
-![Screenshot_20240128_183807](https://github.com/yungifez/artisan-ui/assets/63137056/8f6786da-10fe-4072-a17f-873ddca248f8)
-![Screenshot_20240128_183710](https://github.com/yungifez/artisan-ui/assets/63137056/b22e2cde-4e54-4ec6-89d9-e65e61c26d5e)
-![Screenshot_20240128_183452](https://github.com/yungifez/artisan-ui/assets/63137056/021d4a72-8796-4ab6-8a5e-72788fcf2bbc)
-![shot_20240128_183338](https://github.com/yungifez/artisan-ui/assets/63137056/6402f718-f8ca-4cd4-9483-9f91672415ba)
-![Screenshot_20240128_183150](https://github.com/yungifez/artisan-ui/assets/63137056/edb603a8-f37e-4150-bfc2-0a10f44d94cd)
+![image](https://github.com/yungifez/artisan-ui/assets/63137056/384d9de8-8e21-44ae-b3b1-5c6fc3a46c52)
+![image](https://github.com/yungifez/artisan-ui/assets/63137056/4806576e-1000-4751-b2f6-9e2c8ce09537)
+![image](https://github.com/yungifez/artisan-ui/assets/63137056/9d4351aa-30c9-4144-bcbe-d7389a1590d3)
+
 
