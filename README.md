@@ -37,5 +37,6 @@ Screenshots of current progress
 ![image](https://github.com/yungifez/artisan-ui/assets/63137056/384d9de8-8e21-44ae-b3b1-5c6fc3a46c52)
 ![image](https://github.com/yungifez/artisan-ui/assets/63137056/4806576e-1000-4751-b2f6-9e2c8ce09537)
 ![image](https://github.com/yungifez/artisan-ui/assets/63137056/9d4351aa-30c9-4144-bcbe-d7389a1590d3)
+![image](https://github.com/yungifez/artisan-ui/assets/63137056/5f841d8f-51ee-463c-973f-7c843bb9a351)
 
 
