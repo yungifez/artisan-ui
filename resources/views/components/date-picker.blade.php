@@ -1,4 +1,4 @@
-@props(['label' => '', 'id' => '', 'labelClass' => '', 'open' => "true", 'value' => "", "format" => ""])
+@props(['label' => '', 'id' => '', 'labelClass' => '', 'open' => "true", 'value' => "", "format" => "", "max" => "", "min" => ""])
 <div
     x-data="{
         datePickerOpen: {{$open}},
@@ -27,6 +27,8 @@
                     <x-artisan-ui::calendar
                         :value="$value"
                         :format="$format"
+                        :max="$max"
+                        :min="$min"
                         x-cloak
                         onselect="value = this.calendarValue"
                     />

@@ -1,4 +1,4 @@
-@props(['id' => '', 'name' => '', 'label' => '', 'value' => null, 'class' => '', 'groupClass' => 'my-3', 'labelClass' => '', 'errorBag' => 'default', 'errorName' => '', 'oldName' => '', 'inputBlockClass' => '', 'defaultClass' => 'flex py-3 px-4 rounded-md border dark:border-gray-500 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'])
+@props(['id' => '', 'name' => '', 'label' => '', 'value' => null, 'class' => '', 'groupClass' => 'my-3', 'labelClass' => '', 'errorBag' => 'default', 'errorName' => '', 'oldName' => '', 'inputBlockClass' => '', 'defaultClass' => 'flex py-3 px-4 rounded-md border text-gray-900 dark:text-gray-200 dark:border-gray-500 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'])
 
 @php($errorName = $errorName == $errorName ?? $name)
 @php($oldName = $oldName == '' ? $oldName : $name)
@@ -104,7 +104,7 @@
                                 <template x-for="(option,index) in options" :key="index">
                                     <div>
                                         <div class="cursor-pointer w-full border-gray-100 rounded-t border-b dark:border-gray-500 hover:bg-gray-500 dark:hover:bg-white dark:hover:bg-opacity-10 hover:text-white bg-opacity-25" @click="select(index,$event)">
-                                            <div :class="(option.selected) ? 'bg-gray-400 dark:bg-neutral-800 text-white' : ''" class="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative">
+                                            <div :class="(option.selected) ? 'bg-gray-400 dark:bg-neutral-800 text-white' : ''" class="flex w-full items-center p-1  border-transparent border-l-2 relative">
                                                 <div class="w-full items-center flex">
                                                     <div class="mx-2 leading-6" x-model="option" x-text="option.text"></div>
                                                 </div>

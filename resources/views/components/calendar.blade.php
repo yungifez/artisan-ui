@@ -1,13 +1,16 @@
-@props([ 'value' => '', 'format' => 'M d, h', 'onselect' => ''])
+@props([ 'value' => '', 'format' => 'M d, h', 'onselect' => '', "max" => "", "min" => "" ])
 <div
 x-data="{
       calendarValue: '{{$value}}',
       calendarFormat: '{{$format}}',
+      max: '{{$max}}',
+      min: '{{$min}}',
       calendarMonth: '',
       calendarYear: '',
       calendarDay: '',
       calendarDaysInMonth: [],
-      calendarBlankDaysInMonth: [],
+      calendarPreBlankDaysInMonth: [],
+      calendarPostBlankDaysInMonth: [],
       calendarMonthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       calendarDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       selected(){
@@ -53,18 +56,47 @@ x-data="{
 
       calendarCalculateDays() {
         let daysInMonth = new Date(this.calendarYear, this.calendarMonth + 1, 0).getDate();
+        let daysInPreviousMonth = new Date(this.calendarYear, this.calendarMonth, 0).getDate();
         // find where to start calendar day of week
         let dayOfWeek = new Date(this.calendarYear, this.calendarMonth).getDay();
-        let blankdaysArray = [];
-        for (var i = 1; i <= dayOfWeek; i++) {
-            blankdaysArray.push(i);
+        let preBlankdaysArray = [];
+        for (var i = 0; i <= dayOfWeek; i++) {
+            preBlankdaysArray.push(daysInPreviousMonth - i);
+        }
+        //if the length of the preblank arrays is a multiple of the week, it is considered an entire week
+        preBlankdaysArray = preBlankdaysArray.reverse();
+        let postBlankdaysArray = [];
+        for (var i = 1; i <= (42 - (preBlankdaysArray.length + daysInMonth)); i++) {
+            postBlankdaysArray.push(i);
         }
         let daysArray = [];
         for (var i = 1; i <= daysInMonth; i++) {
             daysArray.push(i);
         }
-        this.calendarBlankDaysInMonth = blankdaysArray;
+        this.calendarPreBlankDaysInMonth = preBlankdaysArray;
+        this.calendarPostBlankDaysInMonth = postBlankdaysArray;
         this.calendarDaysInMonth = daysArray;
+      },
+
+      isMaxValid(){
+        return !isNaN(Date.parse(this.max))
+      },
+
+      isMinValid(){
+        return !isNaN(Date.parse(this.min))
+      },
+
+      isDateOutsideRange(day){
+
+        if(this.isMaxValid() && Date.parse(this.max) < day){
+            return true;
+        }
+
+        if(this.isMinValid() && Date.parse(this.min) > day ){
+            return true;
+        }
+
+        return false;
       },
 
       calendarFormatDate(date) {
@@ -129,20 +161,30 @@ x-data="{
         </template>
     </div>
     <div class="grid grid-cols-7">
-        <template x-for="blankDay in calendarBlankDaysInMonth">
-            <div class="p-1 text-sm text-center border border-transparent"></div>
+        <template x-for="blankDay in calendarPreBlankDaysInMonth">
+                <div
+                    x-text="blankDay"
+                    class="text-gray-400 flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+            </div>
         </template>
         <template x-for="(day, dayIndex) in calendarDaysInMonth" :key="dayIndex">
             <div class="px-0.5 mb-1 aspect-square">
                 <div
                     x-text="day"
-                    @click="calendarDayClicked(day); selected()"
+                    @click="isDateOutsideRange(new Date(calendarYear, calendarMonth, day)) || calendarDayClicked(day); selected()"
                     :class="{
-                        'bg-neutral-200 dark:bg-neutral-200': calendarIsToday(day) == true,
-                        'text-gray-600 dark:text-gray-200 hover:bg-neutral-200 dark:hover:text-gray-900': calendarIsToday(day) == false && calendarIsSelectedDate(day) == false,
-                        'bg-neutral-800 dark:text-gray-500 dark:bg-white text-white hover:bg-opacity-75': calendarIsSelectedDate(day) == true
+                        'bg-neutral-200 dark:bg-neutral-200': calendarIsToday(day) == true && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'text-gray-600 dark:text-gray-200 hover:bg-neutral-200 dark:hover:text-gray-900': calendarIsToday(day) == false && calendarIsSelectedDate(day) == false && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'bg-neutral-800 dark:text-gray-500 dark:bg-white text-white hover:bg-opacity-75': calendarIsSelectedDate(day) == true && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'text-gray-400': isDateOutsideRange(new Date(calendarYear, calendarMonth, day))
                     }"
                     class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+            </div>
+        </template>
+        <template x-for="blankDay in calendarPostBlankDaysInMonth">
+                <div
+                    x-text="blankDay"
+                    class="mb-1 text-gray-400 flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
             </div>
         </template>
     </div>
