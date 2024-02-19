@@ -140,7 +140,7 @@ x-data="{
     "
     x-transition
     x-modelable="calendarValue"
-    class=" top-0 left-0 max-w-lg p-4 antialiased bg-white dark:bg-black border rounded-lg shadow w-[17rem] border-neutral-200/70">
+    class=" top-0 left-0 max-w-lg p-4 antialiased bg-[color:var(--calendar-bg-color)] dark:bg-[color:var(--calendar-dark-bg-color)] border rounded-lg shadow w-[17rem] border-neutral-200/70">
     <div class="flex items-center justify-between mb-3">
         <button @click="calendarPreviousMonth()" type="button" class="border inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
             <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
@@ -164,19 +164,19 @@ x-data="{
         <template x-for="blankDay in calendarPreBlankDaysInMonth">
                 <div
                     x-text="blankDay"
-                    class="text-gray-400 flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+                    class="text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)] flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
             </div>
         </template>
         <template x-for="(day, dayIndex) in calendarDaysInMonth" :key="dayIndex">
-            <div class="px-0.5 mb-1 aspect-square">
+            <div class="px-0.5 aspect-square">
                 <div
                     x-text="day"
                     @click="isDateOutsideRange(new Date(calendarYear, calendarMonth, day)) || calendarDayClicked(day); selected()"
                     :class="{
-                        'bg-neutral-200 dark:bg-neutral-200': calendarIsToday(day) == true && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
-                        'text-gray-600 dark:text-gray-200 hover:bg-neutral-200 dark:hover:text-gray-900': calendarIsToday(day) == false && calendarIsSelectedDate(day) == false && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
-                        'bg-neutral-800 dark:text-gray-500 dark:bg-white text-white hover:bg-opacity-75': calendarIsSelectedDate(day) == true && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
-                        'text-gray-400': isDateOutsideRange(new Date(calendarYear, calendarMonth, day))
+                        'bg-[color:var(--calendar-today-bg-color)] dark:bg-[color:var(--calendar-dark-today-bg-color)] text-[var(--calendar-today-text-color)] dark:text-[var(--calendar-dark-today-text-color)]': calendarIsToday(day) == true && calendarIsSelectedDate(day) == false && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'text-[var(--calendar-text-color)] dark:text-[var(--calendar-dark-text-color)] hover:bg-[color:var(--calendar-hover-bg-color)] dark:hover:bg-[color:var(--calendar-dark-hover-bg-color)]': calendarIsToday(day) == false && calendarIsSelectedDate(day) == false && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'bg-[color:var(--calendar-selected-bg-color)] dark:bg-[color:var(--calendar-dark-selected-bg-color)] text-[var(--calendar-selected-text-color)] dark:text-[var(--calendar-dark-selected-text-color)] hover:bg-opacity-75':calendarIsSelectedDate(day) == true && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)]': isDateOutsideRange(new Date(calendarYear, calendarMonth, day))
                     }"
                     class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
             </div>
@@ -184,7 +184,7 @@ x-data="{
         <template x-for="blankDay in calendarPostBlankDaysInMonth">
                 <div
                     x-text="blankDay"
-                    class="mb-1 text-gray-400 flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+                    class="text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)] flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
             </div>
         </template>
     </div>

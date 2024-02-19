@@ -1,0 +1,106 @@
+  :root {
+    --primary-bg-color: white;
+    --dark-primary-bg-color: #0a0a0a;
+    --primary-text-color: #0a0a0a;
+    --dark-primary-text-color: #fafafa;
+    --primary-accent-color: #0a0a0a;
+    --dark-primary-accent-color: white;
+    --primary-accent-text-color: #fafafa;
+    --dark-primary-accent-text-color: #0a0a0a;
+    --primary-border-color: #d4d4d4;
+    --dark-primary-border-color: #262626;
+    --primary-muted-text-color: #a3a3a3;
+    --dark-primary-muted-text-color: #a3a3a3;
+
+    --button-bg-color: var(--primary-accent-color);
+    --button-dark-bg-color: var(--dark-primary-accent-color);
+    --button-text-color: var(--primary-accent-text-color);
+    --button-dark-text-color: var(--dark-primary-accent-text-color);
+    --button-focus-ring-color: var(--primary-border-color);
+    --button-dark-focus-ring-color: var(--dark-primary-border-color);
+
+    --input-bg-color: transparent;
+    --input-dark-bg-color: transparent;
+    --input-accent-color: var(--primary-accent-color);
+    --input-dark-accent-color: var(--dark-primary-accent-color);
+    --input-text-color: var(--primary-text-color);
+    --input-dark-text-color: var(--dark-primary-text-color);
+    --input-file-bg-color: var(--input-bg-color);
+    --input-dark-file-bg-color: var(--input-dark-bg-color);
+    --input-file-text-color: var(--input-text-color);
+    --input-dark-file-text-color: var(--input-dark-text-color);
+    --input-border-color: var(--primary-border-color);
+    --input-dark-border-color: var(--dark-primary-border-color);
+    --input-placeholder-color: var(--primary-muted-text-color);
+    --input-dark-placeholder-color: var(--dark-primary-muted-text-color);
+
+    --select-bg-color: var(--input-bg-color);
+    --select-dark-bg-color: var(--input-dark-bg-color);
+    --select-text-color: var(--input-text-color);
+    --select-dark-text-color: var(--input-dark-text-color);
+    --select-border-color: var(--input-border-color);
+    --select-dark-border-color: var(--input-dark-border-color);
+    --select-placeholder-color: var(--input-placeholder-color);
+    --select-dark-placeholder-color: var(--input-dark-placeholder-color);
+    --select-accent-color: var(--input-accent-color);
+    --select-dark-accent-color: var(--input-dark-accent-color);
+
+    --textarea-bg-color: var(--input-bg-color);
+    --textarea-dark-bg-color: var(--input-dark-bg-color);
+    --textarea-text-color: var(--input-text-color);
+    --textarea-dark-text-color: var(--input-dark-text-color);
+    --textarea-border-color: var(--input-border-color);
+    --textarea-dark-border-color: var(--input-dark-border-color);
+    --textarea-placeholder-color: var(--input-placeholder-color);
+    --textarea-dark-placeholder-color: var(--input-dark-placeholder-color);
+    --textarea-accent-color: var(--input-accent-color);
+    --textarea-dark-accent-color: var(--input-dark-accent-color);
+
+    --card-background-color: var(--primary-bg-color);
+    --card-dark-background-color: var(--dark-primary-bg-color);
+    --card-text-color: var(--primary-text-color);
+    --card-dark-text-color: var(--dark-primary-text-color);
+    --card-border-color:  var(--primary-border-color);
+    --card-dark-border-color: var(--dark-primary-border-color);
+
+    --accordion-background-color: var(--primary-bg-color);
+    --accordion-dark-background-color: var(--dark-primary-bg-color);
+    --accordion-text-color: var(--primary-text-color);
+    --accordion-dark-text-color: var(--dark-primary-text-color);
+    --accordion-border-color: var(--primary-border-color);
+    --accordion-dark-border-color: var(--dark-primary-border-color);
+
+    --switch-on-bg-color: var(--primary-accent-color);
+    --switch-dark-on-bg-color: var(--dark-primary-accent-color);
+    --switch-on-fill-color: white;
+    --switch-dark-on-fill-color: black;
+    --switch-off-bg-color: lightgray;
+    --switch-dark-off-bg-color: gray;
+    --switch-off-fill-color: white;
+    --switch-dark-off-fill-color: black;
+
+    --calendar-bg-color: var(--primary-bg-color);
+    --calendar-dark-bg-color: var(--dark-primary-bg-color);
+    --calendar-text-color: var(--primary-text-color);
+    --calendar-dark-text-color: var(--dark-primary-text-color);
+    --calendar-selected-bg-color: var(--primary-accent-color);
+    --calendar-dark-selected-bg-color: var(--dark-primary-accent-color);
+    --calendar-selected-text-color: var(--primary-accent-text-color);
+    --calendar-dark-selected-text-color: var(--dark-primary-accent-text-color);
+    --calendar-today-bg-color: gray;
+    --calendar-dark-today-bg-color: gray;
+    --calendar-today-text-color: white;
+    --calendar-dark-today-text-color: black;
+    --calendar-hover-bg-color: #d3d3d3;
+    --calendar-dark-hover-bg-color: gray;
+    --calendar-disabled-text-color: var(--primary-muted-text-color);
+    --calendar-dark-disabled-text-color: var(--dark-primary-muted-text-color);
+
+    --alert-background-color: var(--primary-bg-color);
+    --alert-dark-background-color: var(--dark-primary-bg-color);
+    --alert-text-color: var(--primary-text-color);
+    --alert-dark-text-color: var(--dark-primary-text-color);
+    --alert-border-color: var(--primary-border-color);
+    --alert-dark-border-color: var(--dark-primary-border-color);
+  }
+

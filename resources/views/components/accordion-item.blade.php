@@ -1,3 +1,4 @@
+@props(["color" => "", "openIcon", "closeIcon"])
 <div
     x-data="{open: false}"
     x-id="['accordion-item']"
@@ -21,11 +22,25 @@
                 <div>
                     {{$title}}
                 </div>
-                <span x-text="open == false ? '+' : '-'" class="text-2xl">
-                </span>
+                <div>
+                    <div x-show="!open">
+                        @if(isset($openIcon))
+                            {{$openIcon}}
+                        @else
+                            +
+                        @endif
+                    </div>
+                    <div x-show="open">
+                        @if(isset($closeIcon))
+                            {{$closeIcon}}
+                        @else
+                            -
+                        @endif
+                    </div>
+                </div>
             </button>
             <div x-show="active == $id('accordion-item')"
-                class="scroll-smooth p-4 text-gray-500 dark:text-gray-50 pt-0"
+                class="scroll-smooth p-4 pt-0 opacity-70"
                 x-collapse
                 x-cloak
             >

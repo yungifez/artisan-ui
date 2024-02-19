@@ -37,13 +37,13 @@
     x-init="
         setTimeout(()=>{ bannerVisible = true }, bannerVisibleAfter);
     "
-    class="{{$color}} {{$positionClass}} fixed z-10 w-full h-auto py-2 duration-300 ease-out shadow-sm sm:py-0 " x-cloak>
-    <div class="flex items-center justify-between w-full h-full min-h-full px-3 mx-auto max-w-7xl ">
+    class="{{$color}} {{$positionClass}} flex items-center fixed z-10 w-full h-auto py-2 duration-300 ease-out shadow-sm sm:py-0 " x-cloak>
+    <div class="w-full h-full min-h-full px-3 mx-auto max-w-7xl ">
         {{$slot}}
-        @if($canDismiss)
-            <button @click="bannerVisible=false; setTimeout(()=>{ bannerVisible = true }, 1000);" class="flex items-center flex-shrink-0 translate-x-1 ease-out duration-150 justify-center w-6 h-6 p-1.5 text-black rounded-full hover:bg-neutral-100">
-                <x-artisan-ui::x/>
-            </button>
-        @endif
     </div>
+    @if($canDismiss)
+    <button @click="bannerVisible=false;" class="flex mx-2 items-center flex-shrink-0 translate-x-1 ease-out duration-150 justify-center w-6 h-6 p-1.5 text-black rounded-full hover:bg-neutral-100 ">
+        <x-artisan-ui::x class="dark:hover:fill-black"/>
+    </button>
+    @endif
 </div>

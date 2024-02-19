@@ -1,4 +1,4 @@
-@props(['title', 'icon' => 'fa fa-ban','stackIcons' => [] , 'color' => 'border-gray-300 dark:border-gray-500 dark:text-gray-200', 'class' => '', 'id' => 'alert', 'timeout' => '5000', 'show' => true, 'canDismiss' => false, 'dismissOnTimeout' => false])
+@props(['title', 'icon' => 'fa fa-ban','stackIcons' => [] , 'color' => 'text-[var(--alert-text-color)] dark:text-[var(--alert-dark-text-color)] border-[color:var(--alert-border-color)] dark:border-[color:var(--alert-dark-border-color)] ', 'class' => '', 'id' => 'alert', 'timeout' => '5000', 'show' => true, 'canDismiss' => false, 'dismissOnTimeout' => false])
 
 <div @class(["$color $class border my-2  p-3 rounded w-full"]) aria-role="alert" x-data="{'showAlert' : {{$show}}}" x-show="showAlert" x-transition id="{{$id}}" {{$attributes}} style="display:none">
     <div class="flex gap-x-3 ">
@@ -22,7 +22,11 @@
         <div>
             @if ($canDismiss == true)
                 <button @click="showAlert = false">
-                    <x-artisan-ui::x/>
+                        @if(isset($closeIcon))
+                            {{$closeIcon}}
+                        @else
+                            <x-artisan-ui::x/>
+                        @endif
                 </button>
                 <p class="sr-only">Close Alert</p>
                 </i>

@@ -17,10 +17,10 @@
         x-ref="switchButton"
         type="button"
         @click="switchOn = ! switchOn"
-        :class="switchOn ? 'bg-black dark:bg-white' : 'bg-neutral-200 dark:bg-neutral-700'"
+        :class="switchOn ? 'bg-[color:var(--switch-on-bg-color)] dark:bg-[color:var(--switch-dark-on-bg-color)]' : 'bg-neutral-200 dark:bg-neutral-700'"
         class="inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10"
         x-cloak>
-        <span :class="switchOn ? 'translate-x-[18px]' : 'translate-x-0.5'" class="w-5 h-5 duration-200 ease-in-out bg-white dark:bg-black rounded-full shadow-md"></span>
+        <span :class="switchOn ? 'translate-x-[18px] bg-[color:var(--switch-on-fill-color)] dark:bg-[color:var(--switch-dark-on-fill-color)]' : 'translate-x-0.5 bg-[color:var(--switch-off-fill-color)] dark:bg-[color:var(--switch-dark-off-fill-color)]'" class="w-5 h-5 duration-200 ease-in-out rounded-full shadow-md"></span>
     </button>
 
     <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')"
