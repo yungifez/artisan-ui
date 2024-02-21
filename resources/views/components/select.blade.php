@@ -111,7 +111,7 @@
                                     <div class="text-xs font-normal leading-none max-w-full flex-initial" x-model="options[option]" x-text="options[option].text"></div>
                                     <div class=" px-1 flex flex-auto flex-row-reverse">
                                         <button x-on:click="remove(index,option)" class="">
-                                            <x-artisan-ui::x/>
+                                            <x-aui::x/>
                                         </button>
                                     </div>
                                 </div>

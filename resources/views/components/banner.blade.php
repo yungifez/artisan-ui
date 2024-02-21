@@ -43,7 +43,7 @@
     </div>
     @if($canDismiss)
     <button @click="bannerVisible=false;" class="flex mx-4 items-center flex-shrink-0 translate-x-1 ease-out duration-150 justify-center w-6 h-6 p-1.5 rounded-full">
-        <x-artisan-ui::x class=""/>
+        <x-aui::x class=""/>
     </button>
     @endif
 </div>

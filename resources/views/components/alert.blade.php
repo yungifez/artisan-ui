@@ -25,7 +25,7 @@
                         @if(isset($closeIcon))
                             {{$closeIcon}}
                         @else
-                            <x-artisan-ui::x/>
+                            <x-aui::x/>
                         @endif
                 </button>
                 <p class="sr-only">Close Alert</p>

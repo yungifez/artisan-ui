@@ -3,9 +3,9 @@
     @isset($button)
         {{$button}}
     @else
-        <x-artisan-ui::button type="button" class="{{$themeColor}} {{$popupButtonClass}} rounded" icon="{{$icon}}" @click="modal = true">
+        <x-aui::button type="button" class="{{$themeColor}} {{$popupButtonClass}} rounded" icon="{{$icon}}" @click="modal = true">
             {{$popupButtonText}}
-        </x-artisan-ui::button>
+        </x-aui::button>
     @endisset
 
     @php
@@ -30,7 +30,7 @@
             </div>
             <div class=" flex gap-2 flex-col md:flex-row md:justify-end items-center p-2">
                 @if ($closeButton != false && $closeButton != "false" )
-                    <x-artisan-ui::button label="Cancel" class="w-full md:w-auto bg-white text-black dark:bg-black dark:text-white border-gray-300 border" color="" @click="modal = false"/>
+                    <x-aui::button label="Cancel" class="w-full md:w-auto bg-white text-black dark:bg-black dark:text-white border-gray-300 border" color="" @click="modal = false"/>
                 @endif
                 {{$footer}}
             </div>

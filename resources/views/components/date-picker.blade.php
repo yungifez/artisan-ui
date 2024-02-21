@@ -12,7 +12,7 @@
             @endif
             <div class="relative w-full"
                     x-ref="datePickerInput" >
-                <x-artisan-ui::input
+                <x-aui::input
                     {{$attributes}}
                     type="text"
                     @click="datePickerOpen=!datePickerOpen"
@@ -26,7 +26,7 @@
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
                 <div x-show="datePickerOpen" x-transition @click.away="datePickerOpen = false" x-anchor.bottom-start.offset.2="$refs.datePickerInput">
-                    <x-artisan-ui::calendar
+                    <x-aui::calendar
                         :value="$value"
                         :format="$format"
                         :max="$max"
