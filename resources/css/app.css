@@ -11,6 +11,10 @@
     --dark-primary-border-color: #262626;
     --primary-muted-text-color: #a3a3a3;
     --dark-primary-muted-text-color: #a3a3a3;
+    --primary-error-text-color: red;
+    --dark-primary-error-text-color: #ef4444;
+    --primary-error-border-color: red;
+    --dark-primary-error-border-color: #ef4444;
 
     --button-bg-color: var(--primary-accent-color);
     --button-dark-bg-color: var(--dark-primary-accent-color);
@@ -33,6 +37,10 @@
     --input-dark-border-color: var(--dark-primary-border-color);
     --input-placeholder-color: var(--primary-muted-text-color);
     --input-dark-placeholder-color: var(--dark-primary-muted-text-color);
+    --input-error-border-color: var(--primary-error-border-color);
+    --input-dark-error-border-color: var(--dark-primary-error-border-color);
+    --input-error-text-color: var(--primary-error-text-color);
+    --input-dark-error-text-color: var(--dark-primary-error-text-color);
 
     --select-bg-color: var(--input-bg-color);
     --select-dark-bg-color: var(--input-dark-bg-color);
@@ -44,6 +52,10 @@
     --select-dark-placeholder-color: var(--input-dark-placeholder-color);
     --select-accent-color: var(--input-accent-color);
     --select-dark-accent-color: var(--input-dark-accent-color);
+    --select-error-border-color: var(--input-error-border-color);
+    --select-dark-error-border-color: var(--input-dark-error-border-color);
+    --select-error-text-color: var(--input-error-text-color);
+    --select-dark-error-text-color: var(--input-dark-error-text-color);
 
     --textarea-bg-color: var(--input-bg-color);
     --textarea-dark-bg-color: var(--input-dark-bg-color);
@@ -55,16 +67,20 @@
     --textarea-dark-placeholder-color: var(--input-dark-placeholder-color);
     --textarea-accent-color: var(--input-accent-color);
     --textarea-dark-accent-color: var(--input-dark-accent-color);
+    --textarea-error-border-color: var(--input-error-border-color);
+    --textarea-dark-error-border-color: var(--input-dark-error-border-color);
+    --textarea-error-text-color: var(--input-error-text-color);
+    --textarea-dark-error-text-color: var(--input-dark-error-text-color);
 
-    --card-background-color: var(--primary-bg-color);
-    --card-dark-background-color: var(--dark-primary-bg-color);
+    --card-bg-color: var(--primary-bg-color);
+    --card-dark-bg-color: var(--dark-primary-bg-color);
     --card-text-color: var(--primary-text-color);
     --card-dark-text-color: var(--dark-primary-text-color);
     --card-border-color:  var(--primary-border-color);
     --card-dark-border-color: var(--dark-primary-border-color);
 
-    --accordion-background-color: var(--primary-bg-color);
-    --accordion-dark-background-color: var(--dark-primary-bg-color);
+    --accordion-bg-color: var(--primary-bg-color);
+    --accordion-dark-bg-color: var(--dark-primary-bg-color);
     --accordion-text-color: var(--primary-text-color);
     --accordion-dark-text-color: var(--dark-primary-text-color);
     --accordion-border-color: var(--primary-border-color);
@@ -81,6 +97,8 @@
 
     --calendar-bg-color: var(--primary-bg-color);
     --calendar-dark-bg-color: var(--dark-primary-bg-color);
+    --calendar-border-color: var(--primary-border-color);
+    --calendar-dark-border-color: var(--dark-primary-border-color);
     --calendar-text-color: var(--primary-text-color);
     --calendar-dark-text-color: var(--dark-primary-text-color);
     --calendar-selected-bg-color: var(--primary-accent-color);
@@ -102,5 +120,12 @@
     --alert-dark-text-color: var(--dark-primary-text-color);
     --alert-border-color: var(--primary-border-color);
     --alert-dark-border-color: var(--dark-primary-border-color);
+
+    --banner-bg-color: var(--primary-bg-color);
+    --banner-dark-bg-color: var(--dark-primary-bg-color);
+    --banner-text-color: var(--primary-text-color);
+    --banner-dark-text-color: var(--dark-primary-text-color);
+    --banner-border-color: var(--primary-border-color);
+    --banner-dark-border-color: var(--dark-primary-border-color);
   }
 

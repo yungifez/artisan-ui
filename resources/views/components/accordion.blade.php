@@ -1,7 +1,7 @@
 @props([
     'groupTogether' => false,
     'class' => '',
-    'color' => "text-[var(--accordion-text-color)] dark:text-[var(--accordion-dark-text-color)] border-[color:var(--accordion-border-color)] dark:border-[color:var(--accordion-dark-border-color)] divide-[color:var(--accordion-border-color)] dark:divide-[color:var(--accordion-dark-border-color)]"
+    'color' => "bg-[color:var(--accordion-bg-color)] dark:bg-[color:var(--accordion-dark-bg-color)] text-[var(--accordion-text-color)] dark:text-[var(--accordion-dark-text-color)] border-[color:var(--accordion-border-color)] dark:border-[color:var(--accordion-dark-border-color)] divide-[color:var(--accordion-border-color)] dark:divide-[color:var(--accordion-dark-border-color)]"
 ])
 
 

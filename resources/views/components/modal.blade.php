@@ -1,6 +1,5 @@
 @props(['themeColor' =>  'bg-black-700', 'parentClass' => '','title' => '', 'footer' => '', 'icon' => '', 'popupButtonClass' => 'Popup', 'button', 'size' => 'base', 'popupButtonText' => 'Open', 'closeButton' => 'true'])
 <div x-data="{modal : false}" class="{{$parentClass}}">
-
     @isset($button)
         {{$button}}
     @else

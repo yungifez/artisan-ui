@@ -8,7 +8,7 @@
     <div class="container py-2 mx-auto w-full">
         <div class="w-full mb-5" >
             @if (!empty($label))
-                <label for="{{$id}}" @class(["$labelClass font-semibold dark:text-gray-200 text-gray-700 my-2"])>{{$label}}</label>
+                <label for="{{$id}}" {{$attributes->whereStartsWith("label")}} @class(["$labelClass font-semibold dark:text-gray-200 text-gray-700 my-2"])>{{$label}}</label>
             @endif
             <div class="relative w-full"
                     x-ref="datePickerInput" >

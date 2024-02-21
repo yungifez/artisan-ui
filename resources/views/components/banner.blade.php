@@ -1,4 +1,4 @@
-@props(['color' => 'bg-white dark:bg-black dark:text-white dark:border-gray-500', 'canDismiss' => false, 'position' => 'top', 'positionClass', 'transitionEnterStart' => '', 'transitionEnterEnd' => '', 'transitionLeaveStart' => '', 'transitionLeaveEnd' => '', 'bannerVisibleAfter' => 300])
+@props(['color' => 'bg-[color:var(--banner-bg-color)] dark:bg-[color:var(--banner-dark-bg-color)] text-[var(--banner-text-color)] dark:text-[var(--banner-dark-text-color)] border-[color:var(--banner-border-color)] dark:border-[color:var(--banner-dark-border-color)] ', 'canDismiss' => false, 'position' => 'top', 'positionClass', 'transitionEnterStart' => '', 'transitionEnterEnd' => '', 'transitionLeaveStart' => '', 'transitionLeaveEnd' => '', 'bannerVisibleAfter' => 300])
 
 @php
     $positionClass = $positionClass ?? match($position){
@@ -42,8 +42,8 @@
         {{$slot}}
     </div>
     @if($canDismiss)
-    <button @click="bannerVisible=false;" class="flex mx-2 items-center flex-shrink-0 translate-x-1 ease-out duration-150 justify-center w-6 h-6 p-1.5 text-black rounded-full hover:bg-neutral-100 ">
-        <x-artisan-ui::x class="dark:hover:fill-black"/>
+    <button @click="bannerVisible=false;" class="flex mx-4 items-center flex-shrink-0 translate-x-1 ease-out duration-150 justify-center w-6 h-6 p-1.5 rounded-full">
+        <x-artisan-ui::x class=""/>
     </button>
     @endif
 </div>

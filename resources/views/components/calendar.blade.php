@@ -140,16 +140,16 @@ x-data="{
     "
     x-transition
     x-modelable="calendarValue"
-    class=" top-0 left-0 max-w-lg p-4 antialiased bg-[color:var(--calendar-bg-color)] dark:bg-[color:var(--calendar-dark-bg-color)] border rounded-lg shadow w-[17rem] border-neutral-200/70">
+    class=" top-0 left-0 max-w-lg p-4 antialiased bg-[color:var(--calendar-bg-color)] dark:bg-[color:var(--calendar-dark-bg-color)] border-[color:var(--calendar-border-color)] dark:border-[color:var(--calendar-dark-border-color)] border rounded-lg shadow w-[17rem] ">
     <div class="flex items-center justify-between mb-3">
-        <button @click="calendarPreviousMonth()" type="button" class="border inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
+        <button @click="calendarPreviousMonth()" type="button" class="border dark:border-[color:var(--calendar-dark-border-color)] inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
             <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         </button>
         <div>
             <span x-text="calendarMonthNames[calendarMonth]" class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
             <span x-text="calendarYear" class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
         </div>
-        <button @click="calendarNextMonth()" type="button" class="border inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10" >
+        <button @click="calendarNextMonth()" type="button" class="border dark:border-[color:var(--calendar-dark-border-color)] inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10" >
             <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
         </button>
     </div>
