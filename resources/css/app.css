@@ -1,4 +1,4 @@
-  :root {
+:root {
     --primary-bg-color: white;
     --dark-primary-bg-color: #0a0a0a;
     --primary-text-color: #0a0a0a;
@@ -76,7 +76,7 @@
     --card-dark-bg-color: var(--dark-primary-bg-color);
     --card-text-color: var(--primary-text-color);
     --card-dark-text-color: var(--dark-primary-text-color);
-    --card-border-color:  var(--primary-border-color);
+    --card-border-color: var(--primary-border-color);
     --card-dark-border-color: var(--dark-primary-border-color);
 
     --accordion-bg-color: var(--primary-bg-color);
@@ -127,5 +127,62 @@
     --banner-dark-text-color: var(--dark-primary-text-color);
     --banner-border-color: var(--primary-border-color);
     --banner-dark-border-color: var(--dark-primary-border-color);
-  }
+}
 
+@layer utilities {
+    .bg-primary {
+        background-color: var(--primary-bg-color)
+    }
+
+    .bg-primary-dark {
+        background-color: var(--dark-primary-bg-color)
+    }
+
+    .accent-primary {
+        color: var(--primary-accent-color)
+    }
+
+    .accent-primary-dark {
+        color: var(--dark-primary-accent-color)
+    }
+
+    .text-primary {
+        color: var(--primary-text-color)
+    }
+
+    .text-primary-dark {
+        color: var(--dark-primary-text-color)
+    }
+
+    .border-primary {
+        border-color: var(--primary-border-color)
+    }
+
+    .border-primary-dark {
+        border-color: var(--dark-primary-border-color)
+    }
+
+    .muted-text-primary {
+        color: var(--primary-muted-text-color)
+    }
+
+    .muted-text-primary-dark {
+        color: var(--dark-primary-muted-text-color)
+    }
+
+    .error-text-primary {
+        color: var(--primary-error-text-color)
+    }
+
+    .error-text-primary-dark {
+        color: var(--dark-primary-error-text-color)
+    }
+
+    .error-border-primary {
+        border-color: var(--primary-error-border-color)
+    }
+
+    .error-border-primary-dark {
+        border-color: var(--dark-primary-error-border-color)
+    }
+}

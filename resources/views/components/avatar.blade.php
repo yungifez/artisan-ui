@@ -1,4 +1,9 @@
-@props(['class' => '', 'size' => 'w-10 h-10', 'src' => '', 'fallback' => ''])
+@props([
+    'class' => '',
+    'size' => 'w-10 h-10',
+    'src' => '',
+    'fallback' => ''
+])
 
 <div x-data="{loadError: false}" class="{{$size}} aspect-square rounded-full border flex justify-center items-center">
     <img
