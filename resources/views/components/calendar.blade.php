@@ -1,7 +1,7 @@
 @props([ 'value' => '', 'format' => 'M d, h', 'onselect' => '', "max" => "", "min" => "" ])
-<div
-x-data="{
+<div autofocus x-data="{
       calendarValue: '{{$value}}',
+      focusedDay: '',
       calendarFormat: '{{$format}}',
       max: '{{$max}}',
       min: '{{$min}}',
@@ -20,8 +20,24 @@ x-data="{
       calendarDayClicked(day) {
         let selectedDate = new Date(this.calendarYear, this.calendarMonth, day);
         this.calendarDay = day;
+        this.focusedDay = day;
         this.calendarValue = this.calendarFormatDate(selectedDate);
         this.calendarIsSelectedDate(day);
+      },
+
+      calendarFocusAdd(value){
+         if(!Number.isInteger(this.focusedDay)){
+            this.focusedDay = (new Date(this.calendarYear, this.calendarMonth, day)).getDate();
+          }
+          this.focusedDay = this.focusedDay + value;
+          if(this.focusedDay > this.calendarDaysInMonth.length){
+            this.focusedDay = this.focusedDay - this.calendarDaysInMonth.length;
+            this.calendarNextMonth();
+          }
+          else if(this.focusedDay <= 0){
+            this.calendarPreviousMonth();
+            this.focusedDay = this.calendarDaysInMonth.length + this.focusedDay
+          }
       },
 
       calendarPreviousMonth(){
@@ -46,6 +62,10 @@ x-data="{
       calendarIsSelectedDate(day) {
         const d = new Date(this.calendarYear, this.calendarMonth, day);
         return this.calendarValue === this.calendarFormatDate(d) ? true : false;
+      },
+
+      calendarIsFocusedDate(day) {
+        return this.focusedDay === day ? true : false;
       },
 
       calendarIsToday(day) {
@@ -125,8 +145,7 @@ x-data="{
 
         return `${formattedMonth} ${formattedDate}, ${formattedYear}`;
       },
-    }"
-    x-init="
+    }" x-init="
         currentDate = new Date();
         if (calendarValue) {
             currentDate = new Date(Date.parse(calendarValue));
@@ -135,22 +154,32 @@ x-data="{
         calendarYear = currentDate.getFullYear();
         calendarDay = currentDate.getDay();
         calendarValue = calendarFormatDate( currentDate );
+        focusedDay = currentDate.getDate();
         selected()
         calendarCalculateDays();
-    "
-    x-transition
-    x-modelable="calendarValue"
+    " @keydown.left.prevent="calendarFocusAdd(-1)" @keydown.right.prevent="calendarFocusAdd(1)"
+    @keydown.up.prevent="calendarFocusAdd(-calendarDays.length)"
+    @keydown.down.prevent="calendarFocusAdd(calendarDays.length)" tabindex="0" x-transition x-modelable="calendarValue"
     class=" top-0 left-0 max-w-lg p-4 antialiased bg-[color:var(--calendar-bg-color)] dark:bg-[color:var(--calendar-dark-bg-color)] border-[color:var(--calendar-border-color)] dark:border-[color:var(--calendar-dark-border-color)] border rounded-lg shadow w-[17rem] ">
     <div class="flex items-center justify-between mb-3">
-        <button @click="calendarPreviousMonth()" type="button" class="border dark:border-[color:var(--calendar-dark-border-color)] inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
-            <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        <button @click="calendarPreviousMonth()" type="button"
+            class="border dark:border-[color:var(--calendar-dark-border-color)] inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
+            <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
         </button>
         <div>
-            <span x-text="calendarMonthNames[calendarMonth]" class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
+            <span x-text="calendarMonthNames[calendarMonth]"
+                class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
             <span x-text="calendarYear" class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
         </div>
-        <button @click="calendarNextMonth()" type="button" class="border dark:border-[color:var(--calendar-dark-border-color)] inline-flex p-1 transition duration-100 ease-in-out rounded-lg cursor-pointer focus:outline-none focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10" >
-            <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        <button @click="calendarNextMonth()" type="button"
+            class="border dark:border-[color:var(--calendar-dark-border-color)] inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
+            <svg class="inline-flex w-6 h-6 text-gray-400 dark:text-gray-100" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
         </button>
     </div>
     <div class="grid grid-cols-7 mb-3">
@@ -162,30 +191,30 @@ x-data="{
     </div>
     <div class="grid grid-cols-7">
         <template x-for="blankDay in calendarPreBlankDaysInMonth">
-                <div
-                    x-text="blankDay"
-                    class="text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)] flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+            <div x-text="blankDay" x-effect="focusedDay == blankDay && $el.focus({preventScroll: true})"
+                class="text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)] flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7">
             </div>
         </template>
         <template x-for="(day, dayIndex) in calendarDaysInMonth" :key="dayIndex">
             <div class="px-0.5 aspect-square">
-                <div
-                    x-text="day"
+                <button tabindex="-1" x-effect="focusedDay == day && $el.focus({preventScroll: true})" x-text="day"
                     @click="isDateOutsideRange(new Date(calendarYear, calendarMonth, day)) || calendarDayClicked(day); selected()"
                     :class="{
                         'bg-[color:var(--calendar-today-bg-color)] dark:bg-[color:var(--calendar-dark-today-bg-color)] text-[var(--calendar-today-text-color)] dark:text-[var(--calendar-dark-today-text-color)]': calendarIsToday(day) == true && calendarIsSelectedDate(day) == false && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
                         'text-[var(--calendar-text-color)] dark:text-[var(--calendar-dark-text-color)] hover:bg-[color:var(--calendar-hover-bg-color)] dark:hover:bg-[color:var(--calendar-dark-hover-bg-color)]': calendarIsToday(day) == false && calendarIsSelectedDate(day) == false && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
                         'bg-[color:var(--calendar-selected-bg-color)] dark:bg-[color:var(--calendar-dark-selected-bg-color)] text-[var(--calendar-selected-text-color)] dark:text-[var(--calendar-dark-selected-text-color)] hover:bg-opacity-75':calendarIsSelectedDate(day) == true && !isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
-                        'text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)]': isDateOutsideRange(new Date(calendarYear, calendarMonth, day))
+                        'text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)]': isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
+                        'border-black dark:border-white' : calendarIsFocusedDate(day)
                     }"
-                    class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+                    class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7 focus:outline-white">
+                </button>
             </div>
         </template>
         <template x-for="blankDay in calendarPostBlankDaysInMonth">
-                <div
-                    x-text="blankDay"
-                    class="text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)] flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7"></div>
+            <div x-text="blankDay" x-effect="focusedDay == blankDay && $el.focus({preventScroll: true})"
+                class="text-[var(--calendar-disabled-text-color)] dark:text-[var(--calendar-dark-disabled-text-color)] flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7">
             </div>
-        </template>
     </div>
+    </template>
+</div>
 </div>

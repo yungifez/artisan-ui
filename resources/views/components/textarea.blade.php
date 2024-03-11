@@ -31,7 +31,7 @@
     <textarea id="{{$id}}" name="{{$name}}" @class(["$color $class $defaultClass", 'border-[var(--textarea-error-border-color)] dark:border-[var(--textarea-dark-error-border-color)] ' => $errors->has($errorName)]) {{$attributes->whereDoesntStartWith(['label'])}}>{{old($oldName) ?? ($slot != null ? $slot : '')}}</textarea>
     @if( $displayErrors && $displayErrors != "false")
         @error($errorName, $errorBag)
-            <p class="text-[var(--textarea-error-text-color)] dark:text-[var(--textarea-dark-error-text-color)]  my-1 order-3 basis-full">{{$message}}</p>
+            <p class="text-[var(--textarea-error-text-color)] dark:text-[var(--textarea-dark-error-text-color)]  mt-3 order-3 basis-full">{{$message}}</p>
         @enderror
     @endif
 </div>

@@ -34,7 +34,7 @@
     <input id="{{$id}}" name="{{$name}}" @class(["$color $class $defaultClass order-1 ", 'border-[var(--input-error-border-color)] dark:border-[var(--input-dark-error-border-color)] ' => $errors->$errorBag->has($errorName) && $displayErrors != "false" ,'w-full' => !$isCheckbox]) {{$attributes->whereDoesntStartWith(['label'])}} @if(!$isCheckbox) value="{{old($oldName) ?? ($value != null ? $value : '')}}" @else @checked(old($oldName) ?? $attributes->get('checked')) @endif>
     @if( $displayErrors && $displayErrors != "false")
         @error($errorName, $errorBag)
-            <p class="text-[var(--input-error-text-color)] dark:text-[var(--input-dark-error-text-color)] my-1 order-3 basis-full">{{$message}}</p>
+            <p class="text-[var(--input-error-text-color)] dark:text-[var(--input-dark-error-text-color)] mt-3 order-3 basis-full">{{$message}}</p>
         @enderror
     @endif
 </div>

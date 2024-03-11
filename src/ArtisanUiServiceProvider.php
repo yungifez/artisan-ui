@@ -18,7 +18,6 @@ class ArtisanUiServiceProvider extends PackageServiceProvider
         $package
             ->name('artisan-ui')
             ->hasConfigFile()
-            ->hasViews('aui')
-            ->hasCommand(ArtisanUiCommand::class);
+            ->hasViews('aui');
     }
 }

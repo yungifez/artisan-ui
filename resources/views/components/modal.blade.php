@@ -1,11 +1,13 @@
-@props(['themeColor' =>  'bg-black-700', 'parentClass' => '','title' => '', 'footer' => '', 'icon' => '', 'popupButtonClass' => 'Popup', 'button', 'size' => 'base', 'popupButtonText' => 'Open', 'closeButton' => 'true'])
-<div x-data="{modal : false}" class="{{$parentClass}}">
+@props(['themeColor' => 'bg-black-700', 'parentClass' => '','title' => '', 'footer' => '', 'icon' => '',
+'popupButtonClass' => 'Popup', 'button', 'size' => 'base', 'popupButtonText' => 'Open', 'closeButton' => 'true'])
+<div x-data="{modal : false}" class="{{$parentClass}}" @keydown.esc="modal = false">
     @isset($button)
-        {{$button}}
+    {{$button}}
     @else
-        <x-aui::button type="button" class="{{$themeColor}} {{$popupButtonClass}} rounded" icon="{{$icon}}" @click="modal = true">
-            {{$popupButtonText}}
-        </x-aui::button>
+    <x-aui::button type="button" class="{{$themeColor}} {{$popupButtonClass}} rounded" icon="{{$icon}}"
+        @click="modal = true">
+        {{$popupButtonText}}
+    </x-aui::button>
     @endisset
 
     @php
@@ -17,11 +19,13 @@
         }
     @endphp
 
-    <div class=" w-screen h-screen fixed inset-0 z-50 bg-black dark:bg-opacity-60 bg-opacity-80 flex items-center justify-center" @click="modal = false" x-show="modal" style="display: none" x-transition.opacity {{$attributes}}>
-        <div class="{{$sizeClass}} flex justify-between flex-col bg-white dark:bg-black dark:text-gray-200 dark:borders-gray-500 rounded-xl border dark:border-gray-500 p-4 overflow-y-scroll" @click.stop>
+    <div class=" w-screen h-screen fixed inset-0 z-50 bg-black dark:bg-opacity-60 bg-opacity-80 flex items-center justify-center"
+        @click="modal = false"  x-show="modal" style="display: none" x-transition.opacity {{$attributes}}>
+        <div class="{{$sizeClass}} flex justify-between flex-col bg-white dark:bg-black dark:text-gray-200 dark:borders-gray-500 rounded-xl border dark:border-gray-500 p-4 overflow-y-scroll"
+            @click.stop>
             <div class="{{$themeColor}} h-16 md:h-20 rounded-t-xl flex justify-between p-2 items-center">
                 <div class="flex gap-4 overflow-y-scroll beautify-scrollbar">
-                    <i class="{{$icon}} text-2xl" aria-hidden="true" ></i>
+                    <i class="{{$icon}} text-2xl" aria-hidden="true"></i>
                     <h4 class="text-2xl font-semibold">{{$title}}</h4>
                 </div>
             </div>
@@ -30,7 +34,9 @@
             </div>
             <div class=" flex gap-2 flex-col md:flex-row md:justify-end items-center p-2">
                 @if ($closeButton != false && $closeButton != "false" )
-                    <x-aui::button label="Cancel" class="w-full md:w-auto bg-white text-black dark:bg-black dark:text-white border-gray-300 border" color="" @click="modal = false"/>
+                <x-aui::button label="Cancel"
+                    class="w-full md:w-auto bg-white text-black dark:bg-black dark:text-white border-gray-300 border"
+                    color="" @click="modal = false" />
                 @endif
                 {{$footer}}
             </div>

@@ -1,16 +1,16 @@
 :root {
-    --primary-bg-color: white;
-    --dark-primary-bg-color: #0a0a0a;
+    --primary-bg-color: hsl( 0 0% 100%);
+    --dark-primary-bg-color: hsl(0 0% 3.9%);
     --primary-text-color: #0a0a0a;
-    --dark-primary-text-color: #fafafa;
+    --dark-primary-text-color: hsl(0 0% 98%);
     --primary-accent-color: #0a0a0a;
     --dark-primary-accent-color: white;
     --primary-accent-text-color: #fafafa;
     --dark-primary-accent-text-color: #0a0a0a;
-    --primary-border-color: #d4d4d4;
-    --dark-primary-border-color: #262626;
-    --primary-muted-text-color: #a3a3a3;
-    --dark-primary-muted-text-color: #a3a3a3;
+    --primary-border-color: hsl(0 0% 89.8%);
+    --dark-primary-border-color: hsl(0 0% 14.9%);
+    --primary-muted-text-color: hsl(0 0% 45.1%);
+    --dark-primary-muted-text-color: hsl(0 0% 63.9%);
     --primary-error-text-color: red;
     --dark-primary-error-text-color: #ef4444;
     --primary-error-border-color: red;
@@ -23,8 +23,8 @@
     --button-focus-ring-color: var(--primary-border-color);
     --button-dark-focus-ring-color: var(--dark-primary-border-color);
 
-    --input-bg-color: transparent;
-    --input-dark-bg-color: transparent;
+    --input-bg-color: var(--primary-bg-color);
+    --input-dark-bg-color: var(--dark-primary-bg-color);
     --input-accent-color: var(--primary-accent-color);
     --input-dark-accent-color: var(--dark-primary-accent-color);
     --input-text-color: var(--primary-text-color);

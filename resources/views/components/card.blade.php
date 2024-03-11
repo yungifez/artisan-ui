@@ -1,4 +1,4 @@
-@props(['title' => '', 'description' => ''])
+@props(['title' => '', 'description' => '', "footer"])
 
 <div class="bg-[color:var(--card-bg-color)] dark:bg-[color:var(--card-dark-bg-color)] text-[var(--card-text-color)] dark:text-[var(--card-dark-text-color)] flex flex-col border border-[color:var(--card-border-color)] dark:border-[color:var(--card-dark-border-color)] rounded-lg shadow">
     <div class="p-6">
@@ -8,7 +8,9 @@
     <div class="p-6 pt-0">
         {{$slot}}
     </div>
-    <div class="p-6 pt-0">
-        {{$footer}}
-    </div>
+    @isset($footer)
+        <div class="p-6 pt-0">
+            {{$footer}}
+        </div>
+    @endisset
 </div>
