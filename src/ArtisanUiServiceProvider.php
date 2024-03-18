@@ -4,7 +4,6 @@ namespace Yungifez\ArtisanUi;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Yungifez\ArtisanUi\Commands\ArtisanUiCommand;
 
 class ArtisanUiServiceProvider extends PackageServiceProvider
 {
