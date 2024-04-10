@@ -158,7 +158,7 @@
         calendarCalculateDays();
     " @keydown.left.prevent="calendarFocusAdd(-1)" @keydown.right.prevent="calendarFocusAdd(1)"
     @keydown.up.prevent="calendarFocusAdd(-calendarDays.length)"
-    @keydown.down.prevent="calendarFocusAdd(calendarDays.length)" tabindex="0" x-transition x-modelable="calendarValue"
+    @keydown.down.prevent="calendarFocusAdd(calendarDays.length)" {{$attributes}} x-transition x-modelable="calendarValue"
     class=" top-0 left-0 max-w-lg p-4 antialiased bg-background border-input border rounded-lg shadow w-[17rem] ">
     <div class="flex items-center justify-between mb-3">
         <button @click="calendarPreviousMonth()" type="button"
@@ -208,7 +208,7 @@
                         'text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30': isDateOutsideRange(new Date(calendarYear, calendarMonth, day)),
                         'border-black dark:border-white' : calendarIsFocusedDate(day)
                     }"
-                    class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7">
+                    class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer h-7 w-7 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1">
                 </button>
             </div>
         </template>

@@ -2,7 +2,9 @@
     'popupButtonClass' => '',
     'popupButtonText' => 'Open',
 ])
-<div x-data="{dialog : false, close(){
+<div x-data="{
+    dialog : false,
+    close(){
         this.dialog = false;
     }, open(){
         this.dialog = true;
@@ -24,14 +26,13 @@
 
     <div
         class="fixed inset-0 z-50 bg-black/80"
-        @if (!$attributes->has("preventClose"))
+        @if ($attributes->has("candismiss"))
            @click="close()"
         @endif
         x-show="dialog"
         x-trap.noscroll="dialog"
         style="display: none"
         x-transition.opacity
-        {{$attributes->whereStartsWith(['overlay'])}}
    >
         <div {{$attributes->class(["fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"])}}
             @click.stop
@@ -52,7 +53,7 @@
                 </div>
             @endisset
             <div class=" flex gap-2 flex-col md:flex-row md:justify-end items-center p-2">
-                @if (!$attributes->has("preventClose"))
+                @if (!$attributes->has("candismiss"))
                     <div @click="close()">
                         @isset($closeButton)
                             {{$closeButton}}
@@ -62,7 +63,7 @@
                     </div>
                 @endif
                 @isset($footer)
-                    <div {{$attributes->class(["flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"])}}>
+                    <div {{$footer->attributes->class(["flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"])}}>
                         {{$footer}}
                     </div>
                 @endisset

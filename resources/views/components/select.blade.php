@@ -29,7 +29,6 @@
             multiple: {{$attributes->has('multiple') ? 'true' : 'false'}},
             disabled: {{$attributes->has('disabled') ? 'true' : 'false'}},
             show: false,
-            focusedIndex: 0,
             open(){
                 if(!this.disabled){
                     this.show = true
@@ -40,16 +39,6 @@
             },
             isOpen(){
                 return this.show === true
-            },
-            incrementFocusedIndex(){
-                this.open()
-                this.focusedIndex += 1
-                this.focusedIndex = this.focusedIndex < this.options.length ? this.focusedIndex : this.focusedIndex % this.options.length
-            },
-            decrementFocusedIndex(){
-                this.open()
-                this.focusedIndex > 0 ? this.focusedIndex -= 1 : this.focusedIndex = this.options.length - 1
-                this.focusedIndex = this.focusedIndex % this.options.length
             },
             select(index, event) {
                 if (!this.options[index].selected || !this.multiple) {
@@ -93,8 +82,6 @@
             }
         }
         "
-        x-on:keydown.up.prevent="decrementFocusedIndex()"
-        x-on:keydown.down.prevent="incrementFocusedIndex()"
         x-on:keydown.tab="close()"
         x-on:keydown.escape="close()"
     >
@@ -102,13 +89,17 @@
             {{$slot}}
         </select>
 
-        <div x-init="loadOptions()" class="w-full relative">
+        <div
+        x-init="loadOptions()"
+        class="w-full relative"
+        >
+            {{--secretly use inputs for form submission--}}
             <div x-data="{ allSelected : selected }">
                 <template x-for="selected in allSelected ">
                     <input type="hidden" name="{{$name}}" :value="options[selected].value">
                 </template>
             </div>
-            <button x-on:click="open" :disabled="disabled" @class(["flex min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50", 'border-input ' => $displayErrors]) x-ref="select" type="button">
+            <button x-on:click="open" :disabled="disabled" @class(["flex min-h-10 w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50", "border-input " => !$displayErrors, 'border-destructive' => $displayErrors]) x-ref="select" type="button">
                 <div class="flex flex-auto flex-wrap gap-y-1">
                     {{--display selected single items--}}
                     <template x-if="!multiple && selected.length > 0">
@@ -145,16 +136,16 @@
             <div x-show.transition.scale.origin.top="isOpen()"
                 class="absolute shadow top-100 border-input bg-background z-20 w-full rounded border max-h-80 overflow-y-scroll"
                 x-on:click.away="close()"
-                x-trap.noscroll="show"
+                x-trap.noscroll="isOpen()"
                 x-anchor="$refs.select"
+                x-on:keydown.up.prevent="$focus.wrap().previous()"
+                x-on:keydown.down.prevent="$focus.wrap().next()"
             >
                 <div class="flex flex-col w-full">
                     <template x-for="(option,index) in options" :key="index">
                         <button
-                            class="cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            class="cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative hover:bg-accent/60 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                             @click="select(index,$event)"
-                            x-effect="focusedIndex == index && $el.focus()"
-                            x-hover="focusedIndex = index"
                             type="button"
                         >
                             <div class="w-full items-center flex">

@@ -20,7 +20,7 @@
 @endphp
 
 <button
-    {{$attributes->merge(["class" => $class])}}
+    {{$attributes->merge(["class" => $class])->except(['size', 'variant'])}}
 >
     {{$slot}}
 </button>

@@ -1,6 +1,5 @@
 @props(
     [
-        'canDismiss' => false,
         'position' => 'top',
         'positionClass',
         "groupClass" => '',
@@ -56,21 +55,28 @@
     x-init="
         setTimeout(()=>{ bannerVisible = true }, bannerVisibleAfter);
     "
-    class="{{$groupClass}} {{$positionClass}} flex items-center fixed z-20 w-full h-auto py-2 duration-300 ease-out shadow-sm sm:py-0 "
     x-cloak
-    {{$attributes->whereStartsWith("group")}}
+    {{$attributes->class(["$positionClass bg-background p-3 flex items-center fixed z-20 w-full h-autoduration-300 ease-out shadow-sm "])}}
 >
-    <div class="w-full h-full min-h-full px-3 mx-auto max-w-7xl "
-        {{$attributes->whereDoesntStartWith(["group", "dismissButton"])}}>
-        {{$slot}}
-    </div>
-    @if($canDismiss)
-        <button
-            @click="bannerVisible=false;"
-            class="{{$dismissButtonClass}} flex mx-4 items-center flex-shrink-0 translate-x-1 ease-out duration-150 justify-center w-6 h-6 p-1.5 rounded-full"
-            {{$attributes->whereStartsWith("dismissButton")}}
-        >
-            <x-aui::x class=""/>
-        </button>
+    @isset($body)
+        <div {{$body->attributes->class(["w-full h-full min-h-full px-3 mx-auto max-w-7xl "])}}>
+            {{$body}}
+        </div>
+    @else
+        <div class="w-full"></div>
+    @endisset
+    @if($attributes->has("canDismiss"))
+        <div @click="bannerVisible=false;">
+        @isset($dismissTrigger)
+           {{$dismissTrigger}}
+        @else
+            <x-aui::button
+                variant="ghost"
+                size="icon"
+            >
+                <x-aui::x class="fill-foreground"/>
+            </x-aui::button>
+        @endisset
+        </div>
     @endif
 </div>
