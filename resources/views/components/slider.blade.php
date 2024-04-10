@@ -1,2 +1,1 @@
-@props(["class" => ""])
-<x-aui::input {{$attributes}} class="{{$class}} border-none order-2" type="range"/>
+<x-aui::input :attributes='$attributes->class(["border-none order-2"])->except("type")' type="range"/>

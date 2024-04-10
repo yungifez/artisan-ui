@@ -3,7 +3,6 @@
     'errorBag' => 'default',
     'errorName',
     'oldName' => '',
-    'label'
 ])
 
 @php
@@ -16,9 +15,9 @@
     @isset ($label)
         <label
             for="{{$attributes->get('id')}}"
-            @if ($label instanceof Illuminate\View\ComponentSlot) {{$label->attributes->class(['font-semibold my-2'])}} @else class="font-semibold my-2" @endif
-            >
-                {{$label}}
+            {{$label->attributes->class(["font-semibold my-2"])}}
+        >
+            {{$label}}
         </label>
     @endisset
     {{--select--}}
@@ -27,38 +26,38 @@
             options: [],
             selected: [],
             multiple: {{$attributes->has('multiple') ? 'true' : 'false'}},
-            disabled: {{$attributes->has('disabled') ? 'true' : 'false'}},
             show: false,
             focusedIndex: 0,
             open(){
-                if(!this.disabled){
-                    this.show = true
-                }
+                this.show = true
             },
             close(){
                 this.show = false
+                this.focusedIndex=-1
             },
             isOpen(){
                 return this.show === true
             },
             incrementFocusedIndex(){
-                this.open()
                 this.focusedIndex += 1
                 this.focusedIndex = this.focusedIndex < this.options.length ? this.focusedIndex : this.focusedIndex % this.options.length
             },
             decrementFocusedIndex(){
-                this.open()
                 this.focusedIndex > 0 ? this.focusedIndex -= 1 : this.focusedIndex = this.options.length - 1
                 this.focusedIndex = this.focusedIndex % this.options.length
             },
             select(index, event) {
-                if (!this.options[index].selected || !this.multiple) {
-                    if(!this.multiple){
-                        for(i = 0; i < this.selected.length; i++){
-                            this.options[this.selected[i]].selected = false;
-                        }
-                        this.selected.length = 0;
+                if(!this.multiple){
+                    for(i = 0; i < this.selected.length; i++){
+                        this.remove(i, this.selected[i])
                     }
+                    this.options[index].selected = true;
+                    this.options[index].element = event.target;
+                    this.selected.push(index);
+
+                    return;
+                }
+                if (!this.options[index].selected) {
                     this.options[index].selected = true;
                     this.options[index].element = event.target;
                     this.selected.push(index);
@@ -78,7 +77,7 @@
                     this.options.push({
                         value: options[i].value,
                         text: options[i].innerText,
-                        selected: options[i].getAttribute('selected') != null || i == 0 ? true && this.selected.push(i)  : false,
+                        selected: options[i].getAttribute('selected') != null ? true && this.selected.push(i)  : false
                     });
                     if(!this.multiple && options[i].getAttribute('selected') != null){
                         this.options[lastSelected].selected = false;
@@ -95,10 +94,9 @@
         "
         x-on:keydown.up.prevent="decrementFocusedIndex()"
         x-on:keydown.down.prevent="incrementFocusedIndex()"
-        x-on:keydown.tab="close()"
         x-on:keydown.escape="close()"
     >
-        <select class="hidden" {{$attributes->except(['class'])}}>
+        <select class="hidden" >
             {{$slot}}
         </select>
 
@@ -108,7 +106,7 @@
                     <input type="hidden" name="{{$name}}" :value="options[selected].value">
                 </template>
             </div>
-            <button x-on:click="open" :disabled="disabled" @class(["flex min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50", 'border-input ' => $displayErrors]) x-ref="select" type="button">
+            <button x-on:click="open" @class(["flex min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50", 'border-input ' => $displayErrors]) x-ref="select" type="button">
                 <div class="flex flex-auto flex-wrap gap-y-1">
                     {{--display selected single items--}}
                     <template x-if="!multiple && selected.length > 0">
@@ -143,7 +141,7 @@
                 </div>
             </button>
             <div x-show.transition.scale.origin.top="isOpen()"
-                class="absolute shadow top-100 border-input bg-background z-20 w-full rounded border max-h-80 overflow-y-scroll"
+                class="absolute shadow top-100 border-input bg-background z-10 w-full rounded border max-h-96 overflow-y-scroll"
                 x-on:click.away="close()"
                 x-trap.noscroll="show"
                 x-anchor="$refs.select"
@@ -151,18 +149,15 @@
                 <div class="flex flex-col w-full">
                     <template x-for="(option,index) in options" :key="index">
                         <button
-                            class="cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            class=" cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative"
+                            :class="focusedIndex == index ? 'bg-neutral-400 dark:bg-neutral-800 text-white' : ''"
                             @click="select(index,$event)"
-                            x-effect="focusedIndex == index && $el.focus()"
-                            x-hover="focusedIndex = index"
+                            x-effect="focusedIndex == index && $el.focus({preventScroll: true})"effec
                             type="button"
                         >
-                            <div class="w-full items-center flex">
-                                <div class="ml-2 w-3">
-                                    <svg x-show="options[index].selected" class="fill-foreground" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+                                <div class="w-full items-center flex">
+                                    <div class="ml-3 leading-6 text-sm" x-model="option" x-text="option.text"></div>
                                 </div>
-                                <div class="ml-3 leading-6 text-sm" x-model="option" x-text="option.text"></div>
-                            </div>
                         </button>
                     </template>
                 </div>

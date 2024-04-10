@@ -1,11 +1,21 @@
-@props(['label' => '', 'id' => '', 'labelClass' => '', 'open' => "true", 'value' => "", "format" => "", "max" => "", "min" => ""])
+@props([
+    'label' => '',
+    'id' => '',
+    'labelClass' => '',
+    'open' => "false",
+    'value' => "",
+    "format" => "",
+    "max" => "",
+    "min" => ""
+])
 <div
     x-data="{
         datePickerOpen: {{$open}},
         value: '{{$value}}',
     }"
+    x-on:keydown.escape="datePickerOpen=false"
 >
-    <div class="container py-2 mx-auto w-full">
+    <div class="py-2 mx-auto w-full">
         <div class="w-full mb-5" >
             @if (!empty($label))
                 <label for="{{$id}}" {{$attributes->whereStartsWith("label")}} @class(["$labelClass font-semibold dark:text-gray-200 text-gray-700 my-2"])>{{$label}}</label>
@@ -17,7 +27,6 @@
                     type="text"
                     @click="datePickerOpen=!datePickerOpen"
                     @keypress.esc="datePickerOpen=false"
-                    x-on:keydown.escape="datePickerOpen=false"
                     x-on:keypress.space="datePickerOpen=!datePickerOpen"
                     x-model="value"
                     readonly

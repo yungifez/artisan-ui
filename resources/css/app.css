@@ -1,207 +1,80 @@
-:root {
-    --primary-bg-color: hsl( 0 0% 100%);
-    --dark-primary-bg-color: hsl(0 0% 3.9%);
-    --primary-text-color: #0a0a0a;
-    --dark-primary-text-color: hsl(0 0% 98%);
-    --primary-accent-color: #0a0a0a;
-    --dark-primary-accent-color: white;
-    --primary-accent-text-color: #fafafa;
-    --dark-primary-accent-text-color: #0a0a0a;
-    --primary-border-color: hsl(0 0% 89.8%);
-    --dark-primary-border-color: hsl(0 0% 14.9%);
-    --primary-muted-text-color: hsl(0 0% 45.1%);
-    --dark-primary-muted-text-color: hsl(0 0% 63.9%);
-    --primary-error-text-color: red;
-    --dark-primary-error-text-color: #ef4444;
-    --primary-error-border-color: red;
-    --dark-primary-error-border-color: #ef4444;
 
-    --button-bg-color: var(--primary-accent-color);
-    --button-dark-bg-color: var(--dark-primary-accent-color);
-    --button-text-color: var(--primary-accent-text-color);
-    --button-dark-text-color: var(--dark-primary-accent-text-color);
-    --button-focus-ring-color: var(--primary-border-color);
-    --button-dark-focus-ring-color: var(--dark-primary-border-color);
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 72.22% 50.59%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5% 64.9%;
+    --radius: 0.5rem;
+  }
 
-    --input-bg-color: var(--primary-bg-color);
-    --input-dark-bg-color: var(--dark-primary-bg-color);
-    --input-accent-color: var(--primary-accent-color);
-    --input-dark-accent-color: var(--dark-primary-accent-color);
-    --input-text-color: var(--primary-text-color);
-    --input-dark-text-color: var(--dark-primary-text-color);
-    --input-file-bg-color: var(--input-bg-color);
-    --input-dark-file-bg-color: var(--input-dark-bg-color);
-    --input-file-text-color: var(--input-text-color);
-    --input-dark-file-text-color: var(--input-dark-text-color);
-    --input-border-color: var(--primary-border-color);
-    --input-dark-border-color: var(--dark-primary-border-color);
-    --input-placeholder-color: var(--primary-muted-text-color);
-    --input-dark-placeholder-color: var(--dark-primary-muted-text-color);
-    --input-error-border-color: var(--primary-error-border-color);
-    --input-dark-error-border-color: var(--dark-primary-error-border-color);
-    --input-error-text-color: var(--primary-error-text-color);
-    --input-dark-error-text-color: var(--dark-primary-error-text-color);
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
 
-    --select-bg-color: var(--input-bg-color);
-    --select-dark-bg-color: var(--input-dark-bg-color);
-    --select-text-color: var(--input-text-color);
-    --select-dark-text-color: var(--input-dark-text-color);
-    --select-border-color: var(--input-border-color);
-    --select-dark-border-color: var(--input-dark-border-color);
-    --select-placeholder-color: var(--input-placeholder-color);
-    --select-dark-placeholder-color: var(--input-dark-placeholder-color);
-    --select-accent-color: var(--input-accent-color);
-    --select-dark-accent-color: var(--input-dark-accent-color);
-    --select-error-border-color: var(--input-error-border-color);
-    --select-dark-error-border-color: var(--input-dark-error-border-color);
-    --select-error-text-color: var(--input-error-text-color);
-    --select-dark-error-text-color: var(--input-dark-error-text-color);
-
-    --textarea-bg-color: var(--input-bg-color);
-    --textarea-dark-bg-color: var(--input-dark-bg-color);
-    --textarea-text-color: var(--input-text-color);
-    --textarea-dark-text-color: var(--input-dark-text-color);
-    --textarea-border-color: var(--input-border-color);
-    --textarea-dark-border-color: var(--input-dark-border-color);
-    --textarea-placeholder-color: var(--input-placeholder-color);
-    --textarea-dark-placeholder-color: var(--input-dark-placeholder-color);
-    --textarea-accent-color: var(--input-accent-color);
-    --textarea-dark-accent-color: var(--input-dark-accent-color);
-    --textarea-error-border-color: var(--input-error-border-color);
-    --textarea-dark-error-border-color: var(--input-dark-error-border-color);
-    --textarea-error-text-color: var(--input-error-text-color);
-    --textarea-dark-error-text-color: var(--input-dark-error-text-color);
-
-    --card-bg-color: var(--primary-bg-color);
-    --card-dark-bg-color: var(--dark-primary-bg-color);
-    --card-text-color: var(--primary-text-color);
-    --card-dark-text-color: var(--dark-primary-text-color);
-    --card-border-color: var(--primary-border-color);
-    --card-dark-border-color: var(--dark-primary-border-color);
-
-    --accordion-bg-color: var(--primary-bg-color);
-    --accordion-dark-bg-color: var(--dark-primary-bg-color);
-    --accordion-text-color: var(--primary-text-color);
-    --accordion-dark-text-color: var(--dark-primary-text-color);
-    --accordion-border-color: var(--primary-border-color);
-    --accordion-dark-border-color: var(--dark-primary-border-color);
-
-    --switch-on-bg-color: var(--primary-accent-color);
-    --switch-dark-on-bg-color: var(--dark-primary-accent-color);
-    --switch-on-fill-color: white;
-    --switch-dark-on-fill-color: black;
-    --switch-off-bg-color: lightgray;
-    --switch-dark-off-bg-color: gray;
-    --switch-off-fill-color: white;
-    --switch-dark-off-fill-color: black;
-
-    --calendar-bg-color: var(--primary-bg-color);
-    --calendar-dark-bg-color: var(--dark-primary-bg-color);
-    --calendar-border-color: var(--primary-border-color);
-    --calendar-dark-border-color: var(--dark-primary-border-color);
-    --calendar-text-color: var(--primary-text-color);
-    --calendar-dark-text-color: var(--dark-primary-text-color);
-    --calendar-selected-bg-color: var(--primary-accent-color);
-    --calendar-dark-selected-bg-color: var(--dark-primary-accent-color);
-    --calendar-selected-text-color: var(--primary-accent-text-color);
-    --calendar-dark-selected-text-color: var(--dark-primary-accent-text-color);
-    --calendar-today-bg-color: gray;
-    --calendar-dark-today-bg-color: gray;
-    --calendar-today-text-color: white;
-    --calendar-dark-today-text-color: black;
-    --calendar-hover-bg-color: #d3d3d3;
-    --calendar-dark-hover-bg-color: gray;
-    --calendar-disabled-text-color: var(--primary-muted-text-color);
-    --calendar-dark-disabled-text-color: var(--dark-primary-muted-text-color);
-
-    --alert-background-color: var(--primary-bg-color);
-    --alert-dark-background-color: var(--dark-primary-bg-color);
-    --alert-text-color: var(--primary-text-color);
-    --alert-dark-text-color: var(--dark-primary-text-color);
-    --alert-border-color: var(--primary-border-color);
-    --alert-dark-border-color: var(--dark-primary-border-color);
-
-    --banner-bg-color: var(--primary-bg-color);
-    --banner-dark-bg-color: var(--dark-primary-bg-color);
-    --banner-text-color: var(--primary-text-color);
-    --banner-dark-text-color: var(--dark-primary-text-color);
-    --banner-border-color: var(--primary-border-color);
-    --banner-dark-border-color: var(--dark-primary-border-color);
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* font-feature-settings: "rlig" 1, "calt" 1; */
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 @layer utilities {
-    .bg-primary {
-        background-color: var(--primary-bg-color)
-    }
+  .step {
+    counter-increment: step;
+  }
 
-    .bg-primary-dark {
-        background-color: var(--dark-primary-bg-color)
-    }
+  .step:before {
+    @apply absolute w-9 h-9 bg-muted rounded-full font-mono font-medium text-center text-base inline-flex items-center justify-center -indent-px border-4 border-background;
+    @apply ml-[-50px] mt-[-4px];
+    content: counter(step);
+  }
+}
 
-    .accent-primary {
-        color: var(--primary-accent-color)
-    }
-
-    .accent-primary-dark {
-        color: var(--dark-primary-accent-color)
-    }
-
-    .text-primary {
-        color: var(--primary-text-color)
-    }
-
-    .text-primary-dark {
-        color: var(--dark-primary-text-color)
-    }
-
-    .border-primary {
-        border-color: var(--primary-border-color)
-    }
-
-    .border-primary-dark {
-        border-color: var(--dark-primary-border-color)
-    }
-
-    .muted-text-primary {
-        color: var(--primary-muted-text-color)
-    }
-
-    .muted-text-primary-dark {
-        color: var(--dark-primary-muted-text-color)
-    }
-
-    .error-text-primary {
-        color: var(--primary-error-text-color)
-    }
-
-    .error-text-primary-dark {
-        color: var(--dark-primary-error-text-color)
-    }
-
-    .error-border-primary {
-        border-color: var(--primary-error-border-color)
-    }
-
-    .error-border-primary-dark {
-        border-color: var(--dark-primary-error-border-color)
-    }
-
-    .h1 {
-        @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl
-    }
-    .h2 {
-        @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0
-    }
-    .h3 {
-        @apply scroll-m-20 text-2xl font-semibold tracking-tight
-    }
-    .h4 {
-        @apply scroll-m-20 text-xl font-semibold tracking-tight
-    }
-    .p{
-        @apply leading-7 [&:not(:first-child)]:mt-6
-    }
-    .ul{
-        @apply my-6 ml-6 list-disc [&>li]:mt-2
-    }
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
 }

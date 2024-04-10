@@ -1,6 +1,5 @@
 @props(
     [
-        'color' => 'bg-[color:var(--banner-bg-color)] dark:bg-[color:var(--banner-dark-bg-color)] text-[var(--banner-text-color)] dark:text-[var(--banner-dark-text-color)] border-[color:var(--banner-border-color)] dark:border-[color:var(--banner-dark-border-color)] ',
         'canDismiss' => false,
         'position' => 'top',
         'positionClass',
@@ -18,23 +17,27 @@
     $positionClass = $positionClass ?? match($position){
         'top' => 'top-0 left-0 border-b',
         'bottom' => 'bottom-0 left-0 border-t',
-        default => 'top-0 left-0'
+        default => 'top-0 left-0 border-b',
     };
     $transitionEnterStart .= match($position){
         'top' => '-translate-y-10',
         'bottom' => 'translate-y-10',
+        default => '-translate-y-10',
     };
     $transitionEnterEnd .= match($position){
         'top' => 'translate-y-0',
         'bottom' => 'translate-y-0',
+        default => 'translate-y-0',
     };
     $transitionLeaveStart .= match($position){
         'top' => 'translate-y-0',
         'bottom' => 'translate-y-0',
+        default => 'translate-y-0',
     };
     $transitionLeaveEnd .= match($position){
         'top' => '-translate-y-10',
         'bottom' => 'translate-y-10',
+        default => '-translate-y-10',
     };
 @endphp
 
@@ -53,12 +56,12 @@
     x-init="
         setTimeout(()=>{ bannerVisible = true }, bannerVisibleAfter);
     "
-    class="{{$groupClass}} {{$color}} {{$positionClass}} flex items-center fixed z-20 w-full h-auto py-2 duration-300 ease-out shadow-sm sm:py-0 "
+    class="{{$groupClass}} {{$positionClass}} flex items-center fixed z-20 w-full h-auto py-2 duration-300 ease-out shadow-sm sm:py-0 "
     x-cloak
     {{$attributes->whereStartsWith("group")}}
 >
     <div class="w-full h-full min-h-full px-3 mx-auto max-w-7xl "
-        {{$attributes->whereDoesntStartWith(["Group", "dismissButton"])}}>
+        {{$attributes->whereDoesntStartWith(["group", "dismissButton"])}}>
         {{$slot}}
     </div>
     @if($canDismiss)
