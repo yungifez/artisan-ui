@@ -3,7 +3,7 @@
     'icon',
     'class' => '',
     'timeout' => '5000',
-    'canDismiss' => false,
+    'dismissable' => false,
     'dismissOnTimeout' => false
 ])
 
@@ -36,7 +36,7 @@
         </div>
     @endisset
 
-    @if ($dismissOnTimeout == true && $canDismiss == true)
+    @if ($dismissOnTimeout == true && $dismissable == true)
         <span x-init="setTimeout(() => { close() }, {{$timeout}});"></span>
     @endif
 
@@ -53,7 +53,7 @@
         @endisset
     </div>
     <div>
-        @if ($canDismiss == true)
+        @if ($dismissable == true)
         <button @click="close()">
             @if($attributes->has('close-icon'))
                 {{$attributes->get('close-icon')}}

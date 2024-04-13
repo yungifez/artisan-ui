@@ -65,7 +65,7 @@
     @else
         <div class="w-full"></div>
     @endisset
-    @if($attributes->has("canDismiss"))
+    @if($attributes->has("dismissable"))
         <div @click="bannerVisible=false;">
         @isset($dismissTrigger)
            {{$dismissTrigger}}

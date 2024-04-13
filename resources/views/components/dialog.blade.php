@@ -9,9 +9,14 @@
     }, open(){
         this.dialog = true;
     }}"
-    @keydown.esc="close()"
+    @if ($attributes->has("dismissable"))
+        @keydown.esc="close()"
+    @endif
+    @isset($group)
+       {{$group->attributes}}
+    @endisset
 >
-    <div @click="open">
+    <div @click="open" @isset($trigger) {{$trigger->attributes}} @endisset>
         @isset($trigger)
             {{$trigger}}
         @else
@@ -26,7 +31,7 @@
 
     <div
         class="fixed inset-0 z-50 bg-black/80"
-        @if ($attributes->has("candismiss"))
+        @if ($attributes->has("dismissable"))
            @click="close()"
         @endif
         x-show="dialog"
@@ -37,7 +42,7 @@
         <div {{$attributes->class(["fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"])}}
             @click.stop
         >
-            <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+            <div class="@isset($header){{$header->attributes->get('class')}}@endisset flex flex-col space-y-1.5 text-center sm:text-left" @isset($header) {{$header->attributes}} @endisset>
                 @isset($title)
                     <h4 {{$title->attributes->class(["text-lg font-semibold leading-none tracking-tight"])}}>{{$title}}</h4>
                 @endisset
@@ -53,12 +58,12 @@
                 </div>
             @endisset
             <div class=" flex gap-2 flex-col md:flex-row md:justify-end items-center p-2">
-                @if (!$attributes->has("candismiss"))
-                    <div @click="close()">
+                @if ($attributes->has("dismissable") && !$attributes->has('removeFooterDismissButton'))
+                    <div @click="close()" class="w-full md:w-fit">
                         @isset($closeButton)
                             {{$closeButton}}
                         @else
-                            <x-aui::button variant="outline">Close</x-aui::button>
+                            <x-aui::button variant="outline" class="w-full">Close</x-aui::button>
                         @endisset
                     </div>
                 @endif
