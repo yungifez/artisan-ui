@@ -1,51 +1,30 @@
 @props([
-    'label' => '',
-    'id' => '',
-    'labelClass' => '',
-    'open' => "false",
-    'value' => "",
-    "format" => "",
-    "max" => "",
-    "min" => ""
+'label' => '',
+'open' => false,
+'value' => "",
+"format" => "",
+"max" => "",
+"min" => ""
 ])
-<div
-    x-data="{
-        datePickerOpen: {{$open}},
-        value: '{{$value}}',
-    }"
-    x-on:keydown.escape="datePickerOpen=false"
->
-    <div class="py-2 mx-auto w-full">
-        <div class="w-full mb-5" >
-            @if (!empty($label))
-                <label for="{{$id}}" {{$attributes->whereStartsWith("label")}} @class(["$labelClass font-semibold dark:text-gray-200 text-gray-700 my-2"])>{{$label}}</label>
-            @endif
-            <div class="relative w-full"
-                    x-ref="datePickerInput" >
-                <x-aui::input
-                    {{$attributes}}
-                    type="text"
-                    @click="datePickerOpen=!datePickerOpen"
-                    @keypress.esc="datePickerOpen=false"
-                    x-on:keypress.space="datePickerOpen=!datePickerOpen"
-                    x-model="value"
-                    readonly
-                />
-                <div @click="datePickerOpen=!datePickerOpen; if(datePickerOpen){ $refs.datePickerInput.focus() }" class="absolute top-0 right-0 px-3 py-2 cursor-pointer text-neutral-400 hover:text-neutral-500">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                </div>
-                <div x-show="datePickerOpen" x-transition @click.away="datePickerOpen = false" x-anchor.bottom-start.offset.2="$refs.datePickerInput" x-trap="datePickerOpen">
-                    <x-aui::calendar
-                        :value="$value"
-                        :format="$format"
-                        :max="$max"
-                        :min="$min"
-                        x-cloak
-                        tabindex="0"
-                        onselect="value = this.calendarValue"
-                    />
-                </div>
-            </div>
+<div x-data="datePicker({{$open ? 'true' : 'false'}}, {{$value}})" x-bind="root" class="w-full mb-5">
+    @isset ($label)
+    <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
+        {{$label->attributes->class(['font-semibold my-2'])}} @else class="font-semibold my-2" @endif
+        >
+        {{$label}}
+    </label>
+    @endisset
+    <div class="relative w-full" x-ref="datePickerInput">
+        <x-aui::input {{$attributes}} type="text" x-bind="input" readonly />
+        <div class="absolute top-0 right-0 px-3 py-2 cursor-pointer text-neutral-400 hover:text-neutral-500">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+        </div>
+        <div x-bind="calendar">
+            <x-aui::calendar :value="$value" :format="$format" :max="$max" :min="$min" tabindex="0"
+                class="outline-none" />
         </div>
     </div>
 </div>

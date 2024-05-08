@@ -1,1 +1,3 @@
-<x-aui::input :attributes='$attributes->merge(["class"=>"before:checked:dark:accent-blue h-4 w-4 shrink-0 focus-visible:outline-none checked:bg-primary checked:text-primary-foreground"])->except("type")' type="checkbox" class="before:checked:dark:accent-blue h-4 w-4 shrink-0 focus-visible:outline-none checked:bg-primary checked:text-primary-foreground"/>
+<x-aui::input
+    :attributes='$attributes->class(["h-4 w-4 shrink-0 focus-visible:outline-none checked:bg-primary checked:text-primary-foreground"])->except("type")'
+    type="checkbox" />

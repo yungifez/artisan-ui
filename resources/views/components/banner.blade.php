@@ -2,13 +2,11 @@
     [
         'position' => 'top',
         'positionClass',
-        "groupClass" => '',
         'transitionEnterStart' => '',
         'transitionEnterEnd' => '',
         'transitionLeaveStart' => '',
         'transitionLeaveEnd' => '',
-        'bannerVisibleAfter' => 300,
-        'dismissButtonClass' => ''
+        'displayAfter' => 500,
     ]
 )
 
@@ -17,56 +15,46 @@
         'top' => 'top-0 left-0 border-b',
         'bottom' => 'bottom-0 left-0 border-t',
         default => 'top-0 left-0 border-b',
+        'none' => '',
     };
     $transitionEnterStart .= match($position){
         'top' => '-translate-y-10',
         'bottom' => 'translate-y-10',
         default => '-translate-y-10',
+        'none' => '',
     };
     $transitionEnterEnd .= match($position){
         'top' => 'translate-y-0',
         'bottom' => 'translate-y-0',
         default => 'translate-y-0',
+        'none' => '',
     };
     $transitionLeaveStart .= match($position){
         'top' => 'translate-y-0',
         'bottom' => 'translate-y-0',
         default => 'translate-y-0',
+        'none' => '',
     };
     $transitionLeaveEnd .= match($position){
         'top' => '-translate-y-10',
         'bottom' => 'translate-y-10',
         default => '-translate-y-10',
+        'none' => '',
     };
 @endphp
 
 <div
-    x-data="{
-        bannerVisible: false,
-        bannerVisibleAfter: {{$bannerVisibleAfter}},
-    }"
-    x-show="bannerVisible"
-    x-transition:enter="transition ease-out duration-500"
-    x-transition:enter-start="{{$transitionEnterStart}}"
-    x-transition:enter-end="{{$transitionEnterEnd}}"
-    x-transition:leave="transition ease-in duration-300"
-    x-transition:leave-start="{{$transitionLeaveStart}}"
-    x-transition:leave-end="{{$transitionLeaveEnd}}"
-    x-init="
-        setTimeout(()=>{ bannerVisible = true }, bannerVisibleAfter);
-    "
-    x-cloak
+    x-data="banner({{$displayAfter}},'{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
+    x-bind="root"
     {{$attributes->class(["$positionClass bg-background p-3 flex items-center fixed z-20 w-full h-autoduration-300 ease-out shadow-sm "])}}
 >
     @isset($body)
         <div {{$body->attributes->class(["w-full h-full min-h-full px-3 mx-auto max-w-7xl "])}}>
             {{$body}}
         </div>
-    @else
-        <div class="w-full"></div>
     @endisset
     @if($attributes->has("dismissable"))
-        <div @click="bannerVisible=false;">
+        <div x-bind="dismissTrigger" @isset($dismissTrigger) {{$dismissTrigger->attributes}} @endisset>
         @isset($dismissTrigger)
            {{$dismissTrigger}}
         @else
