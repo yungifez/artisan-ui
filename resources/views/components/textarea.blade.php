@@ -28,9 +28,8 @@ $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("preve
     <textarea name="{{$name}}" {{$attributes->class(["flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2
         text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2
         focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed
-        disabled:opacity-50","border-input " => !$displayErrors, 'border-destructive' => $displayErrors])}}
-        >@if (!is_null(old($oldName))){{old($oldName)}}@else{{$slot}}@endif
-    </textarea>
+        disabled:opacity-50","border-input " => !$displayErrors, 'border-destructive' =>
+        $displayErrors])}}>@if(!is_null(old($oldName))){{old($oldName)}}@else{{$slot}}@endif</textarea>
     @if($displayErrors)
     @error($errorName, $errorBag)
     <p class="text-destructive text-sm mt-2 order-3 basis-full">{{$message}}</p>

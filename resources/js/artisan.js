@@ -3,36 +3,38 @@ document.addEventListener('alpine:init', () => {
     /*
      *  Accordion
     */
-    Alpine.data('accordion', () => ({
-        active: 2
+    Alpine.data('accordion', (type, collapsible, disabled) => ({
+        value: type == 'single' ? '' : [],
+        type: type,
+        disabled: disabled,
+        collapsible: collapsible,
     }))
 
     /*
      *  Accordion Item
     */
     Alpine.data('accordionItem', () => ({
-        open: false,
         root: {
             ['x-id'](){
                 return ['accordion-item'];
-            },
-            ['x-effect'](){
-                return this.$data.active != this.$id('accordion-item') ? this.collapse() : this.expand();
             },
         },
         trigger: {
             ['@click'](){
                 return this.toggle();
             },
+            [':disabled'](){
+                return this.$data.disabled;
+            },
         },
         icon: {
             [':class'](){
-                return {'-rotate-180' : this.open}
+                return {'-rotate-180' : this.$data.value.includes(this.$id('accordion-item'))}
             }
         },
         content: {
             ['x-show'](){
-                return this.$data.active == this.$id('accordion-item');
+                return this.$data.value.includes(this.$id('accordion-item'));
             },
             ['x-cloak'](){
                 return true;
@@ -42,17 +44,29 @@ document.addEventListener('alpine:init', () => {
             },
         },
         expand(){
-            this.open = true;
-            this.$data.active = this.$id('accordion-item');
+            if (this.type == 'single') {
+                this.$data.value = this.$id('accordion-item')
+            }else{
+                let index = this.$data.value.indexOf(this.$id('accordion-item'))
+                if(index < 0){
+                    this.$data.value.push(this.$id('accordion-item'))
+                }
+            }
+            this.$nextTick(() => {this.$dispatch('valueChange', {value: this.$data.value})})
         },
         collapse() {
-            this.open = false;
-            if(this.$data.active == this.$id('accordion-item')){
-                this.$data.active = null
+            if (this.type == 'single' && this.collapsible) {
+                this.$data.value =  ''
+            }else{
+                let index = this.$data.value.indexOf(this.$id('accordion-item'))
+                if(index >= 0){
+                    this.$data.value.splice(index)
+                }
             }
+            this.$nextTick(() => {this.$dispatch('valueChange', {value: this.$data.value})})
         },
         toggle(){
-            this.open ? this.collapse() : this.expand()
+            this.$data.value.includes(this.$id('accordion-item')) ? this.collapse() : this.expand()
         }
     }))
 
@@ -797,5 +811,60 @@ document.addEventListener('alpine:init', () => {
             }
             return this.switchOn = !this.switchOn;
         }
+    }))
+
+    /*
+     *  Tabs
+    */
+    Alpine.data('tabs', (defaultValue, activationMode) => ({
+        active: defaultValue,
+        activationMode: activationMode,
+        tabsList: {
+            ['x-on:keydown.left.prevent'](){
+                return this.$focus.wrap().previous();
+            },
+            ['x-on:keydown.right.prevent'](){
+                return this.$focus.wrap().next();
+            },
+        }
+    }))
+
+    /*
+     *  Tabs Trigger
+    */
+    Alpine.data('tabsTrigger', (value) => ({
+        value: value,
+        root: {
+            ['@click'](){
+                return this.setAsActive();
+            },
+            ['@focus'](){
+                if (this.$data.activationMode != "manual") {
+                    this.setAsActive();
+                }
+            },
+            [':tabindex'](){
+                return this.$data.active == this.value ? 0: -1;
+            },
+            [':class'](){
+                return { 'bg-background text-foreground shadow-sm' : this.$data.active == this.value };
+            },
+        },
+        setAsActive(){
+            this.$data.active = this.value;
+        }
+    }))
+
+
+    /*
+     *  Tabs content
+    */
+    Alpine.data('tabsContent', (value) => ({
+        value: value,
+        root: {
+            ['x-show'](){
+                return this.value == this.$data.active;
+            },
+        },
     }))
 })
