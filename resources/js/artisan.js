@@ -60,7 +60,7 @@ document.addEventListener('alpine:init', () => {
             }else{
                 let index = this.$data.value.indexOf(this.$id('accordion-item'))
                 if(index >= 0){
-                    this.$data.value.splice(index)
+                    this.$data.value.splice(index, 1)
                 }
             }
             this.$nextTick(() => {this.$dispatch('valueChange', {value: this.$data.value})})
