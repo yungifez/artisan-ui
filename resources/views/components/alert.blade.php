@@ -8,7 +8,7 @@
 ])
 
 @php
-$class = "relative w-full rounded-lg border p-4 flex gap-x-3"." ";
+$class = $class.' '"relative w-full rounded-lg border p-4 flex gap-x-3"." ";
 
 $class .= match($attributes->get("variant")){
 default => "bg-background text-foreground fill-foreground",
