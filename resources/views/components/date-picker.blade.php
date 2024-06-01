@@ -2,11 +2,10 @@
 'label' => '',
 'open' => false,
 'value' => "",
-"format" => "",
 "max" => "",
 "min" => ""
 ])
-<div x-data="datePicker({{$open ? 'true' : 'false'}}, {{$value}})" x-bind="root" class="w-full mb-5">
+<div x-data='datePicker(@json($open), @json($value) )' x-bind="root" class="w-full mb-5">
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
         {{$label->attributes->class(['font-semibold my-2'])}} @else class="font-semibold my-2" @endif
@@ -22,9 +21,8 @@
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
         </div>
-        <div x-bind="calendar">
-            <x-aui::calendar :selected="$value" :format="$format" :max="$max" :min="$min" tabindex="0"
-                class="outline-none" />
+        <div x-bind="calendar" x-cloak class="z-10">
+            <x-aui::calendar mode="single" :selected="$value" tabindex="0" class="outline-none" />
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 export default (open, value) => ({
     open: open,
-    value: value,
+    value: null,
     root: {
         ['x-on:keydown.esc']() {
             return this.closePicker();
@@ -43,9 +43,12 @@ export default (open, value) => ({
         ['x-trap']() {
             return this.open;
         },
-        ['@selected']() {
-            return this.value = this.$event.detail.value;
+        ['@select']() {
+            return this.value = this.$event.detail.value.toISOString().split('T')[0];
         },
+    },
+    init(){
+       this.value = (new Date(value)).toISOString().split('T')[0]
     },
     openPicker() {
         this.open = true

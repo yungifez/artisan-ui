@@ -7,7 +7,8 @@
         @endisset
     </div>
     @isset($dropdownMenuContent)
-    <div x-bind="content" {{$dropdownMenuContent->attributes->class(["z-50 min-w-[8rem] rounded-md border bg-popover p-1
+    <div x-bind="content" x-cloak {{$dropdownMenuContent->attributes->class(["z-50 min-w-[8rem] rounded-md border
+        bg-popover p-1
         text-popover-foreground shadow-lg"])}}
         >
         {{$dropdownMenuContent}}

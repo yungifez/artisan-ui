@@ -2,7 +2,7 @@
 <div x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max))' x-bind="root"
     {{$attributes->
     class([' p-4
-    antialiased bg-background border-input border rounded-lg shadow w-[19rem]'])}}
+    antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]'])}}
     >
     <div class="flex items-center justify-between mb-3">
         <button x-bind="previousMonthTrigger" type="button"
@@ -34,7 +34,7 @@
             </div>
         </template>
         <template x-for="(day, dayIndex) in daysInMonth" :key="dayIndex">
-            <button tabindex="-1"
+            <button tabindex="-1" type="button"
                 x-effect="focusedDay == day && ($root.contains($focus.focused()))  && $el.focus({preventScroll: true})"
                 x-text="day" :disabled="isDisabled(new Date(year, month, day))" @click="dayClicked(day);" :class="{
                         'bg-accent text-accent-foreground': isToday(day) == true && isSelectedDay(day) == false && !isDisabled(new Date(year, month, day)),
