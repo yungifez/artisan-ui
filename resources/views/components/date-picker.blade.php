@@ -23,7 +23,7 @@
             </svg>
         </div>
         <div x-bind="calendar">
-            <x-aui::calendar :value="$value" :format="$format" :max="$max" :min="$min" tabindex="0"
+            <x-aui::calendar :selected="$value" :format="$format" :max="$max" :min="$min" tabindex="0"
                 class="outline-none" />
         </div>
     </div>
