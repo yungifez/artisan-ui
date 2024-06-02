@@ -80,6 +80,9 @@ export default (selected, mode, disabled, min, max) => ({
         this.year = now.getFullYear();
         this.focusedDay = now.getDay();
         this.calculateDays();
+        if (selected) {
+           return this.dispatchSelect()
+        }
     },
     dispatchSelect() {
         this.$nextTick(() => { this.$dispatch('select', { value: this.modeHandler.value }) })
