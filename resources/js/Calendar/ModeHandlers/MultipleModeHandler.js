@@ -42,6 +42,8 @@ export default class MultipleModeHandler {
         } else {
             this.values.push(date)
         }
+
+        return true;
     }
 
     isSelectedDay(date) {
