@@ -18,7 +18,7 @@ export default class MultipleModeHandler {
     }
 
     isDisabled(date){
-        if (this.max <= this.values.length) {
+        if (this.max && this.max <= this.values.length) {
            return !this.isSelectedDay(date)
         }
     }
