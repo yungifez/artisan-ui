@@ -25,12 +25,12 @@ export default class RangeModeHandler {
     }
 
     dayClicked(date) {
-        if (this.values.from == null || this.values.to != null && this.values.to.getTime() == date.getTime()) {
+        if (this.values.from == null || (this.values.to != null && this.values.to.getTime() == date.getTime())) {
             this.values.from = date
             return;
         }
 
-        if (this.values.from.getTime() > date.getTime()) {
+        if (this.values.from.getTime() >= date.getTime()) {
             this.values.to = this.values.from
             this.values.from = date
             return true;
