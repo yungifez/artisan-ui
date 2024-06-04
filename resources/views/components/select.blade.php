@@ -12,7 +12,7 @@ $oldName = $oldName ?? $name;
 $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("prevent-errors");
 @endphp
 
-<div class="flex flex-col my-3">
+<div class="flex flex-col">
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
         {{$label->attributes->class(['font-semibold my-2'])}} @else class="font-semibold my-2" @endif

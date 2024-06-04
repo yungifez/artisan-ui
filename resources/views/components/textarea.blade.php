@@ -1,7 +1,6 @@
 @props(
 [
 'name' => '',
-'groupClass' => 'my-3',
 'errorBag' => 'default',
 'errorName',
 'oldName',
@@ -15,7 +14,7 @@ $oldName = $oldName ?? $name;
 $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("prevent-errors");
 @endphp
 
-<div @class(["$groupClass flex flex-col my-2"])>
+<div @class([" flex flex-col my-2"])>
 
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
