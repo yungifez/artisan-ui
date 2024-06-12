@@ -3,7 +3,7 @@ import MultipleModeHandler from "./Calendar/ModeHandlers/MultipleModeHandler"
 import RangeModeHandler from "./Calendar/ModeHandlers/RangeModeHandler"
 import SingleModeHandler from "./Calendar/ModeHandlers/SingleModeHandler"
 
-export default (selected, mode, disabled, min, max) => ({
+export default (selected, mode, disabled, min, max, required) => ({
     focusedDay: '',
     mode: mode,
     disabled: disabled,
@@ -57,14 +57,14 @@ export default (selected, mode, disabled, min, max) => ({
     },
     init() {
         if (this.mode == "single") {
-            this.modeHandler = new SingleModeHandler(selected)
+            this.modeHandler = new SingleModeHandler(selected, required)
         } else if (this.mode == "multiple") {
-            this.modeHandler = new MultipleModeHandler(selected, min, max)
+            this.modeHandler = new MultipleModeHandler(selected, required, min, max)
         } else if (this.mode == "range") {
-            this.modeHandler = new RangeModeHandler(selected, min, max)
+            this.modeHandler = new RangeModeHandler(selected,required, min, max)
         } else {
             console.error("Mode is invalid")
-            this.modeHandler = new SingleModeHandler(selected)
+            this.modeHandler = new SingleModeHandler(selected, required)
         }
 
         if (Array.isArray(disabled)) {

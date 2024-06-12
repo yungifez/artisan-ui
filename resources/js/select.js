@@ -81,7 +81,7 @@ export default (multiple, disabled) => ({
             this.options.push({
                 value: options[i].value,
                 text: options[i].innerText,
-                selected: options[i].getAttribute('selected') != null || i == 0 ? true && this.selected.push(i) : false,
+                selected: options[i].getAttribute('selected') != null || (i == 0 && !this.multiple) ? true && this.selected.push(i) : false,
             });
             if (!this.multiple && options[i].getAttribute('selected') != null) {
                 this.options[lastSelected].selected = false;

@@ -1,6 +1,7 @@
-@props([ 'selected' => '', 'mode' => 'single' , 'onselect' => '', "max" => null, "min" => null, "disabled" => null ])
-<div x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max))' x-bind="root"
-    {{$attributes->
+@props([ 'selected' => '', 'mode' => 'single' , 'onselect' => '', "max" => null, "min" => null, "disabled" => null,
+"required" => false ])
+<div x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max), @json($required))'
+    x-bind="root" {{$attributes->
     class([' p-4
     antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]'])}}
     >

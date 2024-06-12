@@ -1,8 +1,9 @@
 export default class SingleModeHandler {
-    constructor(value) {
+    constructor(value, required) {
         if (value == null) {
            return;
         }
+        this.required = !!required;
         if (typeof value == "string") {
             this.value = this.createDateWithoutTime(value)
         } else if (typeof value == 'date') {
@@ -13,7 +14,11 @@ export default class SingleModeHandler {
     }
 
     dayClicked(date) {
-        this.value = date
+        if (this.value != null && this.value.getTime() == date.getTime() && !this.required) {
+            this.value = null
+        } else {
+            this.value = date
+        }
         return true
     }
 

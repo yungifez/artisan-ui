@@ -1,0 +1,18 @@
+{
+    "name": "artisan-ui",
+    "version": "1.0.0",
+    "description": "Artisan UI Javascript files",
+    "main": "resources/js/artisan.js",
+    "author": "yungifez",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "date-fns": "^3.6.0"
+    },
+    "license": "ISC"
+}

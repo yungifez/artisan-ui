@@ -1,7 +1,8 @@
 export default class RangeModeHandler {
-    constructor(values, min, max) {
+    constructor(values,required, min, max) {
         this.min = min
         this.max = max
+        this.required = !!required;
         this.values = { from: null, to: null };
         if (typeof values.from == 'undefined' || typeof values.to == 'undefined') {
             console.warn('Selected type supplied to calendar in range mode is not an object with from and to values')
@@ -28,12 +29,17 @@ export default class RangeModeHandler {
         if (this.values.from == null || (this.values.to != null && this.values.to.getTime() == date.getTime())) {
             this.values.from = date
             this.values.to = null
-            return;
+            return true;
         }
 
-        if (this.values.from.getTime() >= date.getTime()) {
-            this.values.to = this.values.from
+        if (this.values.from.getTime() > date.getTime()) {
             this.values.from = date
+            return true;
+        }
+
+        if (this.values.from.getTime() == date.getTime()) {
+            this.values.from = null
+            this.values.to = null
             return true;
         }
 
@@ -65,7 +71,7 @@ export default class RangeModeHandler {
         }
     }
 
-    isRangeMiddle(date){
+    isRangeMiddle(date) {
         if (this.values.from && this.values.to && date.getTime() >= this.values.from.getTime() && date.getTime() <= this.values.to.getTime()) {
             return true
         }

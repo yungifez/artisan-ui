@@ -1,6 +1,10 @@
-export default (open, value) => ({
+import { format as dateFormat } from "date-fns";
+
+export default (open, mode, format) => ({
     open: open,
     value: null,
+    mode: mode,
+    format: format,
     root: {
         ['x-on:keydown.esc']() {
             return this.closePicker();
@@ -9,19 +13,22 @@ export default (open, value) => ({
             return true;
         },
     },
-    input: {
+    trigger: {
         ['@click']() {
             return this.togglePicker();
         },
-        ['@keypress.esc']() {
+        ['@keyup.esc']() {
             return this.closePicker();
         },
-        ['@keypress.space']() {
+        ['@keydown.space']() {
             return this.togglePicker();
         },
         ['x-model']() {
             // wacky
             return () => this.value;
+        },
+        [':class']() {
+            return !this.value && "text-muted-foreground";
         },
     },
     calendar: {
@@ -44,11 +51,8 @@ export default (open, value) => ({
             return this.open;
         },
         ['@select']() {
-            return this.value = this.$event.detail.value.toISOString().split('T')[0];
+            return this.value = this.$event.detail.value;
         },
-    },
-    init(){
-       this.value = (new Date(value)).toISOString().split('T')[0]
     },
     openPicker() {
         this.open = true
@@ -59,4 +63,10 @@ export default (open, value) => ({
     togglePicker() {
         this.open ? this.closePicker() : this.openPicker()
     },
+    formatDate(date){
+        if (date == null) {
+           return null;
+        }
+        return dateFormat(new Date(date), this.format)
+    }
 })

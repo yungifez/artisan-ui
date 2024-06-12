@@ -1,8 +1,9 @@
 export default class MultipleModeHandler {
-    constructor(values, min, max) {
+    constructor(values, required, min, max) {
         this.min = min
         this.max = max
         this.values = [];
+        this.required = !!required;
         if (!Array.isArray(values)) {
             console.warn('Selected type supplied to calendar in multiple mode is not an array')
         } else {

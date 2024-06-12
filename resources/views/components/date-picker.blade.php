@@ -2,10 +2,10 @@
 'label' => '',
 'open' => false,
 'value' => "",
-"max" => "",
-"min" => ""
+'mode' => 'single',
+'format' => 'MM/dd/yyyy'
 ])
-<div x-data='datePicker(@json($open), @json($value) )' x-bind="root" class="w-full mb-5">
+<div x-data='datePicker(@json($open), @json($mode), @json($format), @json($value))' x-bind="root" class="w-full mb-5">
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
         {{$label->attributes->class(['font-semibold my-2'])}} @else class="font-semibold my-2" @endif
@@ -14,15 +14,41 @@
     </label>
     @endisset
     <div class="relative w-full" x-ref="datePickerInput">
-        <x-aui::input {{$attributes}} type="text" x-bind="input" readonly />
-        <div class="absolute top-0 right-0 px-3 py-2 cursor-pointer text-neutral-400 hover:text-neutral-500">
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <x-aui::button type="button" x-bind="trigger" variant="outline"
+            :attributes="$attributes->class(['justify-start min-h-10 h-fit text-left flex-wrap font-normal'])">
+            <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-        </div>
+            <template x-if="mode == 'single'">
+                <span>
+                    <span x-text="value == null ? null : formatDate(value)"></span>
+                    <input type="hidden" {{$attributes}} :value="value" />
+                </span>
+            </template>
+            <template x-if="mode == 'multiple' && value != null">
+                <template x-for="(item, index) in value">
+                    <span>
+                        <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
+                        <input type="hidden" {{$attributes}} :value="item.toISOString().split('T')[0]" />
+                    </span>
+                </template>
+            </template>
+            <template x-if="mode == 'range'">
+                <span class="min-h-5">
+                    <template x-if="value?.from">
+                        <span x-text="formatDate(value.from)"></span>
+                    </template>
+                    <template x-if="value?.to">
+                        <span x-text="' - ' + formatDate(value.to)"></span>
+                    </template>
+                    <input type="hidden" {{$attributes}} :value="value?.from?.toISOString().split('T')[0]" />
+                    <input type="hidden" {{$attributes}} :value="value?.to?.toISOString().split('T')[0]" />
+                </span>
+            </template>
+        </x-aui::button>
         <div x-bind="calendar" x-cloak class="z-10">
-            <x-aui::calendar mode="single" :selected="$value" tabindex="0" class="outline-none" />
+            <x-aui::calendar :mode="$mode" :selected="$value" tabindex="0" class="outline-none" />
         </div>
     </div>
 </div>
