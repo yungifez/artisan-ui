@@ -32,14 +32,14 @@ export default class RangeModeHandler {
             return true;
         }
 
-        if (this.values.from.getTime() > date.getTime()) {
-            this.values.from = date
+        if (this.values.from.getTime() == date.getTime()) {
+            this.values.from = this.required ? this.values.from : null
+            this.values.to = null
             return true;
         }
 
-        if (this.values.from.getTime() == date.getTime()) {
-            this.values.from = null
-            this.values.to = null
+        if (this.values.from.getTime() >= date.getTime()) {
+            this.values.from = date
             return true;
         }
 

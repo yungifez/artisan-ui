@@ -3,7 +3,9 @@
 'open' => false,
 'value' => "",
 'mode' => 'single',
-'format' => 'MM/dd/yyyy'
+'format' => 'MM/dd/yyyy',
+'fromName',
+'toName',
 ])
 <div x-data='datePicker(@json($open), @json($mode), @json($format), @json($value))' x-bind="root" class="w-full mb-5">
     @isset ($label)
@@ -42,13 +44,16 @@
                     <template x-if="value?.to">
                         <span x-text="' - ' + formatDate(value.to)"></span>
                     </template>
-                    <input type="hidden" {{$attributes}} :value="value?.from?.toISOString().split('T')[0]" />
-                    <input type="hidden" {{$attributes}} :value="value?.to?.toISOString().split('T')[0]" />
+                    <input type="hidden" name="{{$fromName ??  $attributes->get('name').'[\'from\']'}}" {{$attributes}}
+                        :value="value?.from?.toISOString().split('T')[0]" />
+                    <input type="hidden" name="{{$toName ??  $attributes->get('name').'[\'to\']'}}" {{$attributes}}
+                        :value="value?.to?.toISOString().split('T')[0]" />
                 </span>
             </template>
         </x-aui::button>
         <div x-bind="calendar" x-cloak class="z-10">
-            <x-aui::calendar :mode="$mode" :selected="$value" tabindex="0" class="outline-none" />
+            <x-aui::calendar :required="$attributes->get('required')" :mode="$mode" :selected="$value" tabindex="0"
+                class="outline-none" />
         </div>
     </div>
 </div>
