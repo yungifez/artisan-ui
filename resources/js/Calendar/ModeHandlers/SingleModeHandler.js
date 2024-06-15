@@ -6,7 +6,7 @@ export default class SingleModeHandler {
         this.required = !!required;
         if (typeof value == "string") {
             this.value = this.createDateWithoutTime(value)
-        } else if (typeof value == 'date') {
+        } else if (typeof value == 'Date') {
             this.value = value
         }else{
             console.error('Selected type supplied to calendar with mode single is not a string or Javascript date')

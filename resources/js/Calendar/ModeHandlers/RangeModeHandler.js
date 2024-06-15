@@ -9,7 +9,7 @@ export default class RangeModeHandler {
         } else {
             if (typeof values.from == "string") {
                 this.values.from = this.createDateWithoutTime(values.from)
-            } else if (typeof values.from == 'date') {
+            } else if (typeof values.from == 'Date') {
                 this.values.from = values.from
             } else {
                 console.warn('Item is not date or date string, skipping')
@@ -17,7 +17,7 @@ export default class RangeModeHandler {
 
             if (typeof values.to == "string") {
                 this.values.to = this.createDateWithoutTime(values.to)
-            } else if (typeof values.to == 'date') {
+            } else if (typeof values.to == 'Date') {
                 this.values.to = values.to
             } else {
                 console.warn('Item is not date or date string, skipping')

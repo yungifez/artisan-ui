@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Yungifez\\ArtisanUi\\": "src/",
-            "Yungifez\\ArtisanUi\\Database\\Factories\\": "database/factories/"
+            "Yungifez\\ArtisanUI\\": "src/",
+            "Yungifez\\ArtisanUI\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yungifez\\ArtisanUi\\Tests\\": "tests/",
+            "Yungifez\\ArtisanUI\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -72,10 +72,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Yungifez\\ArtisanUi\\ArtisanUiServiceProvider"
+                "Yungifez\\ArtisanUI\\ArtisanUIServiceProvider"
             ],
             "aliases": {
-                "ArtisanUi": "Yungifez\\ArtisanUi\\Facades\\ArtisanUi"
+                "ArtisanUI": "Yungifez\\ArtisanUI\\Facades\\ArtisanUI"
             }
         }
     },

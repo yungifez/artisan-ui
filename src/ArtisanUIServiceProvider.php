@@ -1,11 +1,12 @@
 <?php
 
-namespace Yungifez\ArtisanUi;
+namespace Yungifez\ArtisanUI;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Yungifez\ArtisanUI\Handlers\FrontendAssetsHandler;
 
-class ArtisanUiServiceProvider extends PackageServiceProvider
+class ArtisanUIServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -17,6 +18,12 @@ class ArtisanUiServiceProvider extends PackageServiceProvider
         $package
             ->name('artisan-ui')
             ->hasConfigFile()
+            ->hasRoute('assets')
             ->hasViews('aui');
+
+    }
+
+    public function packageBooted() {
+        app(FrontendAssetsHandler::class)->boot();
     }
 }

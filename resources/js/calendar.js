@@ -6,7 +6,6 @@ import SingleModeHandler from "./Calendar/ModeHandlers/SingleModeHandler"
 export default (selected, mode, disabled, min, max, required) => ({
     focusedDay: '',
     mode: mode,
-    disabled: disabled,
     max: max,
     min: min,
     month: '',
