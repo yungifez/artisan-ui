@@ -23,7 +23,8 @@ class ArtisanUIServiceProvider extends PackageServiceProvider
 
     }
 
-    public function packageBooted() {
+    public function packageBooted()
+    {
         app(FrontendAssetsHandler::class)->boot();
     }
 }
