@@ -44,7 +44,7 @@
     --ring: 240 4.9% 83.9%;
   }
   * {
-    border-color: hsl(var(--background));
+    border-color: hsl(var(--border));
   }
   html {
     scroll-behavior: smooth;

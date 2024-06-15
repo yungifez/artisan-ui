@@ -45,7 +45,7 @@
     }
 
     * {
-        border-color: hsl(var(--background));
+        border-color: hsl(var(--border));
     }
 
     html {
