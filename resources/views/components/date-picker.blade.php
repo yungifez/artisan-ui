@@ -7,7 +7,8 @@
 'fromName',
 'toName',
 ])
-<div x-data='datePicker(@json($open), @json($mode), @json($format), @json($value))' x-bind="root" class="w-full mb-5">
+<div x-data='datePicker(@json($open), @json($mode), @json($format), @json($value))' x-bind="root"
+    class="w-full mb-5 min-w-96">
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
         {{$label->attributes->class(['font-semibold my-2'])}} @else class="font-semibold my-2" @endif
