@@ -25,20 +25,28 @@
             </svg>
             <template x-if="mode != 'multiple' && mode != 'range'">
                 <span>
-                    <span x-text="value == null ? null : formatDate(value)"></span>
+                    <span x-text="value == null ? 'Pick a date' : formatDate(value)"></span>
                     <input type="hidden" {{$attributes}} :value="value" />
                 </span>
             </template>
-            <template x-if="mode == 'multiple' && value != null">
-                <template x-for="(item, index) in value">
-                    <span>
-                        <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
-                        <input type="hidden" {{$attributes}} :value="item.toISOString().split('T')[0]" />
-                    </span>
+            <template x-if="mode == 'multiple'">
+                <template x-if="!value">
+                    <span>Select date(s)</span>
+                </template>
+                <template x-if="value">
+                    <template x-for="(item, index) in value">
+                        <span>
+                            <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
+                            <input type="hidden" {{$attributes}} :value="item.toISOString().split('T')[0]" />
+                        </span>
+                    </template>
                 </template>
             </template>
             <template x-if="mode == 'range'">
                 <span class="min-h-5">
+                    <template x-if="!value?.from && !value?.to">
+                        <span>Pick a range of dates</span>
+                    </template>
                     <template x-if="value?.from">
                         <span x-text="formatDate(value.from)"></span>
                     </template>
