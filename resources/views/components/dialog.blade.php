@@ -8,7 +8,8 @@
 
     <template @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}" @else x-if="true"
         @endif>
-        <div {{$attributes->class(["fixed min-h-[100vh] inset-0 z-50 bg-black/80" ])}} x-bind="overlay">
+        <div {{$attributes->except(['x-teleport'])->class(["fixed min-h-[100vh] inset-0 z-50 bg-black/80" ])}}
+            x-bind="overlay">
             @isset($content)
             <div x-bind="dialog" {{$content->attributes->class(["fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg
                 translate-x-[-50%]
