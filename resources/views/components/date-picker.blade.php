@@ -30,17 +30,19 @@
                 </span>
             </template>
             <template x-if="mode == 'multiple'">
-                <template x-if="!value">
-                    <span>Select date(s)</span>
-                </template>
-                <template x-if="value">
-                    <template x-for="(item, index) in value">
-                        <span>
-                            <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
-                            <input type="hidden" {{$attributes}} :value="item.toISOString().split('T')[0]" />
-                        </span>
+                <span>
+                    <template x-if="!value">
+                        <span>Select date(s)</span>
                     </template>
-                </template>
+                    <template x-if="value">
+                        <template x-for="(item, index) in value">
+                            <span>
+                                <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
+                                <input type="hidden" {{$attributes}} :value="item.toISOString().split('T')[0]" />
+                            </span>
+                        </template>
+                    </template>
+                </span>
             </template>
             <template x-if="mode == 'range'">
                 <span class="min-h-5">
