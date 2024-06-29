@@ -1,7 +1,9 @@
 <div {{$attributes->class(["flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"])}}>
 
+    @if ($attributes->has('dismissable'))
+
     <div x-bind="closeButton" {{$close->attributes}}>
-        @if(isset($close) && $attributes->has('dismissable'))
+        @isset($close)
         {{$close}}
         @else
         <button type="button"
@@ -15,5 +17,6 @@
         </button>
         @endisset
     </div>
+    @endif
     {{$slot}}
 </div>
