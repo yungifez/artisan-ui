@@ -1,7 +1,8 @@
 <div {{$attributes->class(["flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"])}}>
 
     <template x-if="dismissable">
-        <div x-bind="closeButton" {{$close->attributes}}>
+        <div x-bind="closeButton" @isset($close) {{$close->attributes}} @endisset
+            >
             @isset($close)
             {{$close}}
             @else
