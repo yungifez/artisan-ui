@@ -7,13 +7,6 @@ export default (show, dismissable) => ({
     open() {
         this.show = true;
     },
-    teleport: {
-        ['x-on:keydown.esc']() {
-            if (this.dismissable) {
-                return this.close();
-            }
-        },
-    },
     trigger: {
         ['@click']() {
             return this.open();
