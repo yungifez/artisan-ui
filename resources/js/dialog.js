@@ -7,19 +7,17 @@ export default (show, dismissable) => ({
     open() {
         this.show = true;
     },
-    root: {
-        ['x-on:keydown.esc']() {
-            if (this.dismissable) {
-                return this.close();
-            }
-        },
-    },
     trigger: {
         ['@click']() {
             return this.open();
         },
     },
     overlay: {
+        ['x-on:keydown.esc']() {
+            if (this.dismissable) {
+                return this.close();
+            }
+        },
         ['@click']() {
             if (this.dismissable) {
                 return this.close();
