@@ -198,11 +198,6 @@
         return false;
       } else if (this.type == "dayOfWeek") {
         if (typeof this.rule.dayOfWeek == "number") {
-          console.log(
-            date,
-            date.getDay(),
-            date.getDay() == this.rule.dayOfWeek
-          );
           return date.getDay() == this.rule.dayOfWeek;
         } else {
           return this.rule.dayOfWeek.some((rule) => rule == date.getDay());
