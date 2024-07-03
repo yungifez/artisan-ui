@@ -2090,7 +2090,7 @@
       this.show = true;
     },
     root: {
-      ["x-on:keydown.esc"]() {
+      ["x-on:keydown.esc.window"]() {
         if (this.dismissable) {
           return this.close();
         }
