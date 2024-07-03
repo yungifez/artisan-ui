@@ -1,16 +1,12 @@
-<div x-data="dialog(false, {{$attributes->has('dismissable') ? 'true' : 'false'}})" @isset($group) {{$group->
-    attributes}} @endisset>
+<div x-data="dialog(false, {{$attributes->has('dismissable') ? 'true' : 'false'}})" x-bind="root" @isset($group)
+    {{$group->attributes}} @endisset>
     <div x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
         @isset($trigger)
         {{$trigger}}
         @endisset
     </div>
 
-    <template x-on:keydown.esc="
-            if (this.dismissable) {
-                return this.close();
-            }
-        " @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}"
+    <template @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}"
         @else x-if="true"
         @endif>
         <div {{$attributes->except(['x-teleport'])->class(["fixed min-h-[100vh] inset-0 z-50 bg-black/80" ])}}

@@ -4,7 +4,7 @@ export default () => ({
         ['@click']() {
             return this.toggle();
         },
-        ['@keydown.escape']() {
+        ['@keydown.esc.window']() {
             return this.close();
         },
     },
