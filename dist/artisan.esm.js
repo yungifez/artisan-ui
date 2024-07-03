@@ -2088,6 +2088,13 @@ var dialog_default = (show, dismissable) => ({
   open() {
     this.show = true;
   },
+  root: {
+    ["x-on:keydown.esc"]() {
+      if (this.dismissable) {
+        return this.close();
+      }
+    }
+  },
   trigger: {
     ["@click"]() {
       return this.open();
@@ -2133,7 +2140,7 @@ var dropdownMenu_default = () => ({
     ["@click"]() {
       return this.toggle();
     },
-    ["@keydown.escape"]() {
+    ["@keydown.esc.window"]() {
       return this.close();
     }
   },

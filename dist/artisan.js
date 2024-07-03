@@ -2089,6 +2089,13 @@
     open() {
       this.show = true;
     },
+    root: {
+      ["x-on:keydown.esc"]() {
+        if (this.dismissable) {
+          return this.close();
+        }
+      }
+    },
     trigger: {
       ["@click"]() {
         return this.open();
@@ -2134,7 +2141,7 @@
       ["@click"]() {
         return this.toggle();
       },
-      ["@keydown.escape"]() {
+      ["@keydown.esc.window"]() {
         return this.close();
       }
     },
