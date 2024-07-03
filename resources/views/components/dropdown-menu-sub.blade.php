@@ -10,17 +10,17 @@
             class="lucide lucide-chevron-right ml-auto h-4 w-4">
             <path d="m9 18 6-6-6-6"></path>
         </svg>
-        </button>
-        @endisset
-        @isset($content)
-        {{--dont remove this if statement, it makes sure the items can be navigated using arrow keys--}}
-        <template x-if="subOpen || subPreview">
-            <div x-bind="content" {{$content->attributes->class(['z-50 min-w-[8rem] overflow-hidden rounded-md border
-                bg-popover p-1
-                text-popover-foreground shadow-lg'])}}
-                >
-                {{$content}}
-            </div>
-        </template>
-        @endisset
+    </x-aui::button>
+    @endisset
+    @isset($content)
+    {{--dont remove this if statement, it makes sure the items can be navigated using arrow keys--}}
+    <template x-if="subOpen || subPreview">
+        <div x-bind="content" {{$content->attributes->class(['z-50 min-w-[8rem] overflow-hidden rounded-md border
+            bg-popover p-1
+            text-popover-foreground shadow-lg'])}}
+            >
+            {{$content}}
+        </div>
+    </template>
+    @endisset
 </div>
