@@ -21,7 +21,7 @@ export default () => ({
         ['@keydown.tab.prevent']() {
             return this.close();
         },
-        ['x-trap']() {
+        ['x-trap.noscroll']() {
             return this.dropdownMenu;
         },
         ['@click.outside']() {
