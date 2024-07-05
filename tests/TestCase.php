@@ -1,6 +1,6 @@
 <?php
 
-namespace Yungifez\ArtisanUi\Tests;
+namespace Yungifez\ArtisanUI\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
