@@ -1,18 +1,15 @@
 export default () => ({
-    'subOpen': false,
-    'subPreview': false,
+    subOpen: false,
+    subPreview: false,
     root: {
         ['@keydown.escape']() {
             return this.close();
         },
-        ['@keydown.right']() {
-            return this.open();
-        },
-        ['@keydown.left']() {
-            return this.close();
-        },
         ['@click.outside']() {
             return this.close();
+        },
+        ['@keydown.right']() {
+            return this.open();
         },
         [':aria-expanded']() {
             return this.subOpen;
@@ -20,7 +17,7 @@ export default () => ({
     },
     trigger: {
         ['@click']() {
-            return this.toggle();
+            return this.open();
         },
         ['@mouseover']() {
             this.$el.focus();
@@ -29,6 +26,11 @@ export default () => ({
         ['@mouseout']() {
             this.$el.focus();
             this.closePreview();
+        },
+    },
+    template: {
+        ['x-if']() {
+            return this.subOpen || this.subPreview;
         },
     },
     content: {
@@ -46,6 +48,15 @@ export default () => ({
         },
         ['x-cloak']() {
             return true;
+        },
+        ['@keydown.down.prevent']() {
+            return this.$focus.wrap().next();
+        },
+        ['@keydown.up.prevent']() {
+            return this.$focus.wrap().previous();
+        },
+        ['@keydown.left.stop']() {
+            return this.close();
         },
     },
     open() {

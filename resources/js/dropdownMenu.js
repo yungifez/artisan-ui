@@ -1,5 +1,10 @@
 export default () => ({
     dropdownMenu: false,
+    root: {
+        ['@click.outside']() {
+            return this.close();
+        },
+    },
     trigger: {
         ['@click']() {
             return this.toggle();
@@ -13,19 +18,13 @@ export default () => ({
             return this.$refs.trigger;
         },
         ['@keydown.down.prevent']() {
-            return this.$focus.next();
+            return this.$focus.wrap().next();
         },
         ['@keydown.up.prevent']() {
-            return this.$focus.previous();
-        },
-        ['@keydown.tab.prevent']() {
-            return this.close();
+            return this.$focus.wrap().previous();
         },
         ['x-trap.noscroll']() {
             return this.dropdownMenu;
-        },
-        ['@click.outside']() {
-            return this.close();
         },
         ['x-show']() {
             return this.dropdownMenu;

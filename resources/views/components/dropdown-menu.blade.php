@@ -1,5 +1,5 @@
 @props(['trigger', 'content'])
-<div x-data="dropdownMenu">
+<div x-data="dropdownMenu" x-bind="root">
     @isset($trigger)
     <div {{$trigger->attributes->class(['w-fit inline-block'])}} x-bind="trigger" x-ref="trigger">
         {{$trigger}}
