@@ -4,7 +4,7 @@ namespace Yungifez\ArtisanUI\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Yungifez\ArtisanUi\ArtisanUiServiceProvider;
+use Yungifez\ArtisanUI\ArtisanUIServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Yungifez\\ArtisanUi\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Yungifez\\ArtisanUI\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            ArtisanUiServiceProvider::class,
+            ArtisanUIServiceProvider::class,
         ];
     }
 
