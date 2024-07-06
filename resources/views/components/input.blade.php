@@ -10,7 +10,7 @@
 )
 
 @php
-$isInline = in_array($attributes->get('type'), [ 'checkbox', 'radio', 'range']);
+$isInline = $attributes->get('inline') || in_array($attributes->get('type'), [ 'checkbox', 'radio', 'range']);
 $errorName = $errorName ?? $name;
 $oldName = $oldName ?? $name;
 $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("prevent-errors");
