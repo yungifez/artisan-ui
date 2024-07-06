@@ -16,7 +16,7 @@ $oldName = $oldName ?? $name;
 $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("prevent-errors");
 @endphp
 
-<div @class(['flex-row w-fit items-center flex-wrap'=> $isInline, 'flex-col w-full' => !$isInline, " flex"])
+<div @class(['flex-row w-fit items-center flex-wrap gap-2'=> $isInline, 'flex-col w-full' => !$isInline, " flex"])
     >
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
