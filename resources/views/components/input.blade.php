@@ -20,8 +20,8 @@ $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("preve
     >
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
-        {{$label->attributes->class(['font-semibold', 'order-2 mx-2 cursor-pointer' => $isInline, 'my-2' =>
-        !$isInline])}} @else @class(["font-semibold", 'order-2 mx-2 cursor-pointer' => $isInline, 'my-2' => !$isInline])
+        {{$label->attributes->class(['font-semibold', 'mx-2 cursor-pointer' => $isInline, 'my-2' =>
+        !$isInline])}} @else @class(["font-semibold", 'mx-2 cursor-pointer' => $isInline, 'my-2' => !$isInline])
         @endif
         >
         {{$label}}
