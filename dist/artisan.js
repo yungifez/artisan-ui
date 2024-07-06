@@ -2137,6 +2137,11 @@
   // resources/js/dropdownMenu.js
   var dropdownMenu_default = () => ({
     dropdownMenu: false,
+    root: {
+      ["@click.outside"]() {
+        return this.close();
+      }
+    },
     trigger: {
       ["@click"]() {
         return this.toggle();
@@ -2150,19 +2155,13 @@
         return this.$refs.trigger;
       },
       ["@keydown.down.prevent"]() {
-        return this.$focus.next();
+        return this.$focus.wrap().next();
       },
       ["@keydown.up.prevent"]() {
-        return this.$focus.previous();
-      },
-      ["@keydown.tab.prevent"]() {
-        return this.close();
+        return this.$focus.wrap().previous();
       },
       ["x-trap.noscroll"]() {
         return this.dropdownMenu;
-      },
-      ["@click.outside"]() {
-        return this.close();
       },
       ["x-show"]() {
         return this.dropdownMenu;
@@ -2192,20 +2191,17 @@
 
   // resources/js/dropdownMenuSub.js
   var dropdownMenuSub_default = () => ({
-    "subOpen": false,
-    "subPreview": false,
+    subOpen: false,
+    subPreview: false,
     root: {
       ["@keydown.escape"]() {
         return this.close();
       },
-      ["@keydown.right"]() {
-        return this.open();
-      },
-      ["@keydown.left"]() {
-        return this.close();
-      },
       ["@click.outside"]() {
         return this.close();
+      },
+      ["@keydown.right"]() {
+        return this.open();
       },
       [":aria-expanded"]() {
         return this.subOpen;
@@ -2213,7 +2209,7 @@
     },
     trigger: {
       ["@click"]() {
-        return this.toggle();
+        return this.open();
       },
       ["@mouseover"]() {
         this.$el.focus();
@@ -2222,6 +2218,11 @@
       ["@mouseout"]() {
         this.$el.focus();
         this.closePreview();
+      }
+    },
+    template: {
+      ["x-if"]() {
+        return this.subOpen || this.subPreview;
       }
     },
     content: {
@@ -2239,6 +2240,15 @@
       },
       ["x-cloak"]() {
         return true;
+      },
+      ["@keydown.down.prevent"]() {
+        return this.$focus.wrap().next();
+      },
+      ["@keydown.up.prevent"]() {
+        return this.$focus.wrap().previous();
+      },
+      ["@keydown.left.stop"]() {
+        return this.close();
       }
     },
     open() {
