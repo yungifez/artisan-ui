@@ -72,6 +72,14 @@
         @apply ml-[-50px] mt-[-4px];
         content: counter(step);
     }
+
+    .checkbox-clip-path::before {
+        clip-path: polygon(25% 50%, 35% 60%, 75% 25%, 80% 30%, 35% 70%, 20% 55%);
+    }
+
+    .radio-clip-path::before {
+        clip-path: circle(35%);
+    }
 }
 
 @media (max-width: 640px) {
