@@ -4,15 +4,16 @@
 $isChoiceInput = $isChoiceInput ?? in_array($type, ['checkbox', 'radio']);
 @endphp
 <input type="{{$type}}" {{$attributes->class([
-"text-sm ring-offset-background disabled:cursor-not-allowed
+"flex ring-offset-background disabled:cursor-not-allowed
 disabled:opacity-50 border",
-"bg-background h-10 px-3 py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium
+
+"text-sm bg-background h-10 px-3 py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium
 placeholder:text-muted-foreground
 rounded-md
 focus-visible:outline-none border-input focus-visible:ring-2
 focus-visible:ring-ring focus-visible:ring-offset-2 accent-primary" => !$isChoiceInput,
 
-"appearance-none flex justify-center h-4 w-4 before:h-4 before:w-4
+"appearance-none justify-center h-4 w-4 before:h-4 before:w-4
 before:bg-foreground before:content-[''] before:scale-0 border-primary cursor-pointer
 focus-visible:outline-background focus:visible:outline focus:visible:outline-2 focus:visible:outline-offset-2
 checked:before:scale-100"
