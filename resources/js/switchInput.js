@@ -2,7 +2,7 @@ export default (checked, disabled) => ({
     switchOn: checked,
     disabled: disabled,
     input: {
-        [':checked']() {
+        ['x-model']() {
             return this.switchOn;
         },
     },
