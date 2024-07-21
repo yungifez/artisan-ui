@@ -2338,7 +2338,6 @@
         return this.show;
       },
       ["x-on:click.away"]() {
-        return this.close();
       },
       ["x-trap.noscroll"]() {
         return this.show;
@@ -2410,12 +2409,11 @@
   });
 
   // resources/js/switchInput.js
-  var switchInput_default = (checked, disabled, checkedLabelText, uncheckedLabelText) => ({
+  var switchInput_default = (checked, disabled) => ({
     switchOn: checked,
-    labelText: null,
     disabled,
     input: {
-      [":checked"]() {
+      ["x-model"]() {
         return this.switchOn;
       }
     },
@@ -2427,26 +2425,12 @@
         return true;
       }
     },
-    label: {
-      ["@click"]() {
-        this.$refs.trigger.click();
-        this.$refs.trigger.focus();
-      },
-      ["x-cloak"]() {
-        return true;
-      },
-      ["x-effect"]() {
-        return this.switchOn ? this.labelText = checkedLabelText : this.labelText = uncheckedLabelText;
-      },
-      ["x-text"]() {
-        return this.labelText;
-      }
-    },
     toggle() {
       if (this.disabled) {
         return;
       }
-      return this.switchOn = !this.switchOn;
+      this.switchOn = !this.switchOn;
+      this.$dispatch("checkedChange");
     }
   });
 
