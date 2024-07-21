@@ -2408,12 +2408,12 @@ var select_default = (multiple, disabled) => ({
 });
 
 // resources/js/switchInput.js
-var switchInput_default = (checked, disabled) => ({
-  switchOn: checked,
+var switchInput_default = (disabled) => ({
+  switchOn: false,
   disabled,
   input: {
-    ["x-model"]() {
-      return this.switchOn;
+    ["x-model.boolean"]() {
+      return "switchOn";
     }
   },
   trigger: {
@@ -2424,12 +2424,15 @@ var switchInput_default = (checked, disabled) => ({
       return true;
     }
   },
-  toggle() {
+  setSwitchState(value) {
     if (this.disabled) {
       return;
     }
-    this.switchOn = !this.switchOn;
+    this.switchOn = value;
     this.$dispatch("checkedChange");
+  },
+  toggle() {
+    this.switchOn = this.setSwitchState(!this.switchOn);
   }
 });
 

@@ -1,8 +1,8 @@
-<div x-data="switchInput({{$attributes->has('checked') ? 'true' : 'false'}}, {{$attributes->has('disabled') ? 'true' : 'false'}})"
-    {{$attributes->except(['name', 'checked', 'disabled', 'id'])->class(['flex items-center space-x-2 w-fit'])}}>
+<div x-data="switchInput( {{$attributes->has('disabled') ? 'true' : 'false'}})" {{$attributes->except(['name',
+    'disabled', 'id'])->class(['flex items-center space-x-2 w-fit'])}}>
     <input type="checkbox" class="hidden" x-ref="input" x-bind="input" @if ($attributes->has('name'))
     name="{{$attributes->get('name')}}"
-    @endif @if ($attributes->has('id')) id="{{$attributes->get('id')}}" @endif >
+    @endif @if ($attributes->has('id')) id="{{$attributes->get('id')}}" @endif @checked($attributes->get('checked'))>
 
     <button x-ref="trigger" type="button" x-bind="trigger"
         :class="{'bg-primary': switchOn,  'bg-input' : !switchOn, 'opacity-60' : disabled}"
