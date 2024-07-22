@@ -55,7 +55,7 @@
         </div>
     </div>
     <div x-bind="optionList"
-        class="absolute shadow top-100 border-input bg-background z-20 w-full rounded border max-h-80 overflow-y-scroll">
+        class="absolute shadow top-100 border-input bg-background z-20 w-full rounded border max-h-80 overflow-y-auto">
         <div class="flex flex-col w-full">
             <template x-for="(option,index) in options" :key="index">
                 <button
