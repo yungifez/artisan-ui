@@ -1,5 +1,6 @@
 @props([
-'name' => ''
+'name' => '',
+'trigger'
 ])
 
 <div x-data="select({{$attributes->has('multiple') ? 'true' : 'false'}}, {{$attributes->has('disabled') ? 'true' : 'false'}})"
