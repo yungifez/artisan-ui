@@ -25,7 +25,11 @@
                 </template>
                 {{--display when no items are selected --}}
                 <p class="text-xs" x-show="selected.length == 0">
+                    @isset($trigger)
                     {{$trigger?->attributes->get('placeholder') ?? "Select Options"}}
+                    @else
+                    {{$attributes->get('placeholder') ?? "Select Options"}}
+                    @endisset
                 </p>
             </div>
             <div class="w-6 pl-3 flex items-center">
