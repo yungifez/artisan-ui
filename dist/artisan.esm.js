@@ -2427,6 +2427,9 @@ var switchInput_default = (disabled) => ({
   input: {
     ["x-model.boolean"]() {
       return "switchOn";
+    },
+    [":disabled"]() {
+      return this.disabled;
     }
   },
   trigger: {
@@ -2442,10 +2445,11 @@ var switchInput_default = (disabled) => ({
       return;
     }
     this.switchOn = value;
+    this.$refs.input.checked = value;
     this.$dispatch("checkedChange");
   },
   toggle() {
-    this.switchOn = this.setSwitchState(!this.switchOn);
+    this.setSwitchState(!this.switchOn);
   }
 });
 

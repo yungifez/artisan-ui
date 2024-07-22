@@ -2428,6 +2428,9 @@
     input: {
       ["x-model.boolean"]() {
         return "switchOn";
+      },
+      [":disabled"]() {
+        return this.disabled;
       }
     },
     trigger: {
@@ -2443,10 +2446,11 @@
         return;
       }
       this.switchOn = value;
+      this.$refs.input.checked = value;
       this.$dispatch("checkedChange");
     },
     toggle() {
-      this.switchOn = this.setSwitchState(!this.switchOn);
+      this.setSwitchState(!this.switchOn);
     }
   });
 

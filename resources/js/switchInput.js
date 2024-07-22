@@ -5,6 +5,9 @@ export default (disabled) => ({
         ['x-model.boolean']() {
             return "switchOn";
         },
+        [':disabled']() {
+            return this.disabled;
+        },
     },
     trigger: {
         ['@click']() {
@@ -20,9 +23,10 @@ export default (disabled) => ({
         }
 
         this.switchOn = value;
+        this.$refs.input.checked = value;
         this.$dispatch('checkedChange');
     },
     toggle() {
-        this.switchOn = this.setSwitchState(!this.switchOn);
+        this.setSwitchState(!this.switchOn);
     }
 })
