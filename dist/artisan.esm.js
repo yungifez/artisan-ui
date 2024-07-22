@@ -2328,6 +2328,9 @@ var select_default = (multiple, disabled) => ({
     ["@click"]() {
       return this.open();
     },
+    ["@keypress.enter"]() {
+      return this.open();
+    },
     [":disabled"]() {
       return this.disabled;
     }
@@ -2381,6 +2384,15 @@ var select_default = (multiple, disabled) => ({
       this.selected.splice(this.selected.lastIndexOf(index), 1);
       this.options[index].selected = false;
     }
+    this.dispatchSelect();
+    if (!this.multiple) {
+      this.close();
+    }
+  },
+  dispatchSelect() {
+    this.$nextTick(() => {
+      this.$dispatch("select", { value: this.multiple ? this.selected.map((el) => this.options[el].value) : this.options[this.selected[0]].value });
+    });
   },
   remove(index, option) {
     this.options[option].selected = false;
