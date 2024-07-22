@@ -2337,6 +2337,7 @@ var select_default = (multiple, disabled) => ({
       return this.show;
     },
     ["x-on:click.away"]() {
+      return this.close();
     },
     ["x-trap.noscroll"]() {
       return this.show;

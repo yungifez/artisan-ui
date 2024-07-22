@@ -2338,6 +2338,7 @@
         return this.show;
       },
       ["x-on:click.away"]() {
+        return this.close();
       },
       ["x-trap.noscroll"]() {
         return this.show;
