@@ -2115,7 +2115,7 @@ var dialog_default = (show, dismissable) => ({
     ["x-trap.noscroll"]() {
       return this.show;
     },
-    ["x-transition.opacity"]() {
+    ["x-transition.opacity.duration.150ms"]() {
       return true;
     }
   },
@@ -2420,6 +2420,44 @@ var select_default = (multiple, disabled) => ({
   }
 });
 
+// resources/js/sheet.js
+var sheet_default = (side, transitionEnterStart, transitionEnterEnd, transitionLeaveStart, transitionLeaveEnd) => ({
+  side,
+  transitionEnterStart,
+  transitionEnterEnd,
+  transitionLeaveStart,
+  transitionLeaveEnd,
+  root: {
+    ["x-show"]() {
+      return this.$data["show"];
+    },
+    ["@click.stop"]() {
+      return true;
+    },
+    ["x-cloak"]() {
+      return true;
+    },
+    ["x-transition:enter"]() {
+      return "transition ease-linear duration-150";
+    },
+    ["x-transition:enter-start"]() {
+      return this.transitionEnterStart;
+    },
+    ["x-transition:enter-end"]() {
+      return this.transitionEnterEnd;
+    },
+    ["x-transition:leave"]() {
+      return "transition ease-linear duration-150";
+    },
+    ["x-transition:leave-start"]() {
+      return this.transitionLeaveStart;
+    },
+    ["x-transition:leave-end"]() {
+      return this.transitionLeaveEnd;
+    }
+  }
+});
+
 // resources/js/switchInput.js
 var switchInput_default = (disabled) => ({
   switchOn: false,
@@ -2515,6 +2553,7 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("dropdownMenuSub", dropdownMenuSub_default);
   Alpine.data("popover", popover_default);
   Alpine.data("select", select_default);
+  Alpine.data("sheet", sheet_default);
   Alpine.data("switchInput", switchInput_default);
   Alpine.data("tabs", tabs_default);
   Alpine.data("tabsTrigger", tabsTrigger_default);
