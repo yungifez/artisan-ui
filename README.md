@@ -11,4 +11,4 @@ You can find the official docs on the [Artisan UI website](https://x-aui.com).
 
 ## Follow me
 
-[@robsontenorio](https://x.com/yungifez)
+[@yungifez](https://x.com/yungifez)
