@@ -34,7 +34,7 @@ export default (show, dismissable) => ({
         ['x-trap.noscroll']() {
             return this.show;
         },
-        ['x-transition.opacity']() {
+        ['x-transition.opacity.duration.150ms']() {
             return true;
         },
     },
