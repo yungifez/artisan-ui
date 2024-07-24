@@ -37,7 +37,7 @@ export default () => ({
         ['x-anchor.left-start.right-start']() {
             return this.$refs.subTrigger;
         },
-        ['x-trap.noscroll']() {
+        ['x-trap']() {
             return this.subOpen;
         },
         ['x-show']() {
