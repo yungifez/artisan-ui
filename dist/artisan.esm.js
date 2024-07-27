@@ -2137,13 +2137,15 @@ var dialog_default = (show, dismissable) => ({
 var dropdownMenu_default = () => ({
   dropdownMenu: false,
   root: {
-    ["@click.outside"]() {
+    ["@click.outside.capture"]() {
       return this.close();
     }
   },
   trigger: {
     ["@click"]() {
-      return this.toggle();
+      Promise.resolve().then(() => {
+        return this.toggle();
+      });
     },
     ["@keydown.esc.window"]() {
       return this.close();
@@ -2288,7 +2290,7 @@ var popover_default = () => ({
     ["x-trap.noscroll"]() {
       return this.popover;
     },
-    ["@click.outside"]() {
+    ["@click.outside.capture"]() {
       return this.close();
     },
     ["x-show"]() {
@@ -2339,7 +2341,7 @@ var select_default = (multiple, disabled) => ({
     ["x-show.transition.scale.origin.top"]() {
       return this.show;
     },
-    ["x-on:click.away"]() {
+    ["@click.outside.capture"]() {
       return this.close();
     },
     ["x-trap.noscroll"]() {

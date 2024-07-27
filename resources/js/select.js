@@ -27,7 +27,7 @@ export default (multiple, disabled) => ({
         ['x-show.transition.scale.origin.top']() {
             return this.show;
         },
-        ['x-on:click.away']() {
+        ['@click.outside.capture']() {
             return this.close();
         },
         ['x-trap.noscroll']() {

@@ -1,13 +1,15 @@
 export default () => ({
     dropdownMenu: false,
     root: {
-        ['@click.outside']() {
+        ['@click.outside.capture']() {
             return this.close();
         },
     },
     trigger: {
         ['@click']() {
-            return this.toggle();
+            Promise.resolve().then(() => {
+                return this.toggle();
+            });
         },
         ['@keydown.esc.window']() {
             return this.close();

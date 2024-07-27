@@ -18,7 +18,7 @@ export default () => ({
         ['x-trap.noscroll']() {
             return this.popover;
         },
-        ['@click.outside']() {
+        ['@click.outside.capture']() {
             return this.close();
         },
         ['x-show']() {
