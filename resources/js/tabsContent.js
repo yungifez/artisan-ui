@@ -4,5 +4,7 @@ export default (value) => ({
         ['x-show']() {
             return this.value == this.$data.active;
         },
+        ['x-cloak']() {
+        },
     },
 })
