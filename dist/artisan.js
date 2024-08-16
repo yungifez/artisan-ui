@@ -214,8 +214,8 @@
         return "dayOfWeek";
       }
     }
-    createDateWithoutTime(value) {
-      let date = new Date(value);
+    createDateWithoutTime(value2) {
+      let date = new Date(value2);
       date.setHours(0, 0, 0, 0);
       return date;
     }
@@ -231,12 +231,12 @@
       if (!Array.isArray(values)) {
         console.warn("Selected type supplied to calendar in multiple mode is not an array");
       } else {
-        values.forEach((value) => {
-          value = this.createDateWithoutTime(value);
-          if (this.isSelectedDay(value)) {
+        values.forEach((value2) => {
+          value2 = this.createDateWithoutTime(value2);
+          if (this.isSelectedDay(value2)) {
             return;
           }
-          return this.values.push(value);
+          return this.values.push(value2);
         });
       }
     }
@@ -245,10 +245,10 @@
         return !this.isSelectedDay(date);
       }
     }
-    indexOfDateInValue(array, value) {
+    indexOfDateInValue(array, value2) {
       for (let index = 0; index < array.length; index++) {
         const date = array[index];
-        if (date.getTime() === value.getTime()) {
+        if (date.getTime() === value2.getTime()) {
           return index;
         }
       }
@@ -269,8 +269,8 @@
     get value() {
       return this.values;
     }
-    createDateWithoutTime(value) {
-      let date = new Date(value);
+    createDateWithoutTime(value2) {
+      let date = new Date(value2);
       date.setHours(0, 0, 0, 0);
       return date;
     }
@@ -344,8 +344,8 @@
       }
       return false;
     }
-    createDateWithoutTime(value) {
-      let date = new Date(value);
+    createDateWithoutTime(value2) {
+      let date = new Date(value2);
       date.setHours(0, 0, 0, 0);
       return date;
     }
@@ -356,15 +356,15 @@
 
   // resources/js/Calendar/ModeHandlers/SingleModeHandler.js
   var SingleModeHandler = class {
-    constructor(value, required) {
-      if (value == null) {
+    constructor(value2, required) {
+      if (value2 == null) {
         return;
       }
       this.required = !!required;
-      if (typeof value == "string") {
-        this.value = this.createDateWithoutTime(value);
-      } else if (typeof value == "Date") {
-        this.value = value;
+      if (typeof value2 == "string") {
+        this.value = this.createDateWithoutTime(value2);
+      } else if (typeof value2 == "Date") {
+        this.value = value2;
       } else {
         console.error("Selected type supplied to calendar with mode single is not a string or Javascript date");
       }
@@ -383,8 +383,8 @@
     isDisabled(date) {
       return false;
     }
-    createDateWithoutTime(value) {
-      let date = new Date(value);
+    createDateWithoutTime(value2) {
+      let date = new Date(value2);
       date.setHours(0, 0, 0, 0);
       return date;
     }
@@ -485,11 +485,11 @@
         this.dispatchSelect();
       }
     },
-    focusAdd(value) {
+    focusAdd(value2) {
       if (!Number.isInteger(this.focusedDay)) {
         this.focusedDay = new Date(this.year, this.month, day).getDate();
       }
-      this.focusedDay = this.focusedDay + value;
+      this.focusedDay = this.focusedDay + value2;
       if (this.focusedDay > this.daysInMonth.length) {
         this.focusedDay = this.focusedDay - this.daysInMonth.length;
         this.nextMonth();
@@ -572,11 +572,11 @@
   }
 
   // node_modules/date-fns/constructFrom.mjs
-  function constructFrom(date, value) {
+  function constructFrom(date, value2) {
     if (date instanceof Date) {
-      return new date.constructor(value);
+      return new date.constructor(value2);
     } else {
-      return new Date(value);
+      return new Date(value2);
     }
   }
 
@@ -681,8 +681,8 @@
   }
 
   // node_modules/date-fns/isDate.mjs
-  function isDate(value) {
-    return value instanceof Date || typeof value === "object" && Object.prototype.toString.call(value) === "[object Date]";
+  function isDate(value2) {
+    return value2 instanceof Date || typeof value2 === "object" && Object.prototype.toString.call(value2) === "[object Date]";
   }
 
   // node_modules/date-fns/isValid.mjs
@@ -843,7 +843,7 @@
 
   // node_modules/date-fns/locale/_lib/buildLocalizeFn.mjs
   function buildLocalizeFn(args) {
-    return (value, options) => {
+    return (value2, options) => {
       const context = options?.context ? String(options.context) : "standalone";
       let valuesArray;
       if (context === "formatting" && args.formattingValues) {
@@ -855,7 +855,7 @@
         const width = options?.width ? String(options.width) : args.defaultWidth;
         valuesArray = args.values[width] || args.values[defaultWidth];
       }
-      const index = args.argumentCallback ? args.argumentCallback(value) : value;
+      const index = args.argumentCallback ? args.argumentCallback(value2) : value2;
       return valuesArray[index];
     };
   }
@@ -1034,11 +1034,11 @@
       const matchedString = matchResult[0];
       const parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
       const key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, (pattern) => pattern.test(matchedString)) : findKey(parsePatterns, (pattern) => pattern.test(matchedString));
-      let value;
-      value = args.valueCallback ? args.valueCallback(key) : key;
-      value = options.valueCallback ? options.valueCallback(value) : value;
+      let value2;
+      value2 = args.valueCallback ? args.valueCallback(key) : key;
+      value2 = options.valueCallback ? options.valueCallback(value2) : value2;
       const rest = string.slice(matchedString.length);
-      return { value, rest };
+      return { value: value2, rest };
     };
   }
   function findKey(object, predicate) {
@@ -1068,10 +1068,10 @@
       const parseResult = string.match(args.parsePattern);
       if (!parseResult)
         return null;
-      let value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-      value = options.valueCallback ? options.valueCallback(value) : value;
+      let value2 = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+      value2 = options.valueCallback ? options.valueCallback(value2) : value2;
       const rest = string.slice(matchedString.length);
-      return { value, rest };
+      return { value: value2, rest };
     };
   }
 
@@ -1159,7 +1159,7 @@
     ordinalNumber: buildMatchPatternFn({
       matchPattern: matchOrdinalNumberPattern,
       parsePattern: parseOrdinalNumberPattern,
-      valueCallback: (value) => parseInt(value, 10)
+      valueCallback: (value2) => parseInt(value2, 10)
     }),
     era: buildMatchFn({
       matchPatterns: matchEraPatterns,
@@ -2020,6 +2020,9 @@
       },
       ["x-cloak"]() {
         return true;
+      },
+      ["x-model"]() {
+        return value;
       }
     },
     trigger: {
@@ -2323,13 +2326,16 @@
       ["x-on:keydown.tab"]() {
         return this.close();
       },
+      ["@click.outside.capture"]() {
+        return this.close();
+      },
       ["x-on:keydown.escape"]() {
         return this.close();
       }
     },
     trigger: {
       ["@click"]() {
-        return this.open();
+        return this.toggle();
       },
       ["@keypress.enter"]() {
         return this.open();
@@ -2341,9 +2347,6 @@
     optionList: {
       ["x-show.transition.scale.origin.top"]() {
         return this.show;
-      },
-      ["@click.outside.capture"]() {
-        return this.close();
       },
       ["x-trap.noscroll"]() {
         return this.show;
@@ -2371,6 +2374,9 @@
     },
     close() {
       this.show = false;
+    },
+    toggle() {
+      this.show ? this.close() : this.open();
     },
     select(index, event) {
       if (!this.options[index].selected || !this.multiple) {
@@ -2481,12 +2487,12 @@
         return true;
       }
     },
-    setSwitchState(value) {
+    setSwitchState(value2) {
       if (this.disabled) {
         return;
       }
-      this.switchOn = value;
-      this.$refs.input.checked = value;
+      this.switchOn = value2;
+      this.$refs.input.checked = value2;
       this.$dispatch("checkedChange");
     },
     toggle() {
@@ -2509,18 +2515,20 @@
   });
 
   // resources/js/tabsContent.js
-  var tabsContent_default = (value) => ({
-    value,
+  var tabsContent_default = (value2) => ({
+    value: value2,
     root: {
       ["x-show"]() {
         return this.value == this.$data.active;
+      },
+      ["x-cloak"]() {
       }
     }
   });
 
   // resources/js/tabsTrigger.js
-  var tabsTrigger_default = (value) => ({
-    value,
+  var tabsTrigger_default = (value2) => ({
+    value: value2,
     root: {
       ["@click"]() {
         return this.setAsActive();

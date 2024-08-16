@@ -8,7 +8,7 @@
 ])
 
 @php
-$class = $class." "."relative w-full rounded-lg border p-4 flex gap-x-3"." ";
+$class = $class." "."relative w-full rounded-lg border p-4 flex gap-x-3 ";
 
 $class .= match($attributes->get("variant")){
 default => "bg-background text-foreground fill-foreground",
@@ -18,13 +18,11 @@ fill-destructive",
 };
 @endphp
 
-<div aria-role="alert" x-data="alert({{$dismissOnTimeout ? 'true' : 'false'}},{{$timeout}})" x-bind="root"
-    {{$attributes->class(["$class"])}}
+<div aria-role="alert" x-data='alert(@json($dismissOnTimeout),{{$timeout}})' x-bind="root" {{$attributes->
+    class(["$class"])}}
     >
-
     @isset($icon)
-    <div {{$icon->attributes->class(["flex items-start mt-2"])}}
-        >
+    <div {{$icon->attributes->class(["flex items-start mt-2"])}}>
         {{$icon}}
     </div>
     @endisset
@@ -43,14 +41,17 @@ fill-destructive",
     </div>
     <div>
         @if ($dismissable == true)
-        <button x-bind="dismissTrigger">
-            @if($attributes->has('close-icon'))
-            {{$attributes->get('close-icon')}}
+        <div x-bind="dismissTrigger">
+            @isset($close)
+            {{$close}}
             @else
-            <x-aui::x />
-            @endif
-            <p class="sr-only">Close Alert</p>
-        </button>
+            <button type="button"
+                class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none ">
+                <x-aui::x />
+                <span class="sr-only">Close</span>
+            </button>
+            @endisset
+        </div>
         @endif
     </div>
 </div>

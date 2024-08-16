@@ -12,6 +12,9 @@ export default (open, mode, format) => ({
         ['x-cloak']() {
             return true;
         },
+        ['x-model']() {
+            return value;
+        },
     },
     trigger: {
         ['@click']() {

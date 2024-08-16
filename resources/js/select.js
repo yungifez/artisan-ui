@@ -8,13 +8,16 @@ export default (multiple, disabled) => ({
         ['x-on:keydown.tab']() {
             return this.close();
         },
+        ['@click.outside.capture']() {
+            return this.close();
+        },
         ['x-on:keydown.escape']() {
             return this.close();
         },
     },
     trigger: {
         ['@click']() {
-            return this.open();
+            return this.toggle();
         },
         ['@keypress.enter']() {
             return this.open();
@@ -26,9 +29,6 @@ export default (multiple, disabled) => ({
     optionList: {
         ['x-show.transition.scale.origin.top']() {
             return this.show;
-        },
-        ['@click.outside.capture']() {
-            return this.close();
         },
         ['x-trap.noscroll']() {
             return this.show;
@@ -56,6 +56,9 @@ export default (multiple, disabled) => ({
     },
     close() {
         this.show = false
+    },
+    toggle() {
+        this.show ? this.close() : this.open()
     },
     select(index, event) {
         if (!this.options[index].selected || !this.multiple) {
