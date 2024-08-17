@@ -69,9 +69,10 @@ var accordionItem_default = () => ({
 });
 
 // resources/js/alert.js
-var alert_default = (dismissOnTimeout, timeout) => ({
+var alert_default = (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
   "visible": true,
   "dismissOnTimeout": dismissOnTimeout,
+  "startTimeoutOnIntersect": startTimeoutOnIntersect,
   "timeout": timeout,
   root: {
     ["x-show"]() {
@@ -82,15 +83,25 @@ var alert_default = (dismissOnTimeout, timeout) => ({
     },
     ["x-transition"]() {
       return true;
+    },
+    ["x-intersect"]() {
+      if (this.startTimeoutOnIntersect) {
+        return setTimeout(() => {
+          this.dismiss();
+        }, this.timeout);
+      }
     }
   },
   dismissTrigger: {
     ["@click"]() {
       return this.dismiss();
+    },
+    ["@click"]() {
+      return this.dismiss();
     }
   },
   init() {
-    if (this.dismissOnTimeout) {
+    if (this.dismissOnTimeout && !this.startTimeoutOnIntersect) {
       setTimeout(() => {
         this.dismiss();
       }, this.timeout);
