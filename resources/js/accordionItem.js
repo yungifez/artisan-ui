@@ -8,6 +8,15 @@ export default () => ({
         ['@click']() {
             return this.toggle();
         },
+        [':aria-expanded']() {
+            return this.$data.value.includes(this.$id('accordion-item'));
+        },
+        [':aria-controls']() {
+            return this.$id('accordion-item') + '-content';
+        },
+        [':id']() {
+            return this.$id('accordion-item') + '-trigger';
+        },
         [':disabled']() {
             return this.$data.disabled;
         },
@@ -18,6 +27,12 @@ export default () => ({
         }
     },
     content: {
+        [':id']() {
+            return this.$id('accordion-item') + '-content';
+        },
+        [':aria-labelledby']() {
+            return this.$id('accordion-item') + '-trigger';
+        },
         ['x-show']() {
             return this.$data.value.includes(this.$id('accordion-item'));
         },
