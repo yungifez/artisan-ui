@@ -5,6 +5,7 @@
 'timeout' => '5000',
 'dismissable' => false,
 'dismissOnTimeout' => false
+'startTimeoutOnIntersect' => false
 ])
 
 @php
@@ -18,7 +19,8 @@ fill-destructive",
 };
 @endphp
 
-<div aria-role="alert" x-data='alert(@json($dismissOnTimeout),{{$timeout}})' x-bind="root" {{$attributes->
+<div aria-role="alert" x-data='alert(@json($dismissOnTimeout),{{$timeout}},@json($startTimeoutOnIntersect))'
+    x-bind="root" {{$attributes->
     class(["$class"])}}
     >
     @isset($icon)
