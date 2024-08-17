@@ -1,19 +1,19 @@
 export default () => ({
-    loadError: false,
+    loadSuccess: false,
     image: {
         ['x-show']() {
-            return !this.loadError;
+            return this.loadSuccess;
         },
         ['x-cloak']() {
             return true;
         },
-        ['x-on:error']() {
-            return this.loadError = true;
+        ['x-on:load']() {
+            return this.loadSuccess = true;
         },
     },
     fallback: {
         ['x-show']() {
-            return this.loadError;
+            return !this.loadSuccess;
         },
         ['x-cloak']() {
             return true;

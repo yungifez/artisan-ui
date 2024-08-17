@@ -36,9 +36,6 @@ export default () => ({
         ['x-show']() {
             return this.$data.value.includes(this.$id('accordion-item'));
         },
-        ['x-cloak']() {
-            return true;
-        },
         ['x-collapse.duration.300ms']() {
             return true;
         },

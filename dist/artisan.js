@@ -18,6 +18,15 @@
       ["@click"]() {
         return this.toggle();
       },
+      [":aria-expanded"]() {
+        return this.$data.value.includes(this.$id("accordion-item"));
+      },
+      [":aria-controls"]() {
+        return this.$id("accordion-item") + "-content";
+      },
+      [":id"]() {
+        return this.$id("accordion-item") + "-trigger";
+      },
       [":disabled"]() {
         return this.$data.disabled;
       }
@@ -28,11 +37,14 @@
       }
     },
     content: {
+      [":id"]() {
+        return this.$id("accordion-item") + "-content";
+      },
+      [":aria-labelledby"]() {
+        return this.$id("accordion-item") + "-trigger";
+      },
       ["x-show"]() {
         return this.$data.value.includes(this.$id("accordion-item"));
-      },
-      ["x-cloak"]() {
-        return true;
       },
       ["x-collapse.duration.300ms"]() {
         return true;
@@ -115,21 +127,21 @@
 
   // resources/js/avatar.js
   var avatar_default = () => ({
-    loadError: false,
+    loadSuccess: false,
     image: {
       ["x-show"]() {
-        return !this.loadError;
+        return this.loadSuccess;
       },
       ["x-cloak"]() {
         return true;
       },
-      ["x-on:error"]() {
-        return this.loadError = true;
+      ["x-on:load"]() {
+        return this.loadSuccess = true;
       }
     },
     fallback: {
       ["x-show"]() {
-        return this.loadError;
+        return !this.loadSuccess;
       },
       ["x-cloak"]() {
         return true;

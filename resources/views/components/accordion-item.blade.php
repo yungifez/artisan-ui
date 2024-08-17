@@ -17,7 +17,7 @@
         @endisset
     </h3>
     @isset($content)
-    <div x-bind="content" class="overflow-hidden text-sm" role="region">
+    <div x-bind="content" class="overflow-hidden text-sm" role="region" x-cloak>
         <div {{$content->attributes->class(['pb-4 pt-0 px-2'])}}>
             {{$content}}
         </div>
