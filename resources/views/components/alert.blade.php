@@ -4,7 +4,7 @@
 'class' => '',
 'timeout' => '5000',
 'dismissable' => false,
-'dismissOnTimeout' => false
+'dismissOnTimeout' => false,
 'startTimeoutOnIntersect' => false
 ])
 
