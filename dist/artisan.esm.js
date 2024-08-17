@@ -85,7 +85,7 @@ var alert_default = (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
       return true;
     },
     ["x-intersect"]() {
-      if (this.startTimeoutOnIntersect) {
+      if (this.dismissontimeout && this.startTimeoutOnIntersect) {
         return setTimeout(() => {
           this.dismiss();
         }, this.timeout);
@@ -101,7 +101,7 @@ var alert_default = (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
     }
   },
   init() {
-    if (this.dismissOnTimeout && !this.startTimeoutOnIntersect) {
+    if (this.dismissontimeout && !this.startTimeoutOnIntersect) {
       setTimeout(() => {
         this.dismiss();
       }, this.timeout);
