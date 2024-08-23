@@ -2172,7 +2172,7 @@ var dialog_default = (show, dismissable) => ({
   },
   description: {
     [":id"]() {
-      return this.$id("dialog") + "description";
+      return this.$id("dialog") + "-description";
     }
   },
   closeButton: {
@@ -2569,6 +2569,7 @@ var tabsContent_default = (value2) => ({
       return this.value == this.$data.active;
     },
     ["x-cloak"]() {
+      return true;
     }
   }
 });

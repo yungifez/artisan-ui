@@ -2173,7 +2173,7 @@
     },
     description: {
       [":id"]() {
-        return this.$id("dialog") + "description";
+        return this.$id("dialog") + "-description";
       }
     },
     closeButton: {
@@ -2570,6 +2570,7 @@
         return this.value == this.$data.active;
       },
       ["x-cloak"]() {
+        return true;
       }
     }
   });
