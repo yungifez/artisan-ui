@@ -65,7 +65,7 @@ export default (show, dismissable) => ({
     },
     description: {
         [':id']() {
-            return this.$id('dialog') + 'description';
+            return this.$id('dialog') + '-description';
         },
     },
     closeButton: {
