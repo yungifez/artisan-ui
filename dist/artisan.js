@@ -2116,6 +2116,9 @@
       this.show = true;
     },
     root: {
+      ["x-id"]() {
+        return ["dialog"];
+      },
       ["x-on:keydown.esc.window"]() {
         if (this.dismissable) {
           return this.close();
@@ -2125,6 +2128,9 @@
     trigger: {
       ["@click"]() {
         return this.open();
+      },
+      [":id"]() {
+        return this.$id("dialog") + "-trigger";
       }
     },
     overlay: {
@@ -2139,7 +2145,7 @@
       ["x-cloak"]() {
         return true;
       },
-      ["x-trap.noscroll"]() {
+      ["x-trap.noscroll.inert"]() {
         return this.show;
       },
       ["x-transition.opacity.duration.150ms"]() {
@@ -2149,6 +2155,25 @@
     dialog: {
       ["@click.stop"]() {
         return true;
+      },
+      [":aria-labelledby"]() {
+        return this.$id("dialog") + "-title";
+      },
+      [":aria-describedby"]() {
+        return this.$id("dialog") + "-description";
+      },
+      [":aria-modal"]() {
+        return this.show;
+      }
+    },
+    title: {
+      [":id"]() {
+        return this.$id("dialog") + "-title";
+      }
+    },
+    description: {
+      [":id"]() {
+        return this.$id("dialog") + "description";
       }
     },
     closeButton: {

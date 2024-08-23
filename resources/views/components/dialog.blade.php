@@ -10,7 +10,7 @@
         @else x-if="true"
         @endif>
         <div {{$attributes->except(['x-teleport'])->class(["fixed min-h-[100vh] inset-0 z-50 bg-black/80" ])}}
-            x-bind="overlay">
+            x-bind="overlay" role="dialog">
             @isset($content)
             <div x-bind="dialog" {{$content->attributes->class(["fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg
                 translate-x-[-50%]
