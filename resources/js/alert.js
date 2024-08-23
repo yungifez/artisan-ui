@@ -14,7 +14,7 @@ export default (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
             return true;
         },
         ['x-intersect']() {
-            if (this.dismissontimeout && this.startTimeoutOnIntersect) {
+            if (this.dismissOnTimeout && this.startTimeoutOnIntersect) {
                 return setTimeout(() => { this.dismiss() }, this.timeout);
             }
         },
@@ -28,7 +28,7 @@ export default (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
         },
     },
     init() {
-        if (this.dismissontimeout && !this.startTimeoutOnIntersect) {
+        if (this.dismissOnTimeout && !this.startTimeoutOnIntersect) {
             setTimeout(() => { this.dismiss() }, this.timeout);
         }
     },

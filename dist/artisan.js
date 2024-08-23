@@ -98,7 +98,7 @@
         return true;
       },
       ["x-intersect"]() {
-        if (this.dismissontimeout && this.startTimeoutOnIntersect) {
+        if (this.dismissOnTimeout && this.startTimeoutOnIntersect) {
           return setTimeout(() => {
             this.dismiss();
           }, this.timeout);
@@ -114,7 +114,7 @@
       }
     },
     init() {
-      if (this.dismissontimeout && !this.startTimeoutOnIntersect) {
+      if (this.dismissOnTimeout && !this.startTimeoutOnIntersect) {
         setTimeout(() => {
           this.dismiss();
         }, this.timeout);
