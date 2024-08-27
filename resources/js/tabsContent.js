@@ -5,7 +5,7 @@ export default (value) => ({
             return this.value == this.$data.active;
         },
         ['x-cloak']() {
-            return true;
+            return this.value == this.$data.active;
         },
     },
 })

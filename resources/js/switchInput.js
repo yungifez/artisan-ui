@@ -1,9 +1,27 @@
 export default (disabled) => ({
     switchOn: false,
     disabled: disabled,
+    root: {
+        [':aria-checked']() {
+            return this.switchOn;
+        },
+        [':aria-labelledby']() {
+            if (this.$refs.input.labels[0]?.id) {
+                return this.$refs.input.labels[0].id;
+            }
+        },
+        [':aria-label']() {
+            if (this.$refs.input.labels[0]?.innerText) {
+                return this.$refs.input.labels[0].innerText;
+            }
+        },
+    },
     input: {
         ['x-model.boolean']() {
             return "switchOn";
+        },
+        ['x-ref']() {
+            return "input";
         },
         [':disabled']() {
             return this.disabled;
@@ -17,7 +35,7 @@ export default (disabled) => ({
             return true;
         },
     },
-    setSwitchState(value){
+    setSwitchState(value) {
         if (this.disabled) {
             return;
         }

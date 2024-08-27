@@ -2518,9 +2518,27 @@ var sheet_default = (side, transitionEnterStart, transitionEnterEnd, transitionL
 var switchInput_default = (disabled) => ({
   switchOn: false,
   disabled,
+  root: {
+    [":aria-checked"]() {
+      return this.switchOn;
+    },
+    [":aria-labelledby"]() {
+      if (this.$refs.input.labels[0]?.id) {
+        return this.$refs.input.labels[0].id;
+      }
+    },
+    [":aria-label"]() {
+      if (this.$refs.input.labels[0]?.innerText) {
+        return this.$refs.input.labels[0].innerText;
+      }
+    }
+  },
   input: {
     ["x-model.boolean"]() {
       return "switchOn";
+    },
+    ["x-ref"]() {
+      return "input";
     },
     [":disabled"]() {
       return this.disabled;
@@ -2569,7 +2587,7 @@ var tabsContent_default = (value2) => ({
       return this.value == this.$data.active;
     },
     ["x-cloak"]() {
-      return true;
+      return this.value == this.$data.active;
     }
   }
 });
