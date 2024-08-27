@@ -236,8 +236,8 @@ var Matcher = class {
       return "dayOfWeek";
     }
   }
-  createDateWithoutTime(value2) {
-    let date = new Date(value2);
+  createDateWithoutTime(value) {
+    let date = new Date(value);
     date.setHours(0, 0, 0, 0);
     return date;
   }
@@ -253,12 +253,12 @@ var MultipleModeHandler = class {
     if (!Array.isArray(values)) {
       console.warn("Selected type supplied to calendar in multiple mode is not an array");
     } else {
-      values.forEach((value2) => {
-        value2 = this.createDateWithoutTime(value2);
-        if (this.isSelectedDay(value2)) {
+      values.forEach((value) => {
+        value = this.createDateWithoutTime(value);
+        if (this.isSelectedDay(value)) {
           return;
         }
-        return this.values.push(value2);
+        return this.values.push(value);
       });
     }
   }
@@ -267,10 +267,10 @@ var MultipleModeHandler = class {
       return !this.isSelectedDay(date);
     }
   }
-  indexOfDateInValue(array, value2) {
+  indexOfDateInValue(array, value) {
     for (let index = 0; index < array.length; index++) {
       const date = array[index];
-      if (date.getTime() === value2.getTime()) {
+      if (date.getTime() === value.getTime()) {
         return index;
       }
     }
@@ -291,8 +291,8 @@ var MultipleModeHandler = class {
   get value() {
     return this.values;
   }
-  createDateWithoutTime(value2) {
-    let date = new Date(value2);
+  createDateWithoutTime(value) {
+    let date = new Date(value);
     date.setHours(0, 0, 0, 0);
     return date;
   }
@@ -366,8 +366,8 @@ var RangeModeHandler = class {
     }
     return false;
   }
-  createDateWithoutTime(value2) {
-    let date = new Date(value2);
+  createDateWithoutTime(value) {
+    let date = new Date(value);
     date.setHours(0, 0, 0, 0);
     return date;
   }
@@ -378,15 +378,15 @@ var RangeModeHandler = class {
 
 // resources/js/Calendar/ModeHandlers/SingleModeHandler.js
 var SingleModeHandler = class {
-  constructor(value2, required) {
-    if (value2 == null) {
+  constructor(value, required) {
+    if (value == null) {
       return;
     }
     this.required = !!required;
-    if (typeof value2 == "string") {
-      this.value = this.createDateWithoutTime(value2);
-    } else if (typeof value2 == "Date") {
-      this.value = value2;
+    if (typeof value == "string") {
+      this.value = this.createDateWithoutTime(value);
+    } else if (typeof value == "Date") {
+      this.value = value;
     } else {
       console.error("Selected type supplied to calendar with mode single is not a string or Javascript date");
     }
@@ -405,8 +405,8 @@ var SingleModeHandler = class {
   isDisabled(date) {
     return false;
   }
-  createDateWithoutTime(value2) {
-    let date = new Date(value2);
+  createDateWithoutTime(value) {
+    let date = new Date(value);
     date.setHours(0, 0, 0, 0);
     return date;
   }
@@ -507,11 +507,11 @@ var calendar_default = (selected, mode, disabled, min, max, required) => ({
       this.dispatchSelect();
     }
   },
-  focusAdd(value2) {
+  focusAdd(value) {
     if (!Number.isInteger(this.focusedDay)) {
       this.focusedDay = new Date(this.year, this.month, day).getDate();
     }
-    this.focusedDay = this.focusedDay + value2;
+    this.focusedDay = this.focusedDay + value;
     if (this.focusedDay > this.daysInMonth.length) {
       this.focusedDay = this.focusedDay - this.daysInMonth.length;
       this.nextMonth();
@@ -594,11 +594,11 @@ function toDate(argument) {
 }
 
 // node_modules/date-fns/constructFrom.mjs
-function constructFrom(date, value2) {
+function constructFrom(date, value) {
   if (date instanceof Date) {
-    return new date.constructor(value2);
+    return new date.constructor(value);
   } else {
-    return new Date(value2);
+    return new Date(value);
   }
 }
 
@@ -703,8 +703,8 @@ function startOfISOWeekYear(date) {
 }
 
 // node_modules/date-fns/isDate.mjs
-function isDate(value2) {
-  return value2 instanceof Date || typeof value2 === "object" && Object.prototype.toString.call(value2) === "[object Date]";
+function isDate(value) {
+  return value instanceof Date || typeof value === "object" && Object.prototype.toString.call(value) === "[object Date]";
 }
 
 // node_modules/date-fns/isValid.mjs
@@ -865,7 +865,7 @@ var formatRelative = (token, _date, _baseDate, _options) => formatRelativeLocale
 
 // node_modules/date-fns/locale/_lib/buildLocalizeFn.mjs
 function buildLocalizeFn(args) {
-  return (value2, options) => {
+  return (value, options) => {
     const context = options?.context ? String(options.context) : "standalone";
     let valuesArray;
     if (context === "formatting" && args.formattingValues) {
@@ -877,7 +877,7 @@ function buildLocalizeFn(args) {
       const width = options?.width ? String(options.width) : args.defaultWidth;
       valuesArray = args.values[width] || args.values[defaultWidth];
     }
-    const index = args.argumentCallback ? args.argumentCallback(value2) : value2;
+    const index = args.argumentCallback ? args.argumentCallback(value) : value;
     return valuesArray[index];
   };
 }
@@ -1056,11 +1056,11 @@ function buildMatchFn(args) {
     const matchedString = matchResult[0];
     const parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
     const key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, (pattern) => pattern.test(matchedString)) : findKey(parsePatterns, (pattern) => pattern.test(matchedString));
-    let value2;
-    value2 = args.valueCallback ? args.valueCallback(key) : key;
-    value2 = options.valueCallback ? options.valueCallback(value2) : value2;
+    let value;
+    value = args.valueCallback ? args.valueCallback(key) : key;
+    value = options.valueCallback ? options.valueCallback(value) : value;
     const rest = string.slice(matchedString.length);
-    return { value: value2, rest };
+    return { value, rest };
   };
 }
 function findKey(object, predicate) {
@@ -1090,10 +1090,10 @@ function buildMatchPatternFn(args) {
     const parseResult = string.match(args.parsePattern);
     if (!parseResult)
       return null;
-    let value2 = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-    value2 = options.valueCallback ? options.valueCallback(value2) : value2;
+    let value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+    value = options.valueCallback ? options.valueCallback(value) : value;
     const rest = string.slice(matchedString.length);
-    return { value: value2, rest };
+    return { value, rest };
   };
 }
 
@@ -1181,7 +1181,7 @@ var match = {
   ordinalNumber: buildMatchPatternFn({
     matchPattern: matchOrdinalNumberPattern,
     parsePattern: parseOrdinalNumberPattern,
-    valueCallback: (value2) => parseInt(value2, 10)
+    valueCallback: (value) => parseInt(value, 10)
   }),
   era: buildMatchFn({
     matchPatterns: matchEraPatterns,
@@ -2037,14 +2037,14 @@ var datePicker_default = (open, mode, format2) => ({
   mode,
   format: format2,
   root: {
-    ["x-on:keydown.esc"]() {
+    ["@keydown.esc"]() {
       return this.closePicker();
     },
     ["x-cloak"]() {
       return true;
     },
     ["x-model"]() {
-      return value;
+      return () => this.value;
     }
   },
   trigger: {
@@ -2056,9 +2056,6 @@ var datePicker_default = (open, mode, format2) => ({
     },
     ["@keydown.space"]() {
       return this.togglePicker();
-    },
-    ["x-model"]() {
-      return () => this.value;
     },
     [":class"]() {
       return !this.value && "text-muted-foreground";
@@ -2552,12 +2549,12 @@ var switchInput_default = (disabled) => ({
       return true;
     }
   },
-  setSwitchState(value2) {
+  setSwitchState(value) {
     if (this.disabled) {
       return;
     }
-    this.switchOn = value2;
-    this.$refs.input.checked = value2;
+    this.switchOn = value;
+    this.$refs.input.checked = value;
     this.$dispatch("checkedChange");
   },
   toggle() {
@@ -2580,8 +2577,8 @@ var tabs_default = (defaultValue, activationMode) => ({
 });
 
 // resources/js/tabsContent.js
-var tabsContent_default = (value2) => ({
-  value: value2,
+var tabsContent_default = (value) => ({
+  value,
   root: {
     ["x-show"]() {
       return this.value == this.$data.active;
@@ -2593,8 +2590,8 @@ var tabsContent_default = (value2) => ({
 });
 
 // resources/js/tabsTrigger.js
-var tabsTrigger_default = (value2) => ({
-  value: value2,
+var tabsTrigger_default = (value) => ({
+  value,
   root: {
     ["@click"]() {
       return this.setAsActive();

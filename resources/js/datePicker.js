@@ -6,14 +6,14 @@ export default (open, mode, format) => ({
     mode: mode,
     format: format,
     root: {
-        ['x-on:keydown.esc']() {
+        ['@keydown.esc']() {
             return this.closePicker();
         },
         ['x-cloak']() {
             return true;
         },
         ['x-model']() {
-            return this.value;
+            return () => this.value;
         },
     },
     trigger: {
@@ -25,10 +25,6 @@ export default (open, mode, format) => ({
         },
         ['@keydown.space']() {
             return this.togglePicker();
-        },
-        ['x-model']() {
-            // wacky
-            return () => this.value;
         },
         [':class']() {
             return !this.value && "text-muted-foreground";
