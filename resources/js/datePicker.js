@@ -13,7 +13,7 @@ export default (open, mode, format) => ({
             return true;
         },
         ['x-model']() {
-            return "value";
+            return this.value;
         },
     },
     trigger: {
