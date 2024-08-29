@@ -2188,13 +2188,32 @@
     root: {
       ["@click.outside.capture"]() {
         return this.close();
+      },
+      ["x-id"]() {
+        return ["dropdown-menu"];
+      },
+      ["@keydown.down.prevent"]() {
+        if (!this.$refs.content.contains(document.activeElement)) {
+          this.$focus.focus(this.$refs.content.querySelector("button") ?? null);
+        }
+        return this.$focus.within(this.$refs.content).wrap().next();
+      },
+      ["@keydown.up.prevent"]() {
+        if (!this.$refs.content.contains(document.activeElement)) {
+          this.$focus.focus([...this.$refs.content.querySelectorAll("button")].pop() || null);
+        }
+        return this.$focus.within(this.$refs.content).wrap().previous();
       }
     },
     trigger: {
       ["@click"]() {
-        Promise.resolve().then(() => {
-          return this.toggle();
-        });
+        return this.toggle();
+      },
+      [":id"]() {
+        return this.$id("dropdown-menu") + "-trigger";
+      },
+      [":aria-controls"]() {
+        return this.$id("dropdown-menu") + "-content";
       },
       ["@keydown.esc.window"]() {
         return this.close();
@@ -2204,13 +2223,13 @@
       ["x-anchor.offset.4"]() {
         return this.$refs.trigger;
       },
-      ["@keydown.down.prevent"]() {
-        return this.$focus.wrap().next();
+      [":id"]() {
+        return this.$id("dropdown-menu") + "-content";
       },
-      ["@keydown.up.prevent"]() {
-        return this.$focus.wrap().previous();
+      [":aria-labelledby"]() {
+        return this.$id("dropdown-menu") + "-trigger";
       },
-      ["x-trap.noscroll"]() {
+      ["x-trap.noscroll.noautofocus"]() {
         return this.dropdownMenu;
       },
       ["x-show"]() {
@@ -2226,6 +2245,15 @@
       },
       ["@mouseover"]() {
         return this.$focus.focus(this.$el);
+      },
+      ["@focus"]() {
+        this.$el.setAttribute("tabindex", 0);
+      },
+      ["@focusout"]() {
+        this.$el.setAttribute("tabindex", -1);
+      },
+      ["@keydown.tab"]() {
+        this.close();
       }
     },
     close() {
@@ -2253,6 +2281,9 @@
       ["@keydown.right"]() {
         return this.open();
       },
+      ["@click"]() {
+        return this.open();
+      },
       [":aria-expanded"]() {
         return this.subOpen;
       }
@@ -2268,6 +2299,12 @@
       ["@mouseout"]() {
         this.$el.focus();
         this.closePreview();
+      },
+      ["@focus"]() {
+        this.$el.setAttribute("tabindex", 0);
+      },
+      ["@focusout"]() {
+        this.$el.setAttribute("tabindex", -1);
       }
     },
     template: {
@@ -2292,13 +2329,33 @@
         return true;
       },
       ["@keydown.down.prevent"]() {
-        return this.$focus.wrap().next();
+        return this.$focus.within(this.$el).wrap().next();
       },
       ["@keydown.up.prevent"]() {
-        return this.$focus.wrap().previous();
+        return this.$focus.within(this.$el).wrap().previous();
       },
       ["@keydown.left.stop"]() {
         return this.close();
+      }
+    },
+    menuItem: {
+      ["@click"]() {
+        return this.close();
+      },
+      ["@mouseover"]() {
+        return this.$focus.focus(this.$el);
+      },
+      [":tabindex"]() {
+        this.subOpen && this.$el.isEqualNode(this.$root.querySelectorAll("button")[2]) ? 0 : -1;
+      },
+      ["@focus"]() {
+        this.$el.setAttribute("tabindex", 0);
+      },
+      ["@focusout"]() {
+        this.$el.setAttribute("tabindex", -1);
+      },
+      ["@keydown.tab"]() {
+        this.close();
       }
     },
     open() {
