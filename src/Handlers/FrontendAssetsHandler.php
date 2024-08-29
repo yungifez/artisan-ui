@@ -23,7 +23,7 @@ class FrontendAssetsHandler
             return $html;
         });
 
-        Blade::directive('artisanScripts', function () use ($manifestHashes)  {
+        Blade::directive('artisanScripts', function () use ($manifestHashes) {
             $html = '';
             if (config('app.debug') == 'true') {
                 $html = "<?php echo '<script src=\"".route('artisan-ui.artisan.js').'?ver='.$manifestHashes['/artisan.js']."\"></script>' ; ?>";
