@@ -2203,7 +2203,7 @@ var dropdownMenu_default = () => ({
       }
       return this.$focus.within(this.$refs.content).wrap().previous();
     },
-    ["@keydown.prevent"]($event) {
+    ["@keydown"]($event) {
       if ($event.key == "Home") {
         if (!this.$refs.content.contains(document.activeElement)) {
           return this.$focus.focus(this.$refs.content.querySelector("button") ?? null);
@@ -2347,7 +2347,7 @@ var dropdownMenuSub_default = () => ({
     ["@keydown.up.prevent"]() {
       return this.$focus.wrap().previous();
     },
-    ["@keydown.prevent"]($event) {
+    ["@keydown"]($event) {
       if ($event.key == "Home") {
         return this.$focus.wrap().first();
       }
