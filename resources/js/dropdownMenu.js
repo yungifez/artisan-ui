@@ -4,12 +4,31 @@ export default () => ({
         ['@click.outside.capture']() {
             return this.close();
         },
+        ['x-id']() {
+            return ['dropdown-menu'];
+        },
+        ['@keydown.down.prevent']() {
+            if (!this.$refs.content.contains(document.activeElement)) {
+                this.$focus.focus(this.$refs.content.querySelector('button') ?? null)
+            }
+            return this.$focus.within(this.$refs.content).wrap().next();
+        },
+        ['@keydown.up.prevent']() {
+            if (!this.$refs.content.contains(document.activeElement)) {
+                this.$focus.focus([...this.$refs.content.querySelectorAll('button')].pop() || null)
+            }
+            return this.$focus.within(this.$refs.content).wrap().previous();
+        },
     },
     trigger: {
         ['@click']() {
-            Promise.resolve().then(() => {
-                return this.toggle();
-            });
+            return this.toggle();
+        },
+        [':id']() {
+            return this.$id('dropdown-menu') + '-trigger';
+        },
+        [':aria-controls']() {
+            return this.$id('dropdown-menu') + '-content';
         },
         ['@keydown.esc.window']() {
             return this.close();
@@ -19,13 +38,13 @@ export default () => ({
         ['x-anchor.offset.4']() {
             return this.$refs.trigger;
         },
-        ['@keydown.down.prevent']() {
-            return this.$focus.wrap().next();
+        [':id']() {
+            return this.$id('dropdown-menu') + '-content';
         },
-        ['@keydown.up.prevent']() {
-            return this.$focus.wrap().previous();
+        [':aria-labelledby']() {
+            return this.$id('dropdown-menu') + '-trigger';
         },
-        ['x-trap.noscroll']() {
+        ['x-trap.noscroll.noautofocus']() {
             return this.dropdownMenu;
         },
         ['x-show']() {
@@ -42,6 +61,15 @@ export default () => ({
         ['@mouseover']() {
             return this.$focus.focus(this.$el);
         },
+        ['@focus']() {
+            this.$el.setAttribute('tabindex', 0)
+        },
+        ['@focusout']() {
+            this.$el.setAttribute('tabindex', -1)
+        },
+        ['@keydown.tab']() {
+            this.close()
+        },
     },
     close() {
         this.dropdownMenu = false;
@@ -52,4 +80,5 @@ export default () => ({
     toggle() {
         this.dropdownMenu ? this.close() : this.open()
     }
+
 })

@@ -11,6 +11,9 @@ export default () => ({
         ['@keydown.right']() {
             return this.open();
         },
+        ['@click']() {
+            return this.open();
+        },
         [':aria-expanded']() {
             return this.subOpen;
         },
@@ -26,6 +29,12 @@ export default () => ({
         ['@mouseout']() {
             this.$el.focus();
             this.closePreview();
+        },
+        ['@focus']() {
+            this.$el.setAttribute('tabindex', 0)
+        },
+        ['@focusout']() {
+            this.$el.setAttribute('tabindex', -1)
         },
     },
     template: {
@@ -50,13 +59,33 @@ export default () => ({
             return true;
         },
         ['@keydown.down.prevent']() {
-            return this.$focus.wrap().next();
+            return this.$focus.within(this.$el).wrap().next();
         },
         ['@keydown.up.prevent']() {
-            return this.$focus.wrap().previous();
+            return this.$focus.within(this.$el).wrap().previous();
         },
         ['@keydown.left.stop']() {
             return this.close();
+        },
+    },
+    menuItem: {
+        ['@click']() {
+            return this.close();
+        },
+        ['@mouseover']() {
+            return this.$focus.focus(this.$el);
+        },
+        [':tabindex']() {
+            this.subOpen && this.$el.isEqualNode(this.$root.querySelectorAll('button')[2]) ? 0 : -1
+        },
+        ['@focus']() {
+            this.$el.setAttribute('tabindex', 0)
+        },
+        ['@focusout']() {
+            this.$el.setAttribute('tabindex', -1)
+        },
+        ['@keydown.tab']() {
+            this.close()
         },
     },
     open() {
