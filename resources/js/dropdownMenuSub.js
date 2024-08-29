@@ -59,10 +59,18 @@ export default () => ({
             return true;
         },
         ['@keydown.down.prevent']() {
-            return this.$focus.within(this.$el).wrap().next();
+            return this.$focus.wrap().next();
         },
         ['@keydown.up.prevent']() {
-            return this.$focus.within(this.$el).wrap().previous();
+            return this.$focus.wrap().previous();
+        },
+        ['@keydown.prevent']($event) {
+            if ($event.key =='Home') {
+                return this.$focus.wrap().first();
+            }
+            if ($event.key =='End') {
+                return this.$focus.wrap().last();
+            }
         },
         ['@keydown.left.stop']() {
             return this.close();

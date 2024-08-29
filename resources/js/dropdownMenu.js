@@ -9,15 +9,29 @@ export default () => ({
         },
         ['@keydown.down.prevent']() {
             if (!this.$refs.content.contains(document.activeElement)) {
-                this.$focus.focus(this.$refs.content.querySelector('button') ?? null)
+                return this.$focus.focus(this.$refs.content.querySelector('button') ?? null)
             }
             return this.$focus.within(this.$refs.content).wrap().next();
         },
         ['@keydown.up.prevent']() {
             if (!this.$refs.content.contains(document.activeElement)) {
-                this.$focus.focus([...this.$refs.content.querySelectorAll('button')].pop() || null)
+                return this.$focus.focus([...this.$refs.content.querySelectorAll('button')].pop() || null)
             }
             return this.$focus.within(this.$refs.content).wrap().previous();
+        },
+        ['@keydown.prevent']($event) {
+            if ($event.key =='Home') {
+                if (!this.$refs.content.contains(document.activeElement)) {
+                    return this.$focus.focus(this.$refs.content.querySelector('button') ?? null)
+                }
+                return this.$focus.within(this.$refs.content).wrap().first();
+            }
+            if ($event.key =='End') {
+                if (!this.$refs.content.contains(document.activeElement)) {
+                    return this.$focus.focus([...this.$refs.content.querySelectorAll('button')].pop() || null)
+                }
+                return this.$focus.within(this.$refs.content).wrap().last();
+            }
         },
     },
     trigger: {
