@@ -2646,6 +2646,9 @@ var tabs_default = (defaultValue, activationMode) => ({
   active: defaultValue,
   activationMode,
   tabsList: {
+    ["x-id"]() {
+      return ["tab"];
+    },
     ["x-on:keydown.left.prevent"]() {
       return this.$focus.wrap().previous();
     },
@@ -2667,6 +2670,12 @@ var tabsContent_default = (value) => ({
     },
     ["x-cloak"]() {
       return this.value == this.$data.active;
+    },
+    [":aria-controls"]() {
+      return this.$id("tab") + "-" + this.value + "-trigger";
+    },
+    [":id"]() {
+      return this.$id("accordion-item") + "-panel";
     }
   }
 });
@@ -2683,11 +2692,20 @@ var tabsTrigger_default = (value) => ({
         this.setAsActive();
       }
     },
+    [":aria-selected"]() {
+      return this.value == this.$data.active;
+    },
     [":tabindex"]() {
       return this.$data.active == this.value ? 0 : -1;
     },
     [":class"]() {
       return { "bg-background text-foreground shadow-sm": this.$data.active == this.value };
+    },
+    [":aria-labelledby"]() {
+      return this.$id("tab") + "-" + this.value + "-panel";
+    },
+    [":id"]() {
+      return this.$id("accordion-item") + "-trigger";
     }
   },
   setAsActive() {
