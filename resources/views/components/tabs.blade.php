@@ -1,6 +1,7 @@
 <div x-data="tabs('{{$attributes->get('defaultValue')}}', '{{$attributes->get('activationMode')}}')" {{$attributes}}>
     @isset($tabsList)
-    <div {{$tabsList->attributes->class(['inline-flex h-10 items-center justify-center rounded-md bg-muted p-1
+    <div role="tablist" {{$tabsList->attributes->class(['inline-flex h-10 items-center justify-center rounded-md
+        bg-muted p-1
         text-muted-foreground'])}} x-bind="tabsList">
         {{$tabsList}}
     </div>

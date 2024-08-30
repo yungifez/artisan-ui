@@ -10,5 +10,11 @@ export default (value) => ({
         ['x-cloak']() {
             return this.value == this.$data.active;
         },
+        [':aria-controls']() {
+            return this.$id('tab') + '-'+this.value+'-trigger';
+        },
+        [':id']() {
+            return this.$id('accordion-item') + '-panel';
+        },
     },
 })
