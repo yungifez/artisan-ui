@@ -2286,10 +2286,10 @@ var dropdownMenuSub_default = () => ({
   subPreview: false,
   root: {
     ["@keydown.escape"]() {
-      return this.close();
+      return this.closeSub();
     },
     ["@click.outside"]() {
-      return this.close();
+      return this.closeSub();
     },
     ["@keydown.right"]() {
       return this.open();
@@ -2356,12 +2356,13 @@ var dropdownMenuSub_default = () => ({
       }
     },
     ["@keydown.left.stop"]() {
-      return this.close();
+      return this.closeSub();
     }
   },
   menuItem: {
     ["@click"]() {
-      return this.close();
+      this.closeSub();
+      this.$data.close();
     },
     ["@mouseover"]() {
       return this.$focus.focus(this.$el);
@@ -2376,17 +2377,17 @@ var dropdownMenuSub_default = () => ({
       this.$el.setAttribute("tabindex", -1);
     },
     ["@keydown.tab"]() {
-      this.close();
+      this.closeSub();
     }
   },
   open() {
     this.subOpen = true;
   },
-  close() {
+  closeSub() {
     this.subOpen = false;
   },
   toggle() {
-    this.subOpen == true ? this.close() : this.open();
+    this.subOpen == true ? this.closeSub() : this.open();
   },
   openPreview() {
     this.subPreview = true;
