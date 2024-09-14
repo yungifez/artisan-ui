@@ -1,6 +1,6 @@
 <div x-data="dropdownMenuSub" x-bind="root" role="menuitem" aria-haspopup="menu" {{$attributes}}>
     @isset($trigger)
-    <x-aui::button variant="ghost" type="button" x-ref="subTrigger" tabindex="-1" x-bind="trigger"
+    <x-aui::button variant="ghost" size="none" type="button" x-ref="subTrigger" tabindex="-1" x-bind="trigger"
         ::class="{'bg-accent' : subOpen}" :attributes="$trigger->attributes->class(['flex w-full cursor-default
         select-none items-center rounded-sm
         px-2 py-1.5 text-sm outline-none focus:bg-accent'])">
