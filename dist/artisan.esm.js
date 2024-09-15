@@ -2443,6 +2443,7 @@ var popover_default = () => ({
 var select_default = (multiple, disabled) => ({
   options: [],
   selected: [],
+  selectedValues: [],
   multiple,
   disabled,
   show: false,
@@ -2502,7 +2503,10 @@ var select_default = (multiple, disabled) => ({
   toggle() {
     this.show ? this.close() : this.open();
   },
-  select(index, event) {
+  select(index) {
+    if (!!this.options[index].disabled) {
+      return;
+    }
     if (!this.options[index].selected || !this.multiple) {
       if (!this.multiple) {
         for (let i = 0; i < this.selected.length; i++) {
@@ -2511,25 +2515,32 @@ var select_default = (multiple, disabled) => ({
         this.selected.length = 0;
       }
       this.options[index].selected = true;
-      this.options[index].element = event.target;
       this.selected.push(index);
     } else {
       this.selected.splice(this.selected.lastIndexOf(index), 1);
       this.options[index].selected = false;
     }
-    this.dispatchSelect();
+    this.setSelectedValues();
+    this.dispatchChange();
     if (!this.multiple) {
       this.close();
     }
   },
-  dispatchSelect() {
+  dispatchChange() {
     this.$nextTick(() => {
-      this.$dispatch("select", { value: this.multiple ? this.selected.map((el) => this.options[el].value) : this.options[this.selected[0]].value });
+      this.$dispatch("change", { value: this.multiple ? this.selected.map((el) => this.options[el].value) : this.options[this.selected[0]].value });
     });
   },
-  remove(index, option) {
-    this.options[option].selected = false;
-    this.selected.splice(index, 1);
+  remove(index) {
+    const idx = this.selected.indexOf(index);
+    if (idx !== -1) {
+      this.selected.splice(idx, 1);
+      this.options[index].selected = false;
+    } else {
+      console.warn(`Option not found.`);
+    }
+    this.setSelectedValues();
+    this.dispatchChange();
   },
   loadOptions() {
     const options = this.$root.childNodes[1].options;
@@ -2538,6 +2549,7 @@ var select_default = (multiple, disabled) => ({
       this.options.push({
         value: options[i].value,
         text: options[i].innerText,
+        disabled: options[i].disabled,
         selected: options[i].getAttribute("selected") != null || i == 0 && !this.multiple ? this.selected.push(i) : false
       });
       if (!this.multiple && options[i].getAttribute("selected") != null) {
@@ -2546,10 +2558,10 @@ var select_default = (multiple, disabled) => ({
       }
     }
   },
-  selectedValues() {
-    return this.selected.map((option) => {
+  setSelectedValues() {
+    this.selectedValues = this.multiple ? this.selected.map((option) => {
       return this.options[option].value;
-    });
+    }) : this.options[this.selected[0]].value;
   }
 });
 
