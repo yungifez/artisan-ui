@@ -4,13 +4,18 @@
 ])
 
 <div x-data="select({{$attributes->has('multiple') ? 'true' : 'false'}}, {{$attributes->has('disabled') ? 'true' : 'false'}})"
-    x-bind="root" {{$attributes->class(['relative'])}}>
+    x-bind="root" x-modelable="selectedValues" {{$attributes->class(['relative'])}}>
     <select class="hidden">
         {{$slot}}
     </select>
     {{--secretly use inputs for form submission--}}
-    <template x-for="selectedItem in selected ">
-        <input type="hidden" name="{{$name}}" :value="options[selectedItem].value">
+    <template x-if="!multiple">
+        <input type="hidden" name="{{$name}}" :value="selectedValues">
+    </template>
+    <template x-if="multiple">
+        <template x-for="selectedItem in selectedValues">
+            <input type="hidden" name="{{$name}}" :value="selectedItem">
+        </template>
     </template>
     <div class="grid grid-cols-1 grid-rows-1">
         <button x-bind="trigger" x-ref="select" type="button" :class="{'border-muted' : disabled}" class="flex min-h-10 row-start-1 col-start-1
@@ -40,12 +45,12 @@
         <div class="row-start-1 col-start-1 w-fit flex mr-9 flex-1 gap-y-1 flex-wrap mx-2 my-3">
             {{--display selected multiple items--}}
             <template x-if="multiple">
-                <template x-for="(option,index) in selected" :key="options[option].value">
+                <template x-for="(index) in selected" :key="options[index].value">
                     <div class="bg-muted flex mx-1">
                         <p class="text-xs font-normal leading-none max-w-full flex-initial pl-1 py-1 "
-                            x-model="options[option]" x-text="options[option].text"></p>
+                            x-text="options[index].text"></p>
                         <div class="flex flex-auto flex-row-reverse">
-                            <button x-on:click="remove(index,option)" class="px-2 py-1" type="button">
+                            <button x-on:click="remove(index)" class="px-2 py-1" type="button">
                                 <x-aui::x class="fill-foreground h-2" />
                             </button>
                         </div>
@@ -59,8 +64,8 @@
         <div class="flex flex-col w-full">
             <template x-for="(option,index) in options" :key="index">
                 <button
-                    class="cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative hover:bg-accent/60 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    @click="select(index,$event)" type="button">
+                    class="cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative disabled:text-muted-foreground hover:bg-accent/60 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    @click="select(index)" type="button" :disabled="options[index].disabled">
                     <div class="w-full items-center flex">
                         <div class="ml-2 w-3">
                             <svg x-show="options[index].selected" class="fill-foreground" viewBox="0 0 20 20"
