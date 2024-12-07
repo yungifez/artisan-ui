@@ -2185,11 +2185,30 @@ var dialog_default = (show, dismissable) => ({
 var dropdownMenu_default = () => ({
   dropdownMenu: false,
   root: {
-    ["@click.outside.capture"]() {
-      return this.close();
-    },
     ["x-id"]() {
       return ["dropdown-menu"];
+    }
+  },
+  trigger: {
+    ["@click"]() {
+      return this.toggle();
+    },
+    [":id"]() {
+      return this.$id("dropdown-menu") + "-trigger";
+    },
+    [":aria-controls"]() {
+      return this.$id("dropdown-menu") + "-content";
+    },
+    ["@keydown.esc.window"]() {
+      return this.close();
+    }
+  },
+  content: {
+    ["x-anchor.offset.4"]() {
+      return this.$refs.trigger;
+    },
+    ["@click.outside.capture"]() {
+      return this.close();
     },
     ["@keydown.down.prevent"]() {
       if (!this.$refs.content.contains(document.activeElement)) {
@@ -2216,25 +2235,6 @@ var dropdownMenu_default = () => ({
         }
         return this.$focus.within(this.$refs.content).wrap().last();
       }
-    }
-  },
-  trigger: {
-    ["@click"]() {
-      return this.toggle();
-    },
-    [":id"]() {
-      return this.$id("dropdown-menu") + "-trigger";
-    },
-    [":aria-controls"]() {
-      return this.$id("dropdown-menu") + "-content";
-    },
-    ["@keydown.esc.window"]() {
-      return this.close();
-    }
-  },
-  content: {
-    ["x-anchor.offset.4"]() {
-      return this.$refs.trigger;
     },
     [":id"]() {
       return this.$id("dropdown-menu") + "-content";
