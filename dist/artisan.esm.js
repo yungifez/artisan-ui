@@ -2426,11 +2426,22 @@ var dropdownMenuSub_default = () => ({
 // resources/js/popover.js
 var popover_default = () => ({
   popover: false,
+  root: {
+    ["x-id"]() {
+      return ["popover"];
+    }
+  },
   trigger: {
     ["@click"]() {
       return this.toggle();
     },
-    ["@keydown.escape"]() {
+    [":id"]() {
+      return this.$id("popover") + "-trigger";
+    },
+    [":aria-controls"]() {
+      return this.$id("popover") + "-content";
+    },
+    ["@keydown.esc.window"]() {
       return this.close();
     }
   },
@@ -2438,10 +2449,7 @@ var popover_default = () => ({
     ["x-anchor.offset.4"]() {
       return this.$refs.trigger;
     },
-    ["@keydown.tab.prevent"]() {
-      return this.close();
-    },
-    ["x-trap.noscroll"]() {
+    ["x-trap"]() {
       return this.popover;
     },
     ["@click.outside.capture"]() {
@@ -2452,6 +2460,12 @@ var popover_default = () => ({
     },
     ["x-transition"]() {
       return true;
+    },
+    [":id"]() {
+      return this.$id("popover") + "-content";
+    },
+    [":aria-labelledby"]() {
+      return this.$id("popover-menu") + "-trigger";
     }
   },
   close() {
