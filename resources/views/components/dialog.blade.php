@@ -6,9 +6,9 @@
         @endisset
     </div>
 
-    <template @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}"
-        @else x-if="true"
-        @endif>
+    @if ($attributes->has('x-teleport'))
+    <template x-teleport="{{$attributes->get('x-teleport')}}">
+        @endif
         <div {{$attributes->except(['x-teleport'])->class(["fixed min-h-[100vh] inset-0 z-50 bg-black/80" ])}}
             x-bind="overlay" role="dialog">
             @isset($content)
@@ -20,5 +20,7 @@
             </div>
             @endisset
         </div>
+        @if ($attributes->has('x-teleport'))
     </template>
+    @endif
 </div>
