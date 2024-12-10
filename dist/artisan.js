@@ -2653,12 +2653,12 @@
         return this.switchOn;
       },
       [":aria-labelledby"]() {
-        if (this.$refs.input.labels[0]?.id) {
+        if (this.$refs.input.labels[0]?.id ?? false) {
           return this.$refs.input.labels[0].id;
         }
       },
       [":aria-label"]() {
-        if (this.$refs.input.labels[0]?.innerText) {
+        if (this.$refs.input.labels[0].innerText ?? false) {
           return this.$refs.input.labels[0].innerText;
         }
       }
