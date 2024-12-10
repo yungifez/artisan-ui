@@ -8,8 +8,9 @@
 'toName',
 'parentClass' => ''
 ])
-<div x-ref="datePickerInput" x-data='datePicker(@json($open), @json($mode), @json($format), @json($value))'
-    x-bind="root" {{$attributes->class(['relative'])}}>
+<div x-ref="datePickerInput" x-modelable="value"
+    x-data='datePicker(@json($open), @json($value), @json($mode), @json($format))' x-bind="root" {{$attributes->
+    class(['relative'])}}>
     <x-aui::button class="justify-start min-h-10 w-full h-fit text-left flex-wrap font-normal" type="button"
         x-bind="trigger" variant="outline">
         <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

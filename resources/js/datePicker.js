@@ -1,6 +1,6 @@
 import { format as dateFormat } from "date-fns";
 
-export default (open, mode, format) => ({
+export default (open, value, mode, format) => ({
     open: open,
     value: null,
     mode: mode,
@@ -11,9 +11,6 @@ export default (open, mode, format) => ({
         },
         ['x-cloak']() {
             return true;
-        },
-        ['x-model']() {
-            return () => this.value;
         },
     },
     trigger: {
@@ -53,6 +50,11 @@ export default (open, mode, format) => ({
             return this.value = this.$event.detail.value;
         },
     },
+    init() {
+        if (!!value) {
+            this.value = value
+        }
+    },
     openPicker() {
         this.open = true
     },
@@ -62,9 +64,9 @@ export default (open, mode, format) => ({
     togglePicker() {
         this.open ? this.closePicker() : this.openPicker()
     },
-    formatDate(date){
+    formatDate(date) {
         if (date == null) {
-           return null;
+            return null;
         }
         return dateFormat(new Date(date), this.format)
     }
