@@ -5,6 +5,7 @@ export default (open, value, mode, format) => ({
     value: null,
     mode: mode,
     format: format,
+    ignoredEvents: 0,
     root: {
         ['@keydown.esc']() {
             return this.closePicker();
@@ -47,13 +48,12 @@ export default (open, value, mode, format) => ({
             return this.open;
         },
         ['@select']() {
-            return this.value = this.$event.detail.value;
+            if (this.ignoredEvents > 0) {
+                this.value = this.$event.detail.value;
+            } else {
+                this.ignoredEvents++
+            }
         },
-    },
-    init() {
-        if (!!value) {
-            this.value = value
-        }
     },
     openPicker() {
         this.open = true

@@ -60,7 +60,7 @@ export default (selected, mode, disabled, min, max, required) => ({
         } else if (this.mode == "multiple") {
             this.modeHandler = new MultipleModeHandler(selected, required, min, max)
         } else if (this.mode == "range") {
-            this.modeHandler = new RangeModeHandler(selected,required, min, max)
+            this.modeHandler = new RangeModeHandler(selected, required, min, max)
         } else {
             console.error("Mode is invalid")
             this.modeHandler = new SingleModeHandler(selected, required)
@@ -70,7 +70,7 @@ export default (selected, mode, disabled, min, max, required) => ({
             disabled.forEach((element, index) => {
                 this.disabled.push(new Matcher(element))
             });
-        }else if(typeof disabled == 'object' && disabled != null){
+        } else if (typeof disabled == 'object' && disabled != null) {
             this.disabled = [new Matcher(disabled)]
         }
 
@@ -80,7 +80,7 @@ export default (selected, mode, disabled, min, max, required) => ({
         this.focusedDay = now.getDay();
         this.calculateDays();
         if (selected) {
-           return this.dispatchSelect()
+            return this.dispatchSelect()
         }
     },
     dispatchSelect() {
@@ -168,9 +168,9 @@ export default (selected, mode, disabled, min, max, required) => ({
     isDisabled(date) {
         return this.disabled.some(rule => rule.passes(date)) || this.modeHandler.isDisabled(date);
     },
-    isRangeMiddle(date){
+    isRangeMiddle(date) {
         if (mode == 'range') {
-           return this.modeHandler.isRangeMiddle(date)
+            return this.modeHandler.isRangeMiddle(date)
         }
 
         return false

@@ -2032,20 +2032,18 @@
   }
 
   // resources/js/datePicker.js
-  var datePicker_default = (open, mode, format2) => ({
+  var datePicker_default = (open, value, mode, format2) => ({
     open,
     value: null,
     mode,
     format: format2,
+    ignoredEvents: 0,
     root: {
       ["@keydown.esc"]() {
         return this.closePicker();
       },
       ["x-cloak"]() {
         return true;
-      },
-      ["x-model"]() {
-        return () => this.value;
       }
     },
     trigger: {
@@ -2082,7 +2080,11 @@
         return this.open;
       },
       ["@select"]() {
-        return this.value = this.$event.detail.value;
+        if (this.ignoredEvents > 0) {
+          this.value = this.$event.detail.value;
+        } else {
+          this.ignoredEvents++;
+        }
       }
     },
     openPicker() {
