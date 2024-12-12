@@ -56,18 +56,19 @@ export default (selected, mode, disabled, min, max, required) => ({
     },
     init() {
         if (this.mode == "single") {
-            this.modeHandler = new SingleModeHandler(selected, required)
+            this.modeHandler = new SingleModeHandler(required)
         } else if (this.mode == "multiple") {
-            this.modeHandler = new MultipleModeHandler(selected, required, min, max)
+            this.modeHandler = new MultipleModeHandler(required, min, max)
         } else if (this.mode == "range") {
-            this.modeHandler = new RangeModeHandler(selected, required, min, max)
+            this.modeHandler = new RangeModeHandler(required, min, max)
         } else {
-            console.error("Mode is invalid")
-            this.modeHandler = new SingleModeHandler(selected, required)
+            console.error("Mode is invalid, defaulting to single mode")
+            this.modeHandler = new SingleModeHandler(required)
         }
 
+        // add items to the disabled rules array
         if (Array.isArray(disabled)) {
-            disabled.forEach((element, index) => {
+            disabled.forEach((element) => {
                 this.disabled.push(new Matcher(element))
             });
         } else if (typeof disabled == 'object' && disabled != null) {
@@ -79,12 +80,13 @@ export default (selected, mode, disabled, min, max, required) => ({
         this.year = now.getFullYear();
         this.focusedDay = now.getDay();
         this.calculateDays();
-        if (selected) {
-            return this.dispatchSelect()
+
+        if (!!selected) {
+            this.dispatchChange()
         }
     },
-    dispatchSelect() {
-        this.$nextTick(() => { this.$dispatch('select', { value: this.modeHandler.value }) })
+    dispatchChange() {
+        this.$nextTick(() => { this.$dispatch('change', { value: this.modeHandler.value }) })
     },
     dayClicked(date) {
         let selectedDate = new Date(this.year, this.month, date);
@@ -94,7 +96,7 @@ export default (selected, mode, disabled, min, max, required) => ({
         this.focusedDay = date;
         let dispatchEvent = this.modeHandler.dayClicked(selectedDate)
         if (dispatchEvent) {
-            this.dispatchSelect()
+            this.dispatchChange()
         }
     },
     focusAdd(value) {

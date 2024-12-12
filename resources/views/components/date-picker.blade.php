@@ -32,7 +32,8 @@
                     <template x-for="(item, index) in value">
                         <span>
                             <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
-                            <input type="hidden" {{$attributes}} :value="item.toISOString().split('T')[0]" />
+                            <input type="hidden" {{$attributes}}
+                                :value="(new Date(item))?.toISOString().split('T')[0]" />
                         </span>
                     </template>
                 </template>
@@ -50,14 +51,14 @@
                     <span x-text="' - ' + formatDate(value.to)"></span>
                 </template>
                 <input type="hidden" name="{{$fromName ??  $attributes->get('name').'[\'from\']'}}" {{$attributes}}
-                    :value="value?.from?.toISOString().split('T')[0]" />
+                    :value="(new Date(value))?.from?.toISOString().split('T')[0]" />
                 <input type="hidden" name="{{$toName ??  $attributes->get('name').'[\'to\']'}}" {{$attributes}}
-                    :value="value?.to?.toISOString().split('T')[0]" />
+                    :value="(new Date(value))?.to?.toISOString().split('T')[0]" />
             </span>
         </template>
     </x-aui::button>
     <div x-bind="calendar" x-cloak class="z-10">
-        <x-aui::calendar :required="$attributes->get('required')" :mode="$mode" :selected="$value" tabindex="0"
-            class="outline-none" />
+        <x-aui::calendar :required="$attributes->get('required')" :mode="$mode" :selected="$value" x-model="value"
+            tabindex="0" class="outline-none" />
     </div>
 </div>

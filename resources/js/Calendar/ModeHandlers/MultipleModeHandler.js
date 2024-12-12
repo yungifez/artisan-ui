@@ -1,26 +1,40 @@
 export default class MultipleModeHandler {
-    constructor(values, required, min, max) {
+    constructor(required, min, max) {
         this.min = min
         this.max = max
-        this.values = [];
+        this._value = [];
         this.required = !!required;
-        if (!Array.isArray(values)) {
-            console.warn('Selected type supplied to calendar in multiple mode is not an array')
-        } else {
-            values.forEach(value => {
-                value = this.createDateWithoutTime(value)
-                if (this.isSelectedDay(value)) {
-                    return;
-                }
-
-                return this.values.push(value)
-            });
-        }
     }
 
-    isDisabled(date){
-        if (this.max && this.max <= this.values.length) {
-           return !this.isSelectedDay(date)
+    get value() {
+        return this._value
+    }
+
+    set value(value) {
+        if (!Array.isArray(value)) {
+            console.warn('Selected type supplied to calendar in multiple mode is not an array')
+            return
+        }
+        value.forEach(item => {
+            const processDate = (input) => {
+                if (input == null) return null;
+                if (typeof input === "string") return this.createDateWithoutTime(input);
+                if (input instanceof Date) return input;
+                console.warn("Item is not a date or date string, skipping");
+                return null;
+            };
+            item = processDate(item)
+            if (this.isSelectedDay(item)) {
+                return;
+            }
+
+            this._value.push(item)
+        });
+    }
+
+    isDisabled(date) {
+        if (this.max && this.max <= this._value.length) {
+            return !this.isSelectedDay(date)
         }
     }
 
@@ -37,27 +51,23 @@ export default class MultipleModeHandler {
     }
 
     dayClicked(date) {
-        let index = this.indexOfDateInValue(this.values, date)
+        let index = this.indexOfDateInValue(this._value, date)
         if (index >= 0) {
-            this.values.splice(index, 1);
+            this._value.splice(index, 1);
         } else {
-            this.values.push(date)
+            this._value.push(date)
         }
 
         return true;
     }
 
     isSelectedDay(date) {
-        return this.indexOfDateInValue(this.values, date) >= 0;
-    }
-
-    get value(){
-        return this.values
+        return this.indexOfDateInValue(this._value, date) >= 0;
     }
 
     createDateWithoutTime(value) {
         let date = new Date(value)
-        date.setHours(0,0,0,0);
+        date.setHours(0, 0, 0, 0);
 
         return date;
     }

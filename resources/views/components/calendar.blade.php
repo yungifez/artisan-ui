@@ -4,7 +4,7 @@
     x-bind="root" {{$attributes->
     class([' p-4
     antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]'])}}
-    >
+    x-modelable="modeHandler.value">
     <div class="flex items-center justify-between mb-3">
         <button x-bind="previousMonthTrigger" type="button"
             class="border dark:border-input inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-gray-100 dark:hover:bg-opacity-10">
