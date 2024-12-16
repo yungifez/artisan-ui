@@ -2373,9 +2373,9 @@
       },
       [":style"]() {
         let correction = 0;
-        if (this.$anchor.x + this.$refs.content.scrollWidth > window.innerWidth) {
+        if (this.$anchor.x + this.$refs.content.offsetWidth > window.innerWidth) {
           correction = this.$refs.content.offsetWidth / 2;
-        } else if (this.$anchor.x - this.$refs.subTrigger.scrollWidth <= 0) {
+        } else if (this.$anchor.x - this.$refs.subTrigger.offsetWidth <= 0) {
           correction = -this.$refs.content.offsetWidth;
         }
         return { position: "absolute", top: this.$anchor.y + "px", left: this.$anchor.x - correction + "px" };
