@@ -2206,7 +2206,9 @@
         return ["dropdown-menu"];
       },
       ["@click.outside.capture"]() {
-        return this.close();
+        if (!this.$refs.content.contains(this.$event.target) && !this.$refs.trigger.contains(this.$event.target)) {
+          return this.close();
+        }
       }
     },
     trigger: {
@@ -2337,15 +2339,12 @@
       ["@keydown.right"]() {
         return this.open();
       },
-      ["@click"]() {
-        return this.open();
-      },
       [":aria-expanded"]() {
         return this.subOpen;
       }
     },
     trigger: {
-      ["@click"]() {
+      ["@click.capture.stop"]() {
         return this.open();
       },
       ["@mouseover"]() {
@@ -2369,8 +2368,17 @@
       }
     },
     content: {
-      ["x-anchor.left-start.right-start"]() {
+      ["x-anchor.right-start.no-style"]() {
         return this.$refs.subTrigger;
+      },
+      [":style"]() {
+        let correction = 0;
+        if (this.$anchor.x + this.$refs.content.offsetWidth > window.innerWidth) {
+          correction = this.$refs.content.offsetWidth / 2;
+        } else if (this.$anchor.x - this.$refs.subTrigger.offsetWidth <= 0) {
+          correction = -this.$refs.content.offsetWidth;
+        }
+        return { position: "absolute", top: this.$anchor.y + "px", left: this.$anchor.x - correction + "px" };
       },
       ["x-trap"]() {
         return this.subOpen;
@@ -2403,7 +2411,7 @@
       }
     },
     menuItem: {
-      ["@click"]() {
+      ["@click.capture"]() {
         this.closeSub();
         this.$data.close();
       },

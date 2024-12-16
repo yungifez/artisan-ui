@@ -5,7 +5,10 @@ export default () => ({
             return ['dropdown-menu'];
         },
         ['@click.outside.capture']() {
-            return this.close();
+            //dont close when event is from content and trigger, especially when teleported
+            if (!this.$refs.content.contains(this.$event.target) && !this.$refs.trigger.contains(this.$event.target)) {
+                return this.close();
+            }
         },
     },
     trigger: {
