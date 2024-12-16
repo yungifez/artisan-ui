@@ -65,10 +65,10 @@ export default () => ({
             return this.$focus.wrap().previous();
         },
         ['@keydown']($event) {
-            if ($event.key =='Home') {
+            if ($event.key == 'Home') {
                 return this.$focus.wrap().first();
             }
-            if ($event.key =='End') {
+            if ($event.key == 'End') {
                 return this.$focus.wrap().last();
             }
         },
@@ -85,7 +85,7 @@ export default () => ({
             return this.$focus.focus(this.$el);
         },
         [':tabindex']() {
-            this.subOpen && this.$el.isEqualNode(this.$root.querySelectorAll('button')[2]) ? 0 : -1
+            (this.subOpen || this.subPreview) && this.$el.isEqualNode(this.$root.querySelectorAll('button')[2]) ? 0 : -1
         },
         ['@focus']() {
             this.$el.setAttribute('tabindex', 0)

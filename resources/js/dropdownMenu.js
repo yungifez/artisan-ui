@@ -4,6 +4,9 @@ export default () => ({
         ['x-id']() {
             return ['dropdown-menu'];
         },
+        ['@click.outside.capture']() {
+            return this.close();
+        },
     },
     trigger: {
         ['@click']() {
@@ -48,9 +51,6 @@ export default () => ({
     content: {
         ['x-anchor.offset.4']() {
             return this.$refs.trigger;
-        },
-        ['@click.outside.capture']() {
-            return this.close();
         },
         ['@keydown.down.prevent']() {
             if (!this.$refs.content.contains(document.activeElement)) {

@@ -245,25 +245,40 @@ var Matcher = class {
 
 // resources/js/Calendar/ModeHandlers/MultipleModeHandler.js
 var MultipleModeHandler = class {
-  constructor(values, required, min, max) {
+  constructor(required, min, max) {
     this.min = min;
     this.max = max;
-    this.values = [];
+    this._value = [];
     this.required = !!required;
-    if (!Array.isArray(values)) {
+  }
+  get value() {
+    return this._value;
+  }
+  set value(value) {
+    if (!Array.isArray(value)) {
       console.warn("Selected type supplied to calendar in multiple mode is not an array");
-    } else {
-      values.forEach((value) => {
-        value = this.createDateWithoutTime(value);
-        if (this.isSelectedDay(value)) {
-          return;
-        }
-        return this.values.push(value);
-      });
+      return;
     }
+    value.forEach((item) => {
+      const processDate = (input) => {
+        if (input == null)
+          return null;
+        if (typeof input === "string")
+          return this.createDateWithoutTime(input);
+        if (input instanceof Date)
+          return input;
+        console.warn("Item is not a date or date string, skipping");
+        return null;
+      };
+      item = processDate(item);
+      if (this.isSelectedDay(item)) {
+        return;
+      }
+      this._value.push(item);
+    });
   }
   isDisabled(date) {
-    if (this.max && this.max <= this.values.length) {
+    if (this.max && this.max <= this._value.length) {
       return !this.isSelectedDay(date);
     }
   }
@@ -277,19 +292,16 @@ var MultipleModeHandler = class {
     return -1;
   }
   dayClicked(date) {
-    let index = this.indexOfDateInValue(this.values, date);
+    let index = this.indexOfDateInValue(this._value, date);
     if (index >= 0) {
-      this.values.splice(index, 1);
+      this._value.splice(index, 1);
     } else {
-      this.values.push(date);
+      this._value.push(date);
     }
     return true;
   }
   isSelectedDay(date) {
-    return this.indexOfDateInValue(this.values, date) >= 0;
-  }
-  get value() {
-    return this.values;
+    return this.indexOfDateInValue(this._value, date) >= 0;
   }
   createDateWithoutTime(value) {
     let date = new Date(value);
@@ -300,68 +312,69 @@ var MultipleModeHandler = class {
 
 // resources/js/Calendar/ModeHandlers/RangeModeHandler.js
 var RangeModeHandler = class {
-  constructor(values, required, min, max) {
+  constructor(required, min, max) {
     this.min = min;
     this.max = max;
     this.required = !!required;
-    this.values = { from: null, to: null };
-    if (typeof values.from == "undefined" || typeof values.to == "undefined") {
-      console.warn("Selected type supplied to calendar in range mode is not an object with from and to values");
-    } else {
-      if (typeof values.from == "string") {
-        this.values.from = this.createDateWithoutTime(values.from);
-      } else if (typeof values.from == "Date") {
-        this.values.from = values.from;
-      } else {
-        console.warn("Item is not date or date string, skipping");
-      }
-      if (typeof values.to == "string") {
-        this.values.to = this.createDateWithoutTime(values.to);
-      } else if (typeof values.to == "Date") {
-        this.values.to = values.to;
-      } else {
-        console.warn("Item is not date or date string, skipping");
-      }
-    }
   }
   dayClicked(date) {
-    if (this.values.from == null || this.values.to != null && this.values.to.getTime() == date.getTime()) {
-      this.values.from = date;
-      this.values.to = null;
+    if (this._value.from == null || this._value.to != null && this._value.to.getTime() == date.getTime()) {
+      this._value.from = date;
+      this._value.to = null;
       return true;
     }
-    if (this.values.from.getTime() == date.getTime()) {
-      this.values.from = this.required ? this.values.from : null;
-      this.values.to = null;
+    if (this._value.from.getTime() == date.getTime()) {
+      this._value.from = this.required ? this._value.from : null;
+      this._value.to = null;
       return true;
     }
-    if (this.values.from.getTime() >= date.getTime()) {
-      this.values.from = date;
+    if (this._value.from.getTime() >= date.getTime()) {
+      this._value.from = date;
       return true;
     }
-    this.values.to = date;
+    this._value.to = date;
     return true;
   }
   isSelectedDay(date) {
-    if (this.values.from == null) {
+    if (this._value.from == null) {
       return false;
     }
-    if (this.values.to == null) {
-      return this.values.from.getTime() == date.getTime();
+    if (this._value.to == null) {
+      return this._value.from.getTime() == date.getTime();
     }
-    return date.getTime() == this.values.from.getTime() || date.getTime() == this.values.to.getTime();
+    return date.getTime() == this._value.from.getTime() || date.getTime() == this._value.to.getTime();
   }
   get value() {
-    return this.values;
+    return this._value;
+  }
+  set value(value) {
+    if (this._value == null) {
+      this._value = { from: null, to: null };
+    }
+    if (value == null) {
+      return;
+    }
+    const processDate = (input) => {
+      if (input == null)
+        return null;
+      if (typeof input === "string")
+        return this.createDateWithoutTime(input);
+      if (input instanceof Date)
+        return input;
+      console.warn("Item is not a date or date string, skipping");
+      return null;
+    };
+    this._value.from = processDate(value.from);
+    this._value.to = processDate(value.to);
   }
   isDisabled(date) {
-    if (this.values.from) {
-      let daysBetween = Math.abs(this.getNumberOfDaysBetweenDates(this.values.from, date));
+    if (this._value.from) {
+      let daysBetween = Math.abs(this.getNumberOfDaysBetweenDates(this._value.from, date));
       return (this.min && daysBetween < this.min || this.max && daysBetween > this.max) && daysBetween != 0;
     }
   }
   isRangeMiddle(date) {
-    if (this.values.from && this.values.to && date.getTime() >= this.values.from.getTime() && date.getTime() <= this.values.to.getTime()) {
+    if (this._value.from && this._value.to && date.getTime() >= this._value.from.getTime() && date.getTime() <= this._value.to.getTime()) {
       return true;
     }
     return false;
@@ -378,29 +391,35 @@ var RangeModeHandler = class {
 
 // resources/js/Calendar/ModeHandlers/SingleModeHandler.js
 var SingleModeHandler = class {
-  constructor(value, required) {
-    if (value == null) {
-      return;
-    }
+  constructor(required) {
     this.required = !!required;
-    if (typeof value == "string") {
-      this.value = this.createDateWithoutTime(value);
-    } else if (typeof value == "Date") {
-      this.value = value;
-    } else {
-      console.error("Selected type supplied to calendar with mode single is not a string or Javascript date");
-    }
+  }
+  get value() {
+    return this._value;
+  }
+  set value(value) {
+    const processDate = (input) => {
+      if (input == null)
+        return null;
+      if (typeof input === "string")
+        return this.createDateWithoutTime(input);
+      if (input instanceof Date)
+        return input;
+      console.warn("Item is not a date or date string, skipping");
+      return null;
+    };
+    this._value = processDate(value);
   }
   dayClicked(date) {
-    if (this.value != null && this.value.getTime() == date.getTime() && !this.required) {
-      this.value = null;
+    if (this._value != null && this._value.getTime() == date.getTime() && !this.required) {
+      this._value = null;
     } else {
-      this.value = date;
+      this._value = date;
     }
     return true;
   }
   isSelectedDay(date) {
-    return this.value?.getTime() === date.getTime();
+    return this._value?.getTime() === date.getTime();
   }
   isDisabled(date) {
     return false;
@@ -466,17 +485,17 @@ var calendar_default = (selected, mode, disabled, min, max, required) => ({
   },
   init() {
     if (this.mode == "single") {
-      this.modeHandler = new SingleModeHandler(selected, required);
+      this.modeHandler = new SingleModeHandler(required);
     } else if (this.mode == "multiple") {
-      this.modeHandler = new MultipleModeHandler(selected, required, min, max);
+      this.modeHandler = new MultipleModeHandler(required, min, max);
     } else if (this.mode == "range") {
-      this.modeHandler = new RangeModeHandler(selected, required, min, max);
+      this.modeHandler = new RangeModeHandler(required, min, max);
     } else {
-      console.error("Mode is invalid");
-      this.modeHandler = new SingleModeHandler(selected, required);
+      console.error("Mode is invalid, defaulting to single mode");
+      this.modeHandler = new SingleModeHandler(required);
     }
     if (Array.isArray(disabled)) {
-      disabled.forEach((element, index) => {
+      disabled.forEach((element) => {
         this.disabled.push(new Matcher(element));
       });
     } else if (typeof disabled == "object" && disabled != null) {
@@ -487,13 +506,13 @@ var calendar_default = (selected, mode, disabled, min, max, required) => ({
     this.year = now.getFullYear();
     this.focusedDay = now.getDay();
     this.calculateDays();
-    if (selected) {
-      return this.dispatchSelect();
+    if (!!selected) {
+      this.dispatchChange();
     }
   },
-  dispatchSelect() {
+  dispatchChange() {
     this.$nextTick(() => {
-      this.$dispatch("select", { value: this.modeHandler.value });
+      this.$dispatch("change", { value: this.modeHandler.value });
     });
   },
   dayClicked(date) {
@@ -504,7 +523,7 @@ var calendar_default = (selected, mode, disabled, min, max, required) => ({
     this.focusedDay = date;
     let dispatchEvent = this.modeHandler.dayClicked(selectedDate);
     if (dispatchEvent) {
-      this.dispatchSelect();
+      this.dispatchChange();
     }
   },
   focusAdd(value) {
@@ -2036,7 +2055,6 @@ var datePicker_default = (open, value, mode, format2) => ({
   value: null,
   mode,
   format: format2,
-  ignoredEvents: 0,
   root: {
     ["@keydown.esc"]() {
       return this.closePicker();
@@ -2077,14 +2095,10 @@ var datePicker_default = (open, value, mode, format2) => ({
     },
     ["x-trap"]() {
       return this.open;
-    },
-    ["@select"]() {
-      if (this.ignoredEvents > 0) {
-        this.value = this.$event.detail.value;
-      } else {
-        this.ignoredEvents++;
-      }
     }
+  },
+  init() {
+    this.value = value;
   },
   openPicker() {
     this.open = true;
@@ -2189,6 +2203,9 @@ var dropdownMenu_default = () => ({
   root: {
     ["x-id"]() {
       return ["dropdown-menu"];
+    },
+    ["@click.outside.capture"]() {
+      return this.close();
     }
   },
   trigger: {
@@ -2234,9 +2251,6 @@ var dropdownMenu_default = () => ({
   content: {
     ["x-anchor.offset.4"]() {
       return this.$refs.trigger;
-    },
-    ["@click.outside.capture"]() {
-      return this.close();
     },
     ["@keydown.down.prevent"]() {
       if (!this.$refs.content.contains(document.activeElement)) {
@@ -2396,7 +2410,7 @@ var dropdownMenuSub_default = () => ({
       return this.$focus.focus(this.$el);
     },
     [":tabindex"]() {
-      this.subOpen && this.$el.isEqualNode(this.$root.querySelectorAll("button")[2]) ? 0 : -1;
+      (this.subOpen || this.subPreview) && this.$el.isEqualNode(this.$root.querySelectorAll("button")[2]) ? 0 : -1;
     },
     ["@focus"]() {
       this.$el.setAttribute("tabindex", 0);
@@ -2431,6 +2445,9 @@ var popover_default = () => ({
   root: {
     ["x-id"]() {
       return ["popover"];
+    },
+    ["@click.outside.capture"]() {
+      return this.close();
     }
   },
   trigger: {
@@ -2453,9 +2470,6 @@ var popover_default = () => ({
     },
     ["x-trap"]() {
       return this.popover;
-    },
-    ["@click.outside.capture"]() {
-      return this.close();
     },
     ["x-show"]() {
       return this.popover;
@@ -2654,12 +2668,12 @@ var switchInput_default = (disabled) => ({
       return this.switchOn;
     },
     [":aria-labelledby"]() {
-      if (this.$refs.input.labels[0]?.id ?? false) {
+      if (this.$refs.input?.labels[0]?.id ?? false) {
         return this.$refs.input.labels[0].id;
       }
     },
     [":aria-label"]() {
-      if (this.$refs.input.labels[0].innerText ?? false) {
+      if (this.$refs.input?.labels[0].innerText ?? false) {
         return this.$refs.input.labels[0].innerText;
       }
     }

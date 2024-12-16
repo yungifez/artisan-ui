@@ -4,6 +4,9 @@ export default () => ({
         ['x-id']() {
             return ['popover'];
         },
+        ['@click.outside.capture']() {
+            return this.close();
+        },
     },
     trigger: {
         ['@click']() {
@@ -25,9 +28,6 @@ export default () => ({
         },
         ['x-trap']() {
             return this.popover;
-        },
-        ['@click.outside.capture']() {
-            return this.close();
         },
         ['x-show']() {
             return this.popover;
