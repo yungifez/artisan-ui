@@ -2347,11 +2347,16 @@ var dropdownMenuSub_default = () => ({
       return this.open();
     },
     ["@mouseover"]() {
-      this.$el.focus();
+      if (window.innerWidth <= 640) {
+        return;
+      }
       this.openPreview();
+      this.$focus.focus(this.$el);
     },
     ["@mouseout"]() {
-      this.$el.focus();
+      if (window.innerWidth <= 640) {
+        return;
+      }
       this.closePreview();
     },
     ["@focus"]() {
@@ -2372,10 +2377,10 @@ var dropdownMenuSub_default = () => ({
     },
     [":style"]() {
       let correction = 0;
-      if (this.$anchor.x + this.$refs.content.offsetWidth > window.innerWidth) {
-        correction = this.$refs.content.offsetWidth / 2;
-      } else if (this.$anchor.x - this.$refs.subTrigger.offsetWidth <= 0) {
-        correction = -this.$refs.content.offsetWidth;
+      if (this.$anchor.x + this.$refs.content.scrollWidth > window.innerWidth) {
+        correction = this.$refs.content.getBoundingClientRect().width / 2;
+      } else if (this.$anchor.x - this.$refs.subTrigger.getBoundingClientRect().width <= 0) {
+        correction = -this.$refs.content.getBoundingClientRect().width;
       }
       return { position: "absolute", top: this.$anchor.y + "px", left: this.$anchor.x - correction + "px" };
     },
@@ -2410,7 +2415,10 @@ var dropdownMenuSub_default = () => ({
     }
   },
   menuItem: {
-    ["@click.capture"]() {
+    ["@click"]() {
+      if (this.subPreview && window.innerWidth <= 640) {
+        return;
+      }
       this.closeSub();
       this.$data.close();
     },
