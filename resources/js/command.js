@@ -20,10 +20,21 @@ export default (value) => ({
             this.selectoption(-1)
         },
     },
-    input: {
+    commandInput: {
         ['@input']() {
             this.keyword = this.$el.value;
             this.$dispatch("valueChange", { value: this.keyword });
+        },
+        [':id']() {
+            return this.$id('command') + '-input';
+        },
+        [':aria-controls']() {
+            return this.$id('command') + '-list';
+        },
+    },
+    commandList: {
+        [':id']() {
+            return this.$id('command') + '-list';
         },
     },
     commandItem: {
@@ -31,6 +42,9 @@ export default (value) => ({
             return true;
         },
         [':data-selected']() {
+            return this.$el.contains(this.focusedItem);
+        },
+        [':aria-selected']() {
             return this.$el.contains(this.focusedItem);
         },
         [':tabindex']() {
@@ -49,7 +63,20 @@ export default (value) => ({
             return this.focusedItem = this.$el;
         },
     },
+    commandGroupHeading: {
+        [':id']() {
+            return this.$id('command') + '-group-heading';
+        },
+    },
     commandGroup: {
+        [':id']() {
+            return this.$id('command') + '-group';
+        },
+        [':aria-labelledby']() {
+            return this.$id('command') + '-group-heading';
+        },
+    },
+    commandGroupContainer: {
         ['x-effect']() {
             this.keyword == ''; // dont delete this helps with reactivity
             this.$nextTick(() => {

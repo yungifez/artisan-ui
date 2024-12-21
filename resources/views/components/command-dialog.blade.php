@@ -1,5 +1,10 @@
 <div x-data="dialog(false, true)" x-modelable="show" x-bind="root" {{$attributes->
     whereStartsWith('x-model')}}>
+    @isset($trigger)
+    <div x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
+        {{$trigger}}
+    </div>
+    @endisset
     @if ($attributes->has('x-teleport'))
     <template x-teleport="{{$attributes->get('x-teleport')}}">
         @endif
