@@ -1,5 +1,4 @@
-<div x-data="dialog(false, true)" x-modelable="show" x-bind="root" {{$attributes->
-    whereStartsWith('x-model')}}>
+<div x-data="dialog(false, true)" x-modelable="show" x-bind="root" @isset($group) {{$group->attributes}} @endisset>
     @isset($trigger)
     <div x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
         {{$trigger}}
