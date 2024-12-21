@@ -11,7 +11,12 @@
             <div x-bind="dialog" {{$attributes->whereDoesntStartWith('x-model')->except('x-teleport')->class(["fixed
                 left-[50%] top-[50%] z-50
                 translate-x-[-50%]
-                translate-y-[-50%] border bg-background shadow-lg duration-200 sm:rounded-lg"])}}
+                translate-y-[-50%] border bg-background shadow-lg duration-200 sm:rounded-lg
+                &_[cmd-group-heading]]:px-2 [&_[cmd-group-heading]]:font-medium
+                [&_[cmd-group-heading]]:text-muted-foreground [&_[cmd-group]:not([hidden])_~[cmd-group]]:pt-0
+                [&_[cmd-group]]:px-2 [&_[cmd-input-wrapper]_svg]:h-5 [&_[cmd-input-wrapper]_svg]:w-5
+                [&_[cmd-input]]:h-12 [&_[cmd-item]]:px-2 [&_[cmd-item]]:py-3 [&_[cmd-item]_svg]:h-5
+                [&_[cmd-item]_svg]:w-5"])}}
                 >
                 {{$slot}}
                 <div x-bind="closeButton">

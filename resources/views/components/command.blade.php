@@ -3,7 +3,7 @@
     rounded-md
     bg-popover
     text-popover-foreground'])}} x-modelable="keyword">
-    <div class="flex items-center border-b px-3">
+    <div cmd-input-wrapper class="flex items-center border-b px-3">
         @isset($icon)
         {{$icon}}
         @else
@@ -16,7 +16,7 @@
         @endisset
         <label class="w-full h-fit">
             <span class="sr-only">{{$label}}</span>
-            <input x-bind="commandInput" x-ref="input"
+            <input x-bind="commandInput" x-ref="input" cmd-input
                 class="{{!isset($input->attributes) ?: $input->attributes->get('class')}} flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 type="text" autocomplete="off" aria-autocomplete="list" autocorrect="off" role="combobox" {{
                 !isset($input->attributes) ?: $input->attributes->except(['class'])}}/>
