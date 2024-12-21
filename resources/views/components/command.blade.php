@@ -23,7 +23,8 @@
         </label>
     </div>
     @isset($list)
-    <div x-bind="commandList" x-ref="list" role="listbox" aria-label="suggestions">
+    <div class="overflow-y-auto overflow-x-hidden" x-bind="commandList" x-ref="list" role="listbox"
+        aria-label="suggestions" cmd-list-sizer>
         {{$list}}
     </div>
     <div class="py-6 text-center text-sm" x-bind="commandEmpty">
