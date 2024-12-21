@@ -4,6 +4,7 @@ import alert from './alert.js';
 import avatar from './avatar.js';
 import banner from './banner.js';
 import calendar from './calendar.js';
+import command from './command.js';
 import datePicker from './datePicker.js';
 import dialog from './dialog.js';
 import dropdownMenu from './dropdownMenu.js';
@@ -23,6 +24,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('avatar', avatar)
     Alpine.data('banner', banner)
     Alpine.data('calendar', calendar)
+    Alpine.data('command', command)
     Alpine.data('datePicker', datePicker)
     Alpine.data('dialog', dialog)
     Alpine.data('dropdownMenu', dropdownMenu)

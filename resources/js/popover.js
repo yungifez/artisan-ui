@@ -4,9 +4,6 @@ export default () => ({
         ['x-id']() {
             return ['popover'];
         },
-        ['@click.outside.capture']() {
-            return this.close();
-        },
     },
     trigger: {
         ['@click']() {
@@ -23,6 +20,11 @@ export default () => ({
         },
     },
     content: {
+        ['@click.outside.capture']() {
+            if (!this.$refs.trigger.contains(this.$event.target)) {
+                return this.close();
+            }
+        },
         ['x-anchor.offset.4']() {
             return this.$refs.trigger;
         },

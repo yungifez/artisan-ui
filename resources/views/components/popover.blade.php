@@ -1,4 +1,4 @@
-<div x-data="popover">
+<div x-data="popover" {{$attributes->except(['x-teleport'])}}>
     <div x-bind="trigger" class="w-fit inline-block" x-ref="trigger">
         @isset($popoverTrigger)
         {{$popoverTrigger}}
