@@ -1,7 +1,7 @@
 @props([
 'label' => '',
 'open' => false,
-'value' => "",
+'value' => null,
 'mode' => 'single',
 'format' => 'MM/dd/yyyy',
 'fromName',
