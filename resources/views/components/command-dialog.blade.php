@@ -9,7 +9,7 @@
         @endif
         <div class="fixed min-h-[100vh] inset-0 z-50 bg-black/80" x-bind="overlay" role="dialog">
             <div x-bind="dialog" {{$attributes->
-                whereDoesntStartWith('x-model')->except('x-teleport')->class(["class="fixed left-[50%] top-[50%] z-50
+                whereDoesntStartWith('x-model')->except('x-teleport')->class(["fixed left-[50%] top-[50%] z-50
                 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background duration-200
                 &_[cmd-group-heading]]:px-2 [&_[cmd-group-heading]]:font-medium
                 [&_[cmd-group-heading]]:text-muted-foreground [&_[cmd-group]:not([hidden])_~[cmd-group]]:pt-0
