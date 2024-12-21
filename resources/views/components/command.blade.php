@@ -23,7 +23,7 @@
         </label>
     </div>
     @isset($list)
-    <div class="overflow-y-auto overflow-x-hidden" x-bind="commandList" x-ref="list" role="listbox"
+    <div class="max-h-[300px] overflow-y-auto overflow-x-hidden" x-bind="commandList" x-ref="list" role="listbox"
         aria-label="suggestions" cmd-list-sizer>
         {{$list}}
     </div>
