@@ -14,23 +14,17 @@ export default () => ({
         [':aria-expanded']() {
             return this.subOpen;
         },
+        ['@mouseleave']() {
+            this.closePreview();
+        },
     },
     trigger: {
         ['@click.capture.stop']() {
             return this.open();
         },
-        ['@mouseover']() {
-            if (window.innerWidth <= 640) {
-                return
-            }
+        ['@mouseenter']() {
             this.openPreview();
             this.$focus.focus(this.$el);
-        },
-        ['@mouseout']() {
-            if (window.innerWidth <= 640) {
-                return
-            }
-            this.closePreview();
         },
         ['@focus']() {
             this.$el.setAttribute('tabindex', 0)
