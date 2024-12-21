@@ -601,6 +601,136 @@
     }
   });
 
+  // resources/js/command.js
+  var command_default = (value) => ({
+    keyword: value,
+    focusedItem: null,
+    root: {
+      ["@keydown"]($event) {
+        if ($event.key == "Home") {
+          this.selectOption(1, false);
+        }
+        if ($event.key == "End") {
+          this.selectOption(-1, false);
+        }
+      },
+      ["@keydown.capture.down.prevent"]() {
+        this.selectOption(1);
+      },
+      ["@keydown.capture.up.prevent"]() {
+        this.selectoption(-1);
+      },
+      ["@keydown.capture.ennter.prevent"]() {
+        this.selectoption(-1);
+      }
+    },
+    commandInput: {
+      ["@input"]() {
+        this.keyword = this.$el.value;
+        this.$dispatch("valueChange", { value: this.keyword });
+      },
+      [":id"]() {
+        return this.$id("command") + "-input";
+      },
+      [":aria-controls"]() {
+        return this.$id("command") + "-list";
+      }
+    },
+    commandList: {
+      [":id"]() {
+        return this.$id("command") + "-list";
+      }
+    },
+    commandItem: {
+      [":data-cmd-item"]() {
+        return true;
+      },
+      [":data-selected"]() {
+        return this.$el.contains(this.focusedItem);
+      },
+      [":aria-selected"]() {
+        return this.$el.contains(this.focusedItem);
+      },
+      [":tabindex"]() {
+        return this.$el.contains(this.focusedItem) ? 0 : -1;
+      },
+      ["x-effect"]() {
+        if (this.keyword == "" || this.fuzzySearch(this.keyword, this.$el.innerText)) {
+          this.$el.dataset.active = true;
+          this.$el.style.display = "flex";
+        } else {
+          this.$el.dataset.active = false;
+          this.$el.style.display = "none";
+        }
+      },
+      ["@mouseenter"]() {
+        return this.focusedItem = this.$el;
+      }
+    },
+    commandGroupHeading: {
+      [":id"]() {
+        return this.$id("command") + "-group-heading";
+      }
+    },
+    commandGroup: {
+      [":id"]() {
+        return this.$id("command") + "-group";
+      },
+      [":aria-labelledby"]() {
+        return this.$id("command") + "-group-heading";
+      }
+    },
+    commandGroupContainer: {
+      ["x-effect"]() {
+        this.keyword == "";
+        this.$nextTick(() => {
+          this.$el.style.display = this.$el.querySelectorAll("[data-active=true]").length > 0 ? "block" : "none";
+        });
+      }
+    },
+    commandEmpty: {
+      ["x-effect"]() {
+        this.keyword == "";
+        this.$nextTick(() => {
+          this.$el.style.display = this.$refs.list.querySelectorAll("[data-active=true]").length > 0 ? "none" : "block";
+        });
+      }
+    },
+    selectOption(index, relative = true) {
+      let nodeList = this.$refs.list.querySelectorAll("[data-cmd-item]");
+      let nodeListArray = Array.from(nodeList);
+      let initialIndex = index;
+      if (!nodeListArray.some((node) => JSON.parse(node.dataset.disabled) == false)) {
+        return;
+      }
+      if (relative) {
+        let previousIndex = Array.from(nodeList).findIndex((node) => node.isEqualNode(this.focusedItem)) ?? 0;
+        index += previousIndex;
+      }
+      index += index < 0 ? nodeList.length : 0;
+      index = index % nodeList.length;
+      while (JSON.parse(nodeList[index].dataset.disabled)) {
+        index += initialIndex < 0 ? -1 : 1;
+        index % index % nodeList.length;
+      }
+      this.focusedItem = nodeList[index];
+    },
+    fuzzySearch(keyword, text) {
+      const keywordLower = keyword.toLowerCase();
+      const textLower = text.toLowerCase();
+      let keywordIndex = 0;
+      for (let i = 0; i < textLower.length; i++) {
+        if (textLower[i] === keywordLower[keywordIndex]) {
+          keywordIndex++;
+        }
+        if (keywordIndex === keywordLower.length) {
+          return true;
+        }
+      }
+      return false;
+    }
+  });
+
   // node_modules/date-fns/toDate.mjs
   function toDate(argument) {
     const argStr = Object.prototype.toString.call(argument);
@@ -2341,24 +2471,18 @@
       },
       [":aria-expanded"]() {
         return this.subOpen;
+      },
+      ["@mouseleave"]() {
+        this.closePreview();
       }
     },
     trigger: {
       ["@click.capture.stop"]() {
         return this.open();
       },
-      ["@mouseover"]() {
-        if (window.innerWidth <= 640) {
-          return;
-        }
+      ["@mouseenter"]() {
         this.openPreview();
         this.$focus.focus(this.$el);
-      },
-      ["@mouseout"]() {
-        if (window.innerWidth <= 640) {
-          return;
-        }
-        this.closePreview();
       },
       ["@focus"]() {
         this.$el.setAttribute("tabindex", 0);
@@ -2462,9 +2586,6 @@
     root: {
       ["x-id"]() {
         return ["popover"];
-      },
-      ["@click.outside.capture"]() {
-        return this.close();
       }
     },
     trigger: {
@@ -2482,6 +2603,11 @@
       }
     },
     content: {
+      ["@click.outside.capture"]() {
+        if (!this.$refs.trigger.contains(this.$event.target)) {
+          return this.close();
+        }
+      },
       ["x-anchor.offset.4"]() {
         return this.$refs.trigger;
       },
@@ -2807,6 +2933,7 @@
     Alpine.data("avatar", avatar_default);
     Alpine.data("banner", banner_default);
     Alpine.data("calendar", calendar_default);
+    Alpine.data("command", command_default);
     Alpine.data("datePicker", datePicker_default);
     Alpine.data("dialog", dialog_default);
     Alpine.data("dropdownMenu", dropdownMenu_default);
