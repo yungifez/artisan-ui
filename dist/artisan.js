@@ -627,12 +627,16 @@
       }
     },
     init() {
-      this.selectOption(1, false);
+      this.$nextTick(() => {
+        this.selectOption(0, false);
+      });
     },
     commandInput: {
       ["@input"]() {
         this.keyword = this.$el.value;
-        this.selectOption(1, false);
+        this.$nextTick(() => {
+          this.selectOption(0, false);
+        });
         this.$dispatch("valueChange", { value: this.keyword });
       },
       [":id"]() {
@@ -703,7 +707,7 @@
       }
     },
     selectOption(index, relative = true) {
-      let nodeList = this.$refs.list.querySelectorAll("[data-active]");
+      let nodeList = this.$refs.list.querySelectorAll("[data-active=true]");
       let nodeListArray = Array.from(nodeList);
       let initialIndex = index;
       if (nodeList.length == 0 || !nodeListArray.some((node) => JSON.parse(node.dataset.disabled) == false)) {
@@ -717,7 +721,7 @@
       index = index % nodeList.length;
       while (JSON.parse(nodeList[index].dataset.disabled)) {
         index += initialIndex < 0 ? -1 : 1;
-        index % index % nodeList.length;
+        index = index % nodeList.length;
       }
       this.focusedItem = nodeList[index];
       this.focusedItem.scrollIntoView(initialIndex < 0);
