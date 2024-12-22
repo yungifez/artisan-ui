@@ -18,8 +18,8 @@
             <span class="sr-only">{{$label}}</span>
             <input x-bind="commandInput" x-ref="input" cmd-input
                 class="{{!isset($input->attributes) ?: $input->attributes->get('class')}} flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
-                type="text" autocomplete="off" aria-autocomplete="list" autocorrect="off" role="combobox" {{
-                !isset($input->attributes) ?: $input->attributes->except(['class'])}}/>
+                type="text" autocomplete="off" aria-autocomplete="list" autocorrect="off" role="combobox"
+                {{!isset($input->attributes) ?: $input->attributes->except(['class'])}}/>
         </label>
     </div>
     @isset($list)

@@ -14,10 +14,12 @@ export default (value) => ({
             this.selectOption(1)
         },
         ['@keydown.capture.up.prevent']() {
-            this.selectoption(-1)
+            this.selectOption(-1)
         },
-        ['@keydown.capture.ennter.prevent']() {
-            this.selectoption(-1)
+        ['@keydown.capture.enter.prevent']() {
+            if (this.focusedItem != null) {
+                this.focusedItem.click()
+            }
         },
     },
     commandInput: {
@@ -106,10 +108,11 @@ export default (value) => ({
         index += index < 0 ? nodeList.length : 0; //make indexing work for negative numbers
         index = index % nodeList.length
         while (JSON.parse(nodeList[index].dataset.disabled)) {
-            index += initialIndex < 0 ? -1 : 1
+            index += initialIndex < 0 ? -1 : 1 //scrolling up or down
             index % index % nodeList.length
         }
         this.focusedItem = nodeList[index];
+        this.focusedItem.scrollIntoView(initialIndex < 0); //scrolling up or down
     },
     fuzzySearch(keyword, text) {
         const keywordLower = keyword.toLowerCase();

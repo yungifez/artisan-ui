@@ -1,4 +1,5 @@
-<div x-data="dialog(false, true)" x-modelable="show" x-bind="root" @isset($group) {{$group->attributes}} @endisset>
+<div x-data="dialog(false, true)" x-modelable="show" x-bind="root" {{$attributes->
+    whereStartsWith('x-model')}} @isset($group) {{$group->attributes}} @endisset>
     @isset($trigger)
     <div x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
         {{$trigger}}
@@ -10,7 +11,7 @@
         <div class="fixed min-h-[100vh] inset-0 z-50 bg-black/80" x-bind="overlay" role="dialog">
             <div x-bind="dialog" {{$attributes->
                 whereDoesntStartWith('x-model')->except('x-teleport')->class(["fixed left-[50%] top-[50%] z-50
-                grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background duration-200
+                grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border bg-background duration-200
                 &_[cmd-group-heading]]:px-2 [&_[cmd-group-heading]]:font-medium
                 [&_[cmd-group-heading]]:text-muted-foreground [&_[cmd-group]:not([hidden])_~[cmd-group]]:pt-0
                 [&_[cmd-group]]:px-2 [&_[cmd-input-wrapper]_svg]:h-5 [&_[cmd-input-wrapper]_svg]:w-5
