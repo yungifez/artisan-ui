@@ -626,9 +626,13 @@
         }
       }
     },
+    init() {
+      this.selectOption(1);
+    },
     commandInput: {
       ["@input"]() {
         this.keyword = this.$el.value;
+        this.selectOption(1);
         this.$dispatch("valueChange", { value: this.keyword });
       },
       [":id"]() {
