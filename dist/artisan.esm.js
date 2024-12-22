@@ -702,10 +702,10 @@ var command_default = (value) => ({
     }
   },
   selectOption(index, relative = true) {
-    let nodeList = this.$refs.list.querySelectorAll("[data-cmd-item]");
+    let nodeList = this.$refs.list.querySelectorAll("[data-active]");
     let nodeListArray = Array.from(nodeList);
     let initialIndex = index;
-    if (!nodeListArray.some((node) => JSON.parse(node.dataset.disabled) == false)) {
+    if (nodeList.length == 0 || !nodeListArray.some((node) => JSON.parse(node.dataset.disabled) == false)) {
       return;
     }
     if (relative) {
