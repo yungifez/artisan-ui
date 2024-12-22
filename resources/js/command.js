@@ -22,6 +22,9 @@ export default (value) => ({
             }
         },
     },
+    init() {
+        this.selectOption(1)
+    },
     commandInput: {
         ['@input']() {
             this.keyword = this.$el.value;
