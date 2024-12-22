@@ -617,10 +617,12 @@ var command_default = (value) => ({
       this.selectOption(1);
     },
     ["@keydown.capture.up.prevent"]() {
-      this.selectoption(-1);
+      this.selectOption(-1);
     },
-    ["@keydown.capture.ennter.prevent"]() {
-      this.selectoption(-1);
+    ["@keydown.capture.enter.prevent"]() {
+      if (this.focusedItem != null) {
+        this.focusedItem.click();
+      }
     }
   },
   commandInput: {
@@ -713,6 +715,7 @@ var command_default = (value) => ({
       index % index % nodeList.length;
     }
     this.focusedItem = nodeList[index];
+    this.focusedItem.scrollIntoView(initialIndex < 0);
   },
   fuzzySearch(keyword, text) {
     const keywordLower = keyword.toLowerCase();
