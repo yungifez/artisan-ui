@@ -2552,9 +2552,6 @@
     },
     menuItem: {
       ["@click"]() {
-        if (this.subPreview && window.innerWidth <= 640) {
-          return;
-        }
         this.closeSub();
         this.$data.close();
       },
@@ -2584,6 +2581,9 @@
       this.subOpen == true ? this.closeSub() : this.open();
     },
     openPreview() {
+      if (window.innerWidth <= 640) {
+        return;
+      }
       this.subPreview = true;
     },
     closePreview() {

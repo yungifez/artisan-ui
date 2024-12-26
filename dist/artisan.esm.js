@@ -2551,9 +2551,6 @@ var dropdownMenuSub_default = () => ({
   },
   menuItem: {
     ["@click"]() {
-      if (this.subPreview && window.innerWidth <= 640) {
-        return;
-      }
       this.closeSub();
       this.$data.close();
     },
@@ -2583,6 +2580,9 @@ var dropdownMenuSub_default = () => ({
     this.subOpen == true ? this.closeSub() : this.open();
   },
   openPreview() {
+    if (window.innerWidth <= 640) {
+      return;
+    }
     this.subPreview = true;
   },
   closePreview() {
