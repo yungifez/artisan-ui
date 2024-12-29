@@ -2272,7 +2272,7 @@ var dialog_default = (show, dismissable) => ({
     ["x-id"]() {
       return ["dialog"];
     },
-    ["x-on:keydown.esc.window"]() {
+    ["x-on:keydown.esc.window.stop"]() {
       if (this.dismissable) {
         return this.close();
       }
