@@ -1,5 +1,5 @@
 @props(['input', 'label' => '', 'list', 'icon', 'value' => '', 'empty' => ''])
-<div x-data='command(@json($value))' x-bind="root" {{$attributes->class(['flex flex-col overflow-hidden
+<div x-data='command(@json($value))' x-bind="root" cmd-root {{$attributes->class(['flex flex-col overflow-hidden
     rounded-md
     bg-popover
     text-popover-foreground'])}} x-modelable="keyword">
