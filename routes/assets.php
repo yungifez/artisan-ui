@@ -30,4 +30,4 @@ Route::prefix('artisan-ui')->name('artisan-ui.')->group(function () {
     })->name('artisan.min.css');
 });
 
-//Route::get('/artisan-ui/artisan.min.js');
+// Route::get('/artisan-ui/artisan.min.js');
