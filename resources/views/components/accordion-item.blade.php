@@ -1,4 +1,4 @@
-<div x-data="accordionItem()" x-bind="root" {{ $attributes->class(["w-full border-b border-border"]) }}>
+<div x-data="accordionItem()" x-bind="root" {{ $attributes->class(["w-full border-b"]) }}>
     @isset($trigger)
     <h3>
         <button {{$trigger->attributes->class(['flex flex-1 text-left items-center justify-between px-2 py-4 font-medium
