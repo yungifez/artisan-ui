@@ -7,7 +7,7 @@
     x-modelable="modeHandler.value">
     <div class="flex items-center justify-between mb-3">
         <button x-bind="previousMonthTrigger" type="button"
-            class="border dark:border-input inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-gray-100 dark:hover:bg-transparent/10">
+            class="border dark:border-input inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent/10">
             <x-aui::angle-down class="inline-flex w-6 h-6 fill-foreground rotate-90" />
         </button>
         <div>
@@ -15,7 +15,7 @@
             <span x-bind="yearLabel" class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
         </div>
         <button x-bind="nextMonthTrigger" type="button"
-            class="border dark:border-border inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-gray-100 dark:hover:bg-transparent/10">
+            class="border dark:border-border inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent/10">
             <x-aui::angle-down class="inline-flex w-6 h-6 fill-foreground -rotate-90" />
         </button>
     </div>
