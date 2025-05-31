@@ -1,5 +1,5 @@
 @props(['separator'])
-<li role="presentation" aria-hidden="true" {{$attributes->class(['[&>svg]:w-3.5 [&>svg]:h-3.5'])}}>
+<li role="presentation" aria-hidden="true" {{$attributes->twMerge(['[&>svg]:w-3.5 [&>svg]:h-3.5'])}}>
     @isset($separator)
     {{$separator}}
     @else

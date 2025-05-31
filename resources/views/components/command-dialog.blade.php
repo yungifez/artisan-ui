@@ -10,7 +10,7 @@
         @endif
         <div class="fixed min-h-[100vh] inset-0 z-50 bg-black/80" x-bind="overlay" role="dialog">
             <div x-bind="dialog" {{$attributes->
-                whereDoesntStartWith('x-model')->except('x-teleport')->class(["fixed left-[50%] top-[50%] z-50
+                whereDoesntStartWith('x-model')->except('x-teleport')->twMerge(["fixed left-[50%] top-[50%] z-50
                 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border bg-background duration-200
                 [&_[cmd-root]]:w-full
                 [&_[cmd-group-heading]]:px-2 [&_[cmd-group-heading]]:font-medium

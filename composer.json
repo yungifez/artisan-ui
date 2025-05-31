@@ -18,7 +18,8 @@
     "require": {
         "php": "^8.1",
         "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0|^11.0|^12.0"
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
+        "gehrisandro/tailwind-merge-laravel": "dev-tailwind-v4"
     },
     "require-dev": {
         "laravel/pint": "^1.0",

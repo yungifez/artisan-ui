@@ -1,3 +1,3 @@
-<div {{$attributes->class(['animate-pulse rounded-md bg-muted'])}}>
+<div {{$attributes->twMerge(['animate-pulse rounded-md bg-muted'])}}>
     {{$slot}}
 </div>

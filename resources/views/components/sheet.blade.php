@@ -67,12 +67,12 @@ default => 'translate-x-3/4',
     <template @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}"
         @else x-if="true"
         @endif>
-        <div {{$attributes->except(['x-teleport'])->class(["fixed inset-0 z-50 bg-black/80"])}}
+        <div {{$attributes->except(['x-teleport'])->twMerge(["fixed inset-0 z-50 bg-black/80"])}}
             x-bind="overlay">
             @isset($content)
             <div x-data="sheet('{{$content->attributes->get('side')}}','{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
                 x-bind="root" {{$content->
-                attributes->class(["$class"])}}
+                attributes->twMerge(["$class"])}}
                 >
                 {{$content}}
             </div>

@@ -24,19 +24,19 @@ fill-destructive",
     class(["$class"])}}
     >
     @isset($icon)
-    <div {{$icon->attributes->class(["flex items-start mt-2"])}}>
+    <div {{$icon->attributes->twMerge(["flex items-start mt-2"])}}>
         {{$icon}}
     </div>
     @endisset
 
     <div class="w-full">
         @isset($title)
-        <h5 {{$title->attributes->class(["mb-1 font-medium leading-none tracking-tight"])}}>
+        <h5 {{$title->attributes->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
             {{$title}}
         </h5>
         @endisset
         @isset($description)
-        <div {{$description->attributes->class(["text-sm"])}}>
+        <div {{$description->attributes->twMerge(["text-sm"])}}>
             {{$description}}
         </div>
         @endisset

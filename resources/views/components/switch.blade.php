@@ -1,5 +1,5 @@
 <div x-data="switchInput({{$attributes->has('disabled') ? 'true' : 'false'}})" x-bind="root" role="switch"
-    x-modelable="switchOn" {{$attributes->except(['name','disabled', 'id'])->class(['flex items-center space-x-2
+    x-modelable="switchOn" {{$attributes->except(['name','disabled', 'id'])->twMerge(['flex items-center space-x-2
     w-fit'])}} >
     <input type="checkbox" class="hidden" x-ref="input" x-bind="input" @if ($attributes->has('name'))
     name="{{$attributes->get('name')}}"

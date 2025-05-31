@@ -20,14 +20,15 @@ $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("preve
     >
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
-        {{$label->attributes->class(['font-semibold', 'mx-2 cursor-pointer' => $isInline, 'my-2' =>
+        {{$label->attributes->twMerge(['font-semibold', 'mx-2 cursor-pointer' => $isInline, 'my-2' =>
         !$isInline])}} @else @class(["font-semibold", 'mx-2 cursor-pointer' => $isInline, 'my-2' => !$isInline])
         @endif
         >
         {{$label}}
     </label>
     @endisset
-    <input name="{{$name}}" {{$attributes->class(["flex h-10 accent-foreground rounded-md border bg-background px-3 py-2
+    <input name="{{$name}}" {{$attributes->twMerge(["flex h-10 accent-foreground rounded-md border bg-background px-3
+    py-2
     text-sm ring-offset-background file:border-0 file:bg-transparent file:text-muted-foreground file:text-sm
     file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2
     focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", "border-input

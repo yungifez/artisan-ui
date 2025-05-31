@@ -1,7 +1,8 @@
-<div x-data="accordionItem()" x-bind="root" {{ $attributes->class(["w-full border-b"]) }}>
+<div x-data="accordionItem()" x-bind="root" {{ $attributes->twMerge(["w-full border-b"]) }}>
     @isset($trigger)
     <h3>
-        <button {{$trigger->attributes->class(['flex flex-1 text-left items-center justify-between px-2 py-4 font-medium
+        <button {{$trigger->attributes->twMerge(['flex flex-1 text-left items-center justify-between px-2 py-4
+            font-medium
             transition-all
             hover:underline w-full'])}}
             x-bind="trigger">
@@ -18,7 +19,7 @@
     </h3>
     @isset($content)
     <div x-bind="content" class="overflow-hidden text-sm" role="region" x-cloak>
-        <div {{$content->attributes->class(['pb-4 pt-0 px-2'])}}>
+        <div {{$content->attributes->twMerge(['pb-4 pt-0 px-2'])}}>
             {{$content}}
         </div>
     </div>

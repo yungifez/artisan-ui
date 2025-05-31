@@ -16,6 +16,7 @@ import switchInput from './switchInput.js';
 import tabs from './tabs.js';
 import tabsContent from './tabsContent.js';
 import tabsTrigger from './tabsTrigger.js';
+import tooltip from './tooltip.js';
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('accordion', accordion)
@@ -36,4 +37,5 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('tabs', tabs)
     Alpine.data('tabsTrigger', tabsTrigger)
     Alpine.data('tabsContent', tabsContent)
+    Alpine.data('tooltip', tooltip)
 })
