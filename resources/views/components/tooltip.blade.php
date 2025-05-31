@@ -21,8 +21,8 @@
             py-1.5 text-xs text-primary-foreground"])}}>
             {{$content}}
         </div>
-        <svg x-bind="svg" height="15" width="15" viewBox="0 0 100 100">
-            <polygon points="50,75 90,25 10,25" fill="white" />
+        <svg class="absolute fill-primary z-50" x-bind="svg" height="15" width="15" viewBox="0 0 100 100">
+            <polygon points="50,75 90,25 10,25" />
         </svg>
         @if ($attributes->has('x-teleport'))
     </template>
