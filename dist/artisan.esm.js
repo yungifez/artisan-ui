@@ -2935,6 +2935,58 @@ var tabsTrigger_default = (value) => ({
   }
 });
 
+// resources/js/tooltip.js
+var tooltip_default = (delayDuration, skipDelayDuration, defaultOpen) => ({
+  delayDuration,
+  skipDelayDuration,
+  tooltipOpened: defaultOpen,
+  debounceTimeout: null,
+  trigger: {
+    ["@mouseover"]() {
+      clearTimeout(this.mouseoutTimeout);
+      clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+        this.open();
+      }, this.delayDuration);
+    },
+    ["@mouseout"]() {
+      clearTimeout(this.mouseoutTimeout);
+      this.mouseoutTimeout = setTimeout(() => {
+        clearTimeout(this.debounceTimeout);
+        this.close();
+      }, this.skipDelayDuration);
+    }
+  },
+  svg: {
+    ["x-show"]() {
+      return this.tooltipOpened;
+    },
+    ["x-anchor.bottom.center.offset.-6"]() {
+      return this.$refs.content;
+    },
+    ["x-transition"]() {
+      return true;
+    }
+  },
+  content: {
+    ["x-show"]() {
+      return this.tooltipOpened;
+    },
+    ["x-anchor.top.center.offset.10"]() {
+      return this.$refs.trigger;
+    },
+    ["x-transition"]() {
+      return true;
+    }
+  },
+  open() {
+    this.tooltipOpened = true;
+  },
+  close() {
+    this.tooltipOpened = false;
+  }
+});
+
 // resources/js/artisan.js
 document.addEventListener("alpine:init", () => {
   Alpine.data("accordion", accordion_default);
@@ -2955,4 +3007,5 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("tabs", tabs_default);
   Alpine.data("tabsTrigger", tabsTrigger_default);
   Alpine.data("tabsContent", tabsContent_default);
+  Alpine.data("tooltip", tooltip_default);
 });
