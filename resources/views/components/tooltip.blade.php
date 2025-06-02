@@ -6,7 +6,7 @@
 'content'
 ])
 <div x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen))" {{$attributes->
-    twMerge(['w-fit'])}}>
+    twMerge(['w-full'])}}>
     @isset($trigger)
     <div x-bind="trigger" x-ref="trigger" {{$trigger->attributes->twMerge('w-fit inline-block')}}>
         {{$trigger}}
@@ -21,9 +21,11 @@
             py-1.5 text-xs text-primary-foreground"])}}>
             {{$content}}
         </div>
-        <svg class="absolute fill-primary z-50" x-bind="svg" height="15" width="15" viewBox="0 0 100 100">
-            <polygon points="50,75 90,25 10,25" />
-        </svg>
+        <div x-bind="svg">
+            <svg class="block fill-primary z-50" height="15" width="15" viewBox="0 0 100 100">
+                <polygon points="50,75 90,25 10,25" />
+            </svg>
+        </div>
         @if ($attributes->has('x-teleport'))
     </template>
     @endif

@@ -2,12 +2,12 @@
 "required" => false ])
 <div x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max), @json($required))'
     x-bind="root" {{$attributes->
-    class([' p-4
+    twMerge([' p-4
     antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]'])}}
     x-modelable="modeHandler.value">
     <div class="flex items-center justify-between mb-3">
         <button x-bind="previousMonthTrigger" type="button"
-            class="border dark:border-input inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
+            class="border dark:border-input inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
             <x-aui::angle-down class="inline-flex w-6 h-6 fill-foreground rotate-90" />
         </button>
         <div>
@@ -15,7 +15,7 @@
             <span x-bind="yearLabel" class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
         </div>
         <button x-bind="nextMonthTrigger" type="button"
-            class="border dark:border-border inline-flex p-1 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
+            class="border dark:border-border inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
             <x-aui::angle-down class="inline-flex w-6 h-6 fill-foreground -rotate-90" />
         </button>
     </div>
