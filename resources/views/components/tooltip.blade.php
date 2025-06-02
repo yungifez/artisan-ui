@@ -6,7 +6,7 @@
 'content'
 ])
 <div x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen))" {{$attributes->
-    twMerge(['w-full'])}}>
+    twMerge(['w-fit'])}}>
     @isset($trigger)
     <div x-bind="trigger" x-ref="trigger" {{$trigger->attributes->twMerge('w-fit inline-block')}}>
         {{$trigger}}
