@@ -246,11 +246,16 @@
 
   // resources/js/Calendar/ModeHandlers/MultipleModeHandler.js
   var MultipleModeHandler = class {
-    constructor(required, min, max) {
+    constructor(selected, required, min, max) {
       this.min = min;
       this.max = max;
       this._value = [];
       this.required = !!required;
+      if (selected && Array.isArray(selected)) {
+        selected.forEach((element) => {
+          this.dayClicked(this.createDateWithoutTime(element));
+        });
+      }
     }
     get value() {
       return this._value;
@@ -313,10 +318,17 @@
 
   // resources/js/Calendar/ModeHandlers/RangeModeHandler.js
   var RangeModeHandler = class {
-    constructor(required, min, max) {
+    constructor(selected, required, min, max) {
       this.min = min;
       this.max = max;
       this.required = !!required;
+      this._value = { "from": null, "to": null };
+      if (selected.from) {
+        this.dayClicked(this.createDateWithoutTime(selected.from));
+      }
+      if (selected.from && selected.to) {
+        this.dayClicked(this.createDateWithoutTime(selected.to));
+      }
     }
     dayClicked(date) {
       if (this._value.from == null || this._value.to != null && this._value.to.getTime() == date.getTime()) {
@@ -335,6 +347,7 @@
       }
       this._value.to = date;
       return true;
+      console.log(this.value);
     }
     isSelectedDay(date) {
       if (this._value.from == null) {
@@ -392,8 +405,9 @@
 
   // resources/js/Calendar/ModeHandlers/SingleModeHandler.js
   var SingleModeHandler = class {
-    constructor(required) {
+    constructor(selected, required) {
       this.required = !!required;
+      this.dayClicked(this.createDateWithoutTime(selected));
     }
     get value() {
       return this._value;
@@ -486,14 +500,14 @@
     },
     init() {
       if (this.mode == "single") {
-        this.modeHandler = new SingleModeHandler(required);
+        this.modeHandler = new SingleModeHandler(selected, required);
       } else if (this.mode == "multiple") {
-        this.modeHandler = new MultipleModeHandler(required, min, max);
+        this.modeHandler = new MultipleModeHandler(selected, required, min, max);
       } else if (this.mode == "range") {
-        this.modeHandler = new RangeModeHandler(required, min, max);
+        this.modeHandler = new RangeModeHandler(selected, required, min, max);
       } else {
         console.error("Mode is invalid, defaulting to single mode");
-        this.modeHandler = new SingleModeHandler(required);
+        this.modeHandler = new SingleModeHandler(selected, required);
       }
       if (Array.isArray(disabled)) {
         disabled.forEach((element) => {
