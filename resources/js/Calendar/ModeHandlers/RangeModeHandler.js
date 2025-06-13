@@ -1,8 +1,16 @@
 export default class RangeModeHandler {
-    constructor(required, min, max) {
+    constructor(selected, required, min, max) {
         this.min = min
         this.max = max
         this.required = !!required;
+        this._value = { 'from': null, 'to': null }
+
+        if (selected.from) {
+            this.dayClicked(this.createDateWithoutTime(selected.from))
+        }
+        if (selected.from && selected.to) {
+            this.dayClicked(this.createDateWithoutTime(selected.to))
+        }
     }
 
     dayClicked(date) {
@@ -25,6 +33,7 @@ export default class RangeModeHandler {
 
         this._value.to = date
         return true;
+        console.log(this.value)
     }
 
     isSelectedDay(date) {

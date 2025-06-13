@@ -56,14 +56,14 @@ export default (selected, mode, disabled, min, max, required) => ({
     },
     init() {
         if (this.mode == "single") {
-            this.modeHandler = new SingleModeHandler(required)
+            this.modeHandler = new SingleModeHandler(selected, required)
         } else if (this.mode == "multiple") {
-            this.modeHandler = new MultipleModeHandler(required, min, max)
+            this.modeHandler = new MultipleModeHandler(selected, required, min, max)
         } else if (this.mode == "range") {
-            this.modeHandler = new RangeModeHandler(required, min, max)
+            this.modeHandler = new RangeModeHandler(selected, required, min, max)
         } else {
             console.error("Mode is invalid, defaulting to single mode")
-            this.modeHandler = new SingleModeHandler(required)
+            this.modeHandler = new SingleModeHandler(selected, required)
         }
 
         // add items to the disabled rules array

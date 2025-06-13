@@ -1,6 +1,8 @@
 export default class SingleModeHandler {
-    constructor(required) {
+    constructor(selected, required) {
         this.required = !!required;
+
+        this.dayClicked(this.createDateWithoutTime(selected))
     }
 
     get value() {

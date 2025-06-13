@@ -1,9 +1,15 @@
 export default class MultipleModeHandler {
-    constructor(required, min, max) {
+    constructor(selected, required, min, max) {
         this.min = min
         this.max = max
         this._value = [];
         this.required = !!required;
+
+        if (selected && Array.isArray(selected)) {
+            selected.forEach(element => {
+                this.dayClicked(this.createDateWithoutTime(element))
+            });
+        }
     }
 
     get value() {
