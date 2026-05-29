@@ -1,6 +1,6 @@
 <div x-data="dropdownMenuSub" x-bind="root" role="menuitem" aria-haspopup="menu" {{$attributes}}>
     @isset($trigger)
-    <x-aui::button variant="ghost" size="none" type="button" x-ref="subTrigger" tabindex="-1" x-bind="trigger"
+    <april:button variant="ghost" size="none" type="button" x-ref="subTrigger" tabindex="-1" x-bind="trigger"
         ::class="{'bg-accent' : subOpen || subPreview}" :attributes="$trigger->attributes->twMerge(['flex w-full cursor-default
         select-none items-center rounded-sm
         px-2 py-1.5 text-sm outline-none focus:bg-accent'])">
@@ -10,7 +10,7 @@
             class="lucide lucide-chevron-right ml-auto h-4 w-4">
             <path d="m9 18 6-6-6-6"></path>
         </svg>
-    </x-aui::button>
+    </april:button>
     @endisset
     @isset($content)
     {{--dont remove this template, it makes sure the items can be navigated using arrow keys--}}

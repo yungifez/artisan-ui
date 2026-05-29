@@ -3002,7 +3002,7 @@
     }
   });
 
-  // resources/js/artisan.js
+  // resources/js/april.js
   document.addEventListener("alpine:init", () => {
     Alpine.data("accordion", accordion_default);
     Alpine.data("accordionItem", accordionItem_default);

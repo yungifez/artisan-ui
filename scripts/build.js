@@ -4,16 +4,16 @@ let brotliSize = require('brotli-size')
 let crypto = require('crypto')
 
 build({
-    entryPoints: [`resources/js/artisan.js`],
-    outfile: `dist/artisan.js`,
+    entryPoints: [`resources/js/april.js`],
+    outfile: `dist/april.js`,
     bundle: true,
     platform: 'browser',
     define: { CDN: true },
 })
 
 build({
-    entryPoints: [`resources/css/artisan.css`],
-    outfile: `dist/artisan.css`,
+    entryPoints: [`resources/css/april.css`],
+    outfile: `dist/april.css`,
     bundle: true,
     platform: 'browser',
     define: { CDN: true },
@@ -21,8 +21,8 @@ build({
 
 build({
     format: 'esm',
-    entryPoints: [`resources/js/artisan.js`],
-    outfile: `dist/artisan.esm.js`,
+    entryPoints: [`resources/js/april.js`],
+    outfile: `dist/april.esm.js`,
     bundle: true,
     platform: 'node',
     define: { CDN: true },
@@ -30,8 +30,8 @@ build({
 
 build({
     format: 'esm',
-    entryPoints: [`resources/css/artisan.css`],
-    outfile: `dist/artisan.esm.css`,
+    entryPoints: [`resources/css/april.css`],
+    outfile: `dist/april.esm.css`,
     bundle: true,
     platform: 'node',
     define: { CDN: true },
@@ -40,34 +40,34 @@ build({
 let jsHash = crypto.randomBytes(4).toString('hex');
 let cssHash = crypto.randomBytes(4).toString('hex');
 
-fs.writeFileSync(__dirname+'/../dist/manifest.json', `
-{"/artisan.js":"${jsHash}", "/artisan.css":"${cssHash}"}
+fs.writeFileSync(__dirname + '/../dist/manifest.json', `
+{"/april.js":"${jsHash}", "/april.css":"${cssHash}"}
 `)
 
 // Build a minified version.
 build({
-    entryPoints: [`resources/js/artisan.js`],
-    outfile: `dist/artisan.min.js`,
+    entryPoints: [`resources/js/april.js`],
+    outfile: `dist/april.min.js`,
     sourcemap: 'linked',
     bundle: true,
     minify: true,
     platform: 'browser',
     define: { CDN: true },
 }).then(() => {
-    outputSize(`dist/artisan.min.js`)
+    outputSize(`dist/april.min.js`)
 })
 
 
 build({
-    entryPoints: [`resources/css/artisan.css`],
-    outfile: `dist/artisan.min.css`,
+    entryPoints: [`resources/css/april.css`],
+    outfile: `dist/april.min.css`,
     sourcemap: 'linked',
     bundle: true,
     minify: true,
     platform: 'browser',
     define: { CDN: true },
 }).then(() => {
-    outputSize(`dist/artisan.min.css`)
+    outputSize(`dist/april.min.css`)
 })
 
 function build(options) {
@@ -94,4 +94,4 @@ function bytesToSize(bytes) {
     const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
     if (i === 0) return `${bytes} ${sizes[i]}`
     return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
-  }
+}

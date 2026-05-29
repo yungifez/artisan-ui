@@ -1,12 +1,13 @@
 <?php
 
-namespace Yungifez\ArtisanUI;
+namespace Yungifez\AprilUI;
 
+use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Yungifez\ArtisanUI\Handlers\FrontendAssetsHandler;
+use Yungifez\AprilUI\Handlers\FrontendAssetsHandler;
 
-class ArtisanUIServiceProvider extends PackageServiceProvider
+class AprilUIServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +17,10 @@ class ArtisanUIServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('artisan-ui')
+            ->name('april-ui')
             ->hasConfigFile()
             ->hasRoute('assets')
-            ->hasViews('aui');
+            ->hasViews('april');
     }
 
     public function packageBooted()
@@ -27,18 +28,23 @@ class ArtisanUIServiceProvider extends PackageServiceProvider
         app(FrontendAssetsHandler::class)->boot();
         // $this->app->extend('blade.compiler', function ($blade, $app) {
         //
-        //     $artisan = new ArtisanBladeCompiler(
+        //     $april = new AprilBladeCompiler(
         //         $app['files'],
         //         $app['config']['view.compiled']
         //     );
         //
-        //     $artisan->setExtensions($blade->getExtensions());
-        //     $artisan->setCompiledPath($blade->getCompiledPath());
+        //     $april->setExtensions($blade->getExtensions());
+        //     $april->setCompiledPath($blade->getCompiledPath());
         //
-        //     return $artisan;
+        //     return $april;
         // });
-        \Illuminate\Support\Facades\Blade::precompiler(function ($str) {
+<<<<<<< HEAD:src/ArtisanUIServiceProvider.php
+        Blade::precompiler(function ($str) {
             return app('\Yungifez\ArtisanUI\ArtisanBladeCompiler')->compile($str);
+=======
+        \Illuminate\Support\Facades\Blade::precompiler(function ($str) {
+            return app('\Yungifez\AprilUI\AprilBladeCompiler')->compile($str);
+>>>>>>> 197f1a7 (Rename Artisan UI to April UI):src/AprilUIServiceProvider.php
         });
 
     }

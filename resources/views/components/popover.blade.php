@@ -3,8 +3,8 @@
         @isset($popoverTrigger)
         {{$popoverTrigger}}
         @else
-        <x-aui::button variant="outline" type="button">Open</x-aui::button>
-        @endisset
+        <april:button variant="outline" type="button">Open</april::button>
+            @endisset
     </div>
     @isset($popoverContent)
     @if ($attributes->has('x-teleport'))

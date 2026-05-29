@@ -38,7 +38,7 @@
                 </p>
             </div>
             <div class="w-6 pl-3 flex items-center">
-                <x-aui::angle-down class="w-8/12 transition text-center fill-foreground"
+                <april:angle-down class="w-8/12 transition text-center fill-foreground"
                     ::class="{'-rotate-180' : isOpen()}" />
             </div>
         </button>
@@ -51,7 +51,7 @@
                             x-text="options[index].text"></p>
                         <div class="flex flex-auto flex-row-reverse">
                             <button x-on:click="remove(index)" class="px-2 py-1" type="button">
-                                <x-aui::x class="fill-foreground h-2" />
+                                <april:x class="fill-foreground h-2" />
                             </button>
                         </div>
                     </div>

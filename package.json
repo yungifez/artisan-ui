@@ -1,8 +1,8 @@
 {
-    "name": "artisan-ui",
+    "name": "april-ui",
     "version": "1.0.0",
-    "description": "Artisan UI Javascript files",
-    "main": "resources/js/artisan.js",
+    "description": "April UI Javascript files",
+    "main": "resources/js/april.js",
     "author": "yungifez",
     "scripts": {
         "build": "node ./scripts/build.js",

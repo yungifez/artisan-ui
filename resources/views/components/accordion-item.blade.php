@@ -11,7 +11,7 @@
                 @isset($icon)
                 {{$icon}}
                 @else
-                <x-aui::angle-down class=" transition-transform duration-200 fill-foreground" x-bind="icon" />
+                <april:angle-down class=" transition-transform duration-200 fill-foreground" x-bind="icon" />
                 @endisset
             </span>
         </button>

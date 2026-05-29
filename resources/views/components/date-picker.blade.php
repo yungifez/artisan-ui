@@ -11,7 +11,7 @@
 <div x-ref="datePickerInput" x-modelable="value"
     x-data='datePicker(@json($open), @json($value), @json($mode), @json($format))' x-bind="root" {{$attributes->
     class(['relative'])}}>
-    <x-aui::button class="justify-start min-h-10 w-full h-fit text-left flex-wrap font-normal" type="button"
+    <april:button class="justify-start min-h-10 w-full h-fit text-left flex-wrap font-normal" type="button"
         x-bind="trigger" variant="outline">
         <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -56,9 +56,9 @@
                     :value="(new Date(value))?.to?.toISOString().split('T')[0]" />
             </span>
         </template>
-    </x-aui::button>
+    </april:button>
     <div x-bind="calendar" x-cloak class="z-10">
-        <x-aui::calendar :required="$attributes->get('required')" :mode="$mode" :selected="$value" x-model="value"
+        <april:calendar :required="$attributes->get('required')" :mode="$mode" :selected="$value" x-model="value"
             tabindex="0" class="outline-none" />
     </div>
 </div>

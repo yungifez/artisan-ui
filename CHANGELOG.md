@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `artisan-ui` will be documented in this file.
+All notable changes to `april-ui` will be documented in this file.
 
 ## v0.0.1 prima emissio - 2024-07-24
 

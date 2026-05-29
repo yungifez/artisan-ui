@@ -57,9 +57,9 @@ default => '-translate-y-10',
         @isset($dismissTrigger)
         {{$dismissTrigger}}
         @else
-        <x-aui::button variant="ghost" size="icon">
-            <x-aui::x class="fill-foreground" />
-        </x-aui::button>
+        <april:button variant="ghost" size="icon">
+            <april:x class="fill-foreground" />
+        </april:button>
         @endisset
     </div>
     @endif

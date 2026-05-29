@@ -1,12 +1,12 @@
 {
-    "name": "yungifez/artisan-ui",
+    "name": "yungifez/april-ui",
     "description": "A livewire blade UI component library",
     "keywords": [
         "yungifez",
         "laravel",
-        "artisan-ui"
+        "april-ui"
     ],
-    "homepage": "https://github.com/yungifez/artisan-ui",
+    "homepage": "https://github.com/yungifez/april-ui",
     "license": "MIT",
     "authors": [
         {
@@ -45,19 +45,19 @@
     },
     "autoload": {
         "psr-4": {
-            "Yungifez\\ArtisanUI\\": "src/",
-            "Yungifez\\ArtisanUI\\Database\\Factories\\": "database/factories/"
+            "Yungifez\\AprilUI\\": "src/",
+            "Yungifez\\AprilUI\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yungifez\\ArtisanUI\\Tests\\": "tests/",
+            "Yungifez\\AprilUI\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-artisan-ui --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-april-ui --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -83,10 +83,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Yungifez\\ArtisanUI\\ArtisanUIServiceProvider"
+                "Yungifez\\AprilUI\\AprilUIServiceProvider"
             ],
             "aliases": {
-                "ArtisanUI": "Yungifez\\ArtisanUI\\Facades\\ArtisanUI"
+                "AprilUI": "Yungifez\\AprilUI\\Facades\\AprilUI"
             }
         }
     },
