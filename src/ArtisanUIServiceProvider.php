@@ -20,11 +20,26 @@ class ArtisanUIServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasRoute('assets')
             ->hasViews('aui');
-
     }
 
     public function packageBooted()
     {
         app(FrontendAssetsHandler::class)->boot();
+        // $this->app->extend('blade.compiler', function ($blade, $app) {
+        //
+        //     $artisan = new ArtisanBladeCompiler(
+        //         $app['files'],
+        //         $app['config']['view.compiled']
+        //     );
+        //
+        //     $artisan->setExtensions($blade->getExtensions());
+        //     $artisan->setCompiledPath($blade->getCompiledPath());
+        //
+        //     return $artisan;
+        // });
+        \Illuminate\Support\Facades\Blade::precompiler(function ($str) {
+            return app('\Yungifez\ArtisanUI\ArtisanBladeCompiler')->compile($str);
+        });
+
     }
 }
