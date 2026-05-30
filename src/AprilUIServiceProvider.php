@@ -38,13 +38,8 @@ class AprilUIServiceProvider extends PackageServiceProvider
         //
         //     return $april;
         // });
-<<<<<<< HEAD:src/ArtisanUIServiceProvider.php
-        Blade::precompiler(function ($str) {
-            return app('\Yungifez\ArtisanUI\ArtisanBladeCompiler')->compile($str);
-=======
         \Illuminate\Support\Facades\Blade::precompiler(function ($str) {
             return app('\Yungifez\AprilUI\AprilBladeCompiler')->compile($str);
->>>>>>> 197f1a7 (Rename Artisan UI to April UI):src/AprilUIServiceProvider.php
         });
 
     }

@@ -59,11 +59,7 @@ class AprilComponentTagCompiler extends ComponentTagCompiler
 
             $attributes = $this->getAttributesFromAttributeString($matches['attributes']);
 
-<<<<<<< HEAD:src/ArtisanComponentTagCompiler.php
-            $component = $matches[1] == 'aui:' ? 'aui::'.$matches[2] : $matches[2];
-=======
             $component = $matches[1] == "april:" ? "april::".$matches[2] : $matches[2];
->>>>>>> 197f1a7 (Rename Artisan UI to April UI):src/AprilComponentTagCompiler.php
 
             return $this->componentString($component, $attributes)."\n@endComponentClass##END-COMPONENT-CLASS##";
         }, $value);
@@ -121,11 +117,7 @@ class AprilComponentTagCompiler extends ComponentTagCompiler
 
             $attributes = $this->getAttributesFromAttributeString($matches['attributes']);
 
-<<<<<<< HEAD:src/ArtisanComponentTagCompiler.php
-            $component = $matches[1] == 'aui:' ? 'aui::'.$matches[2] : $matches[2];
-=======
             $component = $matches[1] == "april:" ? "april::".$matches[2] : $matches[2];
->>>>>>> 197f1a7 (Rename Artisan UI to April UI):src/AprilComponentTagCompiler.php
 
             return $this->componentString($component, $attributes);
         }, $value);
