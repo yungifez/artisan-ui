@@ -2,8 +2,8 @@
 
 namespace Yungifez\AprilUI;
 
-use Illuminate\View\Compilers\ComponentTagCompiler;
 use Illuminate\Support\Str;
+use Illuminate\View\Compilers\ComponentTagCompiler;
 
 class AprilComponentTagCompiler extends ComponentTagCompiler
 {
@@ -59,7 +59,7 @@ class AprilComponentTagCompiler extends ComponentTagCompiler
 
             $attributes = $this->getAttributesFromAttributeString($matches['attributes']);
 
-            $component = $matches[1] == "april:" ? "april::".$matches[2] : $matches[2];
+            $component = $matches[1] == 'april:' ? 'april::'.$matches[2] : $matches[2];
 
             return $this->componentString($component, $attributes)."\n@endComponentClass##END-COMPONENT-CLASS##";
         }, $value);
@@ -117,7 +117,7 @@ class AprilComponentTagCompiler extends ComponentTagCompiler
 
             $attributes = $this->getAttributesFromAttributeString($matches['attributes']);
 
-            $component = $matches[1] == "april:" ? "april::".$matches[2] : $matches[2];
+            $component = $matches[1] == 'april:' ? 'april::'.$matches[2] : $matches[2];
 
             return $this->componentString($component, $attributes);
         }, $value);
@@ -202,5 +202,4 @@ class AprilComponentTagCompiler extends ComponentTagCompiler
 
         return preg_replace('/<\/\s*slot[^>]*>/', ' @endslot', $value);
     }
-
 }

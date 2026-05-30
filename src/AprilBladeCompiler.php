@@ -2,10 +2,9 @@
 
 namespace Yungifez\AprilUI;
 
-
 class AprilBladeCompiler
 {
-      public function __construct(
+    public function __construct(
         protected AprilComponentTagCompiler $tagCompiler
     ) {}
 

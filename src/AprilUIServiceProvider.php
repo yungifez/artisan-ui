@@ -38,7 +38,7 @@ class AprilUIServiceProvider extends PackageServiceProvider
         //
         //     return $april;
         // });
-        \Illuminate\Support\Facades\Blade::precompiler(function ($str) {
+        Blade::precompiler(function ($str) {
             return app('\Yungifez\AprilUI\AprilBladeCompiler')->compile($str);
         });
 
