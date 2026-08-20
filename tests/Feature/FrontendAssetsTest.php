@@ -31,7 +31,7 @@ describe('asset routes', function () {
     it('serves the alpine behaviours in the javascript bundle', function () {
         $response = $this->get(route('april-ui.april.js'));
 
-        expect($response->streamedContent())->toContain('Alpine.data("accordion"');
+        expect($response->streamedContent())->toContain('Alpine.data(name, resolve(name)');
     });
 
     it('uses the april-ui url prefix', function (string $name) {

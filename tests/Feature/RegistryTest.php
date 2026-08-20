@@ -132,9 +132,9 @@ describe('alpine behaviours', function () {
      */
     function registeredAlpineComponents(): array
     {
-        $source = file_get_contents(__DIR__.'/../../resources/js/april.js');
+        $source = file_get_contents(__DIR__.'/../../resources/js/components.js');
 
-        preg_match_all("/Alpine\.data\(\s*'([^']+)'/", $source, $matches);
+        preg_match_all("/^import\s+([a-zA-Z][a-zA-Z0-9_]*)\s+from\s+'\.\/[^']+\.js';/m", $source, $matches);
 
         $names = array_unique($matches[1]);
         sort($names);
@@ -181,7 +181,7 @@ describe('alpine behaviours', function () {
     });
 
     it('imports every source file in the entry point', function () {
-        $source = file_get_contents(__DIR__.'/../../resources/js/april.js');
+        $source = file_get_contents(__DIR__.'/../../resources/js/components.js');
 
         foreach (registeredAlpineComponents() as $name) {
             expect($source)->toContain("import {$name} from './{$name}.js'");
