@@ -2348,7 +2348,7 @@ var dialog_default = (show, dismissable) => ({
     ["x-trap.noscroll.inert"]() {
       return this.show;
     },
-    ["x-transition.opacity.duration.150ms"]() {
+    ["x-transition.opacity.duration.300ms"]() {
       return true;
     }
   },
@@ -2864,12 +2864,8 @@ var select_default = (multiple, disabled) => ({
 });
 
 // resources/js/sheet.js
-var sheet_default = (side, transitionEnterStart, transitionEnterEnd, transitionLeaveStart, transitionLeaveEnd) => ({
+var sheet_default = (side) => ({
   side,
-  transitionEnterStart,
-  transitionEnterEnd,
-  transitionLeaveStart,
-  transitionLeaveEnd,
   root: {
     [":data-state"]() {
       return this.$data["show"] ? "open" : "closed";
@@ -2884,22 +2880,22 @@ var sheet_default = (side, transitionEnterStart, transitionEnterEnd, transitionL
       return true;
     },
     ["x-transition:enter"]() {
-      return "transition ease-linear duration-150";
+      return "transition-opacity ease-in-out duration-500";
     },
     ["x-transition:enter-start"]() {
-      return this.transitionEnterStart;
+      return "opacity-0";
     },
     ["x-transition:enter-end"]() {
-      return this.transitionEnterEnd;
+      return "opacity-100";
     },
     ["x-transition:leave"]() {
-      return "transition ease-linear duration-150";
+      return "transition-opacity ease-in-out duration-300";
     },
     ["x-transition:leave-start"]() {
-      return this.transitionLeaveStart;
+      return "opacity-100";
     },
     ["x-transition:leave-end"]() {
-      return this.transitionLeaveEnd;
+      return "opacity-0";
     }
   }
 });
