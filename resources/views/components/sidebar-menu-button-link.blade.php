@@ -7,6 +7,7 @@
 $class = "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left font-normal ring-sidebar-ring
 outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8
 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2
+group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>span]:hidden
 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent
 data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground
 data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground

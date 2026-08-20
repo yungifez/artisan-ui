@@ -18,41 +18,6 @@ data-[state=open]:slide-in-from-right sm:max-w-sm",
 "none" => "",
 };
 
-$transitionEnterStart = match($content->attributes->get("side")){
-'top' => '-translate-y-10',
-'bottom' => 'translate-y-10',
-'left' => '-translate-x-3/4',
-'right' => 'translate-x-3/4',
-default => 'translate-x-3/4',
-'none' => '',
-};
-
-$transitionEnterEnd = match($content->attributes->get("side")){
-'top' => 'translate-y-0',
-'bottom' => 'translate-y-0',
-'right' => 'translate-x-0',
-'left' => 'translate-x-0',
-default => 'translate-x-0',
-'none' => '',
-};
-
-$transitionLeaveStart = match($content->attributes->get("side")){
-'top' => 'translate-y-0',
-'bottom' => 'translate-y-0',
-'right' => 'translate-x-0',
-'left' => 'translate-x-0',
-default => 'translate-x-0',
-'none' => '',
-};
-
-$transitionLeaveEnd = match($content->attributes->get("side")){
-'top' => '-translate-y-3/4',
-'bottom' => 'translate-y-3/4',
-'left' => '-translate-x-3/4',
-'right' => 'translate-x-3/4',
-default => 'translate-x-3/4',
-'none' => '',
-};
 }
 @endphp
 
@@ -70,7 +35,7 @@ default => 'translate-x-3/4',
         <div data-slot="sheet-overlay" {{$attributes->except(['x-teleport'])->twMerge(["fixed inset-0 z-50 bg-black/80"])}}
             x-bind="overlay">
             @isset($content)
-            <div data-state="closed" x-data="sheet('{{$content->attributes->get('side')}}','{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
+            <div data-state="closed" x-data="sheet('{{$content->attributes->get('side')}}')"
                 x-bind="root" {{$content->
                 attributes->twMerge(["$class"])}}
                 >

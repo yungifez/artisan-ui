@@ -49,7 +49,7 @@ export default (show, dismissable) => ({
         ['x-trap.noscroll.inert']() {
             return this.show;
         },
-        ['x-transition.opacity.duration.150ms']() {
+        ['x-transition.opacity.duration.300ms']() {
             return true;
         },
     },
