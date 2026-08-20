@@ -1,6 +1,9 @@
 export default () => ({
     dropdownMenu: false,
     root: {
+        [':data-state']() {
+            return this.dropdownMenu ? 'open' : 'closed';
+        },
         ['x-id']() {
             return ['dropdown-menu'];
         },
@@ -12,6 +15,9 @@ export default () => ({
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.dropdownMenu ? 'open' : 'closed';
+        },
         ['@click']() {
             return this.toggle();
         },
@@ -52,6 +58,9 @@ export default () => ({
         },
     },
     content: {
+        [':data-state']() {
+            return this.dropdownMenu ? 'open' : 'closed';
+        },
         ['x-anchor.offset.4']() {
             return this.$refs.trigger;
         },

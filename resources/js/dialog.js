@@ -8,6 +8,9 @@ export default (show, dismissable) => ({
         this.show = true;
     },
     root: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
         ['x-id']() {
             return ['dialog'];
         },
@@ -18,6 +21,9 @@ export default (show, dismissable) => ({
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
         ['@click']() {
             return this.open();
         },
@@ -26,6 +32,9 @@ export default (show, dismissable) => ({
         },
     },
     overlay: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
         ['@click']() {
             if (this.dismissable) {
                 return this.close();
@@ -45,6 +54,9 @@ export default (show, dismissable) => ({
         },
     },
     dialog: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
         ['@click.stop']() {
             return true;
         },

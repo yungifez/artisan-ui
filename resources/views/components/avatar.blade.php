@@ -13,14 +13,14 @@ default => "h-10 w-10",
 }
 @endphp
 
-<div x-data="avatar()" {{$attributes->twMerge(["$class $borderRadius aspect-square border flex justify-center
+<div data-slot="avatar" x-data="avatar()" {{$attributes->twMerge(["$class $borderRadius aspect-square border flex justify-center
     items-center"])}}>
     @isset($image)
-    <img x-bind="image" {{$image->attributes->twMerge(["$borderRadius"])}}
+    <img data-slot="avatar-image" x-bind="image" {{$image->attributes->twMerge(["$borderRadius"])}}
     >
     @endisset
     @isset($fallback)
-    <div x-bind="fallback" {{$fallback->attributes->twMerge(['p-3'])}}
+    <div data-slot="avatar-fallback" x-bind="fallback" {{$fallback->attributes->twMerge(['p-3'])}}
         >
         {{$fallback}}
     </div>

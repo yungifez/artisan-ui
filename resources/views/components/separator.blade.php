@@ -1,4 +1,7 @@
 @props(['orientation' => 'horizontal'])
 
-<div data-orientation="{{$orientation}}" role="none" {{$attributes->twMerge(['shrink-0 bg-border w-full my-4', 'h-[1px]
-    w-full' => $orientation == 'horizontal', 'h-[1px] w-full' => $orientation == 'vertical'])}}></div>
+<div data-orientation="{{$orientation}}" role="none" {{$attributes->merge(["data-slot" => "separator"])->twMerge([
+    'shrink-0 bg-border',
+    'h-[1px] w-full my-4' => $orientation == 'horizontal',
+    'w-[1px] h-full mx-4' => $orientation == 'vertical',
+])}}></div>

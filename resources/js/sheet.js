@@ -5,6 +5,9 @@ export default (side, transitionEnterStart, transitionEnterEnd, transitionLeaveS
     transitionLeaveStart: transitionLeaveStart,
     transitionLeaveEnd: transitionLeaveEnd,
     root: {
+        [':data-state']() {
+            return this.$data['show'] ? 'open' : 'closed';
+        },
         ['x-show']() {
             return this.$data['show'];
         },

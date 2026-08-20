@@ -1,7 +1,7 @@
-<div {{$attributes->twMerge(["flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"])}}>
+<div data-slot="dialog-footer" {{$attributes->twMerge(["flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"])}}>
 
     <template x-if="dismissable">
-        <div x-bind="closeButton" @isset($close) {{$close->attributes}} @endisset
+        <div data-slot="dialog-close" x-bind="closeButton" @isset($close) {{$close->attributes}} @endisset
             >
             @isset($close)
             {{$close}}

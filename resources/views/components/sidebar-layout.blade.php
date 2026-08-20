@@ -1,16 +1,16 @@
 @props([
-'side' => 'left',
-'variant' => 'sidebar',
-'collapsible' => "offcanvas",
 'defaultOpen' => true,
-'sidebar',
-'side'
+'width' => null,
+'widthIcon' => null,
 ])
-<div {{$attributes->twMerge(["group/sidebar-wrapper flex min-h-svh w-full has-data[attr=inset]:bg-sidebar"])}}
-    >
-    @isset($sidebar)
-    <div {{$sidebar->attributes->except(['variant'])->twMerge([''])}}
-        data-variant="{{$sidebar->attributes->get("variant")}}"></div>
-    @endisset
+
+{{-- Holds the sidebar state. Put the sidebar and the page content in the slot. --}}
+<div x-data="sidebar(@js($defaultOpen))" x-bind="root" data-slot="sidebar-wrapper" @if ($width || $widthIcon)
+    @style([
+    "--sidebar-width: $width" => $width,
+    "--sidebar-width-icon: $widthIcon" => $widthIcon,
+    ])
+    @endif {{$attributes->twMerge(['group/sidebar-wrapper flex min-h-svh w-full
+    has-data-[variant=inset]:bg-sidebar'])}}>
     {{$slot}}
 </div>

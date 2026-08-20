@@ -1,6 +1,9 @@
 export default (value) => ({
     value: value,
     root: {
+        [':data-state']() {
+            return this.$data.active == this.value ? 'active' : 'inactive';
+        },
         ['@click']() {
             return this.setAsActive();
         },

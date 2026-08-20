@@ -1,7 +1,7 @@
 @props(['trigger', 'content'])
-<div x-data="dropdownMenu" x-bind="root">
+<div data-slot="dropdown-menu" data-state="closed" x-data="dropdownMenu" x-bind="root">
     @isset($trigger)
-    <div {{$trigger->attributes->twMerge(['w-fit inline-block'])}} x-bind="trigger" x-ref="trigger"
+    <div data-slot="dropdown-menu-trigger" {{$trigger->attributes->twMerge(['w-fit inline-block'])}} x-bind="trigger" x-ref="trigger"
         aria-haspopup="true">
         {{$trigger}}
     </div>
@@ -10,7 +10,7 @@
     <template x-teleport="{{$attributes->get('x-teleport')}}">
         @endif
         @isset($content)
-        <div x-bind="content" x-ref="content" x-cloak role="menu" aria-orientation="horizontal" {{$content->
+        <div data-slot="dropdown-menu-content" x-bind="content" x-ref="content" x-cloak role="menu" aria-orientation="horizontal" {{$content->
             attributes->twMerge(["z-50
             min-w-[8rem] rounded-md border
             bg-popover p-1

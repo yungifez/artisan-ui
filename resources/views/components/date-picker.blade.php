@@ -8,7 +8,7 @@
 'toName',
 'parentClass' => ''
 ])
-<div x-ref="datePickerInput" x-modelable="value"
+<div data-slot="date-picker" data-state="{{$open ? 'open' : 'closed'}}" x-ref="datePickerInput" x-modelable="value"
     x-data='datePicker(@json($open), @json($value), @json($mode), @json($format))' x-bind="root" {{$attributes->
     class(['relative'])}}>
     <april:button class="justify-start min-h-10 w-full h-fit text-left flex-wrap font-normal" type="button"

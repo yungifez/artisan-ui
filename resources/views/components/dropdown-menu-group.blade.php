@@ -1,1 +1,1 @@
-<div role="group">{{$slot}}</div>
+<div data-slot="dropdown-menu-group" role="group">{{$slot}}</div>
