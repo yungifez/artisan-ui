@@ -19,7 +19,7 @@ fill-destructive",
 };
 @endphp
 
-<div role="alert" x-data='alert(@json($dismissOnTimeout),{{$timeout}},@json($startTimeoutOnIntersect))' x-bind="root"
+<div data-slot="alert" role="alert" data-state="open" x-data='alert(@json($dismissOnTimeout),{{$timeout}},@json($startTimeoutOnIntersect))' x-bind="root"
     {{$attributes->
     class(["$class"])}}
     >
@@ -31,12 +31,12 @@ fill-destructive",
 
     <div class="w-full">
         @isset($title)
-        <h5 {{$title->attributes->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
+        <h5 data-slot="alert-title" {{$title->attributes->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
             {{$title}}
         </h5>
         @endisset
         @isset($description)
-        <div {{$description->attributes->twMerge(["text-sm"])}}>
+        <div data-slot="alert-description" {{$description->attributes->twMerge(["text-sm"])}}>
             {{$description}}
         </div>
         @endisset

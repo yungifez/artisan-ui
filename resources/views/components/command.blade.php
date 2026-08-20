@@ -1,9 +1,9 @@
 @props(['input', 'label' => '', 'list', 'icon', 'value' => '', 'empty' => ''])
-<div x-data='command(@json($value))' x-bind="root" cmd-root {{$attributes->twMerge(['flex flex-col overflow-hidden
+<div data-slot="command" x-data='command(@json($value))' x-bind="root" cmd-root {{$attributes->twMerge(['flex flex-col overflow-hidden
     rounded-md
     bg-popover
     text-popover-foreground'])}} x-modelable="keyword">
-    <div cmd-input-wrapper class="flex items-center border-b px-3">
+    <div data-slot="command-input-wrapper" cmd-input-wrapper class="flex items-center border-b px-3">
         @isset($icon)
         {{$icon}}
         @else
@@ -16,18 +16,18 @@
         @endisset
         <label class="w-full h-fit">
             <span class="sr-only">{{$label}}</span>
-            <input x-bind="commandInput" x-ref="input" cmd-input
+            <input data-slot="command-input" x-bind="commandInput" x-ref="input" cmd-input
                 class="{{!isset($input->attributes) ?: $input->attributes->get('class')}} flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 type="text" autocomplete="off" aria-autocomplete="list" autocorrect="off" role="combobox"
                 {{!isset($input->attributes) ?: $input->attributes->except(['class'])}}/>
         </label>
     </div>
     @isset($list)
-    <div class="max-h-[300px] overflow-y-auto overflow-x-hidden" x-bind="commandList" x-ref="list" role="listbox"
+    <div data-slot="command-list" class="max-h-[300px] overflow-y-auto overflow-x-hidden" x-bind="commandList" x-ref="list" role="listbox"
         aria-label="suggestions" cmd-list-sizer>
         {{$list}}
     </div>
-    <div class="py-6 text-center text-sm" x-bind="commandEmpty">
+    <div data-slot="command-empty" class="py-6 text-center text-sm" x-bind="commandEmpty">
         {{$empty}}
     </div>
     @endisset

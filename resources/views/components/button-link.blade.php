@@ -21,7 +21,7 @@ default => "h-10 px-4 py-2",
 }
 @endphp
 
-<a {{$attributes->merge(["class" => $class])->except(['size', 'variant'])}}
+<a {{$attributes->merge(["data-slot" => "button"])->except(['size', 'variant'])->twMerge([$class])}}
     >
     {{$slot}}
 </a>

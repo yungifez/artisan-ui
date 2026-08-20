@@ -1,11 +1,17 @@
 export default () => ({
     popover: false,
     root: {
+        [':data-state']() {
+            return this.popover ? 'open' : 'closed';
+        },
         ['x-id']() {
             return ['popover'];
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.popover ? 'open' : 'closed';
+        },
         ['@click']() {
             return this.toggle();
         },
@@ -20,6 +26,9 @@ export default () => ({
         },
     },
     content: {
+        [':data-state']() {
+            return this.popover ? 'open' : 'closed';
+        },
         ['@click.outside.capture']() {
             if (!this.$refs.trigger.contains(this.$event.target)) {
                 return this.close();

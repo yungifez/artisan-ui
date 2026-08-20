@@ -6,10 +6,10 @@
 'content',
 'svg'
 ])
-<div x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen))" {{$attributes->
+<div data-slot="tooltip" x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen))" {{$attributes->
     whereDoesntStartWith('x-teleport')->twMerge(['w-fit'])}}>
     @isset($trigger)
-    <div x-bind="trigger" x-ref="trigger" {{$trigger->attributes->twMerge('w-fit inline-block')}}>
+    <div data-slot="tooltip-trigger" data-state="{{$defaultOpen ? 'open' : 'closed'}}" x-bind="trigger" x-ref="trigger" {{$trigger->attributes->twMerge('w-fit inline-block')}}>
         {{$trigger}}
     </div>
     @endisset
@@ -18,7 +18,7 @@
     <template x-teleport="{{$attributes->get('x-teleport')}}">
         @endif
         <div>
-            <div x-cloak x-ref="content" x-bind="content" {{$content->attributes->twMerge(["z-50 overflow-hidden
+            <div data-slot="tooltip-content" data-state="{{$defaultOpen ? 'open' : 'closed'}}" x-cloak x-ref="content" x-bind="content" {{$content->attributes->twMerge(["z-50 overflow-hidden
                 rounded-md
                 bg-primary px-3
                 py-1.5 text-xs text-primary-foreground"])}}>

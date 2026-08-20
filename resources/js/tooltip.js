@@ -4,6 +4,9 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
     tooltipOpened: defaultOpen,
     debounceTimeout: null,
     trigger: {
+        [':data-state']() {
+            return this.tooltipOpened ? 'open' : 'closed';
+        },
         ['@mouseover']() {
             clearTimeout(this.mouseoutTimeout);
             clearTimeout(this.debounceTimeout);
@@ -32,6 +35,9 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
         },
     },
     content: {
+        [':data-state']() {
+            return this.tooltipOpened ? 'open' : 'closed';
+        },
         ['x-show']() {
             return this.tooltipOpened
         },

@@ -1,4 +1,4 @@
-<button x-data="tabsTrigger('{{$attributes->get('value')}}')" role="tab" x-bind="root"
+<button data-slot="tabs-trigger" x-data="tabsTrigger('{{$attributes->get('value')}}')" role="tab" x-bind="root"
     {{$attributes->twMerge(['inline-flex
     items-center
     justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm

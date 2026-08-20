@@ -43,7 +43,7 @@ default => '-translate-y-10',
 };
 @endphp
 
-<div x-data="banner({{$displayAfter}},'{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
+<div data-slot="banner" data-state="closed" x-data="banner({{$displayAfter}},'{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
     x-bind="root" {{$attributes->twMerge(["$positionClass bg-background p-3 flex items-center fixed z-20 w-full
     h-autoduration-300 ease-out shadow-sm "])}}
     >

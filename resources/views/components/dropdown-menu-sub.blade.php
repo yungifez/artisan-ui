@@ -1,4 +1,4 @@
-<div x-data="dropdownMenuSub" x-bind="root" role="menuitem" aria-haspopup="menu" {{$attributes}}>
+<div data-slot="dropdown-menu-sub" data-state="closed" x-data="dropdownMenuSub" x-bind="root" role="menuitem" aria-haspopup="menu" {{$attributes}}>
     @isset($trigger)
     <april:button variant="ghost" size="none" type="button" x-ref="subTrigger" tabindex="-1" x-bind="trigger"
         ::class="{'bg-accent' : subOpen || subPreview}" :attributes="$trigger->attributes->twMerge(['flex w-full cursor-default

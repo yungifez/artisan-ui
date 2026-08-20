@@ -4,6 +4,9 @@ export default (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
     'startTimeoutOnIntersect': startTimeoutOnIntersect,
     'timeout': timeout,
     root: {
+        [':data-state']() {
+            return this.visible ? 'open' : 'closed';
+        },
         ['x-show']() {
             return this.visible;
         },
@@ -20,9 +23,6 @@ export default (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
         },
     },
     dismissTrigger: {
-        ['@click']() {
-            return this.dismiss();
-        },
         ['@click']() {
             return this.dismiss();
         },

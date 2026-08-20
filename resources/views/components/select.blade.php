@@ -3,7 +3,7 @@
 'trigger'
 ])
 
-<div x-data="select({{$attributes->has('multiple') ? 'true' : 'false'}}, {{$attributes->has('disabled') ? 'true' : 'false'}})"
+<div data-slot="select" data-state="closed" x-data="select({{$attributes->has('multiple') ? 'true' : 'false'}}, {{$attributes->has('disabled') ? 'true' : 'false'}})"
     x-bind="root" x-modelable="selectedValues" {{$attributes->twMerge(['relative'])}}>
     <select class="hidden">
         {{$slot}}

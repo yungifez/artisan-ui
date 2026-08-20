@@ -2,6 +2,12 @@ export default (disabled) => ({
     switchOn: false,
     disabled: disabled,
     root: {
+        [':data-state']() {
+            return this.switchOn ? 'checked' : 'unchecked';
+        },
+        [':data-disabled']() {
+            return this.disabled || null;
+        },
         [':aria-checked']() {
             return this.switchOn;
         },
@@ -28,6 +34,12 @@ export default (disabled) => ({
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.switchOn ? 'checked' : 'unchecked';
+        },
+        [':data-disabled']() {
+            return this.disabled || null;
+        },
         ['@click']() {
             return this.toggle()
         },

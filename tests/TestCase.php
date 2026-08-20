@@ -2,8 +2,10 @@
 
 namespace Yungifez\AprilUI\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ViewErrorBag;
 use Orchestra\Testbench\TestCase as Orchestra;
+use TalesFromADev\TailwindMerge\Support\Config;
 use Yungifez\AprilUI\AprilUIServiceProvider;
 
 class TestCase extends Orchestra
@@ -12,9 +14,18 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Yungifez\\AprilUI\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
+        // Laravel shares this bag through session middleware. Components that
+        // read $errors need it when they render outside a request.
+        View::share('errors', new ViewErrorBag);
+    }
+
+    protected function tearDown(): void
+    {
+        // TailwindMerge keeps its merged configuration in a static property.
+        // Reset it so a test that uses custom config cannot affect the next test.
+        Config::reset();
+
+        parent::tearDown();
     }
 
     protected function getPackageProviders($app)
@@ -26,11 +37,7 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
-
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_april-ui_table.php.stub';
-        $migration->up();
-        */
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('app.debug', false);
     }
 }

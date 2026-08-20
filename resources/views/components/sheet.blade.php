@@ -56,9 +56,9 @@ default => 'translate-x-3/4',
 }
 @endphp
 
-<div x-data="dialog(false, {{$attributes->has('dismissable') ? 'true' : 'false'}})" x-bind="root" @isset($group)
+<div data-slot="sheet" data-state="closed" x-data="dialog(false, {{$attributes->has('dismissable') ? 'true' : 'false'}})" x-bind="root" @isset($group)
     {{$group->attributes}} @endisset>
-    <div x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
+    <div data-slot="sheet-trigger" x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
         @isset($trigger)
         {{$trigger}}
         @endisset
@@ -67,10 +67,10 @@ default => 'translate-x-3/4',
     <template @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}"
         @else x-if="true"
         @endif>
-        <div {{$attributes->except(['x-teleport'])->twMerge(["fixed inset-0 z-50 bg-black/80"])}}
+        <div data-slot="sheet-overlay" {{$attributes->except(['x-teleport'])->twMerge(["fixed inset-0 z-50 bg-black/80"])}}
             x-bind="overlay">
             @isset($content)
-            <div x-data="sheet('{{$content->attributes->get('side')}}','{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
+            <div data-state="closed" x-data="sheet('{{$content->attributes->get('side')}}','{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
                 x-bind="root" {{$content->
                 attributes->twMerge(["$class"])}}
                 >

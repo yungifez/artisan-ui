@@ -1,0 +1,132 @@
+<?php
+
+use Illuminate\Support\Facades\Blade;
+
+/*
+|--------------------------------------------------------------------------
+| Docs
+|--------------------------------------------------------------------------
+|
+| The docs pages and the previews ship with the package, so they are checked
+| here. A preview that stops rendering is a broken page on the website, and a
+| component with no page is a gap a reader will fall into.
+|
+*/
+
+function docsPath(string $path = ''): string
+{
+    $base = realpath(__DIR__.'/../../docs');
+
+    return $path === '' ? $base : $base.'/'.$path;
+}
+
+/**
+ * @return list<string>
+ */
+function previewNames(): array
+{
+    $names = array_map(
+        fn (string $file): string => basename($file, '.blade.php'),
+        glob(docsPath('previews').'/*.blade.php')
+    );
+
+    sort($names);
+
+    return $names;
+}
+
+/**
+ * @return list<string>
+ */
+function documentedComponents(): array
+{
+    $names = array_map(
+        fn (string $file): string => basename($file, '.blade.md'),
+        glob(docsPath('pages/0.x/components').'/*.blade.md')
+    );
+
+    sort($names);
+
+    return $names;
+}
+
+dataset('previews', fn () => previewNames());
+
+describe('previews', function () {
+    it('ships previews with the package', function () {
+        expect(previewNames())->not->toBeEmpty();
+    });
+
+    it('renders', function (string $name) {
+        expect(Blade::render(file_get_contents(docsPath("previews/{$name}.blade.php"))))
+            ->toBeString();
+    })->with('previews');
+
+    it('produces markup', function (string $name) {
+        expect(trim(Blade::render(file_get_contents(docsPath("previews/{$name}.blade.php")))))
+            ->not->toBeEmpty()
+            ->toContain('<');
+    })->with('previews');
+
+    it('leaves no unresolved blade behind', function (string $name) {
+        expect(Blade::render(file_get_contents(docsPath("previews/{$name}.blade.php"))))
+            ->not->toContain('@endComponentClass')
+            ->not->toContain('<?php');
+    })->with('previews');
+
+    it('only uses components that exist', function (string $name) {
+        preg_match_all('/<\/?april:([a-z0-9-]+)/', file_get_contents(docsPath("previews/{$name}.blade.php")), $matches);
+
+        expect(array_diff(array_unique($matches[1]), componentNames()))
+            ->toBeEmpty("The {$name} preview uses a component that does not exist.");
+    })->with('previews');
+});
+
+describe('pages', function () {
+    it('ships pages with the package', function () {
+        expect(documentedComponents())->not->toBeEmpty();
+    });
+
+    it('names a page after a real component', function (string $page) {
+        expect(componentNames())->toContain($page);
+    })->with(fn () => documentedComponents());
+
+    it('starts every page with front matter', function (string $page) {
+        expect(file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")))
+            ->toStartWith("---\nview: components.docs-layout");
+    })->with(fn () => documentedComponents());
+
+    it('gives every page a title and a description', function (string $page) {
+        expect(file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")))
+            ->toContain('title:')
+            ->toContain('description:');
+    })->with(fn () => documentedComponents());
+
+    it('only points at previews that exist', function (string $page) {
+        preg_match_all(
+            '/component="previews\.([a-z0-9-]+)"/',
+            file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")),
+            $matches
+        );
+
+        expect(array_diff(array_unique($matches[1]), previewNames()))
+            ->toBeEmpty("The {$page} page points at a preview that does not exist.");
+    })->with(fn () => documentedComponents());
+
+    it('only offers publish tags that exist', function (string $page) {
+        preg_match_all(
+            "/'([a-z0-9-]+)'/",
+            (string) strstr(file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")), '<x-publish-command'),
+            $matches
+        );
+
+        expect(array_diff(array_unique($matches[1]), componentNames()))
+            ->toBeEmpty("The {$page} page offers a publish tag for a component that does not exist.");
+    })->with(fn () => documentedComponents());
+
+    it('does not tell people to add the old tailwind merge fork', function () {
+        expect(file_get_contents(docsPath('pages/0.x/installation.blade.md')))
+            ->not->toContain('tailwind-merge-laravel')
+            ->not->toContain('tailwind-merge-php.git');
+    });
+});
