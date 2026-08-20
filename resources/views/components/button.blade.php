@@ -19,10 +19,9 @@ default => "h-10 px-4 py-2",
 'icon' => "h-10 w-10",
 'none' => "",
 };
-$class = twMerge($class);
 @endphp
 
-<button {{$attributes->merge(["class" => $class])->except(['size', 'variant'])}}
+<button {{$attributes->merge(["data-slot" => "button"])->except(['size', 'variant'])->twMerge([$class])}}
     >
     {{$slot}}
 </button>

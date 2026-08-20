@@ -6,6 +6,12 @@ export default (multiple, disabled) => ({
     disabled: disabled,
     show: false,
     root: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
+        [':data-disabled']() {
+            return this.disabled || null;
+        },
         ['x-on:keydown.tab']() {
             return this.close();
         },
@@ -17,6 +23,9 @@ export default (multiple, disabled) => ({
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
         ['@click']() {
             return this.toggle();
         },
@@ -28,6 +37,9 @@ export default (multiple, disabled) => ({
         },
     },
     optionList: {
+        [':data-state']() {
+            return this.show ? 'open' : 'closed';
+        },
         ['x-show.transition.scale.origin.top']() {
             return this.show;
         },

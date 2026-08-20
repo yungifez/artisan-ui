@@ -3,7 +3,7 @@
 @php
 $isChoiceInput = $isChoiceInput ?? in_array($type, ['checkbox', 'radio']);
 @endphp
-<input type="{{$type}}" {{$attributes->twMerge([
+<input type="{{$type}}" {{$attributes->merge(["data-slot" => "input"])->twMerge([
 "flex ring-offset-background disabled:cursor-not-allowed
 disabled:opacity-50 border",
 

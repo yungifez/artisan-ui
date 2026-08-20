@@ -12,6 +12,7 @@ import dropdownMenuSub from './dropdownMenuSub.js';
 import popover from './popover.js';
 import select from './select.js';
 import sheet from './sheet.js';
+import sidebar from './sidebar.js';
 import switchInput from './switchInput.js';
 import tabs from './tabs.js';
 import tabsContent from './tabsContent.js';
@@ -33,6 +34,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('popover', popover)
     Alpine.data('select', select)
     Alpine.data('sheet', sheet)
+    Alpine.data('sidebar', sidebar)
     Alpine.data('switchInput', switchInput)
     Alpine.data('tabs', tabs)
     Alpine.data('tabsTrigger', tabsTrigger)

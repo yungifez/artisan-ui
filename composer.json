@@ -15,39 +15,32 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/yungifez/tailwind-merge-laravel.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/yungifez/tailwind-merge-php.git"
-        }
-    ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0|^11.0|^12.0",
-        "gehrisandro/tailwind-merge-laravel": "dev-tailwind-v4"
+        "illuminate/contracts": "^11.0|^12.0",
+        "tales-from-a-dev/tailwind-merge-php": "^0.4"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^7.8",
-        "nunomaduro/larastan": "^2.0.1",
-        "orchestra/testbench": "^8.8",
-        "pestphp/pest": "^2.20",
-        "pestphp/pest-plugin-arch": "^2.5",
-        "pestphp/pest-plugin-laravel": "^2.0",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0"
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
             "Yungifez\\AprilUI\\": "src/",
             "Yungifez\\AprilUI\\Database\\Factories\\": "database/factories/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -90,6 +83,6 @@
             }
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

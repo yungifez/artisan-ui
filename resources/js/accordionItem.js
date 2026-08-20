@@ -1,10 +1,19 @@
 export default () => ({
     root: {
+        [':data-state']() {
+            return this.$data.value.includes(this.$id('accordion-item')) ? 'open' : 'closed';
+        },
         ['x-id']() {
             return ['accordion-item'];
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.$data.value.includes(this.$id('accordion-item')) ? 'open' : 'closed';
+        },
+        [':data-disabled']() {
+            return this.$data.disabled || null;
+        },
         ['@click']() {
             return this.toggle();
         },
@@ -27,6 +36,9 @@ export default () => ({
         }
     },
     content: {
+        [':data-state']() {
+            return this.$data.value.includes(this.$id('accordion-item')) ? 'open' : 'closed';
+        },
         [':id']() {
             return this.$id('accordion-item') + '-content';
         },

@@ -2,6 +2,9 @@ export default () => ({
     subOpen: false,
     subPreview: false,
     root: {
+        [':data-state']() {
+            return this.subOpen ? 'open' : 'closed';
+        },
         ['@keydown.escape']() {
             return this.closeSub();
         },
@@ -19,6 +22,9 @@ export default () => ({
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.subOpen ? 'open' : 'closed';
+        },
         ['@click.capture.stop']() {
             return this.open();
         },
@@ -39,6 +45,9 @@ export default () => ({
         },
     },
     content: {
+        [':data-state']() {
+            return this.subOpen ? 'open' : 'closed';
+        },
         ['x-anchor.right-start.no-style']() {
             return this.$refs.subTrigger;
         },

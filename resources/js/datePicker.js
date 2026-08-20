@@ -6,6 +6,9 @@ export default (open, value, mode, format) => ({
     mode: mode,
     format: format,
     root: {
+        [':data-state']() {
+            return this.open ? 'open' : 'closed';
+        },
         ['@keydown.esc']() {
             return this.closePicker();
         },
@@ -14,6 +17,9 @@ export default (open, value, mode, format) => ({
         },
     },
     trigger: {
+        [':data-state']() {
+            return this.open ? 'open' : 'closed';
+        },
         ['@click']() {
             return this.togglePicker();
         },
@@ -28,6 +34,9 @@ export default (open, value, mode, format) => ({
         },
     },
     calendar: {
+        [':data-state']() {
+            return this.open ? 'open' : 'closed';
+        },
         ['x-show']() {
             return this.open;
         },

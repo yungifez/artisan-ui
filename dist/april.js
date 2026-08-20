@@ -10,11 +10,20 @@
   // resources/js/accordionItem.js
   var accordionItem_default = () => ({
     root: {
+      [":data-state"]() {
+        return this.$data.value.includes(this.$id("accordion-item")) ? "open" : "closed";
+      },
       ["x-id"]() {
         return ["accordion-item"];
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.$data.value.includes(this.$id("accordion-item")) ? "open" : "closed";
+      },
+      [":data-disabled"]() {
+        return this.$data.disabled || null;
+      },
       ["@click"]() {
         return this.toggle();
       },
@@ -37,6 +46,9 @@
       }
     },
     content: {
+      [":data-state"]() {
+        return this.$data.value.includes(this.$id("accordion-item")) ? "open" : "closed";
+      },
       [":id"]() {
         return this.$id("accordion-item") + "-content";
       },
@@ -88,6 +100,9 @@
     "startTimeoutOnIntersect": startTimeoutOnIntersect,
     "timeout": timeout,
     root: {
+      [":data-state"]() {
+        return this.visible ? "open" : "closed";
+      },
       ["x-show"]() {
         return this.visible;
       },
@@ -106,9 +121,6 @@
       }
     },
     dismissTrigger: {
-      ["@click"]() {
-        return this.dismiss();
-      },
       ["@click"]() {
         return this.dismiss();
       }
@@ -158,6 +170,9 @@
     transitionLeaveStart,
     transitionLeaveEnd,
     root: {
+      [":data-state"]() {
+        return this.visible ? "open" : "closed";
+      },
       ["x-show"]() {
         return this.visible;
       },
@@ -2212,6 +2227,9 @@
     mode,
     format: format2,
     root: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
       ["@keydown.esc"]() {
         return this.closePicker();
       },
@@ -2220,6 +2238,9 @@
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
       ["@click"]() {
         return this.togglePicker();
       },
@@ -2234,6 +2255,9 @@
       }
     },
     calendar: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
       ["x-show"]() {
         return this.open;
       },
@@ -2284,6 +2308,9 @@
       this.show = true;
     },
     root: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
       ["x-id"]() {
         return ["dialog"];
       },
@@ -2294,6 +2321,9 @@
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
       ["@click"]() {
         return this.open();
       },
@@ -2302,6 +2332,9 @@
       }
     },
     overlay: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
       ["@click"]() {
         if (this.dismissable) {
           return this.close();
@@ -2321,6 +2354,9 @@
       }
     },
     dialog: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
       ["@click.stop"]() {
         return true;
       },
@@ -2357,6 +2393,9 @@
   var dropdownMenu_default = () => ({
     dropdownMenu: false,
     root: {
+      [":data-state"]() {
+        return this.dropdownMenu ? "open" : "closed";
+      },
       ["x-id"]() {
         return ["dropdown-menu"];
       },
@@ -2367,6 +2406,9 @@
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.dropdownMenu ? "open" : "closed";
+      },
       ["@click"]() {
         return this.toggle();
       },
@@ -2407,6 +2449,9 @@
       }
     },
     content: {
+      [":data-state"]() {
+        return this.dropdownMenu ? "open" : "closed";
+      },
       ["x-anchor.offset.4"]() {
         return this.$refs.trigger;
       },
@@ -2485,6 +2530,9 @@
     subOpen: false,
     subPreview: false,
     root: {
+      [":data-state"]() {
+        return this.subOpen ? "open" : "closed";
+      },
       ["@keydown.escape"]() {
         return this.closeSub();
       },
@@ -2502,6 +2550,9 @@
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.subOpen ? "open" : "closed";
+      },
       ["@click.capture.stop"]() {
         return this.open();
       },
@@ -2522,6 +2573,9 @@
       }
     },
     content: {
+      [":data-state"]() {
+        return this.subOpen ? "open" : "closed";
+      },
       ["x-anchor.right-start.no-style"]() {
         return this.$refs.subTrigger;
       },
@@ -2609,11 +2663,17 @@
   var popover_default = () => ({
     popover: false,
     root: {
+      [":data-state"]() {
+        return this.popover ? "open" : "closed";
+      },
       ["x-id"]() {
         return ["popover"];
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.popover ? "open" : "closed";
+      },
       ["@click"]() {
         return this.toggle();
       },
@@ -2628,6 +2688,9 @@
       }
     },
     content: {
+      [":data-state"]() {
+        return this.popover ? "open" : "closed";
+      },
       ["@click.outside.capture"]() {
         if (!this.$refs.trigger.contains(this.$event.target)) {
           return this.close();
@@ -2672,6 +2735,12 @@
     disabled,
     show: false,
     root: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
+      [":data-disabled"]() {
+        return this.disabled || null;
+      },
       ["x-on:keydown.tab"]() {
         return this.close();
       },
@@ -2683,6 +2752,9 @@
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
       ["@click"]() {
         return this.toggle();
       },
@@ -2694,6 +2766,9 @@
       }
     },
     optionList: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
       ["x-show.transition.scale.origin.top"]() {
         return this.show;
       },
@@ -2797,6 +2872,9 @@
     transitionLeaveStart,
     transitionLeaveEnd,
     root: {
+      [":data-state"]() {
+        return this.$data["show"] ? "open" : "closed";
+      },
       ["x-show"]() {
         return this.$data["show"];
       },
@@ -2827,11 +2905,60 @@
     }
   });
 
+  // resources/js/sidebar.js
+  var MOBILE_BREAKPOINT = 768;
+  var sidebar_default = (defaultOpen = true) => ({
+    open: defaultOpen,
+    openMobile: false,
+    isMobile: false,
+    root: {
+      ["@keydown.ctrl.b.window.prevent"]() {
+        return this.toggle();
+      },
+      ["@keydown.meta.b.window.prevent"]() {
+        return this.toggle();
+      },
+      ["@resize.window.debounce"]() {
+        return this.readViewport();
+      }
+    },
+    init() {
+      this.readViewport();
+    },
+    readViewport() {
+      this.isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+      if (!this.isMobile) {
+        this.openMobile = false;
+      }
+    },
+    get state() {
+      return this.open ? "expanded" : "collapsed";
+    },
+    isOpen() {
+      return this.isMobile ? this.openMobile : this.open;
+    },
+    toggle() {
+      this.isMobile ? this.openMobile = !this.openMobile : this.open = !this.open;
+    },
+    show() {
+      this.isMobile ? this.openMobile = true : this.open = true;
+    },
+    close() {
+      this.isMobile ? this.openMobile = false : this.open = false;
+    }
+  });
+
   // resources/js/switchInput.js
   var switchInput_default = (disabled) => ({
     switchOn: false,
     disabled,
     root: {
+      [":data-state"]() {
+        return this.switchOn ? "checked" : "unchecked";
+      },
+      [":data-disabled"]() {
+        return this.disabled || null;
+      },
       [":aria-checked"]() {
         return this.switchOn;
       },
@@ -2858,6 +2985,12 @@
       }
     },
     trigger: {
+      [":data-state"]() {
+        return this.switchOn ? "checked" : "unchecked";
+      },
+      [":data-disabled"]() {
+        return this.disabled || null;
+      },
       ["@click"]() {
         return this.toggle();
       },
@@ -2899,6 +3032,9 @@
   var tabsContent_default = (value) => ({
     value,
     root: {
+      [":data-state"]() {
+        return this.$data.active == this.value ? "active" : "inactive";
+      },
       ["x-show"]() {
         return this.value == this.$data.active;
       },
@@ -2921,6 +3057,9 @@
   var tabsTrigger_default = (value) => ({
     value,
     root: {
+      [":data-state"]() {
+        return this.$data.active == this.value ? "active" : "inactive";
+      },
       ["@click"]() {
         return this.setAsActive();
       },
@@ -2957,6 +3096,9 @@
     tooltipOpened: defaultOpen,
     debounceTimeout: null,
     trigger: {
+      [":data-state"]() {
+        return this.tooltipOpened ? "open" : "closed";
+      },
       ["@mouseover"]() {
         clearTimeout(this.mouseoutTimeout);
         clearTimeout(this.debounceTimeout);
@@ -2984,6 +3126,9 @@
       }
     },
     content: {
+      [":data-state"]() {
+        return this.tooltipOpened ? "open" : "closed";
+      },
       ["x-show"]() {
         return this.tooltipOpened;
       },
@@ -3018,6 +3163,7 @@
     Alpine.data("popover", popover_default);
     Alpine.data("select", select_default);
     Alpine.data("sheet", sheet_default);
+    Alpine.data("sidebar", sidebar_default);
     Alpine.data("switchInput", switchInput_default);
     Alpine.data("tabs", tabs_default);
     Alpine.data("tabsTrigger", tabsTrigger_default);

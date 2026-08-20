@@ -6,6 +6,9 @@ export default (displayAfter, transitionEnterStart, transitionEnterEnd, transiti
     transitionLeaveStart: transitionLeaveStart,
     transitionLeaveEnd: transitionLeaveEnd,
     root: {
+        [':data-state']() {
+            return this.visible ? 'open' : 'closed';
+        },
         ['x-show']() {
             return this.visible;
         },
