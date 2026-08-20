@@ -21,10 +21,10 @@ build({
 
 build({
     format: 'esm',
-    entryPoints: [`resources/js/april.js`],
+    entryPoints: [`resources/js/april.esm.js`],
     outfile: `dist/april.esm.js`,
     bundle: true,
-    platform: 'node',
+    platform: 'browser',
     define: { CDN: true },
 })
 
@@ -33,7 +33,7 @@ build({
     entryPoints: [`resources/css/april.css`],
     outfile: `dist/april.esm.css`,
     bundle: true,
-    platform: 'node',
+    platform: 'browser',
     define: { CDN: true },
 })
 

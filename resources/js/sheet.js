@@ -1,9 +1,5 @@
-export default (side, transitionEnterStart, transitionEnterEnd, transitionLeaveStart, transitionLeaveEnd) => ({
+export default (side) => ({
     side: side,
-    transitionEnterStart: transitionEnterStart,
-    transitionEnterEnd: transitionEnterEnd,
-    transitionLeaveStart: transitionLeaveStart,
-    transitionLeaveEnd: transitionLeaveEnd,
     root: {
         [':data-state']() {
             return this.$data['show'] ? 'open' : 'closed';
@@ -18,22 +14,22 @@ export default (side, transitionEnterStart, transitionEnterEnd, transitionLeaveS
             return true;
         },
         ['x-transition:enter']() {
-            return "transition ease-linear duration-150";
+            return "transition-opacity ease-in-out duration-500";
         },
         ['x-transition:enter-start']() {
-            return this.transitionEnterStart;
+            return "opacity-0";
         },
         ['x-transition:enter-end']() {
-            return this.transitionEnterEnd;
+            return "opacity-100";
         },
         ['x-transition:leave']() {
-            return "transition ease-linear duration-150";
+            return "transition-opacity ease-in-out duration-300";
         },
         ['x-transition:leave-start']() {
-            return this.transitionLeaveStart;
+            return "opacity-100";
         },
         ['x-transition:leave-end']() {
-            return this.transitionLeaveEnd;
+            return "opacity-0";
         },
     },
 })

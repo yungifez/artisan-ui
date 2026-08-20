@@ -38,10 +38,10 @@ default => "-translate-x-full",
     {{$slot}}
 </div>
 @else
-<div class="group peer hidden text-sidebar-foreground md:block" data-slot="sidebar" data-side="{{$side}}"
+<div class="group peer hidden text-sidebar-foreground md:block shrink-0" data-slot="sidebar" data-side="{{$side}}"
     data-variant="{{$variant}}" :data-state="state" :data-collapsible="open ? '' : '{{$collapsible}}'">
     {{-- Takes up the space in the page flow, because the sidebar itself is fixed --}}
-    <div data-slot="sidebar-gap" class="relative w-[var(--sidebar-width)] bg-transparent transition-[width]
+    <div data-slot="sidebar-gap" class="relative w-[var(--sidebar-width)] shrink-0 bg-transparent transition-[width]
         duration-200 ease-linear group-data-[collapsible=offcanvas]:w-0 group-data-[side=right]:rotate-180
         {{$gapClass}}"></div>
 

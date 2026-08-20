@@ -99,6 +99,22 @@ describe('sheet', function () {
         expect($html)->toContain("x-data=\"sheet('left'");
     });
 
+    it('lets shadcn state classes own panel movement', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/sheet.js');
+
+        expect($source)
+            ->toContain('transition-opacity ease-in-out duration-500')
+            ->toContain('transition-opacity ease-in-out duration-300')
+            ->not->toContain('transitionEnterStart')
+            ->not->toContain('transitionLeaveEnd');
+    });
+
+    it('keeps the overlay mounted for the shadcn close animation', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/dialog.js');
+
+        expect($source)->toContain('x-transition.opacity.duration.300ms');
+    });
+
     it('renders the trigger slot', function () {
         $html = render('<april:sheet><x-slot:trigger>Open</x-slot:trigger></april:sheet>');
 

@@ -2,7 +2,16 @@
     "name": "april-ui",
     "version": "1.0.0",
     "description": "April UI Javascript files",
-    "main": "resources/js/april.js",
+    "main": "dist/april.js",
+    "module": "dist/april.esm.js",
+    "exports": {
+        ".": {
+            "import": "./dist/april.esm.js",
+            "default": "./dist/april.js"
+        },
+        "./dist/*": "./dist/*",
+        "./resources/*": "./resources/*"
+    },
     "author": "yungifez",
     "scripts": {
         "build": "node ./scripts/build.js",

@@ -2349,7 +2349,7 @@
       ["x-trap.noscroll.inert"]() {
         return this.show;
       },
-      ["x-transition.opacity.duration.150ms"]() {
+      ["x-transition.opacity.duration.300ms"]() {
         return true;
       }
     },
@@ -2865,12 +2865,8 @@
   });
 
   // resources/js/sheet.js
-  var sheet_default = (side, transitionEnterStart, transitionEnterEnd, transitionLeaveStart, transitionLeaveEnd) => ({
+  var sheet_default = (side) => ({
     side,
-    transitionEnterStart,
-    transitionEnterEnd,
-    transitionLeaveStart,
-    transitionLeaveEnd,
     root: {
       [":data-state"]() {
         return this.$data["show"] ? "open" : "closed";
@@ -2885,22 +2881,22 @@
         return true;
       },
       ["x-transition:enter"]() {
-        return "transition ease-linear duration-150";
+        return "transition-opacity ease-in-out duration-500";
       },
       ["x-transition:enter-start"]() {
-        return this.transitionEnterStart;
+        return "opacity-0";
       },
       ["x-transition:enter-end"]() {
-        return this.transitionEnterEnd;
+        return "opacity-100";
       },
       ["x-transition:leave"]() {
-        return "transition ease-linear duration-150";
+        return "transition-opacity ease-in-out duration-300";
       },
       ["x-transition:leave-start"]() {
-        return this.transitionLeaveStart;
+        return "opacity-100";
       },
       ["x-transition:leave-end"]() {
-        return this.transitionLeaveEnd;
+        return "opacity-0";
       }
     }
   });
@@ -3147,27 +3143,79 @@
     }
   });
 
+  // resources/js/components.js
+  var components_default = {
+    accordion: accordion_default,
+    accordionItem: accordionItem_default,
+    alert: alert_default,
+    avatar: avatar_default,
+    banner: banner_default,
+    calendar: calendar_default,
+    command: command_default,
+    datePicker: datePicker_default,
+    dialog: dialog_default,
+    dropdownMenu: dropdownMenu_default,
+    dropdownMenuSub: dropdownMenuSub_default,
+    popover: popover_default,
+    select: select_default,
+    sheet: sheet_default,
+    sidebar: sidebar_default,
+    switchInput: switchInput_default,
+    tabs: tabs_default,
+    tabsContent: tabsContent_default,
+    tabsTrigger: tabsTrigger_default,
+    tooltip: tooltip_default
+  };
+
+  // resources/js/registry.js
+  var components = {};
+  var extensions = {};
+  var alpine = null;
+  function component(name, factory) {
+    components[name] = factory;
+    return factory;
+  }
+  function extend(name, wrapper) {
+    if (!components[name]) {
+      throw new Error(`April UI has no component named "${name}".`);
+    }
+    if (!extensions[name]) {
+      extensions[name] = [];
+    }
+    extensions[name].push(wrapper);
+    refresh(name);
+    return components[name];
+  }
+  function replace(name, factory) {
+    components[name] = factory;
+    delete extensions[name];
+    refresh(name);
+    return factory;
+  }
+  function resolve(name) {
+    const factory = components[name];
+    if (!factory) {
+      throw new Error(`April UI has no component named "${name}".`);
+    }
+    return (extensions[name] ?? []).reduce((base, wrap) => wrap(base), factory);
+  }
+  function register(Alpine) {
+    alpine = Alpine;
+    Object.keys(components).forEach((name) => Alpine.data(name, resolve(name)));
+    return Alpine;
+  }
+  function refresh(name) {
+    if (!alpine) {
+      return;
+    }
+    console.warn(
+      `April UI: "${name}" changed after Alpine started. Elements that are already on the page keep the old behaviour. Make the change after @aprilScripts and before Alpine starts.`
+    );
+    alpine.data(name, resolve(name));
+  }
+
   // resources/js/april.js
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("accordion", accordion_default);
-    Alpine.data("accordionItem", accordionItem_default);
-    Alpine.data("alert", alert_default);
-    Alpine.data("avatar", avatar_default);
-    Alpine.data("banner", banner_default);
-    Alpine.data("calendar", calendar_default);
-    Alpine.data("command", command_default);
-    Alpine.data("datePicker", datePicker_default);
-    Alpine.data("dialog", dialog_default);
-    Alpine.data("dropdownMenu", dropdownMenu_default);
-    Alpine.data("dropdownMenuSub", dropdownMenuSub_default);
-    Alpine.data("popover", popover_default);
-    Alpine.data("select", select_default);
-    Alpine.data("sheet", sheet_default);
-    Alpine.data("sidebar", sidebar_default);
-    Alpine.data("switchInput", switchInput_default);
-    Alpine.data("tabs", tabs_default);
-    Alpine.data("tabsTrigger", tabsTrigger_default);
-    Alpine.data("tabsContent", tabsContent_default);
-    Alpine.data("tooltip", tooltip_default);
-  });
+  Object.keys(components_default).forEach((name) => component(name, components_default[name]));
+  window.April = { components, component, extend, replace, resolve, register };
+  document.addEventListener("alpine:init", () => register(window.Alpine));
 })();

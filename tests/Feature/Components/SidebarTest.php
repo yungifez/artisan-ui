@@ -82,7 +82,9 @@ describe('sidebar', function () {
     });
 
     it('pushes the page content aside', function () {
-        expect(renderComponent('sidebar'))->toContain('w-[var(--sidebar-width)]');
+        expect(renderComponent('sidebar'))
+            ->toContain('w-[var(--sidebar-width)]')
+            ->toContain('shrink-0');
     });
 
     it('hides the desktop sidebar on a small screen', function () {
@@ -138,7 +140,7 @@ describe('sidebar trigger', function () {
     });
 
     it('takes a custom icon', function () {
-        $html = render('<april:sidebar-trigger><x-slot:icon>Menu</x-slot:icon></april:sidebar-trigger>');
+        $html = render('<april:sidebar-trigger>Menu</april:sidebar-trigger>');
 
         expect($html)->toContain('Menu')->not->toContain('<svg');
     });
@@ -184,7 +186,9 @@ describe('sidebar inset', function () {
     });
 
     it('fills the remaining width', function () {
-        expect(classesOf(renderComponent('sidebar-inset')))->toContain('flex-1');
+        expect(classesOf(renderComponent('sidebar-inset')))
+            ->toContain('flex-1')
+            ->toContain('min-w-0');
     });
 });
 
@@ -290,7 +294,9 @@ describe('sidebar menu button', function () {
 
     it('shrinks to a square when the sidebar collapses to icons', function () {
         expect(classesOf(renderComponent('sidebar-menu-button')))
-            ->toContain('group-data-[collapsible=icon]:size-8!');
+            ->toContain('group-data-[collapsible=icon]:size-8!')
+            ->toContain('group-data-[collapsible=icon]:justify-center')
+            ->toContain('group-data-[collapsible=icon]:[&>span]:hidden');
     });
 
     it('lets a user class win over the default', function () {
@@ -328,6 +334,12 @@ describe('sidebar menu button link', function () {
     it('does not inherit the button link underline reset as a variant', function () {
         expect(classesOf(renderComponent('sidebar-menu-button-link', 'href="/x"')))
             ->not->toContain('bg-primary');
+    });
+
+    it('hides its label when the sidebar collapses to icons', function () {
+        expect(classesOf(renderComponent('sidebar-menu-button-link', 'href="/x"')))
+            ->toContain('group-data-[collapsible=icon]:justify-center')
+            ->toContain('group-data-[collapsible=icon]:[&>span]:hidden');
     });
 });
 
