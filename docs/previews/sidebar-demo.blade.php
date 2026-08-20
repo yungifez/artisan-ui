@@ -1,4 +1,4 @@
-<april:sidebar-layout class="min-h-[400px] border rounded-lg overflow-hidden">
+<april:sidebar-layout class="min-h-[620px] border rounded-lg overflow-hidden">
     <april:sidebar collapsible="none" class="w-56 border-r">
         <april:sidebar-header>
             <span class="font-semibold px-2">Acme Inc</span>

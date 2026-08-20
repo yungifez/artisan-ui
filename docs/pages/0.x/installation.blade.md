@@ -8,8 +8,8 @@ description: How to install the project.
 
 To install this project, you need:
 
-- A Laravel app with version 11 and above
-- PHP 8.2 and above
+- A Laravel 12 app
+- PHP 8.3 and above
 - Tailwind CSS (v4)
 - Alpine JS
 - A cool project idea

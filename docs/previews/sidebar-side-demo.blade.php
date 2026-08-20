@@ -1,4 +1,4 @@
-<april:sidebar-layout class="min-h-[400px] border rounded-lg overflow-hidden">
+<april:sidebar-layout class="min-h-[620px] border rounded-lg overflow-hidden">
     <april:sidebar-inset class="p-4">
         <april:sidebar-trigger />
         <p class="mt-4 text-sm text-muted-foreground">The sidebar sits on the right.</p>
