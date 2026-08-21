@@ -14,6 +14,7 @@ $isInline = $attributes->get('inline') || in_array($attributes->get('type'), [ '
 $errorName = $errorName ?? $name;
 $oldName = $oldName ?? $name;
 $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("prevent-errors");
+$inputAttributes = $attributes->whereDoesntStartWith(['label', 'group'])->except('value');
 @endphp
 
 <div data-slot="input-group" @class(['flex-row w-fit items-center flex-wrap gap-2'=> $isInline, 'flex-col w-full' => !$isInline, " flex"])
@@ -27,13 +28,12 @@ $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("preve
         {{$label}}
     </label>
     @endisset
-    <input name="{{$name}}" {{$attributes->twMerge(["flex h-10 accent-foreground rounded-md border bg-background px-3
+    <input name="{{$name}}" {{$inputAttributes->twMerge(["flex h-10 accent-foreground rounded-md border bg-background px-3
     py-2
     text-sm ring-offset-background file:border-0 file:bg-transparent file:text-muted-foreground file:text-sm
     file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2
     focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", "border-input
     " => !$displayErrors, 'border-destructive' => $displayErrors, 'w-full' => !$isInline, 'w-fit' => $isInline])}}
-    {{$attributes->whereDoesntStartWith(['label', 'group'])}}
     value="{{old($oldName) ?? $attributes->get('value')}}"
     >
 

@@ -308,6 +308,13 @@ describe('input group', function () {
         expect(renderComponent('input-group', 'name="email"'))->toContain('name="email"');
     });
 
+    it('renders input attributes only once', function () {
+        $html = renderComponent('input-group', 'name="email" id="email" autocomplete="email"');
+
+        expect(substr_count($html, 'id="email"'))->toBe(1)
+            ->and(substr_count($html, 'autocomplete="email"'))->toBe(1);
+    });
+
     it('stacks the label above the input by default', function () {
         expect(renderComponent('input-group', 'name="email"'))->toContain('flex-col');
     });
