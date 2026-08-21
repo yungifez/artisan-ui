@@ -3452,6 +3452,8 @@
 
   // resources/js/sidebar.js
   var MOBILE_BREAKPOINT = 768;
+  var SIDEBAR_STATE_COOKIE = "sidebar_state";
+  var ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
   var sidebar_default = (defaultOpen = true) => ({
     open: defaultOpen,
     openMobile: false,
@@ -3483,13 +3485,23 @@
       return this.isMobile ? this.openMobile : this.open;
     },
     toggle() {
-      this.isMobile ? this.openMobile = !this.openMobile : this.open = !this.open;
+      this.isMobile ? this.openMobile = !this.openMobile : this.setOpen(!this.open);
     },
     show() {
-      this.isMobile ? this.openMobile = true : this.open = true;
+      this.isMobile ? this.openMobile = true : this.setOpen(true);
     },
     close() {
-      this.isMobile ? this.openMobile = false : this.open = false;
+      this.isMobile ? this.openMobile = false : this.setOpen(false);
+    },
+    setOpen(open) {
+      this.open = open;
+      this.persist();
+    },
+    persist() {
+      try {
+        document.cookie = SIDEBAR_STATE_COOKIE + "=" + (this.open ? "true" : "false") + "; path=/; max-age=" + ONE_YEAR_IN_SECONDS + "; samesite=lax";
+      } catch (error) {
+      }
     }
   });
 

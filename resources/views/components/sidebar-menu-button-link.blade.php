@@ -4,7 +4,8 @@
 ])
 
 @php
-$class = "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left font-normal
+$class = "peer/menu-button flex justify-start w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left
+font-normal
 ring-sidebar-ring
 outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8
 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2
@@ -33,7 +34,6 @@ default => "h-8 text-sm",
 {{-- The anchor form of april:sidebar-menu-button. Use it for a link. --}}
 <april:button-link :attributes='$attributes->except("variant")->twMerge([$class])' data-sidebar="menu-button"
     data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}"
-    :aria-current="$active ? 'page' : null" variant="none"
-    size="none">
+    :aria-current="$active ? 'page' : null" variant="none" size="none">
     {{$slot}}
 </april:button-link>

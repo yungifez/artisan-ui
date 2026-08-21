@@ -45,6 +45,26 @@ describe('dialog', function () {
     it('keeps the teleport target out of the overlay attributes', function () {
         expect(classesOf(renderComponent('dialog', 'x-teleport="body"')))->not->toBeEmpty();
     });
+
+    it('hides the overlay until alpine starts', function () {
+        expect(renderComponent('dialog'))->toContain('x-cloak');
+    });
+});
+
+describe('alert dialog', function () {
+    it('is driven by the alert dialog behaviour', function () {
+        expect(renderComponent('alert-dialog'))->toContain('x-data="alertDialog(false,');
+    });
+
+    it('has the alert dialog role', function () {
+        $html = render('<april:alert-dialog><x-slot:content>Body</x-slot:content></april:alert-dialog>');
+
+        expect($html)->toContain('role="alertdialog"');
+    });
+
+    it('hides the overlay until alpine starts', function () {
+        expect(renderComponent('alert-dialog'))->toContain('x-cloak');
+    });
 });
 
 describe('dialog header and footer', function () {

@@ -60,6 +60,16 @@ describe('button', function () {
             ->toContain('rounded-md');
     })->with(['destructive', 'outline', 'secondary', 'ghost', 'link']);
 
+    it('centers its content by default', function () {
+        expect(classesOf(renderComponent('button')))->toContain('justify-center');
+    });
+
+    it('allows the content alignment to be overridden', function () {
+        expect(classesOf(renderComponent('button', 'class="justify-start"')))
+            ->toContain('justify-start')
+            ->not->toContain('justify-center');
+    });
+
     it('forwards a type attribute', function () {
         expect(renderComponent('button', 'type="submit"'))->toContain('type="submit"');
     });
@@ -113,6 +123,16 @@ describe('button link', function () {
 
     it('removes the underline that a link has by default', function () {
         expect(classesOf(renderComponent('button-link')))->toContain('no-underline');
+    });
+
+    it('centers its content by default', function () {
+        expect(classesOf(renderComponent('button-link')))->toContain('justify-center');
+    });
+
+    it('allows the content alignment to be overridden', function () {
+        expect(classesOf(renderComponent('button-link', 'class="justify-start"')))
+            ->toContain('justify-start')
+            ->not->toContain('justify-center');
     });
 
     it('does not leak the variant or size attributes', function () {

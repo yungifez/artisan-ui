@@ -156,6 +156,10 @@
     border-color: hsl(var(--border));
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
 html {
     scroll-behavior: smooth;
 }

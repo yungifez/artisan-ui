@@ -10,6 +10,28 @@ describe('sidebar layout', function () {
             ->toContain('x-data="sidebar(false)"');
     });
 
+    it('remembers the desktop state in a cookie', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/sidebar.js');
+
+        expect($source)
+            ->toContain("SIDEBAR_STATE_COOKIE = 'sidebar_state'")
+            ->toContain('document.cookie');
+    });
+
+    it('stores the state whenever the desktop sidebar changes', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/sidebar.js');
+
+        // Every desktop branch goes through setOpen, which is what persists.
+        expect($source)
+            ->toContain('this.isMobile ? (this.openMobile = !this.openMobile) : this.setOpen(!this.open)')
+            ->toContain('this.isMobile ? (this.openMobile = true) : this.setOpen(true)')
+            ->toContain('this.isMobile ? (this.openMobile = false) : this.setOpen(false)');
+    });
+
+    it('ships the stored state in the built bundle', function () {
+        expect(file_get_contents(__DIR__.'/../../../dist/april.js'))->toContain('sidebar_state');
+    });
+
     it('binds the keyboard shortcut through the root binding', function () {
         expect(renderComponent('sidebar-layout'))->toContain('x-bind="root"');
     });
@@ -55,6 +77,18 @@ describe('sidebar', function () {
 
     it('reads its state from the layout', function () {
         expect(renderComponent('sidebar'))->toContain(':data-state="state"');
+    });
+
+    it('paints expanded before alpine starts', function () {
+        expect(renderComponent('sidebar'))
+            ->toContain('data-state="expanded"')
+            ->toContain('data-collapsible=""');
+    });
+
+    it('paints collapsed before alpine starts when it starts closed', function () {
+        expect(renderComponent('sidebar', 'collapsible="icon" :default-open="false"'))
+            ->toContain('data-state="collapsed"')
+            ->toContain('data-collapsible="icon"');
     });
 
     it('only marks itself collapsible while it is collapsed', function () {

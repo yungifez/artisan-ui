@@ -2,6 +2,7 @@
 'side' => 'left',
 'variant' => 'sidebar',
 'collapsible' => 'offcanvas',
+'defaultOpen' => true,
 ])
 
 @php
@@ -45,8 +46,16 @@ $sections = view('april::partials.sidebar-sections', [
     {{$slot}}
 </div>
 @else
+{{--
+    The state attributes are rendered here as well as bound, so the first paint
+    already matches defaultOpen. Alpine takes them over when it starts. Pass the
+    same defaultOpen as the surrounding sidebar-layout, or the sidebar paints
+    expanded and then collapses.
+--}}
 <div class="group peer hidden text-sidebar-foreground md:block relative min-h-0 self-stretch shrink-0" data-slot="sidebar" data-side="{{$side}}"
-    data-variant="{{$variant}}" :data-state="state" :data-collapsible="open ? '' : '{{$collapsible}}'">
+    data-variant="{{$variant}}" data-state="{{$defaultOpen ? 'expanded' : 'collapsed'}}"
+    data-collapsible="{{$defaultOpen ? '' : $collapsible}}"
+    :data-state="state" :data-collapsible="open ? '' : '{{$collapsible}}'">
     {{-- Takes up the space in the page flow, because the sidebar itself is fixed --}}
     <div data-slot="sidebar-gap" class="relative h-full w-[var(--sidebar-width)] shrink-0 bg-transparent transition-[width]
         duration-200 ease-linear group-data-[collapsible=offcanvas]:w-0 group-data-[side=right]:rotate-180

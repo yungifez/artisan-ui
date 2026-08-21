@@ -28,6 +28,12 @@ describe('asset routes', function () {
             ->toBe(file_get_contents(__DIR__."/../../dist/{$name}"));
     })->with(['april.js', 'april.css']);
 
+    it('ships the rule that hides cloaked elements before alpine starts', function () {
+        $response = $this->get(route('april-ui.april.css'));
+
+        expect($response->streamedContent())->toContain('[x-cloak]');
+    });
+
     it('serves the alpine behaviours in the javascript bundle', function () {
         $response = $this->get(route('april-ui.april.js'));
 
