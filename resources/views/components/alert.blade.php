@@ -11,6 +11,13 @@
 @php
 $class = $class." "."relative w-full rounded-lg border p-4 flex gap-x-3 ";
 
+// Wrapper components may provide text props instead of ComponentSlot instances.
+// Keep slot attributes available when a real named slot is provided, while
+// allowing plain strings to be used for simple titles and descriptions.
+$slotAttributes = static fn ($slot) => $slot instanceof \Illuminate\View\ComponentSlot
+    ? $slot->attributes
+    : new \Illuminate\View\ComponentAttributeBag;
+
 $class .= match($attributes->get("variant")){
 default => "bg-background text-foreground fill-foreground",
 'destructive' => "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive
@@ -24,19 +31,19 @@ fill-destructive",
     class(["$class"])}}
     >
     @isset($icon)
-    <div {{$icon->attributes->twMerge(["flex items-start mt-2"])}}>
+    <div {{$slotAttributes($icon)->twMerge(["flex items-start mt-2"])}}>
         {{$icon}}
     </div>
     @endisset
 
     <div class="w-full">
         @isset($title)
-        <h5 data-slot="alert-title" {{$title->attributes->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
+        <h5 data-slot="alert-title" {{$slotAttributes($title)->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
             {{$title}}
         </h5>
         @endisset
         @isset($description)
-        <div data-slot="alert-description" {{$description->attributes->twMerge(["text-sm"])}}>
+        <div data-slot="alert-description" {{$slotAttributes($description)->twMerge(["text-sm"])}}>
             {{$description}}
         </div>
         @endisset

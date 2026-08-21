@@ -3,9 +3,9 @@
 @source "../js/**/*.tsx";
 @source "../views/**/*.blade.php";
 
-@theme {
-    --variant-dark: (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
     --breakpoint-2xl: 1400px;
 
     /* Use Tailwind's default theme engine mapping format */

@@ -7,7 +7,7 @@ April UI is a component library that aims to bring the elegance of ShadCN to lar
 
 ## Official website
 
-You can find the official docs on the [April UI website](https://x-aui.com).
+You can find the official docs on the [April UI website](https://aprilui.dev).
 
 ## Follow me
 
