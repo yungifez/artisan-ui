@@ -6,7 +6,9 @@ describe('dialog', function () {
     });
 
     it('has the dialog role', function () {
-        expect(renderComponent('dialog'))->toContain('role="dialog"');
+        $html = render('<april:dialog><x-slot:content>Body</x-slot:content></april:dialog>');
+
+        expect($html)->toContain('role="dialog"');
     });
 
     it('covers the page with an overlay', function () {
@@ -173,7 +175,7 @@ describe('dropdown menu', function () {
     it('renders the trigger slot', function () {
         $html = render('<april:dropdown-menu><x-slot:trigger>Open</x-slot:trigger></april:dropdown-menu>');
 
-        expect($html)->toContain('Open')->toContain('aria-haspopup="true"');
+        expect($html)->toContain('Open')->toContain('aria-haspopup="menu"');
     });
 
     it('renders the content slot as a menu', function () {
