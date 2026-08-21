@@ -137,6 +137,113 @@
     }
   });
 
+  // resources/js/alertDialog.js
+  var alertDialog_default = (show = false, dismissable = false) => ({
+    show,
+    dismissable,
+    root: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
+      ["x-id"]() {
+        return ["alert-dialog"];
+      },
+      ["x-on:keydown.esc.window.stop"]() {
+        if (this.dismissable) {
+          this.close();
+        }
+      }
+    },
+    trigger: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
+      ["@click"]() {
+        this.open();
+      },
+      [":id"]() {
+        return this.$id("alert-dialog") + "-trigger";
+      },
+      [":aria-expanded"]() {
+        return this.show;
+      },
+      [":aria-haspopup"]() {
+        return "dialog";
+      },
+      [":aria-controls"]() {
+        return this.$id("alert-dialog") + "-content";
+      }
+    },
+    overlay: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
+      ["@click"]() {
+        if (this.dismissable) {
+          this.close();
+        }
+      },
+      ["x-show"]() {
+        return this.show;
+      },
+      ["x-cloak"]() {
+        return true;
+      },
+      ["x-trap.noscroll.inert"]() {
+        return this.show;
+      },
+      ["x-transition.opacity.duration.200ms"]() {
+        return true;
+      }
+    },
+    dialog: {
+      [":data-state"]() {
+        return this.show ? "open" : "closed";
+      },
+      ["@click.stop"]() {
+        return true;
+      },
+      [":aria-labelledby"]() {
+        return this.$id("alert-dialog") + "-title";
+      },
+      [":aria-describedby"]() {
+        return this.$id("alert-dialog") + "-description";
+      },
+      [":aria-modal"]() {
+        return this.show;
+      },
+      [":id"]() {
+        return this.$id("alert-dialog") + "-content";
+      }
+    },
+    title: {
+      [":id"]() {
+        return this.$id("alert-dialog") + "-title";
+      }
+    },
+    description: {
+      [":id"]() {
+        return this.$id("alert-dialog") + "-description";
+      }
+    },
+    closeButton: {
+      ["@click"]() {
+        this.close();
+      }
+    },
+    action: {
+      ["@click"]() {
+        this.close();
+      }
+    },
+    open() {
+      this.show = true;
+    },
+    close() {
+      this.show = false;
+    }
+  });
+
   // resources/js/avatar.js
   var avatar_default = () => ({
     loadSuccess: false,
@@ -630,144 +737,80 @@
     }
   });
 
-  // resources/js/command.js
-  var command_default = (value) => ({
-    keyword: value,
-    focusedItem: null,
+  // resources/js/carousel.js
+  var carousel_default = (orientation = "horizontal", loop = true) => ({
+    orientation,
+    loop,
+    current: 0,
+    count: 0,
+    slides: [],
     root: {
-      ["@keydown"]($event) {
-        if ($event.key == "Home") {
-          this.selectOption(1, false);
-        }
-        if ($event.key == "End") {
-          this.selectOption(-1, false);
-        }
+      ["x-id"]() {
+        return ["carousel"];
       },
-      ["@keydown.capture.down.prevent"]() {
-        this.selectOption(1);
+      ["@keydown.left.prevent"]() {
+        this.previousSlide();
       },
-      ["@keydown.capture.up.prevent"]() {
-        this.selectOption(-1);
+      ["@keydown.right.prevent"]() {
+        this.nextSlide();
+      }
+    },
+    viewport: {
+      ["x-ref"]() {
+        return "viewport";
+      }
+    },
+    track: {
+      ["x-ref"]() {
+        return "track";
       },
-      ["@keydown.capture.enter.prevent"]() {
-        if (this.focusedItem != null) {
-          this.focusedItem.click();
-        }
+      ["x-bind:style"]() {
+        const property = this.orientation === "vertical" ? "translateY" : "translateX";
+        return `transform: ${property}(-${this.current * 100}%);`;
+      }
+    },
+    previous: {
+      ["x-on:click"]() {
+        this.previousSlide();
+      },
+      ["x-bind:disabled"]() {
+        return !this.loop && this.current === 0;
+      }
+    },
+    next: {
+      ["x-on:click"]() {
+        this.nextSlide();
+      },
+      ["x-bind:disabled"]() {
+        return !this.loop && this.current === this.count - 1;
       }
     },
     init() {
-      this.$nextTick(() => {
-        this.selectOption(0, false);
+      this.slides = Array.from(this.$root.querySelectorAll('[data-slot="carousel-item"]'));
+      this.count = this.slides.length;
+      this.updateSlides();
+    },
+    updateSlides() {
+      this.slides.forEach((slide, index) => {
+        slide.setAttribute("aria-hidden", index === this.current ? "false" : "true");
       });
     },
-    commandInput: {
-      ["@input"]() {
-        this.keyword = this.$el.value;
-        this.$nextTick(() => {
-          this.selectOption(0, false);
-        });
-        this.$dispatch("valueChange", { value: this.keyword });
-      },
-      [":id"]() {
-        return this.$id("command") + "-input";
-      },
-      [":aria-controls"]() {
-        return this.$id("command") + "-list";
-      }
-    },
-    commandList: {
-      [":id"]() {
-        return this.$id("command") + "-list";
-      }
-    },
-    commandItem: {
-      [":data-cmd-item"]() {
-        return true;
-      },
-      [":data-selected"]() {
-        return this.$el.contains(this.focusedItem);
-      },
-      [":aria-selected"]() {
-        return this.$el.contains(this.focusedItem);
-      },
-      [":tabindex"]() {
-        return this.$el.contains(this.focusedItem) ? 0 : -1;
-      },
-      ["x-effect"]() {
-        if (this.keyword == "" || this.fuzzySearch(this.keyword, this.$el.innerText)) {
-          this.$el.dataset.active = true;
-          this.$el.style.display = "flex";
-        } else {
-          this.$el.dataset.active = false;
-          this.$el.style.display = "none";
-        }
-      },
-      ["@mouseenter"]() {
-        return this.focusedItem = this.$el;
-      }
-    },
-    commandGroupHeading: {
-      [":id"]() {
-        return this.$id("command") + "-group-heading";
-      }
-    },
-    commandGroup: {
-      [":id"]() {
-        return this.$id("command") + "-group";
-      },
-      [":aria-labelledby"]() {
-        return this.$id("command") + "-group-heading";
-      }
-    },
-    commandGroupContainer: {
-      ["x-effect"]() {
-        this.keyword == "";
-        this.$nextTick(() => {
-          this.$el.style.display = this.$el.querySelectorAll("[data-active=true]").length > 0 ? "block" : "none";
-        });
-      }
-    },
-    commandEmpty: {
-      ["x-effect"]() {
-        this.keyword == "";
-        this.$nextTick(() => {
-          this.$el.style.display = this.$refs.list.querySelectorAll("[data-active=true]").length > 0 ? "none" : "block";
-        });
-      }
-    },
-    selectOption(index, relative = true) {
-      let nodeList = this.$refs.list.querySelectorAll("[data-active=true]");
-      let nodeListArray = Array.from(nodeList);
-      let initialIndex = index;
-      if (nodeList.length == 0 || !nodeListArray.some((node) => JSON.parse(node.dataset.disabled) == false)) {
+    goTo(index) {
+      if (!this.count) {
         return;
       }
-      if (relative) {
-        let previousIndex = Array.from(nodeList).findIndex((node) => node.isEqualNode(this.focusedItem)) ?? 0;
-        index += previousIndex;
+      if (this.loop) {
+        this.current = (index + this.count) % this.count;
+      } else {
+        this.current = Math.max(0, Math.min(index, this.count - 1));
       }
-      index += index < 0 ? nodeList.length : 0;
-      index = index % nodeList.length;
-      while (JSON.parse(nodeList[index].dataset.disabled)) {
-        index += initialIndex < 0 ? -1 : 1;
-        index = index % nodeList.length;
-      }
-      this.focusedItem = nodeList[index];
-      this.focusedItem.scrollIntoView(initialIndex < 0);
+      this.updateSlides();
     },
-    fuzzySearch(keyword, text) {
-      const keywordLower = keyword.toLowerCase();
-      const textLower = text.toLowerCase();
-      let keywordIndex = 0;
-      for (let i = 0; i < textLower.length; i++) {
-        if (textLower[i] === keywordLower[keywordIndex]) {
-          keywordIndex++;
-        }
-        if (keywordIndex === keywordLower.length) {
-          return true;
-        }
-      }
-      return false;
+    previousSlide() {
+      this.goTo(this.current - 1);
+    },
+    nextSlide() {
+      this.goTo(this.current + 1);
     }
   });
 
@@ -2220,6 +2263,445 @@
     return matched[1].replace(doubleQuoteRegExp, "'");
   }
 
+  // resources/js/command.js
+  var command_default = (value) => ({
+    keyword: value,
+    focusedItem: null,
+    root: {
+      ["@keydown"]($event) {
+        if ($event.key == "Home") {
+          this.selectOption(1, false);
+        }
+        if ($event.key == "End") {
+          this.selectOption(-1, false);
+        }
+      },
+      ["@keydown.capture.down.prevent"]() {
+        this.selectOption(1);
+      },
+      ["@keydown.capture.up.prevent"]() {
+        this.selectOption(-1);
+      },
+      ["@keydown.capture.enter.prevent"]() {
+        if (this.focusedItem != null) {
+          this.focusedItem.click();
+        }
+      }
+    },
+    init() {
+      this.$nextTick(() => {
+        this.selectOption(0, false, false);
+      });
+    },
+    commandInput: {
+      ["@input"]() {
+        this.keyword = this.$el.value;
+        this.$nextTick(() => {
+          this.selectOption(0, false);
+        });
+        this.$dispatch("valueChange", { value: this.keyword });
+      },
+      [":id"]() {
+        return this.$id("command") + "-input";
+      },
+      [":aria-controls"]() {
+        return this.$id("command") + "-list";
+      }
+    },
+    commandList: {
+      [":id"]() {
+        return this.$id("command") + "-list";
+      }
+    },
+    commandItem: {
+      [":data-cmd-item"]() {
+        return true;
+      },
+      [":data-selected"]() {
+        return this.$el.contains(this.focusedItem);
+      },
+      [":aria-selected"]() {
+        return this.$el.contains(this.focusedItem);
+      },
+      [":tabindex"]() {
+        return this.$el.contains(this.focusedItem) ? 0 : -1;
+      },
+      ["x-effect"]() {
+        if (this.keyword == "" || this.fuzzySearch(this.keyword, this.$el.innerText)) {
+          this.$el.dataset.active = true;
+          this.$el.style.display = "flex";
+        } else {
+          this.$el.dataset.active = false;
+          this.$el.style.display = "none";
+        }
+      },
+      ["@mouseenter"]() {
+        return this.focusedItem = this.$el;
+      }
+    },
+    commandGroupHeading: {
+      [":id"]() {
+        return this.$id("command") + "-group-heading";
+      }
+    },
+    commandGroup: {
+      [":id"]() {
+        return this.$id("command") + "-group";
+      },
+      [":aria-labelledby"]() {
+        return this.$id("command") + "-group-heading";
+      }
+    },
+    commandGroupContainer: {
+      ["x-effect"]() {
+        this.keyword == "";
+        this.$nextTick(() => {
+          this.$el.style.display = this.$el.querySelectorAll("[data-active=true]").length > 0 ? "block" : "none";
+        });
+      }
+    },
+    commandEmpty: {
+      ["x-effect"]() {
+        this.keyword == "";
+        this.$nextTick(() => {
+          this.$el.style.display = this.$refs.list.querySelectorAll("[data-active=true]").length > 0 ? "none" : "block";
+        });
+      }
+    },
+    selectOption(index, relative = true, scroll = true) {
+      let nodeList = this.$refs.list.querySelectorAll("[data-active=true]");
+      let nodeListArray = Array.from(nodeList);
+      let initialIndex = index;
+      if (nodeList.length == 0 || !nodeListArray.some(
+        (node) => JSON.parse(node.dataset.disabled) == false
+      )) {
+        return;
+      }
+      if (relative) {
+        let previousIndex = Array.from(nodeList).findIndex(
+          (node) => node.isEqualNode(this.focusedItem)
+        ) ?? 0;
+        index += previousIndex;
+      }
+      index += index < 0 ? nodeList.length : 0;
+      index = index % nodeList.length;
+      while (JSON.parse(nodeList[index].dataset.disabled)) {
+        index += initialIndex < 0 ? -1 : 1;
+        index = index % nodeList.length;
+      }
+      this.focusedItem = nodeList[index];
+      if (scroll) {
+        this.focusedItem.scrollIntoView({ block: "nearest" });
+      }
+    },
+    fuzzySearch(keyword, text) {
+      const keywordLower = keyword.toLowerCase();
+      const textLower = text.toLowerCase();
+      let keywordIndex = 0;
+      for (let i = 0; i < textLower.length; i++) {
+        if (textLower[i] === keywordLower[keywordIndex]) {
+          keywordIndex++;
+        }
+        if (keywordIndex === keywordLower.length) {
+          return true;
+        }
+      }
+      return false;
+    }
+  });
+
+  // resources/js/collapsible.js
+  var collapsible_default = (open = false, disabled = false) => ({
+    open,
+    disabled,
+    root: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":data-disabled"]() {
+        return this.disabled || null;
+      },
+      ["x-id"]() {
+        return ["collapsible"];
+      }
+    },
+    trigger: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":aria-expanded"]() {
+        return this.open;
+      },
+      [":aria-controls"]() {
+        return this.$id("collapsible") + "-content";
+      },
+      [":disabled"]() {
+        return this.disabled;
+      },
+      ["@click"]() {
+        if (!this.disabled) {
+          this.open = !this.open;
+        }
+      },
+      [":id"]() {
+        return this.$id("collapsible") + "-trigger";
+      }
+    },
+    content: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":id"]() {
+        return this.$id("collapsible") + "-content";
+      },
+      [":aria-labelledby"]() {
+        return this.$id("collapsible") + "-trigger";
+      },
+      ["x-show"]() {
+        return this.open;
+      },
+      ["x-collapse.duration.200ms"]() {
+        return true;
+      }
+    }
+  });
+
+  // resources/js/combobox.js
+  var combobox_default = (value = "", disabled = false) => ({
+    keyword: "",
+    selectedValue: value,
+    disabled,
+    open: false,
+    focusedOption: null,
+    root: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":data-disabled"]() {
+        return this.disabled || null;
+      },
+      ["x-id"]() {
+        return ["combobox"];
+      },
+      ["@click.outside"]() {
+        this.close();
+      },
+      ["@keydown.escape"]() {
+        this.close();
+      }
+    },
+    trigger: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":aria-expanded"]() {
+        return this.open;
+      },
+      [":aria-controls"]() {
+        return this.$id("combobox") + "-list";
+      },
+      [":aria-haspopup"]() {
+        return "listbox";
+      },
+      [":disabled"]() {
+        return this.disabled;
+      },
+      ["@click"]() {
+        this.toggle();
+      },
+      [":id"]() {
+        return this.$id("combobox") + "-trigger";
+      }
+    },
+    input: {
+      [":id"]() {
+        return this.$id("combobox") + "-input";
+      },
+      [":aria-controls"]() {
+        return this.$id("combobox") + "-list";
+      },
+      [":aria-activedescendant"]() {
+        return this.focusedOption?.id ?? null;
+      },
+      ["x-model"]() {
+        return "keyword";
+      },
+      ["@input"]() {
+        this.focusedOption = null;
+      },
+      ["@keydown.down.prevent"]() {
+        this.focus(1);
+      },
+      ["@keydown.up.prevent"]() {
+        this.focus(-1);
+      },
+      ["@keydown.enter.prevent"]() {
+        this.focusedOption?.click();
+      }
+    },
+    content: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":id"]() {
+        return this.$id("combobox") + "-content";
+      },
+      ["x-show"]() {
+        return this.open;
+      },
+      ["x-trap.noscroll"]() {
+        return this.open;
+      },
+      ["x-transition"]() {
+        return true;
+      }
+    },
+    list: {
+      [":id"]() {
+        return this.$id("combobox") + "-list";
+      }
+    },
+    option: {
+      ["x-show"]() {
+        return this.matches(this.$el);
+      },
+      [":aria-selected"]() {
+        return this.selectedValue === this.$el.dataset.value;
+      },
+      [":aria-disabled"]() {
+        return this.$el.dataset.disabled === "true";
+      },
+      [":data-selected"]() {
+        return this.selectedValue === this.$el.dataset.value;
+      },
+      [":data-active"]() {
+        return this.matches(this.$el);
+      },
+      [":id"]() {
+        return this.$id("combobox") + "-option-" + this.$el.dataset.value;
+      },
+      ["@click"]() {
+        if (this.$el.dataset.disabled !== "true") {
+          this.select(this.$el.dataset.value);
+        }
+      }
+    },
+    init() {
+      this.$nextTick(() => this.focus(1));
+    },
+    matches(option) {
+      return this.keyword === "" || option.innerText.toLowerCase().includes(this.keyword.toLowerCase());
+    },
+    noMatches() {
+      return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].every((option) => !this.matches(option));
+    },
+    focus(direction) {
+      const options = [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].filter((option) => option.dataset.disabled !== "true" && this.matches(option));
+      if (options.length === 0) {
+        this.focusedOption = null;
+        return;
+      }
+      const current = options.indexOf(this.focusedOption);
+      const index = current < 0 ? direction > 0 ? 0 : options.length - 1 : (current + direction + options.length) % options.length;
+      this.focusedOption = options[index];
+      this.focusedOption.scrollIntoView({ block: "nearest" });
+    },
+    select(value2) {
+      this.selectedValue = value2;
+      this.$dispatch("change", { value: value2 });
+      this.close();
+    },
+    selectedLabel() {
+      return this.$root.querySelector(`[data-slot="combobox-option"][data-value="${CSS.escape(this.selectedValue)}"]`)?.innerText.trim() ?? "";
+    },
+    close() {
+      this.open = false;
+    },
+    toggle() {
+      if (!this.disabled) {
+        this.open = !this.open;
+      }
+    }
+  });
+
+  // resources/js/contextMenu.js
+  var contextMenu_default = () => ({
+    open: false,
+    x: 0,
+    y: 0,
+    root: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      ["x-id"]() {
+        return ["context-menu"];
+      },
+      ["@click.outside"]() {
+        this.close();
+      },
+      ["@keydown.escape.window"]() {
+        this.close();
+      }
+    },
+    trigger: {
+      [":aria-expanded"]() {
+        return this.open;
+      },
+      [":aria-haspopup"]() {
+        return "menu";
+      },
+      [":aria-controls"]() {
+        return this.$id("context-menu") + "-content";
+      },
+      ["@contextmenu.prevent"]($event) {
+        this.openAt($event);
+      }
+    },
+    content: {
+      [":data-state"]() {
+        return this.open ? "open" : "closed";
+      },
+      [":id"]() {
+        return this.$id("context-menu") + "-content";
+      },
+      [":style"]() {
+        return `left: ${this.x}px; top: ${this.y}px`;
+      },
+      ["x-show"]() {
+        return this.open;
+      },
+      ["x-trap.noscroll"]() {
+        return this.open;
+      },
+      ["x-transition"]() {
+        return true;
+      },
+      ["@keydown.down.prevent"]() {
+        this.$focus.within(this.$el).wrap().next();
+      },
+      ["@keydown.up.prevent"]() {
+        this.$focus.within(this.$el).wrap().previous();
+      }
+    },
+    menuItem: {
+      ["@click"]() {
+        this.close();
+      },
+      ["@mouseenter"]() {
+        this.$focus.focus(this.$el);
+      }
+    },
+    openAt(event) {
+      this.x = Math.min(event.clientX, window.innerWidth - 220);
+      this.y = Math.min(event.clientY, window.innerHeight - 180);
+      this.open = true;
+      this.$nextTick(() => this.$focus.focus(this.$refs.content?.querySelector('[role="menuitem"]')));
+    },
+    close() {
+      this.open = false;
+    }
+  });
+
   // resources/js/datePicker.js
   var datePicker_default = (open, value, mode, format2) => ({
     open,
@@ -2329,6 +2811,15 @@
       },
       [":id"]() {
         return this.$id("dialog") + "-trigger";
+      },
+      [":aria-expanded"]() {
+        return this.show;
+      },
+      [":aria-haspopup"]() {
+        return "dialog";
+      },
+      [":aria-controls"]() {
+        return this.$id("dialog") + "-content";
       }
     },
     overlay: {
@@ -2368,6 +2859,9 @@
       },
       [":aria-modal"]() {
         return this.show;
+      },
+      [":id"]() {
+        return this.$id("dialog") + "-content";
       }
     },
     title: {
@@ -2443,6 +2937,9 @@
       },
       [":aria-controls"]() {
         return this.$id("dropdown-menu") + "-content";
+      },
+      [":aria-expanded"]() {
+        return this.dropdownMenu;
       },
       ["@keydown.esc.window"]() {
         return this.close();
@@ -2683,6 +3180,12 @@
       [":aria-controls"]() {
         return this.$id("popover") + "-content";
       },
+      [":aria-expanded"]() {
+        return this.popover;
+      },
+      [":aria-haspopup"]() {
+        return "dialog";
+      },
       ["@keydown.esc.window"]() {
         return this.close();
       }
@@ -2712,7 +3215,7 @@
         return this.$id("popover") + "-content";
       },
       [":aria-labelledby"]() {
-        return this.$id("popover-menu") + "-trigger";
+        return this.$id("popover") + "-trigger";
       }
     },
     close() {
@@ -2741,6 +3244,9 @@
       [":data-disabled"]() {
         return this.disabled || null;
       },
+      ["x-id"]() {
+        return ["select"];
+      },
       ["x-on:keydown.tab"]() {
         return this.close();
       },
@@ -2763,6 +3269,15 @@
       },
       [":disabled"]() {
         return this.disabled;
+      },
+      [":aria-expanded"]() {
+        return this.show;
+      },
+      [":aria-haspopup"]() {
+        return "listbox";
+      },
+      [":aria-controls"]() {
+        return this.$id("select") + "-list";
       }
     },
     optionList: {
@@ -2783,6 +3298,9 @@
       },
       ["x-on:keydown.down.prevent"]() {
         return this.$focus.wrap().next();
+      },
+      [":id"]() {
+        return this.$id("select") + "-list";
       }
     },
     init() {
@@ -2865,41 +3383,72 @@
   });
 
   // resources/js/sheet.js
-  var sheet_default = (side) => ({
-    side,
-    root: {
-      [":data-state"]() {
-        return this.$data["show"] ? "open" : "closed";
+  var sheet_default = (side) => {
+    const offsets = {
+      top: "-translate-y-full",
+      bottom: "translate-y-full",
+      left: "-translate-x-full",
+      right: "translate-x-full"
+    };
+    const offset = offsets[side] ?? offsets.right;
+    return {
+      side,
+      root: {
+        [":id"]() {
+          return this.$id("dialog") + "-content";
+        },
+        [":aria-labelledby"]() {
+          return this.$id("dialog") + "-title";
+        },
+        [":aria-describedby"]() {
+          return this.$id("dialog") + "-description";
+        },
+        [":aria-modal"]() {
+          return true;
+        },
+        [":data-state"]() {
+          return this.$data["show"] ? "open" : "closed";
+        },
+        ["x-show"]() {
+          return this.$data["show"];
+        },
+        ["@click.stop"]() {
+          return true;
+        },
+        ["x-cloak"]() {
+          return true;
+        },
+        ["x-transition:enter"]() {
+          return "transition-transform ease-in-out duration-500";
+        },
+        ["x-transition:enter-start"]() {
+          return offset;
+        },
+        ["x-transition:enter-end"]() {
+          return "translate-x-0 translate-y-0";
+        },
+        ["x-transition:leave"]() {
+          return "transition-transform ease-in-out duration-300";
+        },
+        ["x-transition:leave-start"]() {
+          return "translate-x-0 translate-y-0";
+        },
+        ["x-transition:leave-end"]() {
+          return offset;
+        }
       },
-      ["x-show"]() {
-        return this.$data["show"];
+      title: {
+        [":id"]() {
+          return this.$id("dialog") + "-title";
+        }
       },
-      ["@click.stop"]() {
-        return true;
-      },
-      ["x-cloak"]() {
-        return true;
-      },
-      ["x-transition:enter"]() {
-        return "transition-opacity ease-in-out duration-500";
-      },
-      ["x-transition:enter-start"]() {
-        return "opacity-0";
-      },
-      ["x-transition:enter-end"]() {
-        return "opacity-100";
-      },
-      ["x-transition:leave"]() {
-        return "transition-opacity ease-in-out duration-300";
-      },
-      ["x-transition:leave-start"]() {
-        return "opacity-100";
-      },
-      ["x-transition:leave-end"]() {
-        return "opacity-0";
+      description: {
+        [":id"]() {
+          return this.$id("dialog") + "-description";
+        }
       }
-    }
-  });
+    };
+  };
 
   // resources/js/sidebar.js
   var MOBILE_BREAKPOINT = 768;
@@ -3039,12 +3588,6 @@
       },
       ["x-cloak"]() {
         return this.value == this.$data.active;
-      },
-      [":aria-controls"]() {
-        return this.$id("tab") + "-" + this.value + "-trigger";
-      },
-      [":id"]() {
-        return this.$id("accordion-item") + "-panel";
       }
     }
   });
@@ -3072,12 +3615,6 @@
       },
       [":class"]() {
         return { "bg-background text-foreground shadow-sm": this.$data.active == this.value };
-      },
-      [":aria-labelledby"]() {
-        return this.$id("tab") + "-" + this.value + "-panel";
-      },
-      [":id"]() {
-        return this.$id("accordion-item") + "-trigger";
       }
     },
     setAsActive() {
@@ -3091,6 +3628,11 @@
     skipDelayDuration,
     tooltipOpened: defaultOpen,
     debounceTimeout: null,
+    root: {
+      ["x-id"]() {
+        return ["tooltip"];
+      }
+    },
     trigger: {
       [":data-state"]() {
         return this.tooltipOpened ? "open" : "closed";
@@ -3108,6 +3650,15 @@
           clearTimeout(this.debounceTimeout);
           this.close();
         }, this.skipDelayDuration);
+      },
+      ["@focus"]() {
+        this.open();
+      },
+      ["@blur"]() {
+        this.close();
+      },
+      [":aria-describedby"]() {
+        return this.$id("tooltip") + "-content";
       }
     },
     svg: {
@@ -3124,6 +3675,9 @@
     content: {
       [":data-state"]() {
         return this.tooltipOpened ? "open" : "closed";
+      },
+      [":id"]() {
+        return this.$id("tooltip") + "-content";
       },
       ["x-show"]() {
         return this.tooltipOpened;
@@ -3148,10 +3702,15 @@
     accordion: accordion_default,
     accordionItem: accordionItem_default,
     alert: alert_default,
+    alertDialog: alertDialog_default,
     avatar: avatar_default,
     banner: banner_default,
     calendar: calendar_default,
+    carousel: carousel_default,
     command: command_default,
+    collapsible: collapsible_default,
+    combobox: combobox_default,
+    contextMenu: contextMenu_default,
     datePicker: datePicker_default,
     dialog: dialog_default,
     dropdownMenu: dropdownMenu_default,

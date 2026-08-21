@@ -9,4 +9,5 @@
 ## Sidebar
 
 - `sidebar-trigger` uses its default slot for a custom trigger icon because the icon is the trigger's primary content. It falls back to the standard icon when the default slot is empty.
-- Sidebar layout sections and menu collections use their default slots for child components. Use `sidebar-menu`, `sidebar-menu-item`, and the other sidebar parts for repeated content.
+- `sidebar` accepts named `header`, `content`, and `footer` slots for its layout regions. Keep the sidebar rail and other single structural parts in the default slot.
+- Sidebar menu collections use child components through the `content` slot. Use `sidebar-menu`, `sidebar-menu-item`, and the other sidebar parts for repeated content.

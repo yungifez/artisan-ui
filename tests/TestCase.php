@@ -4,6 +4,8 @@ namespace Yungifez\AprilUI\Tests;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
+use BladeUI\Icons\BladeIconsServiceProvider;
+use MallardDuck\LucideIcons\BladeLucideIconsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use TalesFromADev\TailwindMerge\Support\Config;
 use Yungifez\AprilUI\AprilUIServiceProvider;
@@ -32,6 +34,8 @@ class TestCase extends Orchestra
     {
         return [
             AprilUIServiceProvider::class,
+            BladeIconsServiceProvider::class,
+            BladeLucideIconsServiceProvider::class,
         ];
     }
 

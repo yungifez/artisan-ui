@@ -53,6 +53,9 @@ export default () => ({
         [':aria-controls']() {
             return this.$id('dropdown-menu') + '-content';
         },
+        [':aria-expanded']() {
+            return this.dropdownMenu;
+        },
         ['@keydown.esc.window']() {
             return this.close();
         },

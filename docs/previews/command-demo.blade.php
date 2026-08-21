@@ -4,15 +4,15 @@
     <slot:list>
         <april:command-group heading="Suggestions">
             <april:command-item>
-                <i class="fa-regular fa-calendar"></i>
+                <x-lucide-calendar class="size-4" />
                 <span>Calendar</span>
             </april:command-item>
             <april:command-item>
-                <i class="fa-regular fa-smile"></i>
+                <x-lucide-smile class="size-4" />
                 <span>Search Emoji</span>
             </april:command-item>
             <april:command-item disabled>
-                <i class="fa-calculator fa-smile"></i>
+                <x-lucide-calculator class="size-4" />
                 <span>Calculator</span>
             </april:command-item>
 
@@ -20,17 +20,17 @@
         <april:command-separator />
         <april:command-group heading="Settings">
             <april:command-item>
-                <i class="fa-regular fa-user"></i>
+                <x-lucide-user class="size-4" />
                 <span>Profile</span>
                 <april:command-shortcut>⌘P</april:command-shortcut>
             </april:command-item>
             <april:command-item>
-                <i class="fa-regular fa-credit-card"></i>
+                <x-lucide-credit-card class="size-4" />
                 <span>Billing</span>
                 <april:command-shortcut>⌘B</april:command-shortcut>
             </april:command-item>
             <april:command-item>
-                <i class="fa fa-cogs"></i>
+                <x-lucide-settings class="size-4" />
                 <span>Settings</span>
                 <april:command-shortcut>⌘S</april:command-shortcut>
             </april:command-item>

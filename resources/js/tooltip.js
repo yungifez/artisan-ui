@@ -3,6 +3,11 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
     skipDelayDuration: skipDelayDuration,
     tooltipOpened: defaultOpen,
     debounceTimeout: null,
+    root: {
+        ['x-id']() {
+            return ['tooltip'];
+        },
+    },
     trigger: {
         [':data-state']() {
             return this.tooltipOpened ? 'open' : 'closed';
@@ -22,6 +27,15 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
                 this.close();
             }, this.skipDelayDuration);
         },
+        ['@focus']() {
+            this.open();
+        },
+        ['@blur']() {
+            this.close();
+        },
+        [':aria-describedby']() {
+            return this.$id('tooltip') + '-content';
+        },
     },
     svg: {
         ['x-show']() {
@@ -37,6 +51,9 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
     content: {
         [':data-state']() {
             return this.tooltipOpened ? 'open' : 'closed';
+        },
+        [':id']() {
+            return this.$id('tooltip') + '-content';
         },
         ['x-show']() {
             return this.tooltipOpened

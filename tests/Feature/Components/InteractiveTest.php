@@ -96,6 +96,7 @@ describe('tabs', function () {
         $html = renderComponent('tabs-trigger', 'value="account"', 'Account');
 
         expect($html)->toContain('role="tab"')
+            ->toContain('aria-controls="tab-')
             ->toContain("tabsTrigger('account')")
             ->toContain('Account');
     });
@@ -104,6 +105,7 @@ describe('tabs', function () {
         $html = renderComponent('tabs-content', 'value="account"', 'Panel');
 
         expect($html)->toContain('role="tabpanel"')
+            ->toContain('aria-labelledby="tab-')
             ->toContain("tabsContent('account')")
             ->toContain('Panel');
     });

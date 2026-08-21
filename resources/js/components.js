@@ -1,10 +1,15 @@
 import accordion from './accordion.js';
 import accordionItem from './accordionItem.js';
 import alert from './alert.js';
+import alertDialog from './alertDialog.js';
 import avatar from './avatar.js';
 import banner from './banner.js';
 import calendar from './calendar.js';
+import carousel from './carousel.js';
 import command from './command.js';
+import collapsible from './collapsible.js';
+import combobox from './combobox.js';
+import contextMenu from './contextMenu.js';
 import datePicker from './datePicker.js';
 import dialog from './dialog.js';
 import dropdownMenu from './dropdownMenu.js';
@@ -23,10 +28,15 @@ export {
     accordion,
     accordionItem,
     alert,
+    alertDialog,
     avatar,
     banner,
     calendar,
+    carousel,
     command,
+    collapsible,
+    combobox,
+    contextMenu,
     datePicker,
     dialog,
     dropdownMenu,
@@ -46,10 +56,15 @@ export default {
     accordion,
     accordionItem,
     alert,
+    alertDialog,
     avatar,
     banner,
     calendar,
+    carousel,
     command,
+    collapsible,
+    combobox,
+    contextMenu,
     datePicker,
     dialog,
     dropdownMenu,

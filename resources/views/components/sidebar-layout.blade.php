@@ -10,7 +10,7 @@
     "--sidebar-width: $width" => $width,
     "--sidebar-width-icon: $widthIcon" => $widthIcon,
     ])
-    @endif {{$attributes->twMerge(['group/sidebar-wrapper flex min-h-svh w-full
+    @endif {{$attributes->twMerge(['group/sidebar-wrapper flex h-full min-h-svh w-full
     has-data-[variant=inset]:bg-sidebar'])}}>
     {{$slot}}
 </div>

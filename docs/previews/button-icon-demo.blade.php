@@ -1,3 +1,3 @@
 <april:button size="icon" class="justify-center" variant="outline">
-    <i class="fas fa-angle-right"></i>
+    <x-lucide-chevron-right class="size-4" />
 </april:button>

@@ -40,7 +40,7 @@ You can also use the none variant and style the button yourself
 ## Size examples
 The button component comes in multiple sizes
 
-<x-callout>Note that these examples use the font awesome icon library</x-callout>
+<x-callout>These examples use Blade Lucide icons.</x-callout>
 
 ---
 ### Default

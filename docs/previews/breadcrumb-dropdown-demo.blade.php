@@ -13,7 +13,7 @@
                 <slot:trigger>
                     <button class="bg-transparent cursor-pointer flex items-center gap-1">
                         Components
-                        <i class="fas fa-angle-down"></i>
+                        <x-lucide-chevron-down class="size-4" />
                     </button>
                 </slot:trigger>
                 <slot:content align="start">

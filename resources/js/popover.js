@@ -21,6 +21,12 @@ export default () => ({
         [':aria-controls']() {
             return this.$id('popover') + '-content';
         },
+        [':aria-expanded']() {
+            return this.popover;
+        },
+        [':aria-haspopup']() {
+            return 'dialog';
+        },
         ['@keydown.esc.window']() {
             return this.close();
         },
@@ -50,7 +56,7 @@ export default () => ({
             return this.$id('popover') + '-content';
         },
         [':aria-labelledby']() {
-            return this.$id('popover-menu') + '-trigger';
+            return this.$id('popover') + '-trigger';
         },
     },
     close() {

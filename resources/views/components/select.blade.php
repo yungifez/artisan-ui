@@ -59,13 +59,15 @@
             </template>
         </div>
     </div>
-    <div x-bind="optionList"
+    <div x-bind="optionList" role="listbox"
         class="absolute shadow top-100 border-input bg-background z-20 w-full rounded border max-h-80 overflow-y-auto">
         <div class="flex flex-col w-full">
             <template x-for="(option,index) in options" :key="index">
                 <button
                     class="cursor-pointer rounded-t outline-none flex w-full items-center py-1 relative disabled:text-muted-foreground hover:bg-accent/60 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    @click="select(index)" type="button" :disabled="options[index].disabled">
+                    @click="select(index)" type="button" role="option"
+                    :aria-selected="options[index].selected" :aria-disabled="options[index].disabled"
+                    :disabled="options[index].disabled">
                     <div class="w-full items-center flex">
                         <div class="ml-2 w-3">
                             <svg x-show="options[index].selected" class="fill-foreground" viewBox="0 0 20 20"

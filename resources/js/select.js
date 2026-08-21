@@ -12,6 +12,9 @@ export default (multiple, disabled) => ({
         [':data-disabled']() {
             return this.disabled || null;
         },
+        ['x-id']() {
+            return ['select'];
+        },
         ['x-on:keydown.tab']() {
             return this.close();
         },
@@ -35,6 +38,15 @@ export default (multiple, disabled) => ({
         [':disabled']() {
             return this.disabled;
         },
+        [':aria-expanded']() {
+            return this.show;
+        },
+        [':aria-haspopup']() {
+            return 'listbox';
+        },
+        [':aria-controls']() {
+            return this.$id('select') + '-list';
+        },
     },
     optionList: {
         [':data-state']() {
@@ -54,6 +66,9 @@ export default (multiple, disabled) => ({
         },
         ['x-on:keydown.down.prevent']() {
             return this.$focus.wrap().next();
+        },
+        [':id']() {
+            return this.$id('select') + '-list';
         },
     },
     init() {

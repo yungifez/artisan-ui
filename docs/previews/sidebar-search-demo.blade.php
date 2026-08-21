@@ -1,8 +1,8 @@
 <april:sidebar collapsible="none" class="w-64 border rounded-lg">
-    <april:sidebar-header>
+    <slot:header>
         <april:sidebar-input name="search" placeholder="Search the docs..." />
-    </april:sidebar-header>
-    <april:sidebar-content>
+    </slot:header>
+    <slot:content>
         <april:sidebar-group>
             <april:sidebar-group-content>
                 <april:sidebar-menu>
@@ -15,5 +15,5 @@
                 </april:sidebar-menu>
             </april:sidebar-group-content>
         </april:sidebar-group>
-    </april:sidebar-content>
+    </slot:content>
 </april:sidebar>

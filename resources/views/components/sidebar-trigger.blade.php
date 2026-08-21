@@ -1,5 +1,5 @@
-<april:button :attributes='$attributes->twMerge(["size-7"])' data-sidebar="trigger" data-slot="sidebar-trigger"
-    variant="ghost" size="icon" type="button" title="Toggle Sidebar" x-on:click="toggle()">
+<april:button :attributes='$attributes->twMerge(["size-7 flex items-center justify-center"])' data-sidebar="trigger"
+    data-slot="sidebar-trigger" variant="ghost" size="icon" type="button" title="Toggle Sidebar" x-on:click="toggle()">
     @if (trim((string) $slot) !== '')
     {{$slot}}
     @else

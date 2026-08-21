@@ -87,6 +87,18 @@ describe('sidebar', function () {
             ->toContain('shrink-0');
     });
 
+    it('fills its layout container and keeps the panel bounded', function () {
+        $html = renderComponent('sidebar');
+
+        expect($html)
+            ->toContain('relative')
+            ->toContain('self-stretch')
+            ->toContain('h-full w-[var(--sidebar-width)]')
+            ->toContain('absolute inset-y-0')
+            ->toContain('overflow-hidden')
+            ->toContain('min-h-0 w-full flex-col');
+    });
+
     it('hides the desktop sidebar on a small screen', function () {
         expect(renderComponent('sidebar'))->toContain('hidden text-sidebar-foreground md:block');
     });
@@ -196,9 +208,6 @@ describe('sidebar sections', function () {
     it('marks the section for styling and testing', function (string $name, string $marker) {
         expect(renderComponent($name))->toContain("data-sidebar=\"{$marker}\"");
     })->with([
-        ['sidebar-header', 'header'],
-        ['sidebar-content', 'content'],
-        ['sidebar-footer', 'footer'],
         ['sidebar-group', 'group'],
         ['sidebar-group-label', 'group-label'],
         ['sidebar-group-content', 'group-content'],
@@ -210,9 +219,6 @@ describe('sidebar sections', function () {
     it('renders its slot', function (string $name) {
         expect(renderComponent($name, '', 'content'))->toContain('content');
     })->with([
-        'sidebar-header',
-        'sidebar-content',
-        'sidebar-footer',
         'sidebar-group',
         'sidebar-group-label',
         'sidebar-group-content',
@@ -220,10 +226,22 @@ describe('sidebar sections', function () {
         'sidebar-menu-item',
     ]);
 
-    it('lets the content area scroll', function () {
-        expect(classesOf(renderComponent('sidebar-content')))
-            ->toContain('overflow-auto')
-            ->toContain('flex-1');
+    it('renders header, content, and footer named slots on desktop and mobile', function () {
+        $html = render(<<<'BLADE'
+        <april:sidebar>
+            <slot:header>Header</slot:header>
+            <slot:content>Content</slot:content>
+            <slot:footer>Footer</slot:footer>
+        </april:sidebar>
+        BLADE);
+
+        expect(substr_count($html, 'Header'))->toBe(2)
+            ->and(substr_count($html, 'Content'))->toBe(2)
+            ->and(substr_count($html, 'Footer'))->toBe(2)
+            ->and($html)->toContain('overflow-auto')
+            ->toContain('data-slot="sidebar-header"')
+            ->toContain('data-slot="sidebar-content"')
+            ->toContain('data-slot="sidebar-footer"');
     });
 
     it('hides the group label when the sidebar collapses to icons', function () {
@@ -243,11 +261,6 @@ describe('sidebar sections', function () {
         expect(renderComponent('sidebar-separator'))->toContain('role="none"');
     });
 
-    it('lets a user class win over the section default', function () {
-        expect(classesOf(renderComponent('sidebar-header', 'class="p-6"')))
-            ->toContain('p-6')
-            ->not->toContain('p-2');
-    });
 });
 
 describe('sidebar menu button', function () {
@@ -534,10 +547,7 @@ describe('shadcn parity', function () {
         ['sidebar-rail', 'sidebar-rail'],
         ['sidebar-inset', 'sidebar-inset'],
         ['sidebar-input', 'sidebar-input'],
-        ['sidebar-header', 'sidebar-header'],
-        ['sidebar-footer', 'sidebar-footer'],
         ['sidebar-separator', 'sidebar-separator'],
-        ['sidebar-content', 'sidebar-content'],
         ['sidebar-group', 'sidebar-group'],
         ['sidebar-group-label', 'sidebar-group-label'],
         ['sidebar-group-action', 'sidebar-group-action'],
@@ -557,13 +567,10 @@ describe('shadcn parity', function () {
         expect(componentNames())->toContain($name);
     })->with([
         'sidebar',
-        'sidebar-content',
-        'sidebar-footer',
         'sidebar-group',
         'sidebar-group-action',
         'sidebar-group-content',
         'sidebar-group-label',
-        'sidebar-header',
         'sidebar-input',
         'sidebar-inset',
         'sidebar-menu',
@@ -607,10 +614,10 @@ it('renders a whole sidebar layout', function () {
     $html = render(<<<'BLADE'
     <april:sidebar-layout>
         <april:sidebar collapsible="icon">
-            <april:sidebar-header>
+            <slot:header>
                 <april:sidebar-input name="search" placeholder="Search" />
-            </april:sidebar-header>
-            <april:sidebar-content>
+            </slot:header>
+            <slot:content>
                 <april:sidebar-group>
                     <april:sidebar-group-label>Platform</april:sidebar-group-label>
                     <april:sidebar-group-action>+</april:sidebar-group-action>
@@ -635,8 +642,8 @@ it('renders a whole sidebar layout', function () {
                     </april:sidebar-group-content>
                 </april:sidebar-group>
                 <april:sidebar-separator />
-            </april:sidebar-content>
-            <april:sidebar-footer>Profile</april:sidebar-footer>
+            </slot:content>
+            <slot:footer>Profile</slot:footer>
             <april:sidebar-rail />
         </april:sidebar>
         <april:sidebar-inset>

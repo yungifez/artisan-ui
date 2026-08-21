@@ -1,4 +1,6 @@
-<button data-slot="tabs-trigger" x-data="tabsTrigger('{{$attributes->get('value')}}')" role="tab" x-bind="root"
+@php($tabId = 'tab-'.substr(md5((string) $attributes->get('value')), 0, 12))
+<button data-slot="tabs-trigger" id="{{$tabId}}-trigger" aria-controls="{{$tabId}}-panel"
+    x-data="tabsTrigger('{{$attributes->get('value')}}')" role="tab" x-bind="root"
     {{$attributes->twMerge(['inline-flex
     items-center
     justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm

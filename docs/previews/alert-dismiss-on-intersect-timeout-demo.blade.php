@@ -1,6 +1,6 @@
 <april:alert dismissOnTimeout startTimeoutOnIntersect timeout="5000">
     <slot:icon>
-        <i class="fa-solid fa-terminal h-4 w-4"></i>
+        <x-lucide-terminal class="h-4 w-4" />
     </slot:icon>
     <slot:title>Heads up!</slot:title>
     <slot:description>

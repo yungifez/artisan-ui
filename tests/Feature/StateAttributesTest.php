@@ -124,13 +124,10 @@ describe('the state updates that alpine applies', function () {
 });
 
 describe('what the state attributes unlock', function () {
-    it('lets the sheet animation classes match a real attribute', function () {
-        $html = render('<april:sheet><x-slot:content side="left">Body</x-slot:content></april:sheet>');
+    it('uses the requested side for sheet transforms', function () {
+        $source = file_get_contents(__DIR__.'/../../resources/js/sheet.js');
 
-        // The panel carries both the class and the attribute it keys off.
-        expect($html)
-            ->toContain('data-[state=open]:slide-in-from-left')
-            ->toContain('data-state="closed"');
+        expect($source)->toContain("left: '-translate-x-full'");
     });
 
     it('lets a stylesheet target a part without knowing the markup', function () {

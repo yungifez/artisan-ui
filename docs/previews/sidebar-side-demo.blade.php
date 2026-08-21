@@ -4,10 +4,10 @@
         <p class="mt-4 text-sm text-muted-foreground">The sidebar sits on the right.</p>
     </april:sidebar-inset>
     <april:sidebar side="right">
-        <april:sidebar-header>
+        <slot:header>
             <span class="font-semibold px-2">Acme Inc</span>
-        </april:sidebar-header>
-        <april:sidebar-content>
+        </slot:header>
+        <slot:content>
             <april:sidebar-group>
                 <april:sidebar-group-content>
                     <april:sidebar-menu>
@@ -17,7 +17,7 @@
                     </april:sidebar-menu>
                 </april:sidebar-group-content>
             </april:sidebar-group>
-        </april:sidebar-content>
+        </slot:content>
         <april:sidebar-rail />
     </april:sidebar>
 </april:sidebar-layout>

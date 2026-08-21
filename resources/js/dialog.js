@@ -30,6 +30,15 @@ export default (show, dismissable) => ({
         [':id']() {
             return this.$id('dialog') + '-trigger';
         },
+        [':aria-expanded']() {
+            return this.show;
+        },
+        [':aria-haspopup']() {
+            return 'dialog';
+        },
+        [':aria-controls']() {
+            return this.$id('dialog') + '-content';
+        },
     },
     overlay: {
         [':data-state']() {
@@ -68,6 +77,9 @@ export default (show, dismissable) => ({
         },
         [':aria-modal']() {
             return this.show;
+        },
+        [':id']() {
+            return this.$id('dialog') + '-content';
         },
     },
     title: {

@@ -1,12 +1,12 @@
 @props(['selected' => '', 'mode' => 'single' , 'onselect' => '', "max" => null, "min" => null, "disabled" => null,
 "required" => false ])
-<div data-slot="calendar" x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max), @json($required))'
+<div data-slot="calendar" role="grid" aria-label="Calendar" x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max), @json($required))'
     x-bind="root" {{$attributes->
     twMerge([' p-4
     antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]'])}}
     x-modelable="modeHandler.value">
     <div class="flex items-center justify-between mb-3">
-        <button x-bind="previousMonthTrigger" type="button"
+        <button x-bind="previousMonthTrigger" type="button" aria-label="Previous month"
             class="border dark:border-input inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
             <april:angle-down class="inline-flex w-6 h-6 fill-foreground rotate-90" />
         </button>
@@ -14,15 +14,15 @@
             <span x-bind="monthLabel" class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
             <span x-bind="yearLabel" class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
         </div>
-        <button x-bind="nextMonthTrigger" type="button"
+        <button x-bind="nextMonthTrigger" type="button" aria-label="Next month"
             class="border dark:border-border inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
             <april:angle-down class="inline-flex w-6 h-6 fill-foreground -rotate-90" />
         </button>
     </div>
     {{--display days of the week--}}
-    <div class="grid grid-cols-7 mb-3">
+    <div class="grid grid-cols-7 mb-3" role="row">
         <template x-for="(day, index) in days">
-            <div class="px-0.5">
+            <div class="px-0.5" role="columnheader">
                 <div x-text="day" class="text-xs font-medium text-center text-gray-800 dark:text-gray-100"></div>
             </div>
         </template>
@@ -35,7 +35,7 @@
             </div>
         </template>
         <template x-for="(day, dayIndex) in daysInMonth" :key="dayIndex">
-            <button tabindex="-1" type="button"
+            <button tabindex="-1" type="button" role="gridcell"
                 x-effect="focusedDay == day && ($root.contains($focus.focused()))  && $el.focus({preventScroll: true})"
                 x-text="day" :disabled="isDisabled(new Date(year, month, day))" @click="dayClicked(day);" :class="{
                         'bg-accent text-accent-foreground': isToday(day) == true && isSelectedDay(day) == false && !isDisabled(new Date(year, month, day)),

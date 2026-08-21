@@ -76,21 +76,21 @@ describe('sheet', function () {
         expect(renderComponent('sheet'))->toContain('x-data="dialog(false,');
     });
 
-    it('slides in from the right by default', function () {
-        $html = render('<april:sheet><x-slot:content>Body</x-slot:content></april:sheet>');
+    it('uses a right-side transform by default', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/sheet.js');
 
-        expect($html)->toContain('data-[state=open]:slide-in-from-right');
+        expect($source)->toContain("right: 'translate-x-full'");
     });
 
     it('slides in from the requested side', function (string $side, string $expected) {
         $html = render("<april:sheet><x-slot:content side=\"{$side}\">Body</x-slot:content></april:sheet>");
 
-        expect($html)->toContain($expected);
+        expect(file_get_contents(__DIR__.'/../../../resources/js/sheet.js'))->toContain($expected);
     })->with([
-        ['top', 'slide-in-from-top'],
-        ['bottom', 'slide-in-from-bottom'],
-        ['left', 'slide-in-from-left'],
-        ['right', 'slide-in-from-right'],
+        ['top', "top: '-translate-y-full'"],
+        ['bottom', "bottom: 'translate-y-full'"],
+        ['left', "left: '-translate-x-full'"],
+        ['right', "right: 'translate-x-full'"],
     ]);
 
     it('passes the side to the sheet behaviour', function () {
@@ -99,14 +99,13 @@ describe('sheet', function () {
         expect($html)->toContain("x-data=\"sheet('left'");
     });
 
-    it('lets shadcn state classes own panel movement', function () {
+    it('uses transform transitions for panel movement', function () {
         $source = file_get_contents(__DIR__.'/../../../resources/js/sheet.js');
 
         expect($source)
-            ->toContain('transition-opacity ease-in-out duration-500')
-            ->toContain('transition-opacity ease-in-out duration-300')
-            ->not->toContain('transitionEnterStart')
-            ->not->toContain('transitionLeaveEnd');
+            ->toContain('transition-transform ease-in-out duration-500')
+            ->toContain('transition-transform ease-in-out duration-300')
+            ->not->toContain('transition-opacity');
     });
 
     it('keeps the overlay mounted for the shadcn close animation', function () {
@@ -192,7 +191,7 @@ describe('dropdown menu', function () {
     it('renders a menu item as a ghost button', function () {
         $html = renderComponent('dropdown-menu-item', '', 'Profile');
 
-        expect($html)->toContain('Profile')->toContain('role="menu-item"');
+        expect($html)->toContain('Profile')->toContain('role="menuitem"');
     });
 
     it('renders a menu label', function () {

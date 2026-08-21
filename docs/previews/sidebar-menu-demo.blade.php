@@ -1,5 +1,5 @@
 <april:sidebar collapsible="none" class="w-64 border rounded-lg">
-    <april:sidebar-content>
+    <slot:content>
         <april:sidebar-group>
             <april:sidebar-group-label>Projects</april:sidebar-group-label>
             <april:sidebar-group-action>+</april:sidebar-group-action>
@@ -28,5 +28,5 @@
                 </april:sidebar-menu>
             </april:sidebar-group-content>
         </april:sidebar-group>
-    </april:sidebar-content>
+    </slot:content>
 </april:sidebar>

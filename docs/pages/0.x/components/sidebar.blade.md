@@ -18,8 +18,8 @@ agree on whether the sidebar is open.
 @verbatim
 <april:sidebar-layout>
     <april:sidebar>
-        <april:sidebar-header>...</april:sidebar-header>
-        <april:sidebar-content>
+        <slot:header>...</slot:header>
+        <slot:content>
             <april:sidebar-group>
                 <april:sidebar-group-label>Platform</april:sidebar-group-label>
                 <april:sidebar-group-content>
@@ -30,8 +30,8 @@ agree on whether the sidebar is open.
                     </april:sidebar-menu>
                 </april:sidebar-group-content>
             </april:sidebar-group>
-        </april:sidebar-content>
-        <april:sidebar-footer>...</april:sidebar-footer>
+        </slot:content>
+        <slot:footer>...</slot:footer>
         <april:sidebar-rail />
     </april:sidebar>
 
@@ -196,10 +196,7 @@ See [Data attributes](/docs/0.x/data-attributes) for the full list.
     'sidebar-rail',
     'sidebar-inset',
     'sidebar-input',
-    'sidebar-header',
-    'sidebar-footer',
     'sidebar-separator',
-    'sidebar-content',
     'sidebar-group',
     'sidebar-group-label',
     'sidebar-group-action',
