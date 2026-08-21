@@ -30,6 +30,7 @@ default => "h-8 text-sm",
 @endphp
 
 <april:button :attributes='$attributes->except("variant")->twMerge([$class])' data-sidebar="menu-button"
+    x-on:click="show()"
     data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}" type="button"
     variant="none" size="none">
     {{$slot}}

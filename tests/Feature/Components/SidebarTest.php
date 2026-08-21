@@ -301,6 +301,10 @@ describe('sidebar menu button', function () {
         expect(classesOf(renderComponent('sidebar-menu-button')))->toContain('h-8');
     });
 
+    it('opens the sidebar when used as a submenu trigger', function () {
+        expect(renderComponent('sidebar-menu-button'))->toContain('x-on:click="show()"');
+    });
+
     it('applies the outline variant', function () {
         expect(renderComponent('sidebar-menu-button', 'variant="outline"'))->toContain('bg-background');
     });
