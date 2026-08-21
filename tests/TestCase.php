@@ -2,9 +2,9 @@
 
 namespace Yungifez\AprilUI\Tests;
 
+use BladeUI\Icons\BladeIconsServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
-use BladeUI\Icons\BladeIconsServiceProvider;
 use MallardDuck\LucideIcons\BladeLucideIconsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use TalesFromADev\TailwindMerge\Support\Config;
