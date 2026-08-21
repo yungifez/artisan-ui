@@ -1,5 +1,5 @@
 @php
-$class = "inline-flex justify-center items-center whitespace-nowrap rounded-md text-sm font-medium
+$class = "inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium
 ring-offset-background
 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
 disabled:pointer-events-none disabled:opacity-50 ";
