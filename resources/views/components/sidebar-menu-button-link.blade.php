@@ -33,7 +33,7 @@ default => "h-8 text-sm",
 {{-- The anchor form of april:sidebar-menu-button. Use it for a link. --}}
 <april:button-link :attributes='$attributes->except("variant")->twMerge([$class])' data-sidebar="menu-button"
     data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}"
-    @if ($active) aria-current="page" @endif variant="none"
+    :aria-current="$active ? 'page' : null" variant="none"
     size="none">
     {{$slot}}
 </april:button-link>
