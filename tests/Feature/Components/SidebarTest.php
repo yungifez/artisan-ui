@@ -163,6 +163,24 @@ describe('sidebar', function () {
             ->and(substr_count($html, 'Navigation'))->toBe(1);
     });
 
+    it('persists its state on request', function () {
+        expect(renderComponent('sidebar', 'x-persist="app-sidebar"'))
+            ->toContain('x-persist="app-sidebar-desktop"')
+            ->toContain('x-persist="app-sidebar-mobile"');
+    });
+
+    it('does not persist by default', function () {
+        expect(renderComponent('sidebar'))->not->toContain('x-persist');
+    });
+
+    it('persists a non-collapsible sidebar directly', function () {
+        $html = renderComponent('sidebar', 'collapsible="none" x-persist="app-sidebar"');
+
+        expect($html)->toContain('x-persist="app-sidebar"')
+            ->not->toContain('x-persist="app-sidebar-desktop"')
+            ->not->toContain('x-persist="app-sidebar-mobile"');
+    });
+
     it('lets a user class win over the panel default', function () {
         expect(renderComponent('sidebar', 'class="bg-card"'))
             ->toContain('bg-card')
