@@ -148,6 +148,19 @@ Start the sidebar closed with `:default-open="false"`.
 
 ---
 
+## Persisting state
+
+To keep the sidebar open or collapsed across page loads, pass `x-persist` with a unique key. The component applies the
+`x-persist` directive to both the desktop and mobile sidebars for you.
+
+<x-code-block-wrapper language="blade">
+@verbatim
+<april:sidebar x-persist="app-sidebar">...</april:sidebar>
+@endverbatim
+</x-code-block-wrapper>
+
+---
+
 ## Width
 
 The sidebar reads three CSS variables. Set them on `sidebar-layout` to change the width for one sidebar:
