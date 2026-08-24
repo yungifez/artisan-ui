@@ -9,9 +9,13 @@ use Illuminate\Support\Str;
 class Column
 {
     protected bool $isSearchable = false;
+
     protected bool $isSortable = false;
+
     protected string $alignment = 'left';
+
     protected ?Closure $searchCallback = null;
+
     protected ?Closure $sortCallback = null;
 
     public function __construct(
@@ -28,6 +32,7 @@ class Column
     {
         $this->isSearchable = true;
         $this->searchCallback = $callback;
+
         return $this;
     }
 
@@ -35,23 +40,37 @@ class Column
     {
         $this->isSortable = true;
         $this->sortCallback = $callback;
+
         return $this;
     }
 
     public function align(string $alignment): static
     {
         $this->alignment = in_array($alignment, ['left', 'center', 'right'], true) ? $alignment : 'left';
+
         return $this;
     }
 
-    public function isSearchable(): bool { return $this->isSearchable; }
-    public function isSortable(): bool { return $this->isSortable; }
-    public function field(): string { return $this->field; }
+    public function isSearchable(): bool
+    {
+        return $this->isSearchable;
+    }
+
+    public function isSortable(): bool
+    {
+        return $this->isSortable;
+    }
+
+    public function field(): string
+    {
+        return $this->field;
+    }
 
     public function applySearch(Builder $query, string $term): void
     {
         if ($this->searchCallback) {
             ($this->searchCallback)($query, $term, $this);
+
             return;
         }
 
@@ -62,6 +81,7 @@ class Column
     {
         if ($this->sortCallback) {
             ($this->sortCallback)($query, $direction, $this);
+
             return;
         }
 

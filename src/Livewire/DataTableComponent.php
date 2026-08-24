@@ -14,13 +14,24 @@ abstract class DataTableComponent extends Component
 {
     use WithPagination;
 
-    #[Url] public string $search = '';
-    #[Url] public ?string $sort = null;
-    #[Url] public string $direction = 'asc';
-    #[Url] public int $perPage = 10;
+    #[Url]
+    public string $search = '';
+
+    #[Url]
+    public ?string $sort = null;
+
+    #[Url]
+    public string $direction = 'asc';
+
+    #[Url]
+    public int $perPage = 10;
+
     public array $selected = [];
+
     public int $tableRevision = 0;
+
     protected bool $selectable = false;
+
     protected array $perPageOptions = [10, 25, 50];
 
     abstract protected function builder(): Builder;
@@ -28,8 +39,15 @@ abstract class DataTableComponent extends Component
     /** @return array<int, Column> */
     abstract protected function columns(): array;
 
-    protected function primaryKey(): string { return 'id'; }
-    protected function defaultSort(): ?array { return null; }
+    protected function primaryKey(): string
+    {
+        return 'id';
+    }
+
+    protected function defaultSort(): ?array
+    {
+        return null;
+    }
 
     public function mount(): void
     {
