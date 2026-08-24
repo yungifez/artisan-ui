@@ -5,15 +5,18 @@ export default class RangeModeHandler {
         this.required = !!required;
         this._value = { 'from': null, 'to': null }
 
-        if (selected.from) {
-            this.dayClicked(this.createDateWithoutTime(selected.from))
+        if (selected?.from) {
+            const from = this.createDateWithoutTime(selected.from)
+            if (from) this.dayClicked(from)
         }
-        if (selected.from && selected.to) {
-            this.dayClicked(this.createDateWithoutTime(selected.to))
+        if (selected?.from && selected?.to) {
+            const to = this.createDateWithoutTime(selected.to)
+            if (to) this.dayClicked(to)
         }
     }
 
     dayClicked(date) {
+        if (!date) return false
         if (this._value.from == null || (this._value.to != null && this._value.to.getTime() == date.getTime())) {
             this._value.from = date
             this._value.to = null
@@ -64,7 +67,7 @@ export default class RangeModeHandler {
         const processDate = (input) => {
             if (input == null) return null;
             if (typeof input === "string") return this.createDateWithoutTime(input);
-            if (input instanceof Date) return input;
+            if (input instanceof Date) return this.createDateWithoutTime(input);
             console.warn("Item is not a date or date string, skipping");
             return null;
         };
@@ -89,10 +92,13 @@ export default class RangeModeHandler {
     }
 
     createDateWithoutTime(value) {
-        let date = new Date(value)
+        if (value == null || value === '') return null
+        let date = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)
+            ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10)))
+            : new Date(value)
         date.setHours(0, 0, 0, 0);
 
-        return date;
+        return Number.isNaN(date.getTime()) ? null : date;
     }
 
     getNumberOfDaysBetweenDates(date1, date2) {

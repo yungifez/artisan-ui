@@ -330,8 +330,15 @@ var Matcher = class {
   }
   passes(date) {
     date = this.createDateWithoutTime(date);
+    if (!date || !this.rule || typeof this.rule === "function") {
+      return typeof this.rule === "function" ? !!this.rule(date) : false;
+    }
     if (this.type == "dates") {
-      return this.rule.dates.some((element) => date.getTime() == this.createDateWithoutTime(element).getTime());
+      const dates = Array.isArray(this.rule) ? this.rule : this.rule.dates ? this.rule.dates : [this.rule];
+      return dates.some((element) => {
+        const candidate = this.createDateWithoutTime(element);
+        return candidate && date.getTime() == candidate.getTime();
+      });
     } else if (this.type == "range") {
       if (this.rule.before != null && date.getTime() < this.createDateWithoutTime(this.rule.before).getTime()) {
         return true;
@@ -344,12 +351,20 @@ var Matcher = class {
       if (typeof this.rule.dayOfWeek == "number") {
         return date.getDay() == this.rule.dayOfWeek;
       } else {
-        return this.rule.dayOfWeek.some((rule) => rule == date.getDay());
+        return this.rule.dayOfWeek.includes(date.getDay());
       }
     }
     return false;
   }
   determineMatcherType(rule) {
+    if (typeof rule === "function")
+      return "function";
+    if (typeof rule === "string" || rule instanceof Date)
+      return "dates";
+    if (!rule || typeof rule !== "object")
+      return void 0;
+    if (Array.isArray(rule))
+      return "dates";
     if (rule.dates != void 0 && Array.isArray(rule.dates)) {
       return "dates";
     } else if (rule.before != void 0 || rule.after != void 0) {
@@ -359,9 +374,11 @@ var Matcher = class {
     }
   }
   createDateWithoutTime(value) {
-    let date = new Date(value);
+    if (value == null || value === "")
+      return null;
+    let date = typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value) ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10))) : new Date(value);
     date.setHours(0, 0, 0, 0);
-    return date;
+    return Number.isNaN(date.getTime()) ? null : date;
   }
 };
 
@@ -374,7 +391,9 @@ var MultipleModeHandler = class {
     this.required = !!required;
     if (selected && Array.isArray(selected)) {
       selected.forEach((element) => {
-        this.dayClicked(this.createDateWithoutTime(element));
+        const date = this.createDateWithoutTime(element);
+        if (date)
+          this.dayClicked(date);
       });
     }
   }
@@ -393,11 +412,13 @@ var MultipleModeHandler = class {
         if (typeof input === "string")
           return this.createDateWithoutTime(input);
         if (input instanceof Date)
-          return input;
+          return this.createDateWithoutTime(input);
         console.warn("Item is not a date or date string, skipping");
         return null;
       };
       item = processDate(item);
+      if (!item)
+        return;
       if (this.isSelectedDay(item)) {
         return;
       }
@@ -419,6 +440,8 @@ var MultipleModeHandler = class {
     return -1;
   }
   dayClicked(date) {
+    if (!date)
+      return false;
     let index = this.indexOfDateInValue(this._value, date);
     if (index >= 0) {
       this._value.splice(index, 1);
@@ -431,9 +454,11 @@ var MultipleModeHandler = class {
     return this.indexOfDateInValue(this._value, date) >= 0;
   }
   createDateWithoutTime(value) {
-    let date = new Date(value);
+    if (value == null || value === "")
+      return null;
+    let date = typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value) ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10))) : new Date(value);
     date.setHours(0, 0, 0, 0);
-    return date;
+    return Number.isNaN(date.getTime()) ? null : date;
   }
 };
 
@@ -444,14 +469,20 @@ var RangeModeHandler = class {
     this.max = max;
     this.required = !!required;
     this._value = { "from": null, "to": null };
-    if (selected.from) {
-      this.dayClicked(this.createDateWithoutTime(selected.from));
+    if (selected?.from) {
+      const from = this.createDateWithoutTime(selected.from);
+      if (from)
+        this.dayClicked(from);
     }
-    if (selected.from && selected.to) {
-      this.dayClicked(this.createDateWithoutTime(selected.to));
+    if (selected?.from && selected?.to) {
+      const to = this.createDateWithoutTime(selected.to);
+      if (to)
+        this.dayClicked(to);
     }
   }
   dayClicked(date) {
+    if (!date)
+      return false;
     if (this._value.from == null || this._value.to != null && this._value.to.getTime() == date.getTime()) {
       this._value.from = date;
       this._value.to = null;
@@ -495,7 +526,7 @@ var RangeModeHandler = class {
       if (typeof input === "string")
         return this.createDateWithoutTime(input);
       if (input instanceof Date)
-        return input;
+        return this.createDateWithoutTime(input);
       console.warn("Item is not a date or date string, skipping");
       return null;
     };
@@ -515,9 +546,11 @@ var RangeModeHandler = class {
     return false;
   }
   createDateWithoutTime(value) {
-    let date = new Date(value);
+    if (value == null || value === "")
+      return null;
+    let date = typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value) ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10))) : new Date(value);
     date.setHours(0, 0, 0, 0);
-    return date;
+    return Number.isNaN(date.getTime()) ? null : date;
   }
   getNumberOfDaysBetweenDates(date1, date2) {
     return Math.round((date1.getTime() - date2.getTime()) / (1e3 * 3600 * 24));
@@ -528,7 +561,9 @@ var RangeModeHandler = class {
 var SingleModeHandler = class {
   constructor(selected, required) {
     this.required = !!required;
-    this.dayClicked(this.createDateWithoutTime(selected));
+    const date = this.createDateWithoutTime(selected);
+    if (date)
+      this.dayClicked(date);
   }
   get value() {
     return this._value;
@@ -540,13 +575,15 @@ var SingleModeHandler = class {
       if (typeof input === "string")
         return this.createDateWithoutTime(input);
       if (input instanceof Date)
-        return input;
+        return this.createDateWithoutTime(input);
       console.warn("Item is not a date or date string, skipping");
       return null;
     };
     this._value = processDate(value);
   }
   dayClicked(date) {
+    if (!date)
+      return false;
     if (this._value != null && this._value.getTime() == date.getTime() && !this.required) {
       this._value = null;
     } else {
@@ -561,16 +598,44 @@ var SingleModeHandler = class {
     return false;
   }
   createDateWithoutTime(value) {
-    let date = new Date(value);
+    if (value == null || value === "")
+      return null;
+    let date = typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value) ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10))) : new Date(value);
     date.setHours(0, 0, 0, 0);
-    return date;
+    return Number.isNaN(date.getTime()) ? null : date;
   }
 };
 
 // resources/js/calendar.js
-var calendar_default = (selected, mode, disabled, min, max, required) => ({
+var dateWithoutTime = (value) => {
+  if (value == null || value === "")
+    return null;
+  if (value instanceof Date) {
+    const date2 = new Date(value.getTime());
+    date2.setHours(0, 0, 0, 0);
+    return Number.isNaN(date2.getTime()) ? null : date2;
+  }
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+    const [year, month, day] = value.slice(0, 10).split("-").map(Number);
+    return new Date(year, month - 1, day);
+  }
+  const date = new Date(value);
+  date.setHours(0, 0, 0, 0);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+var dateKey = (date) => {
+  const normalized = dateWithoutTime(date);
+  if (!normalized)
+    return "";
+  const year = normalized.getFullYear();
+  const month = String(normalized.getMonth() + 1).padStart(2, "0");
+  const day = String(normalized.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+var calendar_default = (selected, mode, disabled, min, max, required, options = {}) => ({
   focusedDay: "",
-  mode,
+  focusedDate: "",
+  mode: ["single", "multiple", "range"].includes(mode) ? mode : "single",
   max,
   min,
   month: "",
@@ -581,7 +646,21 @@ var calendar_default = (selected, mode, disabled, min, max, required) => ({
   modeHandler: null,
   disabled: [],
   monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  showOutsideDays: options.showOutsideDays !== false,
+  fixedWeeks: options.fixedWeeks !== false,
+  showWeekNumber: options.showWeekNumber === true,
+  captionLayout: options.captionLayout || "label",
+  numberOfMonths: Math.min(12, Math.max(1, Number(options.numberOfMonths) || 1)),
+  pagedNavigation: options.pagedNavigation === true,
+  weekStartsOn: Math.min(6, Math.max(0, Number(options.weekStartsOn) || 0)),
+  hideNavigation: options.hideNavigation === true,
+  fromYear: options.fromYear == null ? null : Number(options.fromYear),
+  toYear: options.toYear == null ? null : Number(options.toYear),
+  fromMonth: options.fromMonth || options.startMonth || null,
+  toMonth: options.toMonth || options.endMonth || null,
+  defaultMonth: options.defaultMonth || null,
   root: {
     ["@keydown.left.prevent"]() {
       this.focusAdd(-1);
@@ -590,149 +669,238 @@ var calendar_default = (selected, mode, disabled, min, max, required) => ({
       this.focusAdd(1);
     },
     ["@keydown.up.prevent"]() {
-      this.focusAdd(-this.days.length);
+      this.focusAdd(-7);
     },
     ["@keydown.down.prevent"]() {
-      this.focusAdd(this.days.length);
+      this.focusAdd(7);
+    },
+    ["@keydown.home.prevent"]() {
+      this.focusAdd(-this.dayOfWeek(this.focusedDate));
+    },
+    ["@keydown.end.prevent"]() {
+      this.focusAdd(6 - this.dayOfWeek(this.focusedDate));
+    },
+    ["@keydown.page-up.prevent"]() {
+      this.moveMonth(-1);
+    },
+    ["@keydown.page-down.prevent"]() {
+      this.moveMonth(1);
     },
     ["x-transition"]() {
       return true;
     }
   },
   previousMonthTrigger: {
+    [":disabled"]() {
+      return this.isNavigationDisabled("previous");
+    },
     ["@click"]() {
       this.previousMonth();
     }
   },
   nextMonthTrigger: {
+    [":disabled"]() {
+      return this.isNavigationDisabled("next");
+    },
     ["@click"]() {
       this.nextMonth();
     }
   },
-  yearLabel: {
-    ["x-text"]() {
-      return this.year;
-    }
-  },
-  monthLabel: {
-    ["x-text"]() {
-      return this.monthNames[this.month];
-    }
-  },
+  yearLabel: { ["x-text"]() {
+    return this.year;
+  } },
+  monthLabel: { ["x-text"]() {
+    return this.monthNames[this.month];
+  } },
   init() {
-    if (this.mode == "single") {
+    if (this.mode === "single") {
       this.modeHandler = new SingleModeHandler(selected, required);
-    } else if (this.mode == "multiple") {
+    } else if (this.mode === "multiple") {
       this.modeHandler = new MultipleModeHandler(selected, required, min, max);
-    } else if (this.mode == "range") {
-      this.modeHandler = new RangeModeHandler(selected, required, min, max);
     } else {
-      console.error("Mode is invalid, defaulting to single mode");
-      this.modeHandler = new SingleModeHandler(selected, required);
+      this.modeHandler = new RangeModeHandler(selected || {}, required, min, max);
     }
-    if (Array.isArray(disabled)) {
-      disabled.forEach((element) => {
-        this.disabled.push(new Matcher(element));
-      });
-    } else if (typeof disabled == "object" && disabled != null) {
-      this.disabled = [new Matcher(disabled)];
-    }
-    let now = new Date();
-    this.month = now.getMonth();
-    this.year = now.getFullYear();
-    this.focusedDay = now.getDay();
+    const rules = Array.isArray(disabled) ? disabled : disabled == null ? [] : [disabled];
+    this.disabled = rules.map((rule) => new Matcher(rule));
+    const initialDate = this.initialDate();
+    this.month = initialDate.getMonth();
+    this.year = initialDate.getFullYear();
+    this.updateFocusedDate(initialDate);
     this.calculateDays();
-    if (!!selected) {
+    if (selected)
       this.dispatchChange();
-    }
+  },
+  initialDate() {
+    return dateWithoutTime(this.defaultMonth) || this.selectedDate() || new Date();
+  },
+  selectedDate() {
+    if (this.mode === "multiple")
+      return dateWithoutTime(Array.isArray(selected) ? selected[0] : null);
+    if (this.mode === "range")
+      return dateWithoutTime(selected?.from);
+    return dateWithoutTime(selected);
   },
   dispatchChange() {
     this.$nextTick(() => {
-      this.$dispatch("change", { value: this.modeHandler.value });
+      const detail = { value: this.modeHandler.value };
+      this.$dispatch("change", detail);
+      this.$dispatch("select", detail);
     });
   },
   dayClicked(date) {
-    let selectedDate = new Date(this.year, this.month, date);
-    if (this.isDisabled(selectedDate)) {
+    const selectedDate = dateWithoutTime(date);
+    if (!selectedDate || this.isDisabled(selectedDate))
       return;
+    this.updateFocusedDate(selectedDate);
+    if (selectedDate.getMonth() !== this.month || selectedDate.getFullYear() !== this.year) {
+      this.month = selectedDate.getMonth();
+      this.year = selectedDate.getFullYear();
+      this.calculateDays();
     }
-    this.focusedDay = date;
-    let dispatchEvent = this.modeHandler.dayClicked(selectedDate);
-    if (dispatchEvent) {
+    if (this.modeHandler.dayClicked(selectedDate))
       this.dispatchChange();
-    }
+  },
+  updateFocusedDate(date) {
+    const normalized = dateWithoutTime(date);
+    this.focusedDate = dateKey(normalized);
+    this.focusedDay = normalized?.getDate() || "";
   },
   focusAdd(value) {
-    if (!Number.isInteger(this.focusedDay)) {
-      this.focusedDay = new Date(this.year, this.month, day).getDate();
+    const current = dateWithoutTime(this.focusedDate) || new Date(this.year, this.month, this.focusedDay || 1);
+    current.setDate(current.getDate() + value);
+    this.updateFocusedDate(current);
+    if (current.getMonth() !== this.month || current.getFullYear() !== this.year) {
+      this.month = current.getMonth();
+      this.year = current.getFullYear();
+      this.calculateDays();
     }
-    this.focusedDay = this.focusedDay + value;
-    if (this.focusedDay > this.daysInMonth.length) {
-      this.focusedDay = this.focusedDay - this.daysInMonth.length;
-      this.nextMonth();
-    } else if (this.focusedDay <= 0) {
-      this.previousMonth();
-      this.focusedDay = this.daysInMonth.length + this.focusedDay;
-    }
+  },
+  dayOfWeek(value) {
+    return dateWithoutTime(value)?.getDay() || 0;
+  },
+  moveMonth(amount) {
+    const step = this.pagedNavigation ? this.numberOfMonths : 1;
+    const target = new Date(this.year, this.month + amount * step, 1);
+    const end = new Date(target.getFullYear(), target.getMonth() + this.numberOfMonths - 1, 1);
+    if (target < this.firstAllowedMonth() || end > this.lastAllowedMonth())
+      return;
+    this.month = target.getMonth();
+    this.year = target.getFullYear();
+    this.calculateDays();
   },
   previousMonth() {
-    if (this.month == 0) {
-      this.year--;
-      this.month = 12;
-    }
-    this.month--;
-    this.calculateDays();
+    this.moveMonth(-1);
   },
   nextMonth() {
-    if (this.month == 11) {
-      this.month = 0;
-      this.year++;
-    } else {
-      this.month++;
-    }
+    this.moveMonth(1);
+  },
+  setViewMonth(month) {
+    this.month = Number(month);
     this.calculateDays();
   },
-  isSelectedDay(day2) {
-    let date = new Date(this.year, this.month, day2);
-    return this.modeHandler.isSelectedDay(date);
+  setViewYear(year) {
+    const nextYear = Number(year);
+    if (this.yearOptions().includes(nextYear)) {
+      this.year = nextYear;
+      this.calculateDays();
+    }
   },
-  isFocusedDate(day2) {
-    return this.focusedDay === day2 ? true : false;
+  isNavigationDisabled(direction) {
+    const step = this.pagedNavigation ? this.numberOfMonths : 1;
+    const target = new Date(this.year, this.month + (direction === "previous" ? -step : step), 1);
+    const end = new Date(target.getFullYear(), target.getMonth() + this.numberOfMonths - 1, 1);
+    return target < this.firstAllowedMonth() || end > this.lastAllowedMonth();
   },
-  isToday(day2) {
-    const today = new Date();
-    const d = new Date(this.year, this.month, day2);
-    return today.toDateString() === d.toDateString() ? true : false;
+  firstAllowedMonth() {
+    const configured = dateWithoutTime(this.fromMonth);
+    const year = this.fromYear == null ? new Date(-864e13) : new Date(this.fromYear, 0, 1);
+    return configured && configured > year ? new Date(configured.getFullYear(), configured.getMonth(), 1) : year;
+  },
+  lastAllowedMonth() {
+    const configured = dateWithoutTime(this.toMonth);
+    const year = this.toYear == null ? new Date(864e13) : new Date(this.toYear, 11, 1);
+    return configured && configured < year ? new Date(configured.getFullYear(), configured.getMonth(), 1) : year;
+  },
+  isSelectedDay(day) {
+    return this.isSelectedDate(new Date(this.year, this.month, day));
+  },
+  isSelectedDate(date) {
+    return this.modeHandler?.isSelectedDay(dateWithoutTime(date)) || false;
+  },
+  isFocusedDate(date) {
+    return this.focusedDate === dateKey(date);
+  },
+  isToday(date) {
+    const today = dateWithoutTime(new Date());
+    const current = dateWithoutTime(date);
+    return !!today && !!current && today.getTime() === current.getTime();
   },
   calculateDays() {
-    let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-    let daysInPreviousMonth = new Date(this.year, this.month, 0).getDate();
-    let dayOfWeek = new Date(this.year, this.month).getDay();
-    let preBlankdaysArray = [];
-    for (var i = 1; i <= dayOfWeek; i++) {
-      preBlankdaysArray.push(daysInPreviousMonth - i + 1);
+    const view = this.monthData(this.year, this.month);
+    const first = new Date(this.year, this.month, 1);
+    const last = new Date(this.year, this.month + 1, 0);
+    this.daysInMonth = view.cells.filter((cell) => !cell.outside).map((cell) => cell.day);
+    this.preBlankDaysInMonth = view.cells.filter((cell) => cell.outside && cell.date < first).map((cell) => cell.day);
+    this.postBlankDaysInMonth = view.cells.filter((cell) => cell.outside && cell.date > last).map((cell) => cell.day);
+    this.days = view.weekdays;
+  },
+  get monthViews() {
+    return Array.from({ length: this.numberOfMonths }, (_, index) => {
+      const date = new Date(this.year, this.month + index, 1);
+      return this.monthData(date.getFullYear(), date.getMonth());
+    });
+  },
+  monthData(year, month) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const leading = (firstDay - this.weekStartsOn + 7) % 7;
+    const weekCount = this.fixedWeeks ? 6 : Math.ceil((leading + daysInMonth) / 7);
+    const cells = [];
+    for (let index = 0; index < weekCount * 7; index++) {
+      const date = new Date(year, month, 1 - leading + index);
+      cells.push({ date, day: date.getDate(), outside: date.getMonth() !== month, key: dateKey(date) });
     }
-    preBlankdaysArray = preBlankdaysArray.reverse();
-    let postBlankdaysArray = [];
-    for (var i = 1; i <= this.days.length * 6 - (preBlankdaysArray.length + daysInMonth); i++) {
-      postBlankdaysArray.push(i);
+    const weeks = [];
+    for (let index = 0; index < cells.length; index += 7) {
+      const week = cells.slice(index, index + 7);
+      weeks.push({ cells: week, weekNumber: this.weekNumber(week[0].date) });
     }
-    let daysArray = [];
-    for (var i = 1; i <= daysInMonth; i++) {
-      daysArray.push(i);
-    }
-    this.preBlankDaysInMonth = preBlankdaysArray;
-    this.postBlankDaysInMonth = postBlankdaysArray;
-    this.daysInMonth = daysArray;
+    return {
+      key: `${year}-${month}`,
+      label: `${this.monthNames[month]} ${year}`,
+      weekdays: this.dayNames.slice(this.weekStartsOn).concat(this.dayNames.slice(0, this.weekStartsOn)),
+      weeks
+    };
+  },
+  weekNumber(date) {
+    const current = new Date(dateWithoutTime(date));
+    current.setDate(current.getDate() + 4 - (current.getDay() || 7));
+    const yearStart = new Date(current.getFullYear(), 0, 1);
+    return Math.ceil(((current - yearStart) / 864e5 + 1) / 7);
+  },
+  yearOptions() {
+    const start = this.fromYear ?? this.year - 100;
+    const end = this.toYear ?? this.year + 100;
+    return Array.from({ length: Math.max(1, end - start + 1) }, (_, index) => start + index);
   },
   isDisabled(date) {
-    return this.disabled.some((rule) => rule.passes(date)) || this.modeHandler.isDisabled(date);
+    const normalized = dateWithoutTime(date);
+    return !normalized || this.disabled.some((rule) => rule.passes(normalized)) || !!this.modeHandler?.isDisabled(normalized);
   },
   isRangeMiddle(date) {
-    if (mode == "range") {
-      return this.modeHandler.isRangeMiddle(date);
-    }
-    return false;
+    const normalized = dateWithoutTime(date);
+    const from = this.modeHandler?.value?.from;
+    const to = this.modeHandler?.value?.to;
+    return this.mode === "range" && !!from && !!to && normalized > from && normalized < to;
+  },
+  isRangeStart(date) {
+    return this.mode === "range" && this.modeHandler?.value?.from?.getTime() === dateWithoutTime(date)?.getTime();
+  },
+  isRangeEnd(date) {
+    return this.mode === "range" && this.modeHandler?.value?.to?.getTime() === dateWithoutTime(date)?.getTime();
+  },
+  formatAriaDate(date) {
+    return dateWithoutTime(date)?.toLocaleDateString(void 0, { weekday: "long", month: "long", day: "numeric", year: "numeric" }) || "Invalid date";
   }
 });
 
@@ -1090,8 +1258,8 @@ function startOfWeek(date, options) {
   const defaultOptions2 = getDefaultOptions();
   const weekStartsOn = options?.weekStartsOn ?? options?.locale?.options?.weekStartsOn ?? defaultOptions2.weekStartsOn ?? defaultOptions2.locale?.options?.weekStartsOn ?? 0;
   const _date = toDate(date);
-  const day2 = _date.getDay();
-  const diff = (day2 < weekStartsOn ? 7 : 0) + day2 - weekStartsOn;
+  const day = _date.getDay();
+  const diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
   _date.setDate(_date.getDate() - diff);
   _date.setHours(0, 0, 0, 0);
   return _date;

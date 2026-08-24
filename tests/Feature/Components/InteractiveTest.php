@@ -239,15 +239,15 @@ describe('select option', function () {
 
 describe('calendar', function () {
     it('is driven by the calendar behaviour', function () {
-        expect(renderComponent('calendar'))->toContain("x-data='calendar(");
+        expect(renderComponent('calendar'))->toContain('x-data="calendar(');
     });
 
     it('uses the single mode by default', function () {
-        expect(renderComponent('calendar'))->toContain('"single"');
+        expect(renderComponent('calendar'))->toContain("calendar('', 'single'");
     });
 
     it('takes a range mode', function () {
-        expect(renderComponent('calendar', 'mode="range"'))->toContain('"range"');
+        expect(renderComponent('calendar', 'mode="range"'))->toContain("calendar('', 'range'");
     });
 
     it('renders month and year labels', function () {
@@ -260,6 +260,15 @@ describe('calendar', function () {
         expect(renderComponent('calendar'))
             ->toContain('x-bind="previousMonthTrigger"')
             ->toContain('x-bind="nextMonthTrigger"');
+    });
+
+    it('supports shadcn-style calendar options', function () {
+        expect(renderComponent('calendar', 'captionLayout="dropdown" :showWeekNumber="true" :showOutsideDays="false" :numberOfMonths="2"'))
+            ->toContain('captionLayout')
+            ->toContain('showWeekNumber')
+            ->toContain('monthViews')
+            ->toContain('Select month')
+            ->toContain('Select year');
     });
 
     it('lets a user class win over the default width', function () {

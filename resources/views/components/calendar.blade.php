@@ -1,58 +1,140 @@
-@props(['selected' => '', 'mode' => 'single' , 'onselect' => '', "max" => null, "min" => null, "disabled" => null,
-"required" => false ])
-<div data-slot="calendar" role="grid" aria-label="Calendar" x-data='calendar(@json($selected), "{{$mode}}", @json($disabled) , @json($min), @json($max), @json($required))'
-    x-bind="root" {{$attributes->
-    twMerge([' p-4
-    antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]'])}}
-    x-modelable="modeHandler.value">
-    <div class="flex items-center justify-between mb-3">
-        <button x-bind="previousMonthTrigger" type="button" aria-label="Previous month"
-            class="border dark:border-input inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
+@props([
+    'selected' => '',
+    'mode' => 'single',
+    'onselect' => '',
+    'max' => null,
+    'min' => null,
+    'disabled' => null,
+    'required' => false,
+    'captionLayout' => 'label',
+    'showOutsideDays' => true,
+    'fixedWeeks' => true,
+    'showWeekNumber' => false,
+    'weekStartsOn' => 0,
+    'numberOfMonths' => 1,
+    'pagedNavigation' => false,
+    'hideNavigation' => false,
+    'fromYear' => null,
+    'toYear' => null,
+    'fromMonth' => null,
+    'toMonth' => null,
+    'startMonth' => null,
+    'endMonth' => null,
+    'defaultMonth' => null,
+])
+
+@php
+    $calendarOptions = [
+        'captionLayout' => $captionLayout,
+        'showOutsideDays' => filter_var($showOutsideDays, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
+        'fixedWeeks' => filter_var($fixedWeeks, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
+        'showWeekNumber' => filter_var($showWeekNumber, FILTER_VALIDATE_BOOL),
+        'weekStartsOn' => (int) $weekStartsOn,
+        'numberOfMonths' => (int) $numberOfMonths,
+        'pagedNavigation' => filter_var($pagedNavigation, FILTER_VALIDATE_BOOL),
+        'hideNavigation' => filter_var($hideNavigation, FILTER_VALIDATE_BOOL),
+        'fromYear' => $fromYear,
+        'toYear' => $toYear,
+        'fromMonth' => $fromMonth ?: $startMonth,
+        'toMonth' => $toMonth ?: $endMonth,
+        'defaultMonth' => $defaultMonth,
+    ];
+@endphp
+
+<div data-slot="calendar" role="grid" aria-label="Calendar" tabindex="{{ $attributes->get('tabindex', 0) }}"
+    x-data="calendar({{ \Illuminate\Support\Js::from($selected) }}, {{ \Illuminate\Support\Js::from($mode) }}, {{ \Illuminate\Support\Js::from($disabled) }}, {{ \Illuminate\Support\Js::from($min) }}, {{ \Illuminate\Support\Js::from($max) }}, {{ \Illuminate\Support\Js::from($required) }}, {{ \Illuminate\Support\Js::from($calendarOptions) }})"
+    x-bind="root" {{ $attributes->except('tabindex')->twMerge([
+        'p-4 antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]',
+    ]) }} x-modelable="modeHandler.value">
+    <div data-slot="calendar-caption" class="flex items-center justify-between mb-3">
+        <button x-bind="previousMonthTrigger" x-show="!hideNavigation" type="button" aria-label="Previous month"
+            class="border dark:border-input inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50">
             <april:angle-down class="inline-flex w-6 h-6 fill-foreground rotate-90" />
         </button>
-        <div>
-            <span x-bind="monthLabel" class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
-            <span x-bind="yearLabel" class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
+
+        <div class="flex items-center justify-center gap-1">
+            <span x-show="captionLayout === 'label' || captionLayout === 'dropdown-years'" x-bind="monthLabel"
+                class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
+            <span x-show="captionLayout === 'label' || captionLayout === 'dropdown-months'" x-bind="yearLabel"
+                class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
+
+            <select x-show="captionLayout === 'dropdown' || captionLayout === 'dropdown-months'"
+                :value="month" @change="setViewMonth($event.target.value)" aria-label="Select month"
+                class="h-9 rounded-md border border-input bg-background px-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                <template x-for="(name, index) in monthNames" :key="index">
+                    <option :value="index" x-text="name"></option>
+                </template>
+            </select>
+            <select x-show="captionLayout === 'dropdown' || captionLayout === 'dropdown-years'"
+                :value="year" @change="setViewYear($event.target.value)" aria-label="Select year"
+                class="h-9 rounded-md border border-input bg-background px-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                <template x-for="option in yearOptions()" :key="option">
+                    <option :value="option" x-text="option"></option>
+                </template>
+            </select>
         </div>
-        <button x-bind="nextMonthTrigger" type="button" aria-label="Next month"
-            class="border dark:border-border inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus:shadow-outline hover:bg-accent">
+
+        <button x-bind="nextMonthTrigger" x-show="!hideNavigation" type="button" aria-label="Next month"
+            class="border dark:border-border inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50">
             <april:angle-down class="inline-flex w-6 h-6 fill-foreground -rotate-90" />
         </button>
     </div>
-    {{--display days of the week--}}
-    <div class="grid grid-cols-7 mb-3" role="row">
-        <template x-for="(day, index) in days">
-            <div class="px-0.5" role="columnheader">
-                <div x-text="day" class="text-xs font-medium text-center text-gray-800 dark:text-gray-100"></div>
-            </div>
-        </template>
-    </div>
-    <div class="grid grid-cols-7">
-        <template x-for="blankDay in preBlankDaysInMonth">
-            <div x-text="blankDay"
-                x-effect="focusedDay == blankDay && ($root.contains($focus.focused())) && $el.focus({preventScroll: true})"
-                class="text-muted-foreground opacity-50 flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer px-0.5 aspect-square w-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1">
-            </div>
-        </template>
-        <template x-for="(day, dayIndex) in daysInMonth" :key="dayIndex">
-            <button tabindex="-1" type="button" role="gridcell"
-                x-effect="focusedDay == day && ($root.contains($focus.focused()))  && $el.focus({preventScroll: true})"
-                x-text="day" :disabled="isDisabled(new Date(year, month, day))" @click="dayClicked(day);" :class="{
-                        'bg-accent text-accent-foreground': isToday(day) == true && isSelectedDay(day) == false && !isDisabled(new Date(year, month, day)),
-                        'text-foreground hover:bg-accent': isToday(day) == false && isSelectedDay(day) == false && !isDisabled(new Date(year, month, day)),
-                        'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground' : isSelectedDay(day) == true && !isDisabled(new Date(year, month, day)),
-                        'text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30': isDisabled(new Date(year, month, day)),
-                        'border-black dark:border-white' : isFocusedDate(day),
-                        'bg-accent text-accent-foreground' : isRangeMiddle(new Date(year, month, day)),
-                    }"
-                class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer px-0.5 aspect-square w-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1">
-            </button>
-        </template>
-        <template x-for="blankDay in postBlankDaysInMonth">
-            <div x-text="blankDay"
-                x-effect="focusedDay == blankDay && ($root.contains($focus.focused())) && $el.focus({preventScroll: true})"
-                class="text-muted-foreground opacity-50 flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer px-0.5 aspect-square w-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1">
-            </div>
+
+    <div data-slot="calendar-months" class="flex flex-col gap-4 sm:flex-row">
+        <template x-for="monthView in monthViews" :key="monthView.key">
+            <section data-slot="calendar-month" :aria-label="monthView.label" class="space-y-2 flex-1">
+                <div :class="showWeekNumber ? 'grid grid-cols-8' : 'grid grid-cols-7'" role="row">
+                    <template x-if="showWeekNumber">
+                        <div class="px-0.5" role="columnheader">
+                            <div class="text-xs font-medium text-center text-muted-foreground">Wk</div>
+                        </div>
+                    </template>
+                    <template x-for="(day, index) in monthView.weekdays" :key="index">
+                        <div class="px-0.5" role="columnheader">
+                            <div x-text="day" class="text-xs font-medium text-center text-muted-foreground"></div>
+                        </div>
+                    </template>
+                </div>
+
+                <div role="rowgroup" class="space-y-1">
+                    <template x-for="(week, weekIndex) in monthView.weeks" :key="`${monthView.key}-${weekIndex}`">
+                        <div :class="showWeekNumber ? 'grid grid-cols-8' : 'grid grid-cols-7'" role="row">
+                            <template x-if="showWeekNumber">
+                                <div role="rowheader" class="flex items-center justify-center text-xs text-muted-foreground"
+                                    x-text="week.weekNumber"></div>
+                            </template>
+                            <template x-for="cell in week.cells" :key="cell.key">
+                                <template x-if="cell.outside && !showOutsideDays">
+                                    <div aria-hidden="true" class="aspect-square"></div>
+                                </template>
+                                <template x-if="!cell.outside || showOutsideDays">
+                                    <button type="button" role="gridcell"
+                                        :tabindex="isFocusedDate(cell.date) ? 0 : -1"
+                                        :aria-selected="isSelectedDate(cell.date)"
+                                        :aria-current="isToday(cell.date) ? 'date' : null"
+                                        :aria-label="formatAriaDate(cell.date)" :data-day="cell.day"
+                                        :data-outside="cell.outside ? '' : null" :disabled="isDisabled(cell.date)"
+                                        @click="dayClicked(cell.date)"
+                                        x-effect="isFocusedDate(cell.date) && ($root.contains($focus.focused())) && $el.focus({preventScroll: true})"
+                                        x-text="cell.day" :class="{
+                                            'text-muted-foreground opacity-50': cell.outside,
+                                            'bg-accent text-accent-foreground': isToday(cell.date) && !isSelectedDate(cell.date) && !isDisabled(cell.date),
+                                            'text-foreground hover:bg-accent': !isToday(cell.date) && !isSelectedDate(cell.date) && !isDisabled(cell.date),
+                                            'bg-primary text-primary-foreground hover:bg-primary focus:bg-primary': isSelectedDate(cell.date) && !isDisabled(cell.date),
+                                            'opacity-50 cursor-not-allowed': isDisabled(cell.date),
+                                            'ring-1 ring-ring': isFocusedDate(cell.date),
+                                            'bg-accent text-accent-foreground': isRangeMiddle(cell.date),
+                                            'rounded-l-md': isRangeStart(cell.date),
+                                            'rounded-r-md': isRangeEnd(cell.date),
+                                        }"
+                                        class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer px-0.5 aspect-square w-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none">
+                                    </button>
+                                </template>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </section>
         </template>
     </div>
 </div>

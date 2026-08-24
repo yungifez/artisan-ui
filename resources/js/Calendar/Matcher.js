@@ -6,8 +6,15 @@ export default class Matcher {
 
     passes(date) {
         date = this.createDateWithoutTime(date)
+        if (!date || !this.rule || typeof this.rule === 'function') {
+            return typeof this.rule === 'function' ? !!this.rule(date) : false
+        }
         if (this.type == 'dates') {
-            return this.rule.dates.some(element =>  date.getTime() == this.createDateWithoutTime(element).getTime());
+            const dates = Array.isArray(this.rule) ? this.rule : (this.rule.dates ? this.rule.dates : [this.rule])
+            return dates.some(element => {
+                const candidate = this.createDateWithoutTime(element)
+                return candidate && date.getTime() == candidate.getTime()
+            });
         } else if (this.type == 'range') {
             if (this.rule.before != null && date.getTime() < this.createDateWithoutTime(this.rule.before).getTime()) {
                 return true
@@ -21,7 +28,7 @@ export default class Matcher {
             if (typeof this.rule.dayOfWeek == 'number') {
                return date.getDay() == this.rule.dayOfWeek
             }else{
-                return this.rule.dayOfWeek.some(rule => rule == date.getDay())
+                return this.rule.dayOfWeek.includes(date.getDay())
             }
         }
 
@@ -29,6 +36,10 @@ export default class Matcher {
     }
 
     determineMatcherType(rule) {
+        if (typeof rule === 'function') return 'function'
+        if (typeof rule === 'string' || rule instanceof Date) return 'dates'
+        if (!rule || typeof rule !== 'object') return undefined
+        if (Array.isArray(rule)) return 'dates'
         if (rule.dates != undefined && Array.isArray(rule.dates)) {
             return "dates"
         } else if (rule.before != undefined || rule.after != undefined) {
@@ -39,9 +50,12 @@ export default class Matcher {
     }
 
     createDateWithoutTime(value) {
-        let date = new Date(value)
+        if (value == null || value === '') return null
+        let date = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)
+            ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10)))
+            : new Date(value)
         date.setHours(0,0,0,0);
 
-        return date;
+        return Number.isNaN(date.getTime()) ? null : date;
     }
 }

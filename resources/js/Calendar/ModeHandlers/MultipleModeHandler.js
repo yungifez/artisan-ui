@@ -7,7 +7,8 @@ export default class MultipleModeHandler {
 
         if (selected && Array.isArray(selected)) {
             selected.forEach(element => {
-                this.dayClicked(this.createDateWithoutTime(element))
+                const date = this.createDateWithoutTime(element)
+                if (date) this.dayClicked(date)
             });
         }
     }
@@ -25,11 +26,12 @@ export default class MultipleModeHandler {
             const processDate = (input) => {
                 if (input == null) return null;
                 if (typeof input === "string") return this.createDateWithoutTime(input);
-                if (input instanceof Date) return input;
+                if (input instanceof Date) return this.createDateWithoutTime(input);
                 console.warn("Item is not a date or date string, skipping");
                 return null;
             };
             item = processDate(item)
+            if (!item) return
             if (this.isSelectedDay(item)) {
                 return;
             }
@@ -57,6 +59,7 @@ export default class MultipleModeHandler {
     }
 
     dayClicked(date) {
+        if (!date) return false
         let index = this.indexOfDateInValue(this._value, date)
         if (index >= 0) {
             this._value.splice(index, 1);
@@ -72,9 +75,12 @@ export default class MultipleModeHandler {
     }
 
     createDateWithoutTime(value) {
-        let date = new Date(value)
+        if (value == null || value === '') return null
+        let date = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)
+            ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10)))
+            : new Date(value)
         date.setHours(0, 0, 0, 0);
 
-        return date;
+        return Number.isNaN(date.getTime()) ? null : date;
     }
 }

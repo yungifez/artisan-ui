@@ -7,101 +7,96 @@ description: A date field component that allows users to enter and edit date.
 <x-component-preview component="previews.calendar-demo"></x-component-preview>
 
 <x-callout>
-    This calendar was inspired by the **[React DayPicker](https://react-day-picker.js.org/)**
+    This calendar was inspired by the **[React DayPicker](https://react-day-picker.js.org/)** and follows the same composable conventions as [shadcn/ui's calendar](https://ui.shadcn.com/docs/components/calendar).
 </x-callout>
 
-The calendar supports multiple modes, it also allows disabling certain dates
+The calendar supports single, multiple, and range selection, keyboard navigation, month/year controls, and disabled-date matchers.
 
-| Prop        | Type                                      | Description                               |
-|-------------|-------------------------------------------|-------------------------------------------|
-|  `mode`     |  `"single"` \| `"multiple"` \| `"range"`  |  Set a selection mode, defaults to single |
-| `disabled`  | `array` <br> More info below              |  Disabled days that cannot be selected.   |
+| Prop | Type | Description |
+|---|---|---|
+| `mode` | `"single"` \| `"multiple"` \| `"range"` | Selection mode. Defaults to `single`. |
+| `selected` | `string` \| `Date` \| mode-specific array | Initial selection. |
+| `disabled` | `array` | Disabled-date matchers. |
+| `required` | `boolean` | Prevent clearing the current selection. |
 
-## Selection Modes
-The calendar supports 3 modes
-- Single mode
-- Multiple mode
-- Range mode
+## Display options
+
+The default calendar keeps the original April UI appearance. These options add common shadcn calendar variants without requiring a different component.
+
+| Prop | Type | Description |
+|---|---|---|
+| `captionLayout` | `"label"` \| `"dropdown"` \| `"dropdown-months"` \| `"dropdown-years"` | Text labels or native month/year selectors. |
+| `showOutsideDays` | `boolean` | Render days from adjacent months. Defaults to `true`. |
+| `fixedWeeks` | `boolean` | Keep six rows for a stable height. Defaults to `true`. |
+| `showWeekNumber` | `boolean` | Add ISO week numbers to the grid. |
+| `numberOfMonths` | `int` | Render up to twelve consecutive months. |
+| `pagedNavigation` | `boolean` | Move by the number of visible months. |
+| `weekStartsOn` | `0`–`6` | First weekday (`0` is Sunday). |
+| `defaultMonth` | `string` \| `Date` | Month shown when no selection exists. |
+| `fromMonth` / `startMonth` | `string` \| `Date` | Earliest navigable month. |
+| `toMonth` / `endMonth` | `string` \| `Date` | Latest navigable month. |
+| `fromYear` / `toYear` | `int` | Bounds for the year dropdown. |
+| `hideNavigation` | `boolean` | Hide previous/next controls. |
+
+The component emits both `change` and `select` with `{ detail: { value } }`, so existing Alpine listeners continue to work:
+
+```blade
+<april:calendar
+    captionLayout="dropdown"
+    :showWeekNumber="true"
+    :showOutsideDays="false"
+    :fromYear="now()->subYears(2)->year"
+    :toYear="now()->addYears(2)->year"
+    @select="console.log($event.detail.value)"
+/>
+```
+
+### Dropdown caption
+
+<x-component-preview component="previews.calendar-options-demo"></x-component-preview>
+
+### Multiple months and week numbers
+
+<x-component-preview component="previews.calendar-multiple-months-demo"></x-component-preview>
+
+## Selection modes
 
 ### Single mode
 
-When in single mode ie when `mode="single"`, only one day can be selected at a time. You can listen for the `select` event using alpine Js triggered when a date has been selected. The $event object contains a details.value containing a JavaScript date object of the selected day
+When `mode="single"`, one day can be selected at a time. The `select` event's `$event.detail.value` contains a JavaScript `Date` or `null`.
 
 <x-component-preview component="previews.calendar-single-demo"></x-component-preview>
 
-| Prop        | Type                      | Description                                 |
-|-------------|---------------------------|---------------------------------------------|
-| `selected`  |  `"string"` \| `"Date"`   |  The date to be selected initially.         |
-| `@select`   | `Alpine event listener`   |  Event Listener for when a date is selected |
-| `required`  |  `"boolean"`              |  Ensures at least 1 date is chosen.         |
-
+| Prop | Type | Description |
+|---|---|---|
+| `@select` | `Alpine event listener` | Runs when the selected day changes. |
+| `required` | `boolean` | Ensures a selected day cannot be cleared. |
 
 ### Multiple mode
 
-When in multiple mode ie when `mode="multiple"`, multiple days can be selected at once. You can listen for the `select` event using alpine triggered when one or more dates have been selected. The $event object contains a details.value containing an array of JavaScript date objects of the selected days.
+When `mode="multiple"`, users can select several days. The event value is an array of JavaScript `Date` objects.
 
 <x-component-preview component="previews.calendar-multiple-demo"></x-component-preview>
 
-You can also pass a max which specifies the maximum number of items selectable
+Use `max` to limit the number of selected days.
 
 <x-component-preview component="previews.calendar-multiple-max-demo"></x-component-preview>
 
-| Prop        | Type                      | Description                                 |
-|-------------|---------------------------|---------------------------------------------|
-| `selected`  |`"string[]"` \| `"Date[]"` |  The date to be selected initially.         |
-| `max`       | `"int"`                   |  The maximum selectable items.              |
-| `@select`   | `Alpine event listener`   |  Event Listener for when a date is selected.|
-
 ### Range mode
 
-When in range mode ie when `mode="range"`, a `from` and `to` date is to be selected such that the `from` is an earlier date than the `to` date. You can listen for the `select` event using alpine triggered when a from and to date have been selected. The $event object contains a details.value containing an array of JavaScript date objects of the selected days.
+When `mode="range"`, the event value is an object with `from` and `to` JavaScript `Date` values. `min` and `max` limit the number of days between the endpoints.
 
 <x-component-preview component="previews.calendar-range-demo"></x-component-preview>
 
-Just like in multiple mode, you can pass a `max` and `min`. The `max` and `min` attributes represent the maximum and minimum days from the from date that can be selected respectively
-
 <x-component-preview component="previews.calendar-range-max-min-demo"></x-component-preview>
-
-| Prop        | Type                      | Description                                      |
-|-------------|---------------------------|--------------------------------------------------|
-| `selected`  |`"array with from and to " |  The date to be selected initially.              |
-| `min`       | `"int"`                   |  The minimum amount of dates between from and to.|
-| `max`       | `"int"`                   |  The maximum amount of dates between from and to.|
-| `@select`   | `Alpine event listener`   |  Event Listener for when a date is selected.     |
-| `required`  |  `"boolean"`              |  Ensures from date is chosen at least.           |
-
 
 ## Disabling dates
 
-You can disable certain dates by passing an array of rules to the disabled attribute
-
-### Disabling certain dates
-
-To disable certain days, an array with the key `dates` and values of the dates you'll like to disable should be passed to the disabled attribute.
+Pass an array of matcher objects to `disabled`. A `dates` matcher disables exact dates, `before`/`after` disables a range (the boundary itself remains enabled), and `dayOfWeek` accepts a number or an array from `0` (Sunday) to `6` (Saturday).
 
 <x-component-preview component="previews.calendar-disabled-dates-demo"></x-component-preview>
-
-### Disabling a range of days
-
-To disable a range of days, an array with a `before` and `after` is passed to the disabled attribute. 
-
-<x-callout>
-Note that the `before` and `after` dates are not disabled
-</x-callout>
-
 <x-component-preview component="previews.calendar-disabled-range-demo"></x-component-preview>
-
-### Disabling day of the week
-
-To disable a range of days, an array with a `dayOfWeek` key and an int value from `0 - 6` is passed, where `0` represents sunday, and `6` represents saturday
-
 <x-component-preview component="previews.calendar-disabled-day-of-week-demo"></x-component-preview>
-
-### Multiple disable rules
-
-You can pass an array of these rules to disable dates based on multiple rules
-
 <x-component-preview component="previews.calendar-disabled-multiple-demo"></x-component-preview>
-
 
 <x-publish-command view="calendar"/>

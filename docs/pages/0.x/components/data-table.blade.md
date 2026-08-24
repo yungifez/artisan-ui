@@ -8,8 +8,7 @@ description: A client-side Alpine data table with sorting, search, selection, pa
 
 Pass row data and column definitions to enable the interactive table. It supports sorting, full-table search, row selection, pagination, an empty state, and `query-change` / `selection-change` events for a future server or Livewire integration.
 
-<x-code-block-wrapper language="blade">
-@verbatim
+```blade
 @php
     $columns = [
         ['key' => 'name', 'label' => 'Name', 'sortable' => true],
@@ -27,8 +26,7 @@ Pass row data and column definitions to enable the interactive table. It support
         <april:button size="sm" variant="ghost" x-text="`Edit ${row.name}`" />
     </slot:actions>
 </april:data-table>
-@endverbatim
-</x-code-block-wrapper>
+```
 
 Columns accept `key`, `label`, `sortable`, `searchable`, and `align` (`left`, `center`, or `right`). Use a `cell-{key}` slot to render a custom cell; the Alpine `row` object is available in that slot. The original header/body slot composition remains available when you do not pass `columns`.
 
