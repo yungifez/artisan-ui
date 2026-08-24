@@ -869,6 +869,7 @@ var calendar_default = (selected, mode, disabled, min, max, required, options = 
       key: `${year}-${month}`,
       label: `${this.monthNames[month]} ${year}`,
       weekdays: this.dayNames.slice(this.weekStartsOn).concat(this.dayNames.slice(0, this.weekStartsOn)),
+      cells,
       weeks
     };
   },

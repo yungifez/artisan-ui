@@ -104,11 +104,10 @@
                                     x-text="week.weekNumber"></div>
                             </template>
                             <template x-for="cell in week.cells" :key="cell.key">
-                                <template x-if="cell.outside && !showOutsideDays">
-                                    <div aria-hidden="true" class="aspect-square"></div>
-                                </template>
-                                <template x-if="!cell.outside || showOutsideDays">
+                                <div class="contents">
+                                    <div x-show="cell.outside && !showOutsideDays" aria-hidden="true" class="aspect-square"></div>
                                     <button type="button" role="gridcell"
+                                        x-show="!cell.outside || showOutsideDays"
                                         :tabindex="isFocusedDate(cell.date) ? 0 : -1"
                                         :aria-selected="isSelectedDate(cell.date)"
                                         :aria-current="isToday(cell.date) ? 'date' : null"
@@ -129,7 +128,7 @@
                                         }"
                                         class="flex items-center justify-center text-sm leading-none text-center rounded-md cursor-pointer px-0.5 aspect-square w-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none">
                                     </button>
-                                </template>
+                                </div>
                             </template>
                         </div>
                     </template>
