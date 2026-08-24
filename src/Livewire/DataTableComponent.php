@@ -14,24 +14,13 @@ abstract class DataTableComponent extends Component
 {
     use WithPagination;
 
-    #[Url]
-    public string $search = '';
-
-    #[Url]
-    public ?string $sort = null;
-
-    #[Url]
-    public string $direction = 'asc';
-
-    #[Url]
-    public int $perPage = 10;
-
+    #[Url] public string $search = '';
+    #[Url] public ?string $sort = null;
+    #[Url] public string $direction = 'asc';
+    #[Url] public int $perPage = 10;
     public array $selected = [];
-
     public int $tableRevision = 0;
-
     protected bool $selectable = false;
-
     protected array $perPageOptions = [10, 25, 50];
 
     abstract protected function builder(): Builder;
@@ -39,25 +28,15 @@ abstract class DataTableComponent extends Component
     /** @return array<int, Column> */
     abstract protected function columns(): array;
 
-    protected function primaryKey(): string
-    {
-        return 'id';
-    }
-
-    protected function defaultSort(): ?array
-    {
-        return null;
-    }
+    protected function primaryKey(): string { return 'id'; }
+    protected function defaultSort(): ?array { return null; }
 
     public function mount(): void
     {
         $defaultSort = $this->defaultSort();
-
         $this->sort ??= $defaultSort['field'] ?? null;
         $this->direction = $defaultSort['direction'] ?? $this->direction;
-        $this->perPage = in_array($this->perPage, $this->perPageOptions, true)
-            ? $this->perPage
-            : $this->perPageOptions[0];
+        $this->perPage = in_array($this->perPage, $this->perPageOptions, true) ? $this->perPage : $this->perPageOptions[0];
     }
 
     public function updateTable(array $query): void
@@ -67,7 +46,6 @@ abstract class DataTableComponent extends Component
         $nextSort = data_get($query, 'sort.key');
         $nextDirection = data_get($query, 'sort.direction') === 'desc' ? 'desc' : 'asc';
         $column = $this->findColumn($nextSort);
-
         $nextSort = $column?->isSortable() ? $nextSort : null;
         $nextPerPage = in_array($nextPerPage, $this->perPageOptions, true) ? $nextPerPage : $this->perPageOptions[0];
         $stateChanged = [$this->search, $this->sort, $this->direction, $this->perPage] !== [$nextSearch, $nextSort, $nextDirection, $nextPerPage];
@@ -76,11 +54,7 @@ abstract class DataTableComponent extends Component
         $this->sort = $nextSort;
         $this->direction = $nextDirection;
         $this->perPage = $nextPerPage;
-
-        $stateChanged
-            ? $this->resetPage()
-            : $this->setPage((int) ($query['page'] ?? 1));
-
+        $stateChanged ? $this->resetPage() : $this->setPage((int) ($query['page'] ?? 1));
         $this->tableRevision++;
     }
 
@@ -93,7 +67,7 @@ abstract class DataTableComponent extends Component
     {
         $rows = $this->rows();
 
-        return view('april-livewire::data-table', [
+        return view('april::livewire.data-table', [
             'columns' => $this->columnDefinitions(),
             'data' => $this->serializeRows($rows->getCollection()),
             'pagination' => [

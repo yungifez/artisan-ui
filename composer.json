@@ -34,6 +34,9 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0"
     },
+    "suggest": {
+        "livewire/livewire": "Required when using the optional Livewire data-table adapter."
+    },
     "autoload": {
         "psr-4": {
             "Yungifez\\AprilUI\\": "src/",

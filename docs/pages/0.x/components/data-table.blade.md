@@ -38,7 +38,7 @@ Pass `pagination` with `mode: controlled` when another system owns the query. Ap
 
 ## Livewire adapter
 
-The optional `yungifez/april-ui-livewire` package adds the familiar `builder()` and `columns()` class pattern. It owns the Eloquent query, pagination, URL state, and the bridge to this controlled mode while the base April package remains Livewire-free.
+The optional Livewire adapter ships inside `yungifez/april-ui`; install it alongside Livewire with `composer require yungifez/april-ui livewire/livewire`. It adds the familiar `builder()` and `columns()` class pattern, owns the Eloquent query, pagination, URL state, and bridges to this controlled mode while the base April component remains usable without Livewire.
 
 ```php
 final class UsersTable extends DataTableComponent
