@@ -21,8 +21,7 @@ class Column
     public function __construct(
         protected string $label,
         protected string $field,
-    ) {
-    }
+    ) {}
 
     public static function make(string $label, ?string $field = null): static
     {
