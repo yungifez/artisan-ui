@@ -1,24 +1,31 @@
+@php
+    $activity = [
+        ['month' => 'Jan', 'desktop' => 186, 'mobile' => 80],
+        ['month' => 'Feb', 'desktop' => 305, 'mobile' => 200],
+        ['month' => 'Mar', 'desktop' => 237, 'mobile' => 120],
+        ['month' => 'Apr', 'desktop' => 73, 'mobile' => 190],
+        ['month' => 'May', 'desktop' => 209, 'mobile' => 130],
+        ['month' => 'Jun', 'desktop' => 214, 'mobile' => 140],
+    ];
+
+    $activityConfig = [
+        'desktop' => ['label' => 'Desktop', 'color' => 'var(--chart-1)'],
+        'mobile' => ['label' => 'Mobile', 'color' => 'var(--chart-2)'],
+    ];
+@endphp
+
 <div class="grid gap-6 lg:grid-cols-2">
-    <april:chart label="Weekly activity">
+    <april:chart label="Monthly visitors" :data="$activity" :config="$activityConfig" xKey="month">
         <slot:header>
-            <h3 class="font-semibold">Weekly activity</h3>
-            <p class="text-sm text-muted-foreground">Messages sent over the last week.</p>
+            <h3 class="font-semibold">Monthly visitors</h3>
+            <p class="text-sm text-muted-foreground">Desktop and mobile visitors for the last six months.</p>
         </slot:header>
-        <april:chart-bar label="Mon" value="42" />
-        <april:chart-bar label="Tue" value="68" color="bg-blue-500" />
-        <april:chart-bar label="Wed" value="54" color="bg-violet-500" />
-        <april:chart-bar label="Thu" value="86" color="bg-emerald-500" />
-        <april:chart-bar label="Fri" value="72" color="bg-amber-500" />
     </april:chart>
 
-    <april:chart label="Quarterly progress" class="bg-muted/30">
+    <april:chart label="Visitor trend" :data="$activity" :config="$activityConfig" xKey="month" type="area" class="bg-muted/30">
         <slot:header>
-            <h3 class="font-semibold">Quarterly progress</h3>
-            <p class="text-sm text-muted-foreground">A custom maximum of 1,000.</p>
+            <h3 class="font-semibold">Visitor trend</h3>
+            <p class="text-sm text-muted-foreground">The same data, displayed as an area chart.</p>
         </slot:header>
-        <april:chart-bar label="Q1" value="620" max="1000" color="bg-primary" />
-        <april:chart-bar label="Q2" value="780" max="1000" color="bg-primary" />
-        <april:chart-bar label="Q3" value="910" max="1000" color="bg-primary" />
-        <april:chart-bar label="Q4" value="740" max="1000" color="bg-primary" />
     </april:chart>
 </div>

@@ -81,6 +81,27 @@ describe('alert', function () {
     });
 });
 
+describe('chart', function () {
+    it('uses the Alpine chart behaviour when data is supplied', function () {
+        $html = render('<april:chart :data="$data" :config="$config" xKey="month" />', [
+            'data' => [['month' => 'Jan', 'desktop' => 186]],
+            'config' => ['desktop' => ['label' => 'Desktop', 'color' => 'var(--chart-1)']],
+        ]);
+
+        expect($html)
+            ->toContain("x-data='chart(")
+            ->toContain('data-slot="chart-tooltip"')
+            ->toContain('data-slot="chart-legend"')
+            ->toContain('var(--chart-1)');
+    });
+
+    it('keeps chart bars as a static fallback without data', function () {
+        $html = render('<april:chart><april:chart-bar label="Jan" value="48" /></april:chart>');
+
+        expect($html)->toContain('data-slot="chart-bar"')->toContain('height: 48%');
+    });
+});
+
 describe('card', function () {
     it('renders a bordered surface', function () {
         expect(classesOf(renderComponent('card')))

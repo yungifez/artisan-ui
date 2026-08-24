@@ -5,6 +5,7 @@ import alertDialog from './alertDialog.js';
 import avatar from './avatar.js';
 import banner from './banner.js';
 import calendar from './calendar.js';
+import chart from './chart.js';
 import carousel from './carousel.js';
 import command from './command.js';
 import collapsible from './collapsible.js';
@@ -32,6 +33,7 @@ export {
     avatar,
     banner,
     calendar,
+    chart,
     carousel,
     command,
     collapsible,
@@ -60,6 +62,7 @@ export default {
     avatar,
     banner,
     calendar,
+    chart,
     carousel,
     command,
     collapsible,
