@@ -166,7 +166,7 @@ describe('sidebar', function () {
     it('persists its state on request', function () {
         expect(renderComponent('sidebar', 'x-persist="app-sidebar"'))
             ->toContain('x-persist="app-sidebar-desktop"')
-            ->toContain('x-persist="app-sidebar-mobile"');
+            ->not->toContain('x-persist="app-sidebar-mobile"');
     });
 
     it('does not persist by default', function () {

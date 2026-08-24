@@ -77,7 +77,7 @@ $attributes = $attributes->except('x-persist');
     </div>
 </div>
 
-<div class="md:hidden" x-cloak @if ($persist) x-persist="{{ $persist }}-mobile" @endif>
+<div class="md:hidden" x-cloak>
     <div x-show="openMobile" x-transition.opacity x-on:click="close()" class="fixed inset-0 z-40 bg-black/80"></div>
 
     <div x-show="openMobile" x-cloak x-on:keydown.esc.window="close()" data-sidebar="sidebar" data-slot="sidebar"
