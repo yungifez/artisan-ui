@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
+/** @phpstan-consistent-constructor */
 class Column
 {
     protected bool $isSearchable = false;
