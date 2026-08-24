@@ -1,31 +1,25 @@
-<april:data-table>
+@php
+    $team = [
+        ['id' => 1, 'name' => 'Olivia Martin', 'email' => 'olivia@example.com', 'role' => 'Owner', 'status' => 'Active'],
+        ['id' => 2, 'name' => 'Jackson Lee', 'email' => 'jackson@example.com', 'role' => 'Developer', 'status' => 'Active'],
+        ['id' => 3, 'name' => 'Isabella Nguyen', 'email' => 'isabella@example.com', 'role' => 'Designer', 'status' => 'Invited'],
+        ['id' => 4, 'name' => 'William Kim', 'email' => 'william@example.com', 'role' => 'Support', 'status' => 'Active'],
+    ];
+
+    $columns = [
+        ['key' => 'name', 'label' => 'Name', 'sortable' => true],
+        ['key' => 'email', 'label' => 'Email', 'sortable' => true],
+        ['key' => 'role', 'label' => 'Role', 'sortable' => true],
+        ['key' => 'status', 'label' => 'Status'],
+    ];
+@endphp
+
+<april:data-table :data="$team" :columns="$columns" searchable selectable paginated :per-page="3">
     <slot:caption>A list of your team members and their roles.</slot:caption>
-    <slot:header>
-        <april:data-table-row>
-            <april:data-table-head>Name</april:data-table-head>
-            <april:data-table-head>Email</april:data-table-head>
-            <april:data-table-head>Role</april:data-table-head>
-            <april:data-table-head class="text-right">Status</april:data-table-head>
-        </april:data-table-row>
-    </slot:header>
-    <slot:body>
-        <april:data-table-row>
-            <april:data-table-cell class="font-medium">Olivia Martin</april:data-table-cell>
-            <april:data-table-cell>olivia@example.com</april:data-table-cell>
-            <april:data-table-cell>Owner</april:data-table-cell>
-            <april:data-table-cell class="text-right"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">Active</span></april:data-table-cell>
-        </april:data-table-row>
-        <april:data-table-row>
-            <april:data-table-cell class="font-medium">Jackson Lee</april:data-table-cell>
-            <april:data-table-cell>jackson@example.com</april:data-table-cell>
-            <april:data-table-cell>Developer</april:data-table-cell>
-            <april:data-table-cell class="text-right"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">Active</span></april:data-table-cell>
-        </april:data-table-row>
-        <april:data-table-row>
-            <april:data-table-cell class="font-medium">Isabella Nguyen</april:data-table-cell>
-            <april:data-table-cell>isabella@example.com</april:data-table-cell>
-            <april:data-table-cell>Designer</april:data-table-cell>
-            <april:data-table-cell class="text-right"><span class="rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">Invited</span></april:data-table-cell>
-        </april:data-table-row>
-    </slot:body>
+    <slot:cell-status>
+        <span class="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300" x-text="row.status"></span>
+    </slot:cell-status>
+    <slot:actions>
+        <april:button size="sm" variant="ghost" x-text="`Edit ${row.name}`"></april:button>
+    </slot:actions>
 </april:data-table>

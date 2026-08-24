@@ -1467,19 +1467,19 @@ var formattingDayPeriodValues = {
   }
 };
 var ordinalNumber = (dirtyNumber, _options) => {
-  const number2 = Number(dirtyNumber);
-  const rem100 = number2 % 100;
+  const number3 = Number(dirtyNumber);
+  const rem100 = number3 % 100;
   if (rem100 > 20 || rem100 < 10) {
     switch (rem100 % 10) {
       case 1:
-        return number2 + "st";
+        return number3 + "st";
       case 2:
-        return number2 + "nd";
+        return number3 + "nd";
       case 3:
-        return number2 + "rd";
+        return number3 + "rd";
     }
   }
-  return number2 + "th";
+  return number3 + "th";
 };
 var localize = {
   ordinalNumber,
@@ -1752,9 +1752,9 @@ function getWeek(date, options) {
 }
 
 // node_modules/date-fns/_lib/addLeadingZeros.mjs
-function addLeadingZeros(number2, targetLength) {
-  const sign = number2 < 0 ? "-" : "";
-  const output = Math.abs(number2).toString().padStart(targetLength, "0");
+function addLeadingZeros(number3, targetLength) {
+  const sign = number3 < 0 ? "-" : "";
+  const output = Math.abs(number3).toString().padStart(targetLength, "0");
   return sign + output;
 }
 
@@ -2933,6 +2933,195 @@ var contextMenu_default = () => ({
   }
 });
 
+// resources/js/dataTable.js
+var normalize = (value) => String(value ?? "").toLocaleLowerCase();
+var number2 = (value) => Number(value);
+var dataTable_default = (data = [], columns = [], options = {}) => ({
+  data: Array.isArray(data) ? data : [],
+  columns: Array.isArray(columns) ? columns : [],
+  controlled: options.pagination?.mode === "controlled",
+  tableId: options.id || "",
+  searchable: Boolean(options.searchable),
+  selectable: Boolean(options.selectable),
+  paginated: Boolean(options.paginated || options.pagination),
+  rowKey: options.rowKey || "id",
+  perPage: Math.max(1, number2(options.pagination?.perPage ?? options.perPage) || 10),
+  perPageOptions: [.../* @__PURE__ */ new Set([...Array.isArray(options.perPageOptions) ? options.perPageOptions : [10, 20, 50], number2(options.pagination?.perPage ?? options.perPage) || 10])],
+  total: Math.max(0, number2(options.pagination?.total)),
+  search: options.pagination?.search || "",
+  page: Math.max(1, number2(options.pagination?.page) || 1),
+  sortKey: options.pagination?.sort?.key || null,
+  sortDirection: options.pagination?.sort?.direction === "desc" ? "desc" : "asc",
+  selected: [],
+  init() {
+    this.$watch("search", () => {
+      this.page = 1;
+      this.emitQueryChange();
+    });
+  },
+  get filteredRows() {
+    if (this.controlled) {
+      return this.data;
+    }
+    const query = normalize(this.search).trim();
+    if (!query || !this.searchable) {
+      return this.data;
+    }
+    const keys = this.columns.filter((column) => column.searchable !== false).map((column) => column.key);
+    return this.data.filter((row) => keys.some((key) => normalize(this.value(row, key)).includes(query)));
+  },
+  get sortedRows() {
+    if (this.controlled) {
+      return this.filteredRows;
+    }
+    if (!this.sortKey) {
+      return this.filteredRows;
+    }
+    return [...this.filteredRows].sort((left, right) => {
+      const leftValue = this.value(left, this.sortKey);
+      const rightValue = this.value(right, this.sortKey);
+      const leftNumber = number2(leftValue);
+      const rightNumber = number2(rightValue);
+      let comparison;
+      if (Number.isFinite(leftNumber) && Number.isFinite(rightNumber)) {
+        comparison = leftNumber - rightNumber;
+      } else {
+        comparison = String(leftValue ?? "").localeCompare(String(rightValue ?? ""), void 0, {
+          numeric: true,
+          sensitivity: "base"
+        });
+      }
+      return this.sortDirection === "asc" ? comparison : -comparison;
+    });
+  },
+  get totalPages() {
+    return Math.max(1, Math.ceil(this.totalRows / this.perPage));
+  },
+  get totalRows() {
+    return this.controlled ? this.total : this.sortedRows.length;
+  },
+  get visibleRows() {
+    if (this.controlled) {
+      return this.data;
+    }
+    if (!this.paginated) {
+      return this.sortedRows;
+    }
+    const page = Math.min(this.page, this.totalPages);
+    const offset = (page - 1) * this.perPage;
+    return this.sortedRows.slice(offset, offset + this.perPage);
+  },
+  get pageStart() {
+    return this.totalRows ? (Math.min(this.page, this.totalPages) - 1) * this.perPage + 1 : 0;
+  },
+  get pageEnd() {
+    if (this.controlled) {
+      return this.data.length ? Math.min(this.pageStart + this.data.length - 1, this.totalRows) : 0;
+    }
+    return Math.min(this.pageStart + this.perPage - 1, this.totalRows);
+  },
+  value(row, key) {
+    return String(key ?? "").split(".").reduce((value, segment) => value?.[segment], row);
+  },
+  display(row, key) {
+    const value = this.value(row, key);
+    return value == null ? "" : String(value);
+  },
+  identity(row) {
+    const value = this.value(row, this.rowKey);
+    return String(value ?? this.data.indexOf(row));
+  },
+  rowDomKey(row) {
+    return this.identity(row);
+  },
+  isSelected(row) {
+    return this.selected.includes(this.identity(row));
+  },
+  get allVisibleSelected() {
+    return this.visibleRows.length > 0 && this.visibleRows.every((row) => this.isSelected(row));
+  },
+  toggleRow(row) {
+    const id = this.identity(row);
+    this.selected = this.selected.includes(id) ? this.selected.filter((selected) => selected !== id) : [...this.selected, id];
+    this.emitSelectionChange();
+  },
+  toggleVisibleRows() {
+    const ids = this.visibleRows.map((row) => this.identity(row));
+    this.selected = this.allVisibleSelected ? this.selected.filter((selected) => !ids.includes(selected)) : [.../* @__PURE__ */ new Set([...this.selected, ...ids])];
+    this.emitSelectionChange();
+  },
+  toggleSort(key) {
+    const column = this.columns.find((column2) => column2.key === key);
+    if (!column?.sortable) {
+      return;
+    }
+    if (this.sortKey === key) {
+      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
+    } else {
+      this.sortKey = key;
+      this.sortDirection = "asc";
+    }
+    this.page = 1;
+    this.emitQueryChange();
+  },
+  sortState(key) {
+    if (this.sortKey !== key) {
+      return "none";
+    }
+    return this.sortDirection === "asc" ? "ascending" : "descending";
+  },
+  sortIndicator(key) {
+    if (this.sortKey !== key) {
+      return "\u2195";
+    }
+    return this.sortDirection === "asc" ? "\u2191" : "\u2193";
+  },
+  setPage(page) {
+    this.page = Math.min(Math.max(1, number2(page) || 1), this.totalPages);
+    this.emitQueryChange();
+  },
+  setPerPage(perPage) {
+    this.perPage = Math.max(1, number2(perPage) || this.perPage);
+    this.page = 1;
+    this.emitQueryChange();
+  },
+  sync(payload = {}) {
+    if (payload.id && payload.id !== this.tableId) {
+      return;
+    }
+    if (Array.isArray(payload.data)) {
+      this.data = payload.data;
+    }
+    if (!payload.pagination) {
+      return;
+    }
+    const pagination = payload.pagination;
+    this.controlled = pagination.mode === "controlled" || this.controlled;
+    this.page = Math.max(1, number2(pagination.page) || this.page);
+    this.perPage = Math.max(1, number2(pagination.perPage) || this.perPage);
+    this.total = Math.max(0, number2(pagination.total));
+    this.search = pagination.search ?? this.search;
+    this.sortKey = pagination.sort?.key ?? this.sortKey;
+    this.sortDirection = pagination.sort?.direction === "desc" ? "desc" : "asc";
+  },
+  emitQueryChange() {
+    this.$dispatch("query-change", {
+      search: this.search,
+      sort: this.sortKey ? { key: this.sortKey, direction: this.sortDirection } : null,
+      page: this.page,
+      perPage: this.perPage
+    });
+  },
+  emitSelectionChange() {
+    this.$dispatch("selection-change", { selected: this.selected });
+  },
+  root: {
+    ["@data-table:sync.window"](event) {
+      this.sync(event.detail);
+    }
+  }
+});
+
 // resources/js/datePicker.js
 var datePicker_default = (open, value, mode, format2) => ({
   open,
@@ -3955,6 +4144,7 @@ var components_default = {
   collapsible: collapsible_default,
   combobox: combobox_default,
   contextMenu: contextMenu_default,
+  dataTable: dataTable_default,
   datePicker: datePicker_default,
   dialog: dialog_default,
   dropdownMenu: dropdownMenu_default,
@@ -4037,6 +4227,7 @@ export {
   component,
   components,
   contextMenu_default as contextMenu,
+  dataTable_default as dataTable,
   datePicker_default as datePicker,
   dialog_default as dialog,
   dropdownMenu_default as dropdownMenu,

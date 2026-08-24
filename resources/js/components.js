@@ -11,6 +11,7 @@ import command from './command.js';
 import collapsible from './collapsible.js';
 import combobox from './combobox.js';
 import contextMenu from './contextMenu.js';
+import dataTable from './dataTable.js';
 import datePicker from './datePicker.js';
 import dialog from './dialog.js';
 import dropdownMenu from './dropdownMenu.js';
@@ -39,6 +40,7 @@ export {
     collapsible,
     combobox,
     contextMenu,
+    dataTable,
     datePicker,
     dialog,
     dropdownMenu,
@@ -68,6 +70,7 @@ export default {
     collapsible,
     combobox,
     contextMenu,
+    dataTable,
     datePicker,
     dialog,
     dropdownMenu,

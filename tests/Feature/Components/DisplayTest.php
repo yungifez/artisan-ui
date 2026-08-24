@@ -102,6 +102,50 @@ describe('chart', function () {
     });
 });
 
+describe('data table', function () {
+    it('keeps the semantic slot composition available without columns', function () {
+        $html = render('<april:data-table><x-slot:header>Header</x-slot:header><x-slot:body>Rows</x-slot:body></april:data-table>');
+
+        expect($html)->toContain('data-slot="data-table-header"')->toContain('Header')->toContain('Rows');
+    });
+
+    it('renders the interactive Alpine table when columns are supplied', function () {
+        $html = render('<april:data-table :data="$data" :columns="$columns" searchable selectable paginated />', [
+            'data' => [['id' => 1, 'name' => 'Olivia Martin']],
+            'columns' => [['key' => 'name', 'label' => 'Name', 'sortable' => true]],
+        ]);
+
+        expect($html)
+            ->toContain('x-data="dataTable(')
+            ->toContain('data-slot="data-table-toolbar"')
+            ->toContain('toggleSort')
+            ->toContain('toggleVisibleRows')
+            ->toContain('data-slot="data-table-pagination"');
+    });
+
+    it('renders named cell and action slots inside dynamic rows', function () {
+        $html = render('<april:data-table :data="$data" :columns="$columns"><x-slot:cell-status><span x-text="row.status"></span></x-slot:cell-status><x-slot:actions><button x-text="row.name"></button></x-slot:actions></april:data-table>', [
+            'data' => [['id' => 1, 'status' => 'Active', 'name' => 'Olivia Martin']],
+            'columns' => [['key' => 'status', 'label' => 'Status']],
+        ]);
+
+        expect($html)->toContain('x-text="row.status"')->toContain('x-text="row.name"');
+    });
+
+    it('accepts controlled pagination metadata without a framework dependency', function () {
+        $html = render('<april:data-table :data="$data" :columns="$columns" :pagination="$pagination" />', [
+            'data' => [['id' => 3, 'name' => 'Isabella Nguyen']],
+            'columns' => [['key' => 'name', 'label' => 'Name', 'sortable' => true]],
+            'pagination' => ['mode' => 'controlled', 'page' => 2, 'perPage' => 2, 'total' => 3],
+        ]);
+
+        expect($html)
+            ->toContain('\\u0022mode\\u0022:\\u0022controlled\\u0022')
+            ->toContain('x-bind="root"')
+            ->toContain('data-slot="data-table-pagination"');
+    });
+});
+
 describe('card', function () {
     it('renders a bordered surface', function () {
         expect(classesOf(renderComponent('card')))

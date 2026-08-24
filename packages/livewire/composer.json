@@ -1,0 +1,24 @@
+{
+    "name": "yungifez/april-ui-livewire",
+    "description": "Livewire data-table adapter for April UI.",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "livewire/livewire": "^3.4",
+        "yungifez/april-ui": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yungifez\\AprilUI\\Livewire\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yungifez\\AprilUI\\Livewire\\AprilLivewireServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
