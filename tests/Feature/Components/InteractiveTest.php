@@ -262,6 +262,23 @@ describe('calendar', function () {
             ->toContain('x-bind="nextMonthTrigger"');
     });
 
+    it('keeps each cell loop to a single Alpine root', function () {
+        $html = renderComponent('calendar');
+
+        preg_match_all(
+            '/<template x-for="cell in week\.cells"[^>]*>(.*?)<\/template>/s',
+            $html,
+            $matches,
+        );
+
+        expect($matches[1])->not->toBeEmpty();
+
+        foreach ($matches[1] as $template) {
+            expect(preg_match_all('/<div class="contents">/', $template))->toBe(1);
+            expect($template)->not->toContain('x-if=');
+        }
+    });
+
     it('supports shadcn-style calendar options', function () {
         expect(renderComponent('calendar', 'captionLayout="dropdown" :showWeekNumber="true" :showOutsideDays="false" :numberOfMonths="2"'))
             ->toContain('captionLayout')
