@@ -31,7 +31,7 @@ jobs:
         run: npm run build
 
       - name: Upload built assets
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package-assets
           path: dist
