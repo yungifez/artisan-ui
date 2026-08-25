@@ -100,6 +100,89 @@
 [x-cloak] {
   display: none !important;
 }
+[data-slot=editor-content] .tiptap {
+  min-height: 7rem;
+  outline: none;
+}
+[data-slot=editor-content] .tiptap p.is-editor-empty:first-child::before {
+  float: left;
+  height: 0;
+  color: hsl(var(--muted-foreground));
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+[data-slot=editor-content] .tiptap > * + * {
+  margin-top: 0.75rem;
+}
+[data-slot=editor-content] .tiptap h1,
+[data-slot=editor-content] .tiptap h2,
+[data-slot=editor-content] .tiptap h3 {
+  font-weight: 600;
+  line-height: 1.25;
+}
+[data-slot=editor-content] .tiptap h1 {
+  font-size: 1.5rem;
+}
+[data-slot=editor-content] .tiptap h2 {
+  font-size: 1.25rem;
+}
+[data-slot=editor-content] .tiptap h3 {
+  font-size: 1.125rem;
+}
+[data-slot=editor-content] .tiptap ul,
+[data-slot=editor-content] .tiptap ol {
+  padding-left: 1.5rem;
+}
+[data-slot=editor-content] .tiptap ul {
+  list-style: disc;
+}
+[data-slot=editor-content] .tiptap ol {
+  list-style: decimal;
+}
+[data-slot=editor-content] .tiptap blockquote {
+  border-left: 3px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  padding-left: 1rem;
+}
+[data-slot=editor-content] .tiptap pre {
+  overflow-x: auto;
+  border-radius: 0.375rem;
+  background: hsl(var(--muted));
+  padding: 0.75rem;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+  font-size: 0.875rem;
+}
+[data-slot=editor-content] .tiptap code {
+  border-radius: 0.25rem;
+  background: hsl(var(--muted));
+  padding: 0.125rem 0.25rem;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+  font-size: 0.875rem;
+}
+[data-slot=editor-content] .tiptap pre code {
+  background: transparent;
+  padding: 0;
+}
+[data-slot=editor-content] .tiptap a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
 html {
   scroll-behavior: smooth;
 }

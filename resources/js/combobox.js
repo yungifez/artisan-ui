@@ -96,15 +96,6 @@ export default (value = '', disabled = false) => ({
         [':id']() {
             return this.$id('combobox') + '-content';
         },
-        ['x-show']() {
-            return this.open;
-        },
-        ['x-trap.noscroll']() {
-            return this.open;
-        },
-        ['x-transition']() {
-            return true;
-        },
     },
     list: {
         [':id']() {

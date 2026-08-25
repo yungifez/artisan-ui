@@ -16,6 +16,7 @@ import datePicker from './datePicker.js';
 import dialog from './dialog.js';
 import dropdownMenu from './dropdownMenu.js';
 import dropdownMenuSub from './dropdownMenuSub.js';
+import editor from './editor.js';
 import popover from './popover.js';
 import select from './select.js';
 import sheet from './sheet.js';
@@ -45,6 +46,7 @@ export {
     dialog,
     dropdownMenu,
     dropdownMenuSub,
+    editor,
     popover,
     select,
     sheet,
@@ -75,6 +77,7 @@ export default {
     dialog,
     dropdownMenu,
     dropdownMenuSub,
+    editor,
     popover,
     select,
     sheet,

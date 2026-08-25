@@ -230,6 +230,66 @@ describe('combobox', function () {
             ->toContain('return this.focusedOption === this.$el;')
             ->toContain('String(this.selectedValue ?? \'\') === String(value ?? \'\')');
     });
+
+    it('uses static Alpine visibility and transition directives for the panel', function () {
+        $html = renderComponent('combobox');
+        $source = file_get_contents(__DIR__.'/../../../resources/js/combobox.js');
+
+        expect($html)
+            ->toContain('x-show="open"')
+            ->toContain('x-trap.noscroll="open"')
+            ->toContain('x-transition');
+
+        expect($source)->not->toContain("['x-transition']");
+    });
+});
+
+describe('editor', function () {
+    it('is driven by the editor behaviour', function () {
+        expect(renderComponent('editor'))->toContain('x-data="editor(');
+    });
+
+    it('supports modelable values and named form submission', function () {
+        $html = renderComponent('editor', 'name="content" value="<p>Hello</p>"');
+
+        expect($html)
+            ->toContain('x-modelable="value"')
+            ->toContain('type="hidden"')
+            ->toContain('name="content"')
+            ->toContain('Hello');
+    });
+
+    it('renders the default toolbar controls', function () {
+        $html = renderComponent('editor');
+
+        expect($html)
+            ->toContain('x-on:click="run(\'bold\')"')
+            ->toContain('x-on:click="run(\'bulletList\')"')
+            ->toContain('x-on:click="run(\'undo\')"');
+    });
+
+    it('supports individual toolbar props', function () {
+        $html = renderComponent('editor', 'bold="false" :italic="true"');
+
+        expect($html)
+            ->not->toContain('run(\'bold\')')
+            ->toContain('run(\'italic\')');
+    });
+
+    it('supports an array toolbar configuration', function () {
+        $html = render('<april:editor :buttons="[\'bold\', \'undo\']" />');
+
+        expect($html)
+            ->toContain('run(\'bold\')')
+            ->toContain('run(\'undo\')')
+            ->not->toContain('run(\'italic\')');
+    });
+
+    it('renders an editable content region', function () {
+        expect(renderComponent('editor', 'placeholder="Write your notes"'))
+            ->toContain('data-slot="editor-content"')
+            ->toContain('data-placeholder="Write your notes"');
+    });
 });
 
 describe('select', function () {
