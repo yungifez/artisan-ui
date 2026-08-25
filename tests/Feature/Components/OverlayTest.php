@@ -213,7 +213,11 @@ describe('dropdown menu', function () {
     it('renders a menu item as a ghost button', function () {
         $html = renderComponent('dropdown-menu-item', '', 'Profile');
 
-        expect($html)->toContain('Profile')->toContain('role="menuitem"');
+        expect($html)
+            ->toContain('Profile')
+            ->toContain('role="menuitem"')
+            ->toContain('justify-start')
+            ->not->toContain('justify-center');
     });
 
     it('renders a menu label', function () {
