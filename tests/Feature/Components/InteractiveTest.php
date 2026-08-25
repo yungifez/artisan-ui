@@ -212,7 +212,7 @@ describe('select', function () {
         $source = file_get_contents(__DIR__.'/../../../resources/js/select.js');
 
         expect($source)
-            ->toContain("if (this.hasModelBinding()) this.syncOptionsToValues(values)")
+            ->toContain('if (this.hasModelBinding()) this.syncOptionsToValues(values)')
             ->toContain('if (this.hasModelBinding()) {')
             ->toContain('this.setSelectedValues()');
     });
