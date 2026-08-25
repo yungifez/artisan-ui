@@ -118,7 +118,7 @@ export default (selected, mode, disabled, min, max, required, options = {}) => (
         if (!selectedDate || this.isDisabled(selectedDate)) return
 
         this.updateFocusedDate(selectedDate)
-        if (selectedDate.getMonth() !== this.month || selectedDate.getFullYear() !== this.year) {
+        if (!this.isDateInView(selectedDate)) {
             this.month = selectedDate.getMonth()
             this.year = selectedDate.getFullYear()
             this.calculateDays()
@@ -134,13 +134,22 @@ export default (selected, mode, disabled, min, max, required, options = {}) => (
         const current = dateWithoutTime(this.focusedDate) || new Date(this.year, this.month, this.focusedDay || 1)
         current.setDate(current.getDate() + value)
         this.updateFocusedDate(current)
-        if (current.getMonth() !== this.month || current.getFullYear() !== this.year) {
+        if (!this.isDateInView(current)) {
             this.month = current.getMonth()
             this.year = current.getFullYear()
             this.calculateDays()
         }
     },
     dayOfWeek(value) { return dateWithoutTime(value)?.getDay() || 0 },
+    isDateInView(date) {
+        const normalized = dateWithoutTime(date)
+        if (!normalized) return false
+
+        const first = new Date(this.year, this.month, 1)
+        const last = new Date(this.year, this.month + this.numberOfMonths, 0)
+
+        return normalized >= first && normalized <= last
+    },
     moveMonth(amount) {
         const step = this.pagedNavigation ? this.numberOfMonths : 1
         const target = new Date(this.year, this.month + (amount * step), 1)

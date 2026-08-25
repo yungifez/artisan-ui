@@ -307,6 +307,14 @@ describe('calendar', function () {
             ->toContain('max-w-full')
             ->not->toContain('w-[19rem]');
     });
+
+    it('keeps a selected date within a multi-month view anchored', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/calendar.js');
+
+        expect($source)
+            ->toContain('if (!this.isDateInView(selectedDate))')
+            ->toContain('isDateInView(date)');
+    });
 });
 
 describe('date picker', function () {
