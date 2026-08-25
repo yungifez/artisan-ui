@@ -3902,6 +3902,17 @@ var select_default = (multiple, disabled) => ({
   },
   init() {
     this.loadOptions();
+    this.$watch("selectedValues", (values) => {
+      if (this.hasModelBinding())
+        this.syncOptionsToValues(values);
+    });
+    this.$nextTick(() => {
+      if (this.hasModelBinding()) {
+        this.syncOptionsToValues(this.selectedValues);
+      } else {
+        this.setSelectedValues();
+      }
+    });
   },
   open() {
     if (!this.disabled) {
@@ -3972,10 +3983,24 @@ var select_default = (multiple, disabled) => ({
       }
     }
   },
+  hasModelBinding() {
+    return !!this.$root._x_model;
+  },
+  syncOptionsToValues(values) {
+    const selectedValues = this.multiple ? Array.isArray(values) ? values : values == null || values === "" ? [] : [values] : values == null || values === "" ? [] : [values];
+    const selectedValueSet = new Set(selectedValues.map((value) => String(value)));
+    this.selected = [];
+    this.options.forEach((option, index) => {
+      option.selected = selectedValueSet.has(String(option.value));
+      if (option.selected && (this.multiple || this.selected.length === 0)) {
+        this.selected.push(index);
+      } else if (!this.multiple) {
+        option.selected = false;
+      }
+    });
+  },
   setSelectedValues() {
-    this.selectedValues = this.multiple ? this.selected.map((option) => {
-      return this.options[option].value;
-    }) : this.options[this.selected[0]].value;
+    this.selectedValues = this.multiple ? this.selected.map((option) => this.options[option].value) : this.selected.length > 0 ? this.options[this.selected[0]].value : "";
   }
 });
 

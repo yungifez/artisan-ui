@@ -207,6 +207,15 @@ describe('select', function () {
 
         expect($html)->toContain('<option')->toContain('value="ng"')->toContain('Nigeria');
     });
+
+    it('initializes from the bound model before option defaults', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/select.js');
+
+        expect($source)
+            ->toContain("if (this.hasModelBinding()) this.syncOptionsToValues(values)")
+            ->toContain('if (this.hasModelBinding()) {')
+            ->toContain('this.setSelectedValues()');
+    });
 });
 
 describe('select option', function () {
