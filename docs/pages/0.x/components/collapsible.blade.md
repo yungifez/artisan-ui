@@ -14,10 +14,26 @@ Use `slot:trigger` for the control and `slot:content` for the panel. The panel s
 @verbatim
 <april:collapsible>
     <slot:trigger>
-        <april:button variant="outline">Can I use this in my project?</april:button>
+        <div class="flex items-center justify-between gap-4">
+            <h4 class="text-sm font-semibold">Order #4189</h4>
+            <april:button variant="ghost" size="icon" class="size-8" aria-label="Toggle details">
+                <x-lucide-chevrons-up-down class="size-4" />
+            </april:button>
+        </div>
+        <div class="mt-2 flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+            <span class="text-muted-foreground">Status</span>
+            <span class="font-medium">Shipped</span>
+        </div>
     </slot:trigger>
     <slot:content>
-        Yes. April UI is free to use for personal and commercial projects.
+        <div class="rounded-md border px-4 py-2 text-sm">
+            <p class="font-medium">Shipping address</p>
+            <p class="text-muted-foreground">100 Market St, San Francisco</p>
+        </div>
+        <div class="mt-2 rounded-md border px-4 py-2 text-sm">
+            <p class="font-medium">Items</p>
+            <p class="text-muted-foreground">2x Studio Headphones</p>
+        </div>
     </slot:content>
 </april:collapsible>
 @endverbatim
