@@ -24,6 +24,9 @@
 ])
 
 @php
+    $calendarMonths = max(1, min(12, (int) $numberOfMonths));
+    $calendarWidth = $calendarMonths > 1 ? 'w-full max-w-full' : 'w-[19rem]';
+
     $calendarOptions = [
         'captionLayout' => $captionLayout,
         'showOutsideDays' => filter_var($showOutsideDays, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
@@ -41,10 +44,10 @@
     ];
 @endphp
 
-<div data-slot="calendar" role="grid" aria-label="Calendar" tabindex="{{ $attributes->get('tabindex', 0) }}"
+<div data-slot="calendar" data-calendar-months="{{ $calendarMonths }}" role="grid" aria-label="Calendar" tabindex="{{ $attributes->get('tabindex', 0) }}"
     x-data="calendar({{ \Illuminate\Support\Js::from($selected) }}, {{ \Illuminate\Support\Js::from($mode) }}, {{ \Illuminate\Support\Js::from($disabled) }}, {{ \Illuminate\Support\Js::from($min) }}, {{ \Illuminate\Support\Js::from($max) }}, {{ \Illuminate\Support\Js::from($required) }}, {{ \Illuminate\Support\Js::from($calendarOptions) }})"
     x-bind="root" {{ $attributes->except('tabindex')->twMerge([
-        'p-4 antialiased bg-background border-input border rounded-lg shadow w-[19rem] min-h-[19rem]',
+        "p-4 antialiased bg-background border-input border rounded-lg shadow {$calendarWidth} min-h-[19rem]",
     ]) }} x-modelable="modeHandler.value">
     <div data-slot="calendar-caption" class="flex items-center justify-between mb-3">
         <button x-bind="previousMonthTrigger" x-show="!hideNavigation" type="button" aria-label="Previous month"
@@ -82,7 +85,7 @@
 
     <div data-slot="calendar-months" class="flex flex-col gap-4 sm:flex-row">
         <template x-for="monthView in monthViews" :key="monthView.key">
-            <section data-slot="calendar-month" :aria-label="monthView.label" class="space-y-2 flex-1">
+            <section data-slot="calendar-month" :aria-label="monthView.label" class="min-w-0 flex-1 space-y-2">
                 <div :class="showWeekNumber ? 'grid grid-cols-8' : 'grid grid-cols-7'" role="row">
                     <template x-if="showWeekNumber">
                         <div class="px-0.5" role="columnheader">

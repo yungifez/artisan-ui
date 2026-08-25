@@ -3,6 +3,23 @@
 @source "../js/**/*.tsx";
 @source "../views/**/*.blade.php";
 
+/* Keep multi-month calendars readable instead of shrinking every month into
+   the single-month width. Stack them on narrow screens and allow horizontal
+   scrolling when more months are requested than can fit. */
+@media (min-width: 640px) {
+    [data-slot="calendar"][data-calendar-months]:not([data-calendar-months="1"]) {
+        width: min(38rem, 100%);
+    }
+
+    [data-slot="calendar"][data-calendar-months]:not([data-calendar-months="1"]) [data-slot="calendar-month"] {
+        min-width: 19rem;
+    }
+
+    [data-slot="calendar"][data-calendar-months]:not([data-calendar-months="1"]) [data-slot="calendar-months"] {
+        overflow-x: auto;
+    }
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {

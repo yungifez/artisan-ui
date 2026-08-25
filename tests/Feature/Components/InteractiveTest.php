@@ -293,6 +293,13 @@ describe('calendar', function () {
             ->toContain('w-full')
             ->not->toContain('w-[19rem]');
     });
+
+    it('gives multiple months enough room to render side by side', function () {
+        expect(classesOf(renderComponent('calendar', ':numberOfMonths="2"')))
+            ->toContain('w-full')
+            ->toContain('max-w-full')
+            ->not->toContain('w-[19rem]');
+    });
 });
 
 describe('date picker', function () {
