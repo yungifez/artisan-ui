@@ -11,6 +11,9 @@ export default (value = '', disabled = false) => ({
         [':data-disabled']() {
             return this.disabled || null;
         },
+        [':aria-disabled']() {
+            return this.disabled;
+        },
         ['x-id']() {
             return ['combobox'];
         },
@@ -43,6 +46,15 @@ export default (value = '', disabled = false) => ({
         [':id']() {
             return this.$id('combobox') + '-trigger';
         },
+        ['@keydown.enter.prevent']() {
+            this.openMenu();
+        },
+        ['@keydown.space.prevent']() {
+            this.openMenu();
+        },
+        ['@keydown.down.prevent']() {
+            this.openMenu();
+        },
     },
     input: {
         [':id']() {
@@ -53,6 +65,9 @@ export default (value = '', disabled = false) => ({
         },
         [':aria-activedescendant']() {
             return this.focusedOption?.id ?? null;
+        },
+        [':aria-expanded']() {
+            return this.open;
         },
         ['x-model']() {
             return 'keyword';
@@ -68,6 +83,10 @@ export default (value = '', disabled = false) => ({
         },
         ['@keydown.enter.prevent']() {
             this.focusedOption?.click();
+        },
+        ['@keydown.escape.stop.prevent']() {
+            this.close();
+            this.$nextTick(() => this.$refs.trigger?.focus());
         },
     },
     content: {
@@ -91,25 +110,28 @@ export default (value = '', disabled = false) => ({
         [':id']() {
             return this.$id('combobox') + '-list';
         },
+        [':aria-labelledby']() {
+            return this.$id('combobox') + '-trigger';
+        },
     },
     option: {
         ['x-show']() {
             return this.matches(this.$el);
         },
         [':aria-selected']() {
-            return this.selectedValue === this.$el.dataset.value;
+            return this.isSelectedValue(this.$el.dataset.value);
         },
         [':aria-disabled']() {
             return this.$el.dataset.disabled === 'true';
         },
         [':data-selected']() {
-            return this.selectedValue === this.$el.dataset.value;
+            return this.isSelectedValue(this.$el.dataset.value);
         },
         [':data-active']() {
-            return this.matches(this.$el);
+            return this.focusedOption === this.$el;
         },
         [':id']() {
-            return this.$id('combobox') + '-option-' + this.$el.dataset.value;
+            return this.$id('combobox') + '-option-' + encodeURIComponent(this.$el.dataset.value);
         },
         ['@click']() {
             if (this.$el.dataset.disabled !== 'true') {
@@ -118,10 +140,15 @@ export default (value = '', disabled = false) => ({
         },
     },
     init() {
-        this.$nextTick(() => this.focus(1));
+        this.$watch('selectedValue', () => this.$nextTick(() => this.focusedOption = null));
     },
     matches(option) {
-        return this.keyword === '' || option.innerText.toLowerCase().includes(this.keyword.toLowerCase());
+        const label = option.innerText ?? option.textContent ?? '';
+
+        return this.keyword === '' || label.toLowerCase().includes(this.keyword.toLowerCase());
+    },
+    isSelectedValue(value) {
+        return String(this.selectedValue ?? '') === String(value ?? '');
     },
     noMatches() {
         return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')]
@@ -147,14 +174,32 @@ export default (value = '', disabled = false) => ({
         this.close();
     },
     selectedLabel() {
-        return this.$root.querySelector(`[data-slot="combobox-option"][data-value="${CSS.escape(this.selectedValue)}"]`)?.innerText.trim() ?? '';
+        return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')]
+            .map((option) => ({
+                option,
+                label: (option.innerText ?? option.textContent ?? '').trim(),
+            }))
+            .find(({ option }) => this.isSelectedValue(option.dataset.value))?.label ?? '';
+    },
+    openMenu() {
+        if (this.disabled) {
+            return;
+        }
+
+        this.open = true;
+        this.$nextTick(() => {
+            this.$refs.input?.focus();
+            this.focus(1);
+        });
     },
     close() {
         this.open = false;
+        this.keyword = '';
+        this.focusedOption = null;
     },
     toggle() {
         if (!this.disabled) {
-            this.open = !this.open;
+            this.open ? this.close() : this.openMenu();
         }
     },
 });

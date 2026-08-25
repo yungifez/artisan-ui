@@ -19,4 +19,6 @@ The trigger and content are named slots because each is a single structural regi
 
 Set `open` to start expanded or `disabled` to prevent changes.
 
+The component exposes `open` as Alpine state, so it also works with `wire:model` when the open state belongs to a Livewire property. Press Enter or Space on the trigger to toggle the panel.
+
 <x-publish-command view="collapsible" />

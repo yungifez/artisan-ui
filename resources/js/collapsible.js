@@ -22,10 +22,23 @@ export default (open = false, disabled = false) => ({
         [':aria-controls']() {
             return this.$id('collapsible') + '-content';
         },
+        [':aria-disabled']() {
+            return this.disabled;
+        },
         [':disabled']() {
             return this.disabled;
         },
         ['@click']() {
+            if (!this.disabled) {
+                this.open = !this.open;
+            }
+        },
+        ['@keydown.enter.prevent']() {
+            if (!this.disabled) {
+                this.open = !this.open;
+            }
+        },
+        ['@keydown.space.prevent']() {
             if (!this.disabled) {
                 this.open = !this.open;
             }

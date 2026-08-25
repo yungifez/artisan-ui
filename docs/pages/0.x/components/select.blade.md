@@ -6,6 +6,8 @@ description: Displays a list of options for the user to pick from—triggered by
 
 <x-component-preview component="previews.select-demo"></x-component-preview>
 
+For a single select, an empty bound value defaults to the first enabled option. This keeps the submitted field populated without requiring the user to open the picker first.
+
 ## Multiple Select
 
 The component also supports multiple select

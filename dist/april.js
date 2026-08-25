@@ -2844,10 +2844,23 @@
       [":aria-controls"]() {
         return this.$id("collapsible") + "-content";
       },
+      [":aria-disabled"]() {
+        return this.disabled;
+      },
       [":disabled"]() {
         return this.disabled;
       },
       ["@click"]() {
+        if (!this.disabled) {
+          this.open = !this.open;
+        }
+      },
+      ["@keydown.enter.prevent"]() {
+        if (!this.disabled) {
+          this.open = !this.open;
+        }
+      },
+      ["@keydown.space.prevent"]() {
         if (!this.disabled) {
           this.open = !this.open;
         }
@@ -2889,6 +2902,9 @@
       [":data-disabled"]() {
         return this.disabled || null;
       },
+      [":aria-disabled"]() {
+        return this.disabled;
+      },
       ["x-id"]() {
         return ["combobox"];
       },
@@ -2920,6 +2936,15 @@
       },
       [":id"]() {
         return this.$id("combobox") + "-trigger";
+      },
+      ["@keydown.enter.prevent"]() {
+        this.openMenu();
+      },
+      ["@keydown.space.prevent"]() {
+        this.openMenu();
+      },
+      ["@keydown.down.prevent"]() {
+        this.openMenu();
       }
     },
     input: {
@@ -2931,6 +2956,9 @@
       },
       [":aria-activedescendant"]() {
         return this.focusedOption?.id ?? null;
+      },
+      [":aria-expanded"]() {
+        return this.open;
       },
       ["x-model"]() {
         return "keyword";
@@ -2946,6 +2974,10 @@
       },
       ["@keydown.enter.prevent"]() {
         this.focusedOption?.click();
+      },
+      ["@keydown.escape.stop.prevent"]() {
+        this.close();
+        this.$nextTick(() => this.$refs.trigger?.focus());
       }
     },
     content: {
@@ -2968,6 +3000,9 @@
     list: {
       [":id"]() {
         return this.$id("combobox") + "-list";
+      },
+      [":aria-labelledby"]() {
+        return this.$id("combobox") + "-trigger";
       }
     },
     option: {
@@ -2975,19 +3010,19 @@
         return this.matches(this.$el);
       },
       [":aria-selected"]() {
-        return this.selectedValue === this.$el.dataset.value;
+        return this.isSelectedValue(this.$el.dataset.value);
       },
       [":aria-disabled"]() {
         return this.$el.dataset.disabled === "true";
       },
       [":data-selected"]() {
-        return this.selectedValue === this.$el.dataset.value;
+        return this.isSelectedValue(this.$el.dataset.value);
       },
       [":data-active"]() {
-        return this.matches(this.$el);
+        return this.focusedOption === this.$el;
       },
       [":id"]() {
-        return this.$id("combobox") + "-option-" + this.$el.dataset.value;
+        return this.$id("combobox") + "-option-" + encodeURIComponent(this.$el.dataset.value);
       },
       ["@click"]() {
         if (this.$el.dataset.disabled !== "true") {
@@ -2996,10 +3031,14 @@
       }
     },
     init() {
-      this.$nextTick(() => this.focus(1));
+      this.$watch("selectedValue", () => this.$nextTick(() => this.focusedOption = null));
     },
     matches(option) {
-      return this.keyword === "" || option.innerText.toLowerCase().includes(this.keyword.toLowerCase());
+      const label = option.innerText ?? option.textContent ?? "";
+      return this.keyword === "" || label.toLowerCase().includes(this.keyword.toLowerCase());
+    },
+    isSelectedValue(value2) {
+      return String(this.selectedValue ?? "") === String(value2 ?? "");
     },
     noMatches() {
       return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].every((option) => !this.matches(option));
@@ -3021,14 +3060,29 @@
       this.close();
     },
     selectedLabel() {
-      return this.$root.querySelector(`[data-slot="combobox-option"][data-value="${CSS.escape(this.selectedValue)}"]`)?.innerText.trim() ?? "";
+      return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].map((option) => ({
+        option,
+        label: (option.innerText ?? option.textContent ?? "").trim()
+      })).find(({ option }) => this.isSelectedValue(option.dataset.value))?.label ?? "";
+    },
+    openMenu() {
+      if (this.disabled) {
+        return;
+      }
+      this.open = true;
+      this.$nextTick(() => {
+        this.$refs.input?.focus();
+        this.focus(1);
+      });
     },
     close() {
       this.open = false;
+      this.keyword = "";
+      this.focusedOption = null;
     },
     toggle() {
       if (!this.disabled) {
-        this.open = !this.open;
+        this.open ? this.close() : this.openMenu();
       }
     }
   });
@@ -3989,6 +4043,17 @@
     },
     syncOptionsToValues(values) {
       const selectedValues = this.multiple ? Array.isArray(values) ? values : values == null || values === "" ? [] : [values] : values == null || values === "" ? [] : [values];
+      if (!this.multiple && selectedValues.length === 0) {
+        const firstAvailable = this.options.findIndex((option) => !option.disabled);
+        this.options.forEach((option) => option.selected = false);
+        this.selected = [];
+        if (firstAvailable !== -1) {
+          this.options[firstAvailable].selected = true;
+          this.selected.push(firstAvailable);
+          this.setSelectedValues();
+        }
+        return;
+      }
       const selectedValueSet = new Set(selectedValues.map((value) => String(value)));
       this.selected = [];
       this.options.forEach((option, index) => {

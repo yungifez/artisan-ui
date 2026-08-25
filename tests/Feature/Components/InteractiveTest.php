@@ -171,6 +171,67 @@ describe('command', function () {
     });
 });
 
+describe('collapsible', function () {
+    it('is driven by the collapsible behaviour', function () {
+        expect(renderComponent('collapsible'))->toContain('x-data="collapsible(false, false)"');
+    });
+
+    it('passes the initial open and disabled states', function () {
+        expect(renderComponent('collapsible', 'open disabled'))
+            ->toContain('x-data="collapsible(true, true)"')
+            ->toContain('x-modelable="open"');
+    });
+
+    it('renders trigger and content slots', function () {
+        $html = render('<april:collapsible><x-slot:trigger>Details</x-slot:trigger><x-slot:content>More information</x-slot:content></april:collapsible>');
+
+        expect($html)
+            ->toContain('data-slot="collapsible-trigger"')
+            ->toContain('Details')
+            ->toContain('data-slot="collapsible-content"')
+            ->toContain('More information')
+            ->toContain('x-cloak');
+    });
+});
+
+describe('combobox', function () {
+    it('is driven by the combobox behaviour', function () {
+        expect(renderComponent('combobox'))->toContain('x-data="combobox(\'\', false)"');
+    });
+
+    it('supports modelable values and named form submission', function () {
+        $html = renderComponent('combobox', 'name="framework" :value="\'laravel\'"');
+
+        expect($html)
+            ->toContain('x-modelable="selectedValue"')
+            ->toContain('type="hidden"')
+            ->toContain('name="framework"')
+            ->toContain('x-cloak');
+    });
+
+    it('does not render an empty named field', function () {
+        expect(renderComponent('combobox'))->not->toContain('name=""');
+    });
+
+    it('renders options as listbox options', function () {
+        $html = render('<april:combobox><april:combobox-option value="laravel">Laravel</april:combobox-option></april:combobox>');
+
+        expect($html)
+            ->toContain('role="listbox"')
+            ->toContain('role="option"')
+            ->toContain('data-value="laravel"')
+            ->toContain('Laravel');
+    });
+
+    it('keeps only the focused option active', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/combobox.js');
+
+        expect($source)
+            ->toContain('return this.focusedOption === this.$el;')
+            ->toContain('String(this.selectedValue ?? \'\') === String(value ?? \'\')');
+    });
+});
+
 describe('select', function () {
     it('is driven by the select behaviour', function () {
         expect(renderComponent('select'))->toContain('x-data="select(');
@@ -215,6 +276,15 @@ describe('select', function () {
             ->toContain('if (this.hasModelBinding()) this.syncOptionsToValues(values)')
             ->toContain('if (this.hasModelBinding()) {')
             ->toContain('this.setSelectedValues()');
+    });
+
+    it('uses the first enabled option when a bound value is empty', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/select.js');
+
+        expect($source)
+            ->toContain('if (!this.multiple && selectedValues.length === 0)')
+            ->toContain('const firstAvailable = this.options.findIndex((option) => !option.disabled);')
+            ->toContain('this.setSelectedValues();');
     });
 });
 

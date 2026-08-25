@@ -163,6 +163,25 @@ export default (multiple, disabled) => ({
         const selectedValues = this.multiple
             ? (Array.isArray(values) ? values : (values == null || values === '' ? [] : [values]))
             : (values == null || values === '' ? [] : [values]);
+
+        // An empty bound value still needs a usable single-select value. Pick
+        // the first enabled option and write it back through x-modelable so
+        // Livewire receives the same value the user sees in the trigger.
+        if (!this.multiple && selectedValues.length === 0) {
+            const firstAvailable = this.options.findIndex((option) => !option.disabled);
+
+            this.options.forEach((option) => option.selected = false);
+            this.selected = [];
+
+            if (firstAvailable !== -1) {
+                this.options[firstAvailable].selected = true;
+                this.selected.push(firstAvailable);
+                this.setSelectedValues();
+            }
+
+            return;
+        }
+
         const selectedValueSet = new Set(selectedValues.map((value) => String(value)));
 
         this.selected = [];
