@@ -298,7 +298,9 @@ describe('calendar', function () {
         $html = renderComponent('calendar', ':numberOfMonths="2"');
 
         expect($html)
-            ->toContain('data-calendar-months="2"');
+            ->toContain('data-calendar-months="2"')
+            ->toContain('x-text="monthView.label"')
+            ->toContain('numberOfMonths > 1');
 
         expect(classesOf($html))
             ->toContain('w-full')

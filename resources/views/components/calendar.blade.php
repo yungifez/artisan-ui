@@ -56,9 +56,9 @@
         </button>
 
         <div class="flex items-center justify-center gap-1">
-            <span x-show="captionLayout === 'label' || captionLayout === 'dropdown-years'" x-bind="monthLabel"
+            <span x-show="numberOfMonths === 1 && (captionLayout === 'label' || captionLayout === 'dropdown-years')" x-bind="monthLabel"
                 class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
-            <span x-show="captionLayout === 'label' || captionLayout === 'dropdown-months'" x-bind="yearLabel"
+            <span x-show="numberOfMonths === 1 && (captionLayout === 'label' || captionLayout === 'dropdown-months')" x-bind="yearLabel"
                 class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
 
             <select x-show="captionLayout === 'dropdown' || captionLayout === 'dropdown-months'"
@@ -86,6 +86,8 @@
     <div data-slot="calendar-months" class="flex flex-col gap-4 sm:flex-row">
         <template x-for="monthView in monthViews" :key="monthView.key">
             <section data-slot="calendar-month" :aria-label="monthView.label" class="min-w-0 flex-1 space-y-2">
+                <h3 x-show="numberOfMonths > 1" x-text="monthView.label"
+                    class="text-sm font-medium text-center text-foreground"></h3>
                 <div :class="showWeekNumber ? 'grid grid-cols-8' : 'grid grid-cols-7'" role="row">
                     <template x-if="showWeekNumber">
                         <div class="px-0.5" role="columnheader">
