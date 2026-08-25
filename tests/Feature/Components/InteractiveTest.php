@@ -295,7 +295,12 @@ describe('calendar', function () {
     });
 
     it('gives multiple months enough room to render side by side', function () {
-        expect(classesOf(renderComponent('calendar', ':numberOfMonths="2"')))
+        $html = renderComponent('calendar', ':numberOfMonths="2"');
+
+        expect($html)
+            ->toContain('data-calendar-months="2"');
+
+        expect(classesOf($html))
             ->toContain('w-full')
             ->toContain('max-w-full')
             ->not->toContain('w-[19rem]');

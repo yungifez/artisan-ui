@@ -15,6 +15,10 @@
         min-width: 19rem;
     }
 
+    [data-slot="calendar"][data-calendar-months="2"] [data-slot="calendar-month"] {
+        min-width: 0;
+    }
+
     [data-slot="calendar"][data-calendar-months]:not([data-calendar-months="1"]) [data-slot="calendar-months"] {
         overflow-x: auto;
     }
