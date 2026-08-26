@@ -84,7 +84,7 @@ jobs:
         run: composer show -D
 
       - name: Execute tests
-        run: vendor/bin/pest --ci --no-coverage
+        run: php vendor/bin/pest --ci --no-coverage
 
   publish-assets:
     name: Publish built assets

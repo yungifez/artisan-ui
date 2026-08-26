@@ -85,7 +85,10 @@ abstract class DataTableComponent extends Component
     {
         $rows = $this->rows();
 
-        return view('april::livewire.data-table', [
+        /** @var view-string $view */
+        $view = 'april::livewire.data-table';
+
+        return view($view, [
             'columns' => $this->columnDefinitions(),
             'data' => $this->serializeRows($rows->getCollection()),
             'pagination' => [
