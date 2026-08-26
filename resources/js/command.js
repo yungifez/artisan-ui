@@ -63,9 +63,11 @@ export default (value) => ({
             return this.$el.contains(this.focusedItem) ? 0 : -1;
         },
         ["x-effect"]() {
+            const searchText = this.$el.dataset.search ?? this.$el.innerText;
+
             if (
                 this.keyword == "" ||
-                this.fuzzySearch(this.keyword, this.$el.innerText)
+                this.fuzzySearch(this.keyword, searchText)
             ) {
                 this.$el.dataset.active = true;
                 this.$el.style.display = "flex";

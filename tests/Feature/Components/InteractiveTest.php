@@ -158,6 +158,12 @@ describe('command', function () {
         expect(renderComponent('command-item', '', 'Calendar'))->toContain('Calendar');
     });
 
+    it('supports separate text for searching an item', function () {
+        $source = file_get_contents(__DIR__.'/../../../resources/js/command.js');
+
+        expect($source)->toContain('this.$el.dataset.search ?? this.$el.innerText');
+    });
+
     it('renders a shortcut', function () {
         expect(renderComponent('command-shortcut', '', 'Ctrl+K'))->toContain('Ctrl+K');
     });
