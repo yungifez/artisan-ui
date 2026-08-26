@@ -146,6 +146,44 @@ describe('data table', function () {
     });
 });
 
+describe('steps', function () {
+    it('renders shadcn-style progress states', function () {
+        $html = render('<april:steps :items="$items" current="2" />', [
+            'items' => [
+                ['value' => 1, 'label' => 'Account'],
+                ['value' => 2, 'label' => 'Profile', 'description' => 'Add your details'],
+                ['value' => 3, 'label' => 'Review'],
+            ],
+        ]);
+
+        expect($html)
+            ->toContain('data-slot="steps"')
+            ->toContain('data-slot="step-indicator"')
+            ->toContain('data-slot="step-separator"')
+            ->toContain('data-state="completed"')
+            ->toContain('data-state="active"')
+            ->toContain('data-state="inactive"')
+            ->toContain('aria-current="step"')
+            ->toContain('Add your details');
+    });
+
+    it('supports vertical orientation and completed links', function () {
+        $html = render('<april:steps orientation="vertical" :items="$items" current="3" />', [
+            'items' => [
+                ['value' => 1, 'label' => 'Account', 'href' => '/account'],
+                ['value' => 2, 'label' => 'Profile', 'href' => '/profile'],
+                ['value' => 3, 'label' => 'Review'],
+            ],
+        ]);
+
+        expect($html)
+            ->toContain('data-orientation="vertical"')
+            ->toContain('href="/account"')
+            ->toContain('href="/profile"')
+            ->toContain('data-slot="step-title"');
+    });
+});
+
 describe('card', function () {
     it('renders a bordered surface', function () {
         expect(classesOf(renderComponent('card')))
