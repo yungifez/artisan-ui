@@ -439,6 +439,12 @@ describe('calendar', function () {
             ->not->toContain('w-[19rem]');
     });
 
+    it('caps a single month calendar width', function () {
+        expect(classesOf(renderComponent('calendar')))
+            ->toContain('w-full')
+            ->toContain('max-w-[19rem]');
+    });
+
     it('gives multiple months enough room to render side by side', function () {
         $html = renderComponent('calendar', ':numberOfMonths="2"');
 
