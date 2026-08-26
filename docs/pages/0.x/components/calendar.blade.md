@@ -84,6 +84,8 @@ Use `max` to limit the number of selected days.
 <april:calendar mode="multiple" max="5" />
 ```
 
+<x-component-preview component="previews.calendar-multiple-max-demo"></x-component-preview>
+
 ### Range mode
 
 When `mode="range"`, the event value is an object with `from` and `to` JavaScript `Date` values. `min` and `max` limit the number of days between the endpoints.
@@ -96,10 +98,15 @@ Use `min` and `max` to constrain the length of the selected range:
 <april:calendar mode="range" min="3" max="14" />
 ```
 
+<x-component-preview component="previews.calendar-range-max-min-demo"></x-component-preview>
+
 ## Disabling dates
 
 Pass an array of matcher objects to `disabled`. A `dates` matcher disables exact dates, `before`/`after` disables a range (the boundary itself remains enabled), and `dayOfWeek` accepts a number or an array from `0` (Sunday) to `6` (Saturday).
 
+<x-component-preview component="previews.calendar-disabled-dates-demo"></x-component-preview>
+<x-component-preview component="previews.calendar-disabled-range-demo"></x-component-preview>
+<x-component-preview component="previews.calendar-disabled-day-of-week-demo"></x-component-preview>
 <x-component-preview component="previews.calendar-disabled-multiple-demo"></x-component-preview>
 
 The same matcher types can be used independently:
