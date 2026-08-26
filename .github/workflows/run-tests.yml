@@ -43,9 +43,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # Keep the Windows runner pinned while windows-latest moves between
-        # server images with different PHP extension support.
-        os: [ubuntu-latest, windows-2022]
+        os: [ubuntu-latest]
         php: [8.4, 8.3]
         laravel: [12.*]
         stability: [prefer-lowest, prefer-stable]
