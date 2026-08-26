@@ -19,7 +19,7 @@ The calendar supports single, multiple, and range selection, keyboard navigation
 | `disabled` | `array` | Disabled-date matchers. |
 | `required` | `boolean` | Prevent clearing the current selection. |
 
-## Display options
+## Common configurations
 
 The default calendar keeps the original April UI appearance. These options add common shadcn calendar variants without requiring a different component.
 
@@ -51,11 +51,11 @@ The component emits both `change` and `select` with `{ detail: { value } }`, so 
 />
 ```
 
-### Dropdown caption
+### Dropdown caption and week numbers
 
 <x-component-preview component="previews.calendar-options-demo"></x-component-preview>
 
-### Multiple months and week numbers
+### Multiple months
 
 <x-component-preview component="previews.calendar-multiple-months-demo"></x-component-preview>
 
@@ -80,7 +80,9 @@ When `mode="multiple"`, users can select several days. The event value is an arr
 
 Use `max` to limit the number of selected days.
 
-<x-component-preview component="previews.calendar-multiple-max-demo"></x-component-preview>
+```blade
+<april:calendar mode="multiple" max="5" />
+```
 
 ### Range mode
 
@@ -88,15 +90,26 @@ When `mode="range"`, the event value is an object with `from` and `to` JavaScrip
 
 <x-component-preview component="previews.calendar-range-demo"></x-component-preview>
 
-<x-component-preview component="previews.calendar-range-max-min-demo"></x-component-preview>
+Use `min` and `max` to constrain the length of the selected range:
+
+```blade
+<april:calendar mode="range" min="3" max="14" />
+```
 
 ## Disabling dates
 
 Pass an array of matcher objects to `disabled`. A `dates` matcher disables exact dates, `before`/`after` disables a range (the boundary itself remains enabled), and `dayOfWeek` accepts a number or an array from `0` (Sunday) to `6` (Saturday).
 
-<x-component-preview component="previews.calendar-disabled-dates-demo"></x-component-preview>
-<x-component-preview component="previews.calendar-disabled-range-demo"></x-component-preview>
-<x-component-preview component="previews.calendar-disabled-day-of-week-demo"></x-component-preview>
 <x-component-preview component="previews.calendar-disabled-multiple-demo"></x-component-preview>
+
+The same matcher types can be used independently:
+
+```blade
+<april:calendar :disabled="[
+    ['dates' => [now(), now()->addDay()]],
+    ['before' => now()],
+    ['dayOfWeek' => [0, 6]],
+]" />
+```
 
 <x-publish-command view="calendar"/>
