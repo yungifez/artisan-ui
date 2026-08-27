@@ -2960,9 +2960,7 @@ var combobox_default = (value = "", disabled = false) => ({
     [":aria-expanded"]() {
       return this.open;
     },
-    ["x-model"]() {
-      return "keyword";
-    },
+    ["x-model"]: "keyword",
     ["@input"]() {
       this.focusedOption = null;
     },

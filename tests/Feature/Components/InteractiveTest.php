@@ -233,6 +233,8 @@ describe('combobox', function () {
         $source = file_get_contents(__DIR__.'/../../../resources/js/combobox.js');
 
         expect($source)
+            ->toContain("['x-model']: 'keyword'")
+            ->not->toContain("['x-model']()")
             ->toContain('return this.focusedOption === this.$el;')
             ->toContain('String(this.selectedValue ?? \'\') === String(value ?? \'\')');
     });
