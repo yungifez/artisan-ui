@@ -17,12 +17,11 @@ $displayErrors = $errors->$errorBag->has($errorName) && !$attributes->has("preve
 $inputAttributes = $attributes->whereDoesntStartWith(['label', 'group'])->except('value');
 @endphp
 
-<div data-slot="input-group" @class(['flex-row w-fit items-center flex-wrap gap-2'=> $isInline, 'flex-col w-full' => !$isInline, " flex"])
+<div data-slot="input-group" @class(['flex-row w-fit items-center flex-wrap gap-2'=> $isInline, 'flex-col w-full gap-2' => !$isInline, " flex"])
     >
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
-        {{$label->attributes->twMerge(['font-semibold', 'mx-2 cursor-pointer' => $isInline, 'my-2' =>
-        !$isInline])}} @else @class(["font-semibold", 'mx-2 cursor-pointer' => $isInline, 'my-2' => !$isInline])
+        {{$label->attributes->twMerge(['font-semibold', 'mx-2 cursor-pointer' => $isInline])}} @else @class(["font-semibold", 'mx-2 cursor-pointer' => $isInline])
         @endif
         >
         {{$label}}
