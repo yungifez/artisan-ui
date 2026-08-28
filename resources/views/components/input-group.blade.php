@@ -21,7 +21,7 @@ $inputAttributes = $attributes->whereDoesntStartWith(['label', 'group'])->except
     >
     @isset ($label)
     <label for="{{$attributes->get('id')}}" @if ($label instanceof Illuminate\View\ComponentSlot)
-        {{$label->attributes->twMerge(['font-semibold', 'mx-2 cursor-pointer' => $isInline])}} @else @class(["font-semibold", 'mx-2 cursor-pointer' => $isInline])
+        {{$label->attributes->twMerge(['text-sm font-medium leading-none', 'mx-2 cursor-pointer' => $isInline])}} @else @class(["text-sm font-medium leading-none", 'mx-2 cursor-pointer' => $isInline])
         @endif
         >
         {{$label}}
