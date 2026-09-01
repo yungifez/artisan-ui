@@ -46,15 +46,15 @@
 <div data-slot="calendar" data-calendar-months="{{ $calendarMonths }}" role="grid" aria-label="Calendar" tabindex="{{ $attributes->get('tabindex', 0) }}"
     x-data="calendar({{ \Illuminate\Support\Js::from($selected) }}, {{ \Illuminate\Support\Js::from($mode) }}, {{ \Illuminate\Support\Js::from($disabled) }}, {{ \Illuminate\Support\Js::from($min) }}, {{ \Illuminate\Support\Js::from($max) }}, {{ \Illuminate\Support\Js::from($required) }}, {{ \Illuminate\Support\Js::from($calendarOptions) }})"
     x-bind="root" {{ $attributes->except('tabindex')->twMerge([
-        "p-4 antialiased bg-background border-input border rounded-lg shadow {$calendarWidth} min-h-[19rem]",
+        "p-4 antialiased bg-background border-input border rounded-lg shadow {$calendarWidth} min-w-0 min-h-[19rem] overflow-hidden",
     ]) }} x-modelable="value">
-    <div data-slot="calendar-caption" class="flex items-center justify-between mb-3">
+    <div data-slot="calendar-caption" class="flex min-w-0 items-center justify-between gap-1 mb-3 max-[360px]:grid max-[360px]:grid-cols-[auto_minmax(0,1fr)_auto] max-[360px]:gap-2">
         <button x-bind="previousMonthTrigger" x-show="!hideNavigation" type="button" aria-label="Previous month"
-            class="border dark:border-input inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50">
-            <april:angle-down class="inline-flex w-6 h-6 fill-foreground rotate-90" />
+            class="border dark:border-input inline-flex shrink-0 p-2 sm:p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50 max-[360px]:col-start-1 max-[360px]:row-start-2">
+            <april:angle-down class="inline-flex h-5 w-5 sm:h-6 sm:w-6 fill-foreground rotate-90" />
         </button>
 
-        <div class="flex items-center justify-center gap-1">
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-1 max-[360px]:col-span-3 max-[360px]:row-start-1 max-[360px]:w-full">
             <span x-show="numberOfMonths === 1 && (captionLayout === 'label' || captionLayout === 'dropdown-years')" x-bind="monthLabel"
                 class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
             <span x-show="numberOfMonths === 1 && (captionLayout === 'label' || captionLayout === 'dropdown-months')" x-bind="yearLabel"
@@ -62,14 +62,14 @@
 
             <select x-show="captionLayout === 'dropdown' || captionLayout === 'dropdown-months'"
                 :value="month" @change="setViewMonth($event.target.value)" aria-label="Select month"
-                class="h-9 rounded-md border border-input bg-background px-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                class="h-9 min-w-0 max-w-full rounded-md border border-input bg-background px-1 text-xs font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring max-[360px]:w-0 max-[360px]:flex-1 sm:px-2 sm:text-sm">
                 <template x-for="(name, index) in monthNames" :key="index">
                     <option :value="index" x-text="name"></option>
                 </template>
             </select>
             <select x-show="captionLayout === 'dropdown' || captionLayout === 'dropdown-years'"
                 :value="year" @change="setViewYear($event.target.value)" aria-label="Select year"
-                class="h-9 rounded-md border border-input bg-background px-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                class="h-9 min-w-0 max-w-full rounded-md border border-input bg-background px-1 text-xs font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring max-[360px]:w-0 max-[360px]:flex-1 sm:px-2 sm:text-sm">
                 <template x-for="option in yearOptions()" :key="option">
                     <option :value="option" x-text="option"></option>
                 </template>
@@ -77,8 +77,8 @@
         </div>
 
         <button x-bind="nextMonthTrigger" x-show="!hideNavigation" type="button" aria-label="Next month"
-            class="border dark:border-border inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50">
-            <april:angle-down class="inline-flex w-6 h-6 fill-foreground -rotate-90" />
+            class="border dark:border-border inline-flex shrink-0 p-2 sm:p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50 max-[360px]:col-start-3 max-[360px]:row-start-2 max-[360px]:justify-self-end">
+            <april:angle-down class="inline-flex h-5 w-5 sm:h-6 sm:w-6 fill-foreground -rotate-90" />
         </button>
     </div>
 

@@ -418,6 +418,15 @@ describe('calendar', function () {
             ->toContain('Select year');
     });
 
+    it('keeps dropdown controls responsive in narrow containers', function () {
+        $html = renderComponent('calendar', 'captionLayout="dropdown" :showWeekNumber="true"');
+
+        expect($html)
+            ->toContain('min-w-0')
+            ->toContain('max-[360px]:grid')
+            ->toContain('max-[360px]:flex-1');
+    });
+
     it('lets a user class win over the default width', function () {
         expect(classesOf(renderComponent('calendar', 'class="w-full"')))
             ->toContain('w-full')

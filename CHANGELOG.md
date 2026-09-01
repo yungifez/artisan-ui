@@ -13,6 +13,7 @@ The first stable release of April UI. Includes Laravel Blade components with Alp
 - Normalize server ISO timestamps to the visitor's local calendar day.
 - Dispatch initial calendar values to same-element Alpine listeners.
 - Repair the multiple and range calendar examples.
+- Keep dropdown calendars with week numbers within narrow containers.
 
 ## v1.0.0 - 2026-08-31
 
