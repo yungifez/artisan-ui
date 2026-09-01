@@ -151,7 +151,7 @@
                 <h2 class="text-2xl font-semibold tracking-tight">Good morning, Pedro</h2>
                 <p class="text-sm text-muted-foreground">Here is a summary of your workspace.</p>
             </div>
-            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="grid gap-4 sm:grid-cols-2">
                 <april:card>
                     <slot:title class="text-sm font-medium">Total revenue</slot:title>
                     <slot:content>
