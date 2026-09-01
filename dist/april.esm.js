@@ -498,6 +498,7 @@ var RangeModeHandler = class {
     }
     if (this._value.from.getTime() >= date.getTime()) {
       this._value.from = date;
+      this._value.to = null;
       return true;
     }
     this._value.to = date;

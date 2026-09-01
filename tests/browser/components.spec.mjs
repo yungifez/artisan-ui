@@ -434,6 +434,11 @@ test('calendar range mode completes a range after two date selections', async ({
     await expect(page.locator('[data-test="range-value"]')).toHaveText('complete');
     await expect(days.filter({ hasText: '10' })).toHaveAttribute('aria-selected', 'true');
     await expect(days.filter({ hasText: '15' })).toHaveAttribute('aria-selected', 'true');
+
+    await page.locator('#calendar-range [data-test="range-day"][data-day="8"]').click();
+    await expect(page.locator('[data-test="range-value"]')).toHaveText('incomplete');
+    await expect(page.locator('#calendar-range [data-test="range-day"][data-day="8"]')).toHaveAttribute('aria-selected', 'true');
+    await expect(days.filter({ hasText: '15' })).not.toHaveAttribute('aria-selected', 'true');
 });
 
 test('modelable controls synchronize with the Livewire wire contract', async ({ page }) => {

@@ -24,7 +24,7 @@
 
 @php
     $calendarMonths = max(1, min(12, (int) $numberOfMonths));
-    $calendarWidth = $calendarMonths > 1 ? 'w-full max-w-full' : 'w-full max-w-[19rem]';
+    $calendarWidth = $calendarMonths > 1 ? 'w-full max-w-full' : 'w-[19rem] max-w-full';
 
     $calendarOptions = [
         'captionLayout' => $captionLayout,

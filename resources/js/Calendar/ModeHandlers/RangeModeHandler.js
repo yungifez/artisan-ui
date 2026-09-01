@@ -31,6 +31,7 @@ export default class RangeModeHandler {
 
         if (this._value.from.getTime() >= date.getTime()) {
             this._value.from = date
+            this._value.to = null
             return true;
         }
 

@@ -14,6 +14,7 @@ The first stable release of April UI. Includes Laravel Blade components with Alp
 - Dispatch initial calendar values to same-element Alpine listeners.
 - Repair the multiple and range calendar examples.
 - Keep dropdown calendars with week numbers within narrow containers.
+- Keep single-month calendar widths stable and reset incomplete ranges when selecting an earlier date.
 
 ## v1.0.0 - 2026-08-31
 
