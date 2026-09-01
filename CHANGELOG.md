@@ -6,6 +6,14 @@ All notable changes to `april-ui` will be documented in this file.
 
 The first stable release of April UI. Includes Laravel Blade components with Alpine and Livewire support, package-first view loading, Artisan discovery and diagnostics, local MCP tooling, accessible browser-tested behavior, and complete public component documentation.
 
+## Unreleased
+
+- Keep avatars and vertical carousels within their preview bounds.
+- Correct banner positioning and transition classes.
+- Normalize server ISO timestamps to the visitor's local calendar day.
+- Dispatch initial calendar values to same-element Alpine listeners.
+- Repair the multiple and range calendar examples.
+
 ## v1.0.0 - 2026-08-31
 
 The first stable release of April UI.

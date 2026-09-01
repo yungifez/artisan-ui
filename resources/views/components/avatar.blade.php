@@ -13,10 +13,10 @@ default => "h-10 w-10",
 }
 @endphp
 
-<div data-slot="avatar" x-data="avatar()" {{$attributes->twMerge(["$class $borderRadius aspect-square border flex justify-center
+<div data-slot="avatar" x-data="avatar()" {{$attributes->twMerge(["$class $borderRadius aspect-square shrink-0 min-w-0 overflow-hidden border flex justify-center
     items-center"])}}>
     @isset($image)
-    <img data-slot="avatar-image" x-bind="image" {{$image->attributes->twMerge(["$borderRadius"])}}
+    <img data-slot="avatar-image" x-bind="image" {{$image->attributes->twMerge(["$borderRadius size-full object-cover"])}}
     >
     @endisset
     @isset($fallback)

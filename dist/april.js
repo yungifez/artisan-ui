@@ -382,8 +382,16 @@
     }
     createDateWithoutTime(value) {
       if (value == null || value === "") return null;
-      let date = typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value) ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10))) : new Date(value);
-      date.setHours(0, 0, 0, 0);
+      let date;
+      if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+        date = new Date(value);
+        date.setHours(0, 0, 0, 0);
+      } else if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+        date = new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10)));
+      } else {
+        date = new Date(value);
+        date.setHours(0, 0, 0, 0);
+      }
       return Number.isNaN(date.getTime()) ? null : date;
     }
   };
@@ -599,6 +607,11 @@
       date2.setHours(0, 0, 0, 0);
       return Number.isNaN(date2.getTime()) ? null : date2;
     }
+    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+      const date2 = new Date(value);
+      date2.setHours(0, 0, 0, 0);
+      return Number.isNaN(date2.getTime()) ? null : date2;
+    }
     if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
       const [year, month, day] = value.slice(0, 10).split("-").map(Number);
       return new Date(year, month - 1, day);
@@ -725,7 +738,7 @@
       this.year = initialDate.getFullYear();
       this.updateFocusedDate(initialDate);
       this.calculateDays();
-      if (selected) this.dispatchChange();
+      if (selected) setTimeout(() => this.dispatchChange(), 0);
     },
     initialDate() {
       return dateWithoutTime(this.defaultMonth) || this.selectedDate() || /* @__PURE__ */ new Date();

@@ -8,8 +8,8 @@ description: Responsive Alpine charts with shadcn-style config, tooltips, legend
 
 Charts follow shadcn's data/config model. `data` holds the values while `config` holds labels and colors. The chart draws a grid, axes, legend, and hover or keyboard tooltip without a JavaScript chart dependency.
 
-<x-code-block-wrapper language="blade">
-@verbatim
+@php
+$chartCode = <<<'BLADE'
 @php
     $data = [
         ['month' => 'Jan', 'desktop' => 186, 'mobile' => 80],
@@ -27,8 +27,10 @@ Charts follow shadcn's data/config model. `data` holds the values while `config`
         <h3>Monthly visitors</h3>
     </slot:header>
 </april:chart>
-@endverbatim
-</x-code-block-wrapper>
+BLADE;
+@endphp
+
+<x-code-block-wrapper language="blade">{!! $chartCode !!}</x-code-block-wrapper>
 
 Set `type="line"` or `type="area"` to change the chart geometry. The default is `bar`. The five theme-aware color tokens are `var(--chart-1)` through `var(--chart-5)`.
 

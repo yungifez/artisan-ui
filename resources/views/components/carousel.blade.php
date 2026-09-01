@@ -6,7 +6,7 @@
 
 <div data-slot="carousel" role="region" aria-roledescription="carousel" aria-label="{{$label}}" tabindex="0"
     x-data="carousel('{{$orientation}}', {{ $loop ? 'true' : 'false' }})" x-bind="root" {{$attributes->twMerge(['relative'])}}>
-    <div data-slot="carousel-viewport" x-bind="viewport" class="overflow-hidden">
+    <div data-slot="carousel-viewport" x-bind="viewport" class="h-full overflow-hidden">
         <div data-slot="carousel-track" x-bind="track" class="flex transition-transform duration-300 ease-in-out {{ $orientation === 'vertical' ? 'flex-col' : '' }}">
             {{$slot}}
         </div>

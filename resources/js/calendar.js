@@ -10,6 +10,11 @@ const dateWithoutTime = (value) => {
         date.setHours(0, 0, 0, 0)
         return Number.isNaN(date.getTime()) ? null : date
     }
+    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+        const date = new Date(value)
+        date.setHours(0, 0, 0, 0)
+        return Number.isNaN(date.getTime()) ? null : date
+    }
     if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
         const [year, month, day] = value.slice(0, 10).split('-').map(Number)
         return new Date(year, month - 1, day)
@@ -112,7 +117,9 @@ export default (selected, mode, disabled, min, max, required, options = {}) => (
         this.updateFocusedDate(initialDate)
         this.calculateDays()
 
-        if (selected) this.dispatchChange()
+        // Alpine registers listeners after evaluating x-data. Defer the initial
+        // event so same-element @value-change handlers receive selected values.
+        if (selected) setTimeout(() => this.dispatchChange(), 0)
     },
     initialDate() {
         return dateWithoutTime(this.defaultMonth) || this.selectedDate() || new Date()
