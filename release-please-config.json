@@ -1,0 +1,10 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "php",
+      "package-name": "yungifez/april-ui",
+      "include-v-in-tag": true,
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}

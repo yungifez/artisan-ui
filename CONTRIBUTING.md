@@ -39,8 +39,16 @@ Add or update the component documentation when you change a public component. Ke
 
 Open pull requests against `main`. Use an imperative commit title under 50 characters. Explain the change, the reason for the change, and the checks that you ran.
 
+Use a conventional commit prefix when the change should appear in the next release:
+
+- `fix:` for a bug fix and a patch release.
+- `feat:` for a backwards-compatible feature and a minor release.
+- `feat!:` for a breaking change and a major release.
+
 Keep each pull request focused. Add tests for behavior changes and include Laravel version details when a change affects framework integration.
 
 ## Releases
 
-Maintainers update `CHANGELOG.md`, run the full test matrix, and create a semantic version tag such as `v1.0.0`. The docs site then updates its package constraint and receives the matching release tag.
+Pushes to `main` run Release Please. It opens or updates a release pull request with the next version and changelog. After the release pull request passes the normal checks and is merged, Release Please creates the semantic version tag and GitHub release.
+
+The manual `Release` workflow remains available for recovery releases. Do not run it while a Release Please pull request is pending for the same changes. The docs site then updates its package constraint and receives the matching release tag.
