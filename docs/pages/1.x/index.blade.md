@@ -72,5 +72,5 @@ The component pages show the rendered result, the Blade source, available option
 <x-callout>
     **Choose your starting point**
 
-    Use the [installation guide]({{url('docs/1.x/installation')}}) for an existing application, or use the [starter kits]({{url('docs/1.x/starter-kits')}}) when you want a working Laravel shell with April UI already in place. You can also browse the [blocks]({{url('blocks')}}) for larger compositions.
+    Use the [installation guide](/docs/1.x/installation) for an existing application, or use the [starter kits](/docs/1.x/starter-kits) when you want a working Laravel shell with April UI already in place. You can also browse the [blocks](/blocks) for larger compositions.
 </x-callout>
