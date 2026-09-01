@@ -32,6 +32,8 @@ Use `state` when the state does not follow the numeric order. Supported values a
 
 Set `orientation` to `vertical` for a stacked layout. This works well when each step has a description or when the available width is limited.
 
+<x-component-preview component="previews.steps-vertical-demo"></x-component-preview>
+
 ```blade
 <april:steps orientation="vertical" :items="$steps" current="2" />
 ```

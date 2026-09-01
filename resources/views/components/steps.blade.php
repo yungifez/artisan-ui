@@ -91,7 +91,10 @@
                         aria-labelledby="{{ $titleId }}"
                         @if (filled($description)) aria-describedby="{{ $descriptionId }}" @endif
                         aria-label="{{ $label }} completed"
-                        class="group/trigger relative z-10 flex shrink-0 items-center gap-3 sm:flex-col"
+                        @class([
+                            'group/trigger relative z-10 flex shrink-0 items-center gap-3',
+                            'sm:flex-col' => $orientation === 'horizontal',
+                        ])
                     >
                 @else
                     <button
@@ -101,7 +104,10 @@
                         @if (filled($description)) aria-describedby="{{ $descriptionId }}" @endif
                         @if ($state === 'active') aria-current="step" @endif
                         @if ($state !== 'completed' || blank($href)) disabled @endif
-                        class="group/trigger relative z-10 flex shrink-0 items-center gap-3 sm:flex-col"
+                        @class([
+                            'group/trigger relative z-10 flex shrink-0 items-center gap-3',
+                            'sm:flex-col' => $orientation === 'horizontal',
+                        ])
                     >
                 @endif
                     <span
@@ -125,7 +131,8 @@
                     </span>
 
                     <span @class([
-                        'min-w-0 text-left sm:text-center',
+                        'min-w-0 text-left',
+                        'sm:text-center' => $orientation === 'horizontal',
                         'flex flex-col gap-1' => $orientation === 'vertical',
                     ])>
                         <span
