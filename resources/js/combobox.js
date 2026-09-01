@@ -99,6 +99,9 @@ export default (value = '', disabled = false) => ({
         [':data-state']() {
             return this.open ? 'open' : 'closed';
         },
+        ['x-anchor.bottom-start.offset.2']() {
+            return this.$refs.trigger;
+        },
         [':id']() {
             return this.$id('combobox') + '-content';
         },

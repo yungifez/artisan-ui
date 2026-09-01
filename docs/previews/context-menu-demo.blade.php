@@ -1,6 +1,6 @@
 <april:context-menu>
     <slot:trigger>
-        <div class="flex min-h-32 max-w-md items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+        <div class="flex min-h-32 max-w-md items-center justify-center rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
             Right-click this area
         </div>
     </slot:trigger>

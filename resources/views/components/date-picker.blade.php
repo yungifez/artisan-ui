@@ -62,7 +62,7 @@ $toInputName = $toName ?? ($name !== '' ? $name."['to']" : null);
             </span>
         </template>
     </april:button>
-    <div x-bind="calendar" x-cloak class="z-10">
+    <div x-bind="calendar" x-cloak class="absolute left-0 top-full z-10 mt-3 w-max max-w-full">
         <april:calendar :required="$required" :mode="$mode" :selected="$value" x-model="value"
             tabindex="0" class="outline-none" />
     </div>

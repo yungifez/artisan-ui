@@ -242,6 +242,39 @@ test('carousel moves between non-looping slides and disables its bounds', async 
     await expect(second).toHaveAttribute('aria-hidden', 'false');
 });
 
+test('vertical carousel keeps the final slide within the viewport', async ({ page }) => {
+    const root = page.locator('#carousel-vertical');
+    const next = page.locator('[data-test="carousel-vertical-next"]');
+    const last = page.locator('[data-test="carousel-vertical-third"]');
+
+    await next.dispatchEvent('click');
+    await next.dispatchEvent('click');
+    await expect(last).toHaveAttribute('aria-hidden', 'false');
+    await page.waitForFunction(() => {
+        const viewport = document.querySelector('[data-test="carousel-vertical-viewport"]');
+        const last = document.querySelector('[data-test="carousel-vertical-third"]');
+        const viewportBounds = viewport.getBoundingClientRect();
+        const lastBounds = last.getBoundingClientRect();
+
+        return Math.abs(lastBounds.top - viewportBounds.top) < 1
+            && Math.abs(lastBounds.bottom - viewportBounds.bottom) < 1;
+    });
+
+    const bounds = await page.evaluate(() => {
+        const viewport = document.querySelector('[data-test="carousel-vertical-viewport"]');
+        const last = document.querySelector('[data-test="carousel-vertical-third"]');
+
+        return {
+            viewport: viewport.getBoundingClientRect().toJSON(),
+            last: last.getBoundingClientRect().toJSON(),
+        };
+    });
+
+    expect(bounds.last.top).toBeGreaterThanOrEqual(bounds.viewport.top - 1);
+    expect(bounds.last.bottom).toBeLessThanOrEqual(bounds.viewport.bottom + 1);
+    await expect(root.locator('[data-test="carousel-vertical-next"]')).toBeDisabled();
+});
+
 test('command filters items and moves its active item with the keyboard', async ({ page }) => {
     const input = page.locator('[data-test="command-input"]');
     const first = page.locator('[data-test="command-first"]');

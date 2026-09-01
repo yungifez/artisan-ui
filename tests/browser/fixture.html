@@ -135,6 +135,19 @@
             <button data-test="carousel-next" type="button" x-bind="next">Next</button>
         </section>
 
+        <section id="carousel-vertical" x-data="carousel('vertical', false)" x-bind="root" tabindex="0"
+            style="height: 100px; width: 100px;">
+            <div data-test="carousel-vertical-viewport" x-bind="viewport" style="height: 100px; overflow: hidden;">
+                <div data-test="carousel-vertical-track" x-bind="track" style="display: flex; flex-direction: column;">
+                    <div data-slot="carousel-item" data-test="carousel-vertical-first" style="height: 100px; flex: 0 0 100px;">First slide</div>
+                    <div data-slot="carousel-item" data-test="carousel-vertical-second" style="height: 100px; flex: 0 0 100px;">Second slide</div>
+                    <div data-slot="carousel-item" data-test="carousel-vertical-third" style="height: 100px; flex: 0 0 100px;">Third slide</div>
+                </div>
+            </div>
+            <button data-test="carousel-vertical-previous" type="button" x-bind="previous">Previous</button>
+            <button data-test="carousel-vertical-next" type="button" x-bind="next">Next</button>
+        </section>
+
         <section id="command" x-data="command('')" x-bind="root" x-modelable="value"
             @value-change="document.body.dataset.commandValue = $event.detail.value">
             <input data-test="command-input" type="text" x-ref="input" x-bind="commandInput" role="combobox">

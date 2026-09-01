@@ -127,19 +127,21 @@
         </div>
 
         @if ($paginated || $hasPagination)
-            <div data-slot="data-table-pagination" class="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
+            <div data-slot="data-table-pagination" class="mt-4 flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                 <p><span x-text="pageStart"></span>–<span x-text="pageEnd"></span> of <span x-text="totalRows"></span> rows</p>
-                <div class="flex items-center gap-2">
-                    <label class="flex items-center gap-2">Rows per page
-                        <select @change="setPerPage($event.target.value)" :value="perPage" class="h-8 rounded-md border border-input bg-background px-2 text-foreground">
+                <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+                    <label class="flex items-center justify-between gap-2 sm:justify-start">Rows per page
+                        <select @change="setPerPage($event.target.value)" :value="perPage" class="h-8 min-w-0 rounded-md border border-input bg-background px-2 text-foreground">
                             <template x-for="option in perPageOptions" :key="option"><option :value="option" x-text="option"></option></template>
                         </select>
                     </label>
-                    <button type="button" @click="setPage(page - 1)" :disabled="page <= 1" aria-label="Previous page"
-                        class="inline-flex h-8 items-center rounded-md border border-input bg-background px-3 text-foreground disabled:pointer-events-none disabled:opacity-50 hover:bg-accent">Previous</button>
-                    <span class="tabular-nums"><span x-text="Math.min(page, totalPages)"></span> / <span x-text="totalPages"></span></span>
-                    <button type="button" @click="setPage(page + 1)" :disabled="page >= totalPages" aria-label="Next page"
-                        class="inline-flex h-8 items-center rounded-md border border-input bg-background px-3 text-foreground disabled:pointer-events-none disabled:opacity-50 hover:bg-accent">Next</button>
+                    <div class="flex items-center justify-between gap-2 sm:justify-start">
+                        <button type="button" @click="setPage(page - 1)" :disabled="page <= 1" aria-label="Previous page"
+                            class="inline-flex h-8 shrink-0 items-center rounded-md border border-input bg-background px-3 text-foreground disabled:pointer-events-none disabled:opacity-50 hover:bg-accent">Previous</button>
+                        <span class="tabular-nums"><span x-text="Math.min(page, totalPages)"></span> / <span x-text="totalPages"></span></span>
+                        <button type="button" @click="setPage(page + 1)" :disabled="page >= totalPages" aria-label="Next page"
+                            class="inline-flex h-8 shrink-0 items-center rounded-md border border-input bg-background px-3 text-foreground disabled:pointer-events-none disabled:opacity-50 hover:bg-accent">Next</button>
+                    </div>
                 </div>
             </div>
         @endif

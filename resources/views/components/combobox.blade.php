@@ -24,7 +24,7 @@
     </button>
     @endisset
     <div data-slot="combobox-content" x-bind="content" x-show="open" x-trap.noscroll="open" x-transition x-cloak
-        class="absolute z-50 mt-2 w-full rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+        class="absolute left-0 top-full z-50 mt-2 w-full rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
         <input data-slot="combobox-input" x-bind="input" type="text" autocomplete="off"
             x-ref="input"
             placeholder="Search..."

@@ -235,6 +235,7 @@ describe('combobox', function () {
         expect($html)
             ->toContain('x-show="open"')
             ->toContain('x-trap.noscroll="open"')
+            ->toContain('x-anchor.bottom-start.offset.2')
             ->toContain('x-transition');
     });
 });
@@ -474,6 +475,12 @@ describe('date picker', function () {
 
     it('renders a trigger button', function () {
         expect(renderComponent('date-picker'))->toContain('x-bind="trigger"');
+    });
+
+    it('anchors the calendar to its trigger', function () {
+        expect(renderComponent('date-picker'))
+            ->toContain('x-anchor.bottom-start.offset.3')
+            ->toContain('absolute left-0 top-full');
     });
 
     it('submits its value through a hidden input', function () {

@@ -1179,8 +1179,10 @@
         return "track";
       },
       ["x-bind:style"]() {
-        const property = this.orientation === "vertical" ? "translateY" : "translateX";
-        return `transform: ${property}(-${this.current * 100}%);`;
+        const isVertical = this.orientation === "vertical";
+        const property = isVertical ? "translateY" : "translateX";
+        const step = isVertical && this.count ? 100 / this.count : 100;
+        return `transform: ${property}(-${this.current * step}%);`;
       }
     },
     previous: {
@@ -1554,6 +1556,9 @@
     content: {
       [":data-state"]() {
         return this.open ? "open" : "closed";
+      },
+      ["x-anchor.bottom-start.offset.2"]() {
+        return this.$refs.trigger;
       },
       [":id"]() {
         return this.$id("combobox") + "-content";
