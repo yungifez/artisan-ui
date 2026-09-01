@@ -1,0 +1,162 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version number, for example 1.0.19
+        required: true
+        type: string
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    name: Validate release version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate version and tag
+        id: version
+        env:
+          VERSION_INPUT: ${{ inputs.version }}
+        run: |
+          version="${VERSION_INPUT#v}"
+
+          if [[ ! "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Version must use semantic versioning, for example 1.0.19."
+            exit 1
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/v${version}" >/dev/null 2>&1; then
+            echo "Tag v${version} already exists."
+            exit 1
+          fi
+
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+  build-assets:
+    name: Build and test JavaScript assets
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Build JavaScript and CSS assets
+        run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser tests
+        run: npm run test:browser -- --workers=1
+
+      - name: Upload built assets
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-assets
+          path: dist
+          if-no-files-found: error
+
+  test-php:
+    name: Run PHP tests
+    needs: [validate, build-assets]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Download built assets
+        uses: actions/download-artifact@v8
+        with:
+          name: release-assets
+          path: dist
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Run tests
+        run: php vendor/bin/pest --ci --no-coverage
+
+  release:
+    name: Create GitHub release
+    needs: [validate, build-assets, test-php]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Download built assets
+        uses: actions/download-artifact@v8
+        with:
+          name: release-assets
+          path: dist
+
+      - name: Commit generated assets
+        env:
+          VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          if git diff --quiet -- dist; then
+            echo "Generated assets are already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dist
+          git commit -m "Build package assets for v${VERSION}"
+          git push origin HEAD:main
+
+      - name: Create tag and GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/v${VERSION}" >/dev/null 2>&1; then
+            echo "Tag v${VERSION} already exists."
+            exit 1
+          fi
+
+          git fetch origin main --tags
+          git tag -a "v${VERSION}" "origin/main" -m "Release v${VERSION}"
+          git push origin "v${VERSION}"
+          gh release create "v${VERSION}" \
+            --target origin/main \
+            --title "v${VERSION}" \
+            --generate-notes
