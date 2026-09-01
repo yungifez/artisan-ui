@@ -51,4 +51,8 @@ Keep each pull request focused. Add tests for behavior changes and include Larav
 
 Pushes to `main` run Release Please. It opens or updates a release pull request with the next version and changelog. After the release pull request passes the normal checks and is merged, Release Please creates the semantic version tag and GitHub release.
 
-The manual `Release` workflow remains available for recovery releases. Do not run it while a Release Please pull request is pending for the same changes. The docs site then updates its package constraint and receives the matching release tag.
+Release Please reads Conventional Commit types. A `fix:` commit creates a patch release. A `feat:` commit creates a minor release. A `feat!:` commit creates a major release. Other commit types do not create a release bump.
+
+Use the manual `Release` workflow only for recovery releases. Do not run it while a Release Please pull request is pending for the same changes. Do not edit the package version, tag, or changelog by hand during a normal release.
+
+After the GitHub release is created, Dependabot updates the docs site package constraint and lock file. Review the docs examples before merging that update.
