@@ -141,6 +141,11 @@ export default (value = '', disabled = false) => ({
         [':id']() {
             return this.$id('combobox') + '-option-' + encodeURIComponent(this.$el.dataset.value);
         },
+        ['@mouseenter']() {
+            if (this.$el.dataset.disabled !== 'true') {
+                this.focusedOption = this.$el;
+            }
+        },
         ['@click']() {
             if (this.$el.dataset.disabled !== 'true') {
                 this.select(this.$el.dataset.value);

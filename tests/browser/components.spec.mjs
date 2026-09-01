@@ -97,6 +97,19 @@ test('combobox filters options and commits the selected value', async ({ page })
     await expect.poll(() => page.locator('#preferences').evaluate((element) => Alpine.$data(element).value)).toBe('livewire');
 });
 
+test('combobox hover moves the active option', async ({ page }) => {
+    await page.locator('[data-test="combobox-trigger"]').click();
+
+    const firstOption = page.locator('[data-value="laravel"]');
+    const secondOption = page.locator('[data-value="livewire"]');
+
+    await expect(firstOption).toHaveAttribute('data-active', 'true');
+    await secondOption.hover();
+    await expect(firstOption).not.toHaveAttribute('data-active');
+    await expect(secondOption).toHaveAttribute('data-active', 'true');
+    await expect(page.locator('[data-test="combobox-input"]')).toHaveAttribute('aria-activedescendant', /option-livewire/);
+});
+
 test('combobox keyboard navigation selects an option and submits its value', async ({ page }) => {
     const trigger = page.locator('[data-test="combobox-trigger"]');
 
