@@ -12,7 +12,7 @@ function mcpServer(): Server
 /**
  * Run the same newline-delimited protocol used by the Artisan command.
  *
- * @param list<array<string, mixed>|string> $requests
+ * @param  list<array<string, mixed>|string>  $requests
  * @return list<array<string, mixed>>
  */
 function runMcpProtocol(array $requests, ?Server $server = null): array
