@@ -25,6 +25,10 @@ describe('registration', function () {
         expect(view()->getFinder()->getHints())->toHaveKey('april');
     });
 
+    it('registers the MCP installation command', function () {
+        expect(Artisan::all())->toHaveKey('april:mcp:install');
+    });
+
     it('registers the asset routes', function () {
         expect(Route::has('april-ui.april.js'))->toBeTrue()
             ->and(Route::has('april-ui.editor.js'))->toBeTrue();

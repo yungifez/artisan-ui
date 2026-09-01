@@ -42,6 +42,9 @@ to publish every component.
 Run `php artisan april:mcp` as a local MCP server. It exposes component listing, search, source resources, and
 vendor-path publishing over newline-delimited JSON-RPC.
 
+Use `php artisan april:mcp:install` to add the server to the project's `.mcp.json` beside Laravel Boost. The command
+is safe to run more than once. Pass `--config=path/to/mcp.json` to update another MCP client configuration.
+
 ## Official website
 
 You can find the official docs on the [April UI website](https://aprilui.dev).

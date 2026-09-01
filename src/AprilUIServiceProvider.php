@@ -11,6 +11,7 @@ use TalesFromADev\TailwindMerge\TailwindMergeInterface;
 use Yungifez\AprilUI\Console\Commands\DoctorCommand;
 use Yungifez\AprilUI\Console\Commands\ListCommand;
 use Yungifez\AprilUI\Console\Commands\McpCommand;
+use Yungifez\AprilUI\Console\Commands\McpInstallCommand;
 use Yungifez\AprilUI\Console\Commands\PublishCommand;
 use Yungifez\AprilUI\Console\Commands\UpdateCommand;
 use Yungifez\AprilUI\Handlers\FrontendAssetsHandler;
@@ -66,6 +67,7 @@ class AprilUIServiceProvider extends PackageServiceProvider
                 UpdateCommand::class,
                 DoctorCommand::class,
                 McpCommand::class,
+                McpInstallCommand::class,
             ]);
         }
     }

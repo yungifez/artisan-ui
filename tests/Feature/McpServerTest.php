@@ -240,3 +240,66 @@ describe('the April UI MCP server', function () {
         }
     });
 });
+
+describe('the April UI MCP installer', function () {
+    it('adds April UI to an existing MCP configuration', function () {
+        $relativePath = '.mcp-test-'.uniqid('', true).'.json';
+        $path = base_path($relativePath);
+
+        File::put($path, json_encode([
+            'mcpServers' => [
+                'laravel-boost' => [
+                    'command' => 'php',
+                    'args' => ['artisan', 'boost:mcp'],
+                ],
+            ],
+        ], JSON_PRETTY_PRINT));
+
+        try {
+            expect(Artisan::call('april:mcp:install', ['--config' => $relativePath]))->toBe(0);
+
+            $configuration = json_decode((string) File::get($path), true);
+
+            expect($configuration['mcpServers'])->toHaveKeys(['laravel-boost', 'april-ui'])
+                ->and($configuration['mcpServers']['laravel-boost']['args'])->toBe(['artisan', 'boost:mcp'])
+                ->and($configuration['mcpServers']['april-ui']['args'])->toBe(['artisan', 'april:mcp']);
+        } finally {
+            File::delete($path);
+        }
+    });
+
+    it('does not overwrite an existing April UI definition without force', function () {
+        $relativePath = '.mcp-test-'.uniqid('', true).'.json';
+        $path = base_path($relativePath);
+        $existing = [
+            'mcpServers' => [
+                'april-ui' => [
+                    'command' => 'custom-april',
+                    'args' => [],
+                ],
+            ],
+        ];
+
+        File::put($path, json_encode($existing, JSON_PRETTY_PRINT));
+
+        try {
+            expect(Artisan::call('april:mcp:install', ['--config' => $relativePath]))->toBe(0)
+                ->and(json_decode((string) File::get($path), true))->toBe($existing);
+        } finally {
+            File::delete($path);
+        }
+    });
+
+    it('rejects invalid MCP configuration JSON', function () {
+        $relativePath = '.mcp-test-'.uniqid('', true).'.json';
+        $path = base_path($relativePath);
+
+        File::put($path, '{invalid');
+
+        try {
+            expect(Artisan::call('april:mcp:install', ['--config' => $relativePath]))->not->toBe(0);
+        } finally {
+            File::delete($path);
+        }
+    });
+});

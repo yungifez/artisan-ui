@@ -18,20 +18,20 @@ To install this project, you need:
 
 To set up the project:
 
-<ul class="flex flex-col gap-5">
-    <li>
+<ul class="flex min-w-0 max-w-full flex-col gap-5">
+    <li class="min-w-0 max-w-full wrap-break-word">
         Install the package using Composer
         <x-code-block-wrapper language="bash">
             composer require yungifez/april-ui
         </x-code-block-wrapper>
     </li>
-    <li>
+    <li class="min-w-0 max-w-full wrap-break-word">
     In your CSS file, import the project's CSS file
     <x-code-block-wrapper title="app.css" language="css">
         @import "../../vendor/yungifez/april-ui/resources/css/april.css";
     </x-code-block-wrapper>
     </li>
-    <li>
+    <li class="min-w-0 max-w-full wrap-break-word">
     In your JS file, import the project's Javascript file
     <x-code-block-wrapper title="app.js" language="js">
         import '/vendor/yungifez/april-ui/dist/april.js'
@@ -43,7 +43,7 @@ To set up the project:
         @endverbatim
     </x-code-block-wrapper>
     </li>
-    <li>
+    <li class="min-w-0 max-w-full wrap-break-word">
     Test the setup was successful
     <x-code-block-wrapper title="index.blade.php" language="blade">
         @verbatim
@@ -142,8 +142,16 @@ document.addEventListener('alpine:init', () => {
 
 ## MCP server
 
-April UI includes a small local MCP server for component discovery and publishing. Start it over standard input and
-output when your MCP client launches it:
+April UI includes a local MCP server for component discovery and publishing. Add it to the project's MCP client
+configuration with:
+
+<x-code-block-wrapper language="bash">
+    php artisan april:mcp:install
+</x-code-block-wrapper>
+
+The installer adds an `april-ui` server to `.mcp.json` and preserves an existing `laravel-boost` server. You can
+pass `--config=path/to/mcp.json` when your client stores its configuration elsewhere. The generated server entry
+starts April UI over standard input and output:
 
 <x-code-block-wrapper language="json">
 {
