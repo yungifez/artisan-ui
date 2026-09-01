@@ -129,4 +129,12 @@ describe('pages', function () {
             ->not->toContain('tailwind-merge-laravel')
             ->not->toContain('tailwind-merge-php.git');
     });
+
+    it('uses markdown-safe links in the introduction callout', function () {
+        expect(file_get_contents(docsPath('pages/1.x/index.blade.md')))
+            ->toContain('[installation guide](/docs/1.x/installation)')
+            ->toContain('[starter kits](/docs/1.x/starter-kits)')
+            ->toContain('[blocks](/blocks)')
+            ->not->toContain('[installation guide]({{url(');
+    });
 });
