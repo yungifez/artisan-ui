@@ -19,7 +19,7 @@
     <button type="button" data-slot="combobox-trigger" x-bind="trigger"
         x-ref="trigger"
         class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-        <span class="truncate" x-text="selectedLabel() || @js($placeholder)"></span>
+        <span class="truncate" x-text="selectedLabelText || @js($placeholder)"></span>
         <span aria-hidden="true" class="ml-2 text-muted-foreground">⌄</span>
     </button>
     @endisset

@@ -1458,6 +1458,7 @@ var collapsible_default = (open = false, disabled = false) => ({
 var combobox_default = (value = "", disabled = false) => ({
   keyword: "",
   value,
+  selectedLabelText: "",
   get selectedValue() {
     return this.value;
   },
@@ -1603,7 +1604,13 @@ var combobox_default = (value = "", disabled = false) => ({
     }
   },
   init() {
-    this.$watch("value", () => this.$nextTick(() => this.focusedOption = null));
+    this.$nextTick(() => {
+      this.selectedLabelText = this.selectedLabel();
+    });
+    this.$watch("value", () => this.$nextTick(() => {
+      this.focusedOption = null;
+      this.selectedLabelText = this.selectedLabel();
+    }));
   },
   matches(option) {
     const label = option.textContent ?? option.innerText ?? "";
@@ -1631,6 +1638,7 @@ var combobox_default = (value = "", disabled = false) => ({
   },
   select(value2) {
     this.value = value2;
+    this.selectedLabelText = this.selectedLabel();
     const detail = { value: value2 };
     this.$dispatch("value-change", detail);
     this.$dispatch("change", detail);

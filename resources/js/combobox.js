@@ -1,6 +1,7 @@
 export default (value = '', disabled = false) => ({
     keyword: '',
     value,
+    selectedLabelText: '',
     get selectedValue() {
         return this.value;
     },
@@ -147,7 +148,14 @@ export default (value = '', disabled = false) => ({
         },
     },
     init() {
-        this.$watch('value', () => this.$nextTick(() => this.focusedOption = null));
+        this.$nextTick(() => {
+            this.selectedLabelText = this.selectedLabel();
+        });
+
+        this.$watch('value', () => this.$nextTick(() => {
+            this.focusedOption = null;
+            this.selectedLabelText = this.selectedLabel();
+        }));
     },
     matches(option) {
         const label = option.textContent ?? option.innerText ?? '';
@@ -180,6 +188,7 @@ export default (value = '', disabled = false) => ({
     },
     select(value) {
         this.value = value;
+        this.selectedLabelText = this.selectedLabel();
         const detail = { value };
 
         this.$dispatch('value-change', detail);
