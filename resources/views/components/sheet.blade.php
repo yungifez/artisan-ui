@@ -3,7 +3,7 @@
 $class = "fixed z-50 gap-4 bg-background p-6 shadow-lg";
 
 if (isset($content)){
-$class .= match($content->attributes->get("side")){
+$class .= ' '.match($content->attributes->get("side")){
 default => "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
 'top' => "inset-x-0 w-full top-0 border-b",
 'bottom' => "inset-x-0 bottom-0 border-t",
