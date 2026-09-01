@@ -51,10 +51,16 @@ export default class Matcher {
 
     createDateWithoutTime(value) {
         if (value == null || value === '') return null
-        let date = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)
-            ? new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10)))
-            : new Date(value)
-        date.setHours(0,0,0,0);
+        let date
+        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+            date = new Date(value)
+            date.setHours(0, 0, 0, 0)
+        } else if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+            date = new Date(Number(value.slice(0, 4)), Number(value.slice(5, 7)) - 1, Number(value.slice(8, 10)))
+        } else {
+            date = new Date(value)
+            date.setHours(0, 0, 0, 0)
+        }
 
         return Number.isNaN(date.getTime()) ? null : date;
     }

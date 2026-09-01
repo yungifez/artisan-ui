@@ -83,7 +83,7 @@ describe('carousel items and chart bars', function () {
     it('renders a labelled carousel region with its controls', function () {
         $html = render('<april:carousel label="Featured"><april:carousel-item>Slide</april:carousel-item></april:carousel>');
 
-        expect($html)->toContain('role="region"', 'aria-roledescription="carousel"', 'aria-label="Featured"', 'Slide');
+        expect($html)->toContain('role="region"', 'aria-roledescription="carousel"', 'aria-label="Featured"', 'data-slot="carousel-viewport"', 'h-full', 'Slide');
     });
 
     it('marks carousel items as slides', function () {

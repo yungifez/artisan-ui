@@ -104,6 +104,8 @@ Use `min` and `max` to constrain the length of the selected range:
 
 Pass an array of matcher objects to `disabled`. A `dates` matcher disables exact dates, `before`/`after` disables a range (the boundary itself remains enabled), and `dayOfWeek` accepts a number or an array from `0` (Sunday) to `6` (Saturday).
 
+Laravel serializes `now()` on the server. April converts ISO timestamps to the visitor's local calendar date in the browser, so a date-only rule such as `now()` follows the user's local day. If your application stores a timezone per user, apply it before building the value, for example `now()->setTimezone($user->timezone)`.
+
 <x-component-preview component="previews.calendar-disabled-dates-demo"></x-component-preview>
 <x-component-preview component="previews.calendar-disabled-range-demo"></x-component-preview>
 <x-component-preview component="previews.calendar-disabled-day-of-week-demo"></x-component-preview>

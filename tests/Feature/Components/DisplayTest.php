@@ -250,6 +250,16 @@ describe('avatar', function () {
         expect(classesOf(renderComponent('avatar')))->toContain('h-10');
     });
 
+    it('keeps images inside the avatar bounds', function () {
+        $html = render('<april:avatar><x-slot:image src="/me.png"></x-slot:image></april:avatar>');
+
+        expect(classesOf($html))
+            ->toContain('shrink-0')
+            ->toContain('min-w-0')
+            ->toContain('overflow-hidden');
+        expect($html)->toContain('size-full')->toContain('object-cover');
+    });
+
     it('renders the image slot', function () {
         $html = render('<april:avatar><x-slot:image src="/me.png"></x-slot:image></april:avatar>');
 
@@ -411,6 +421,12 @@ describe('banner', function () {
 
     it('positions itself at the bottom on request', function () {
         expect(classesOf(renderComponent('banner', 'position="bottom"')))->toContain('bottom-0');
+    });
+
+    it('keeps an unpositioned banner in the normal flow', function () {
+        expect(classesOf(renderComponent('banner', 'position="none"')))
+            ->toContain('relative')
+            ->not->toContain('fixed');
     });
 
     it('shows a dismiss trigger on request', function () {

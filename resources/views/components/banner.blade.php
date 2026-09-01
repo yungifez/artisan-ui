@@ -12,10 +12,10 @@
 
 @php
 $positionClass = $positionClass ?? match($position){
-'top' => 'top-0 left-0 border-b',
-'bottom' => 'bottom-0 left-0 border-t',
-default => 'top-0 left-0 border-b',
-'none' => '',
+'top' => 'fixed top-0 left-0 border-b',
+'bottom' => 'fixed bottom-0 left-0 border-t',
+'none' => 'relative',
+default => 'fixed top-0 left-0 border-b',
 };
 $transitionEnterStart .= match($position){
 'top' => '-translate-y-10',
@@ -44,8 +44,8 @@ default => '-translate-y-10',
 @endphp
 
 <div data-slot="banner" data-state="closed" x-data="banner({{$displayAfter}},'{{$transitionEnterStart}}','{{$transitionEnterEnd}}','{{$transitionLeaveStart}}','{{$transitionLeaveEnd}}')"
-    x-bind="root" {{$attributes->twMerge(["$positionClass bg-background p-3 flex items-center fixed z-20 w-full
-    h-autoduration-300 ease-out shadow-sm "])}}
+    x-bind="root" {{$attributes->twMerge(["$positionClass bg-background p-3 flex items-center z-20 w-full
+    h-auto duration-300 ease-out shadow-sm "])}}
     >
     @isset($body)
     <div {{$body->attributes->twMerge(["w-full h-full min-h-full px-3 mx-auto max-w-7xl "])}}>
