@@ -69,6 +69,8 @@ The component pages show the rendered result, the Blade source, available option
     <a href="{{url('docs/1.x/components/sidebar')}}" class="rounded-lg border bg-background p-4 no-underline transition-colors hover:bg-muted/30"><p class="font-medium text-foreground">Application structure</p><p class="mt-1 text-sm leading-6 text-muted-foreground">Sidebars, cards, navigation, tabs, steps, banners, and the pieces that shape a product surface.</p></a>
 </div>
 
-<x-callout title="Choose your starting point">
+<x-callout>
+    **Choose your starting point**
+
     Use the [installation guide]({{url('docs/1.x/installation')}}) for an existing application, or use the [starter kits]({{url('docs/1.x/starter-kits')}}) when you want a working Laravel shell with April UI already in place. You can also browse the [blocks]({{url('blocks')}}) for larger compositions.
 </x-callout>
