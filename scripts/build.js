@@ -8,7 +8,7 @@ build({
     outfile: `dist/april.js`,
     bundle: true,
     platform: 'browser',
-    define: { CDN: true },
+    define: { CDN: 'true' },
 })
 
 build({
@@ -16,7 +16,7 @@ build({
     outfile: `dist/april.css`,
     bundle: true,
     platform: 'browser',
-    define: { CDN: true },
+    define: { CDN: 'true' },
 })
 
 build({
@@ -25,7 +25,7 @@ build({
     outfile: `dist/april.esm.js`,
     bundle: true,
     platform: 'browser',
-    define: { CDN: true },
+    define: { CDN: 'true' },
 })
 
 build({
@@ -34,7 +34,7 @@ build({
     outfile: `dist/april.esm.css`,
     bundle: true,
     platform: 'browser',
-    define: { CDN: true },
+    define: { CDN: 'true' },
 })
 
 let jsHash = crypto.randomBytes(4).toString('hex');
@@ -52,7 +52,7 @@ build({
     bundle: true,
     minify: true,
     platform: 'browser',
-    define: { CDN: true },
+    define: { CDN: 'true' },
 }).then(() => {
     outputSize(`dist/april.min.js`)
 })
@@ -65,7 +65,7 @@ build({
     bundle: true,
     minify: true,
     platform: 'browser',
-    define: { CDN: true },
+    define: { CDN: 'true' },
 }).then(() => {
     outputSize(`dist/april.min.css`)
 })
@@ -76,11 +76,17 @@ function build(options) {
     // options.define['LIVEWIRE_VERSION'] = `'${getFromPackageDotJson('alpinejs', 'version')}'`
     options.define['process.env.NODE_ENV'] = process.argv.includes('--watch') ? `'production'` : `'development'`
 
-    return require('esbuild').build({
-        watch: process.argv.includes('--watch'),
+    const esbuild = require('esbuild')
+    const buildOptions = {
         // external: ['alpinejs'],
         ...options,
-    }).catch(() => process.exit(1))
+    }
+
+    const result = process.argv.includes('--watch')
+        ? esbuild.context(buildOptions).then((context) => context.watch())
+        : esbuild.build(buildOptions)
+
+    return result.catch(() => process.exit(1))
 }
 function outputSize(file) {
     let size = bytesToSize(brotliSize.sync(fs.readFileSync(file)))

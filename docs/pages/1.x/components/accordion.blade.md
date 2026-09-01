@@ -7,7 +7,7 @@ description: A vertically stacked set of interactive headings that each reveal a
 
 When `type` attribute is set to `single`, the collapsible attribute allows the currently opened accordion item to be closed
 
-When the `type` attribute is set to multiple, multiple items can be opened at once. 
+When the `type` attribute is set to multiple, multiple items can be opened at once.
 
 <x-component-preview component="previews.accordion-multiple-demo"></x-component-preview>
 

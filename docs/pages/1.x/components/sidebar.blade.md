@@ -200,7 +200,7 @@ touching the markup:
 }
 </x-code-block-wrapper>
 
-See [Data attributes](/docs/0.x/data-attributes) for the full list.
+See [Data attributes](/docs/1.x/data-attributes) for the full list.
 
 <x-publish-command :views="[
     'sidebar-layout',

@@ -1,4 +1,4 @@
-<april:native-select class="w-72">
+<april:native-select class="w-72" aria-label="Fruit">
     <option value="apple">Apple</option>
     <option value="banana">Banana</option>
     <option value="blueberry">Blueberry</option>

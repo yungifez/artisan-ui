@@ -1,7 +1,7 @@
 ---
 view: components.docs-layout
 title: Popover
-description: Displays rich content in a portal, triggered by a button. 
+description: Displays rich content in a portal, triggered by a button.
 ---
 
 <x-component-preview component="previews.popover-demo"></x-component-preview>

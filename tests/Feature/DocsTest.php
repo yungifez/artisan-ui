@@ -42,7 +42,7 @@ function documentedComponents(): array
 {
     $names = array_map(
         fn (string $file): string => basename($file, '.blade.md'),
-        glob(docsPath('pages/0.x/components').'/*.blade.md')
+        glob(docsPath('pages/1.x/components').'/*.blade.md')
     );
 
     sort($names);
@@ -92,12 +92,12 @@ describe('pages', function () {
     })->with(fn () => documentedComponents());
 
     it('starts every page with front matter', function (string $page) {
-        expect(file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")))
+        expect(file_get_contents(docsPath("pages/1.x/components/{$page}.blade.md")))
             ->toStartWith("---\nview: components.docs-layout");
     })->with(fn () => documentedComponents());
 
     it('gives every page a title and a description', function (string $page) {
-        expect(file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")))
+        expect(file_get_contents(docsPath("pages/1.x/components/{$page}.blade.md")))
             ->toContain('title:')
             ->toContain('description:');
     })->with(fn () => documentedComponents());
@@ -105,7 +105,7 @@ describe('pages', function () {
     it('only points at previews that exist', function (string $page) {
         preg_match_all(
             '/component="previews\.([a-z0-9-]+)"/',
-            file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")),
+            file_get_contents(docsPath("pages/1.x/components/{$page}.blade.md")),
             $matches
         );
 
@@ -116,7 +116,7 @@ describe('pages', function () {
     it('only offers publish tags that exist', function (string $page) {
         preg_match_all(
             "/'([a-z0-9-]+)'/",
-            (string) strstr(file_get_contents(docsPath("pages/0.x/components/{$page}.blade.md")), '<x-publish-command'),
+            (string) strstr(file_get_contents(docsPath("pages/1.x/components/{$page}.blade.md")), '<x-publish-command'),
             $matches
         );
 
@@ -125,7 +125,7 @@ describe('pages', function () {
     })->with(fn () => documentedComponents());
 
     it('does not tell people to add the old tailwind merge fork', function () {
-        expect(file_get_contents(docsPath('pages/0.x/installation.blade.md')))
+        expect(file_get_contents(docsPath('pages/1.x/installation.blade.md')))
             ->not->toContain('tailwind-merge-laravel')
             ->not->toContain('tailwind-merge-php.git');
     });

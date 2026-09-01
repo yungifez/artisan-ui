@@ -3,6 +3,12 @@
 April UI is a Laravel Blade component library with Tailwind CSS and Alpine JS. It keeps the Laravel component workflow:
 use package views by default and publish application overrides only when you need to change markup.
 
+## Requirements
+
+- PHP 8.3 or newer
+- Laravel 12 or Laravel 13
+- Tailwind CSS 4 when using the package stylesheet
+
 ## Install
 
 ```sh
@@ -36,6 +42,10 @@ vendor-path publishing over newline-delimited JSON-RPC.
 ## Official website
 
 You can find the official docs on the [April UI website](https://aprilui.dev).
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Livewire data tables
 

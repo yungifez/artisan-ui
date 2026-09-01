@@ -7,7 +7,7 @@
         <april:breadcrumb-elipsis />
         <april:breadcrumb-separator />
         <april:breadcrumb-item>
-            <april:breadcrumb-link href="/docs/0.x/components/accordion">Components</april:breadcrumb-link>
+            <april:breadcrumb-link href="/docs/1.x/components/accordion">Components</april:breadcrumb-link>
         </april:breadcrumb-item>
         <april:breadcrumb-separator />
         <april:breadcrumb-item>

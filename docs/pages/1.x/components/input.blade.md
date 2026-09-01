@@ -1,7 +1,7 @@
 ---
 view: components.docs-layout
 title: Input
-description: Displays a form input field or a component that looks like an input field. 
+description: Displays a form input field or a component that looks like an input field.
 ---
 
 <x-component-preview component="previews.input-demo"></x-component-preview>

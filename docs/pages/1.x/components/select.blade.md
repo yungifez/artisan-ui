@@ -1,7 +1,7 @@
 ---
 view: components.docs-layout
 title: Select
-description: Displays a list of options for the user to pick from—triggered by a button. 
+description: Displays a list of options for the user to pick from—triggered by a button.
 ---
 
 <x-component-preview component="previews.select-demo"></x-component-preview>
