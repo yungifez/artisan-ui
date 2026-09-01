@@ -7,7 +7,7 @@ $isChoiceInput = $isChoiceInput ?? in_array($type, ['checkbox', 'radio']);
 "flex ring-offset-background disabled:cursor-not-allowed
 disabled:opacity-50 border",
 
-"text-sm bg-background h-10 px-3 py-2 file:border-0 file:bg-transparent file:text-sm file:text-foreground
+"text-sm bg-background h-10 w-full px-3 py-2 file:border-0 file:bg-transparent file:text-sm file:text-foreground
 file:font-medium
 placeholder:text-muted-foreground
 rounded-md

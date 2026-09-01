@@ -96,6 +96,28 @@ describe('attributes', function () {
         expect(renderComponent('button', 'type="submit"'))->toContain('type="submit"');
     });
 
+    it('renders april tags with conditional attributes', function () {
+        $template = <<<'BLADE'
+<april:input
+    @if ($withPlaceholder) placeholder="you@example.com" @endif
+    @if ($withAutocomplete) autocomplete="email" @endif
+    data-testid="email"
+/>
+BLADE;
+
+        $html = render($template, [
+            'withPlaceholder' => true,
+            'withAutocomplete' => false,
+        ]);
+
+        expect($html)
+            ->toContain('<input')
+            ->toContain('placeholder="you@example.com"')
+            ->toContain('data-testid="email"')
+            ->not->toContain('autocomplete="email"')
+            ->not->toContain('@if');
+    });
+
     it('escapes an attribute value', function () {
         expect(renderComponent('label', 'title="a &quot; b"'))->not->toContain('title="a " b"');
     });
