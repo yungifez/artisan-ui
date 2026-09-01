@@ -128,7 +128,17 @@ document.addEventListener('alpine:init', () => {
 })
 </x-code-block-wrapper>
 
-The default April UI bundle includes both entry points and keeps the existing `window.April` API.
+    The core bundle does not include the optional rich text editor. Add `@aprilEditorScripts` only to layouts that
+    render `<april:editor>`:
+
+    <x-code-block-wrapper title="layout.blade.php" language="blade">
+        @verbatim
+            @aprilScripts
+            @aprilEditorScripts
+        @endverbatim
+    </x-code-block-wrapper>
+
+    This keeps TipTap and its editor extensions out of pages that do not use the editor.
 
 ## MCP server
 

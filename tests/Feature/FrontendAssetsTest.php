@@ -5,16 +5,16 @@ use Illuminate\Support\Facades\Route;
 describe('asset routes', function () {
     it('registers a named route', function (string $name) {
         expect(Route::has("april-ui.{$name}"))->toBeTrue();
-    })->with(['april.js', 'april.min.js', 'april.css', 'april.min.css']);
+    })->with(['april.js', 'april.min.js', 'editor.js', 'editor.min.js', 'april.css', 'april.min.css']);
 
     it('serves the file', function (string $name) {
         $this->get(route("april-ui.{$name}"))->assertOk();
-    })->with(['april.js', 'april.min.js', 'april.css', 'april.min.css']);
+    })->with(['april.js', 'april.min.js', 'editor.js', 'editor.min.js', 'april.css', 'april.min.css']);
 
     it('serves javascript with a javascript content type', function (string $name) {
         $this->get(route("april-ui.{$name}"))
             ->assertHeader('Content-Type', 'text/javascript; charset=utf-8');
-    })->with(['april.js', 'april.min.js']);
+    })->with(['april.js', 'april.min.js', 'editor.js', 'editor.min.js']);
 
     it('serves css with a css content type', function (string $name) {
         $this->get(route("april-ui.{$name}"))
@@ -42,7 +42,7 @@ describe('asset routes', function () {
 
     it('uses the april-ui url prefix', function (string $name) {
         expect(route("april-ui.{$name}", absolute: false))->toBe("/april-ui/{$name}");
-    })->with(['april.js', 'april.min.js', 'april.css', 'april.min.css']);
+    })->with(['april.js', 'april.min.js', 'editor.js', 'editor.min.js', 'april.css', 'april.min.css']);
 });
 
 describe('the aprilStyles directive', function () {
@@ -94,5 +94,20 @@ describe('the aprilScripts directive', function () {
         $html = render('@aprilStyles @aprilScripts');
 
         expect($html)->toContain('<link')->toContain('<script');
+    });
+});
+
+describe('the aprilEditorScripts directive', function () {
+    it('links the optional editor bundle', function () {
+        expect(render('@aprilEditorScripts'))
+            ->toContain('<script src=')
+            ->toContain('/april-ui/editor.min.js');
+    });
+
+    it('adds the editor manifest hash as a cache buster', function () {
+        clearCompiledViews();
+        $manifest = json_decode(file_get_contents(__DIR__.'/../../dist/manifest.json'), true);
+
+        expect(render(' @aprilEditorScripts'))->toContain('?ver='.$manifest['/editor.js']);
     });
 });

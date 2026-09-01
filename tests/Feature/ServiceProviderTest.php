@@ -26,7 +26,8 @@ describe('registration', function () {
     });
 
     it('registers the asset routes', function () {
-        expect(Route::has('april-ui.april.js'))->toBeTrue();
+        expect(Route::has('april-ui.april.js'))->toBeTrue()
+            ->and(Route::has('april-ui.editor.js'))->toBeTrue();
     });
 
     it('registers the blade precompiler', function () {

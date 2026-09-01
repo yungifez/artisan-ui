@@ -15,7 +15,7 @@ $toInputName = $toName ?? ($name !== '' ? $name."['to']" : null);
 @endphp
 <div data-slot="date-picker" data-state="{{$open ? 'open' : 'closed'}}" x-ref="datePickerInput" x-modelable="value"
     x-data='datePicker(@json($open), @json($value), @json($mode), @json($format))' x-bind="root" {{$attributes->
-    class(['relative'])}}>
+    except('x-teleport')->class(['relative'])}}>
     <april:button class="justify-start min-h-10 w-full h-fit text-left flex-wrap font-normal" type="button"
         x-bind="trigger" variant="outline">
         <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,8 +62,14 @@ $toInputName = $toName ?? ($name !== '' ? $name."['to']" : null);
             </span>
         </template>
     </april:button>
+    @if ($attributes->has('x-teleport'))
+    <template x-teleport="{{$attributes->get('x-teleport')}}">
+    @endif
     <div x-bind="calendar" x-cloak class="absolute left-0 top-full z-10 mt-3 w-max max-w-full">
         <april:calendar :required="$required" :mode="$mode" :selected="$value" x-model="value"
             tabindex="0" class="outline-none" />
     </div>
+    @if ($attributes->has('x-teleport'))
+    </template>
+    @endif
 </div>

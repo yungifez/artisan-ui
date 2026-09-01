@@ -21,6 +21,9 @@ Add `@aprilStyles` and `@aprilScripts` to your layout, then use the components:
 <april:button>Save changes</april:button>
 ```
 
+The rich text editor is optional. Add `@aprilEditorScripts` only to layouts that render `<april:editor>` so the TipTap
+editor bundle is not loaded for the rest of the application.
+
 April UI keeps components in `vendor/` by default. Use the package commands when you need more control:
 
 ```sh

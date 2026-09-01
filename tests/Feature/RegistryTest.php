@@ -133,6 +133,7 @@ describe('alpine behaviours', function () {
     function registeredAlpineComponents(): array
     {
         $source = file_get_contents(__DIR__.'/../../resources/js/components.js');
+        $source .= file_get_contents(__DIR__.'/../../resources/js/editor-entry.js');
 
         preg_match_all("/^import\s+([a-zA-Z][a-zA-Z0-9_]*)\s+from\s+'\.\/[^']+\.js';/m", $source, $matches);
 
@@ -182,6 +183,7 @@ describe('alpine behaviours', function () {
 
     it('imports every source file in the entry point', function () {
         $source = file_get_contents(__DIR__.'/../../resources/js/components.js');
+        $source .= file_get_contents(__DIR__.'/../../resources/js/editor-entry.js');
 
         foreach (registeredAlpineComponents() as $name) {
             expect($source)->toContain("import {$name} from './{$name}.js'");
@@ -192,20 +194,21 @@ describe('alpine behaviours', function () {
 describe('built assets', function () {
     it('ships every file the routes serve', function (string $file) {
         expect(__DIR__."/../../dist/{$file}")->toBeFile();
-    })->with(['april.js', 'april.min.js', 'april.css', 'april.min.css', 'manifest.json']);
+    })->with(['april.js', 'april.min.js', 'editor.js', 'editor.min.js', 'april.css', 'april.min.css', 'manifest.json']);
 
     it('ships a manifest with a hash for each entry point', function () {
         $manifest = json_decode(file_get_contents(__DIR__.'/../../dist/manifest.json'), true);
 
         expect($manifest)
             ->toBeArray()
-            ->toHaveKeys(['/april.js', '/april.css'])
+            ->toHaveKeys(['/april.js', '/editor.js', '/april.css'])
             ->and($manifest['/april.js'])->toBeString()->not->toBeEmpty()
+            ->and($manifest['/editor.js'])->toBeString()->not->toBeEmpty()
             ->and($manifest['/april.css'])->toBeString()->not->toBeEmpty();
     });
 
     it('builds a smaller minified bundle than the readable one', function (string $name) {
         expect(filesize(__DIR__."/../../dist/{$name}.min.js"))
             ->toBeLessThan(filesize(__DIR__."/../../dist/{$name}.js"));
-    })->with(['april']);
+    })->with(['april', 'editor']);
 });

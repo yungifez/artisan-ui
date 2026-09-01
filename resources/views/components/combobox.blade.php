@@ -7,7 +7,7 @@
 
 <div data-slot="combobox" data-state="closed"
     x-data="combobox(@js($value), @js($disabled))" x-bind="root" x-modelable="value"
-    {{$attributes->twMerge(['relative w-full'])}}>
+    {{$attributes->except('x-teleport')->twMerge(['relative w-full'])}}>
     @if ($name !== '')
     <input type="hidden" name="{{$name}}" x-model="value">
     @endif
@@ -23,7 +23,10 @@
         <span aria-hidden="true" class="ml-2 text-muted-foreground">⌄</span>
     </button>
     @endisset
-    <div data-slot="combobox-content" x-bind="content" x-show="open" x-trap.noscroll="open" x-transition x-cloak
+    @if ($attributes->has('x-teleport'))
+    <template x-teleport="{{$attributes->get('x-teleport')}}">
+    @endif
+    <div data-slot="combobox-content" x-bind="content" x-ref="content" x-show="open" x-trap.noscroll="open" x-transition x-cloak
         class="absolute left-0 top-full z-50 mt-2 w-full rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
         <input data-slot="combobox-input" x-bind="input" type="text" autocomplete="off"
             x-ref="input"
@@ -39,4 +42,7 @@
         </div>
         @endisset
     </div>
+    @if ($attributes->has('x-teleport'))
+    </template>
+    @endif
 </div>

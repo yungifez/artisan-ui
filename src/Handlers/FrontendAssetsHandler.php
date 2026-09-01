@@ -34,5 +34,18 @@ class FrontendAssetsHandler
             return $html;
         });
 
+        Blade::directive('aprilEditorScripts', function () use ($manifestHashes) {
+            $html = '';
+            $manifestHash = $manifestHashes['/editor.js'] ?? '';
+
+            if (config('app.debug') == 'true') {
+                $html = "<?php echo '<script src=\"".route('april-ui.editor.js').'?ver='.$manifestHash."\"></script>' ; ?>";
+            } else {
+                $html = "<?php echo '<script src=\"".route('april-ui.editor.min.js').'?ver='.$manifestHash."\"></script>' ; ?>";
+            }
+
+            return $html;
+        });
+
     }
 }

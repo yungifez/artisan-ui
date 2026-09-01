@@ -81,13 +81,31 @@
 
     <div data-slot="editor-toolbar" role="toolbar" aria-label="Text formatting"
         class="flex flex-wrap items-center gap-1 border-b border-input p-1" x-on:mousedown.prevent>
-        @foreach (['bold' => 'B', 'italic' => 'I', 'strike' => 'S'] as $button => $label)
+        @foreach (['bold', 'italic', 'strike'] as $button)
             @if ($availableButtons[$button])
                 <april:button type="button" variant="ghost" size="sm" aria-label="{{ ucfirst($button) }}"
                     x-on:click="run('{{ $button }}')"
                     x-bind:disabled="!can('{{ $button }}')"
                     x-bind:class="{ 'bg-accent text-accent-foreground': isActive('{{ $button }}') }">
-                    <span class="{{ $button === 'italic' ? 'italic' : ($button === 'strike' ? 'line-through' : 'font-semibold') }}">{{ $label }}</span>
+                    @if ($button === 'bold')
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 4h6a4 4 0 0 1 0 8H6z" />
+                            <path d="M6 12h7a4 4 0 0 1 0 8H6z" />
+                        </svg>
+                    @elseif ($button === 'italic')
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M14 4h6" />
+                            <path d="M4 20h6" />
+                            <path d="m15 4-6 16" />
+                        </svg>
+                    @else
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M6 6h12" />
+                            <path d="M5 12h14" />
+                            <path d="M6 18h12" />
+                            <path d="m5 5 14 14" />
+                        </svg>
+                    @endif
                 </april:button>
             @endif
         @endforeach
@@ -96,16 +114,39 @@
             <april:button type="button" variant="ghost" size="sm" aria-label="Heading"
                 x-on:click="run('heading')"
                 x-bind:class="{ 'bg-accent text-accent-foreground': isActive('heading') }">
-                <span class="font-semibold">H</span>
+                <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M6 4v16" />
+                    <path d="M18 4v16" />
+                    <path d="M6 12h12" />
+                </svg>
             </april:button>
         @endif
 
-        @foreach (['bulletList' => '• List', 'orderedList' => '1. List', 'blockquote' => 'Quote', 'codeBlock' => 'Code'] as $button => $label)
+        @foreach (['bulletList', 'orderedList', 'blockquote', 'codeBlock'] as $button)
             @if ($availableButtons[$button])
-                <april:button type="button" variant="ghost" size="sm" aria-label="{{ $label }}"
+                <april:button type="button" variant="ghost" size="sm" aria-label="{{ $button === 'bulletList' ? 'Bullet list' : ($button === 'orderedList' ? 'Numbered list' : ($button === 'blockquote' ? 'Blockquote' : 'Code block')) }}"
                     x-on:click="run('{{ $button }}')"
                     x-bind:class="{ 'bg-accent text-accent-foreground': isActive('{{ $button }}') }">
-                    {{ $label }}
+                    @if ($button === 'bulletList')
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M9 6h11" /><path d="M9 12h11" /><path d="M9 18h11" />
+                            <path d="M4 6h.01" /><path d="M4 12h.01" /><path d="M4 18h.01" />
+                        </svg>
+                    @elseif ($button === 'orderedList')
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M10 6h10" /><path d="M10 12h10" /><path d="M10 18h10" />
+                            <path d="M4 4h1v4" /><path d="M4 8h2" /><path d="M4 11h1.5a1.5 1.5 0 0 1 0 3H4l2 2H4" />
+                        </svg>
+                    @elseif ($button === 'blockquote')
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 17H5a2 2 0 0 1-2-2v-3a5 5 0 0 1 5-5" />
+                            <path d="M17 17h-2a2 2 0 0 1-2-2v-3a5 5 0 0 1 5-5" />
+                        </svg>
+                    @else
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 5-4 14" />
+                        </svg>
+                    @endif
                 </april:button>
             @endif
         @endforeach
@@ -113,24 +154,35 @@
         @if ($availableButtons['link'])
             <april:button type="button" variant="ghost" size="sm" aria-label="Link"
                 x-on:click="run('link')" x-bind:class="{ 'bg-accent text-accent-foreground': isActive('link') }">
-                Link
+                <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                </svg>
             </april:button>
         @endif
 
         @if ($availableButtons['horizontalRule'])
             <april:button type="button" variant="ghost" size="sm" aria-label="Horizontal rule"
                 x-on:click="run('horizontalRule')">
-                Rule
+                <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 12h16" />
+                </svg>
             </april:button>
         @endif
 
         <span class="mx-1 h-5 w-px bg-border" aria-hidden="true"></span>
 
-        @foreach (['undo' => 'Undo', 'redo' => 'Redo'] as $button => $label)
+        @foreach (['undo', 'redo'] as $button)
             @if ($availableButtons[$button])
-                <april:button type="button" variant="ghost" size="sm" aria-label="{{ $label }}"
+                <april:button type="button" variant="ghost" size="sm" aria-label="{{ ucfirst($button) }}"
                     x-on:click="run('{{ $button }}')" x-bind:disabled="!can('{{ $button }}')">
-                    {{ $label }}
+                    <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        @if ($button === 'undo')
+                            <path d="M9 14 4 9l5-5" /><path d="M4 9h9a7 7 0 0 1 7 7v1" />
+                        @else
+                            <path d="m15 14 5-5-5-5" /><path d="M20 9h-9a7 7 0 0 0-7 7v1" />
+                        @endif
+                    </svg>
                 </april:button>
             @endif
         @endforeach

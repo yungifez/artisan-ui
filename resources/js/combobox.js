@@ -24,7 +24,9 @@ export default (value = '', disabled = false) => ({
             return ['combobox'];
         },
         ['@click.outside']() {
-            this.close();
+            if (! this.$refs.trigger?.contains(this.$event.target) && ! this.$refs.content?.contains(this.$event.target)) {
+                this.close();
+            }
         },
         ['@keydown.escape']() {
             this.close();
@@ -151,11 +153,14 @@ export default (value = '', disabled = false) => ({
         return String(this.value ?? '') === String(value ?? '');
     },
     noMatches() {
-        return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')]
+        return this.optionElements()
             .every((option) => !this.matches(option));
     },
+    optionElements() {
+        return [...(this.$refs.content ?? this.$root).querySelectorAll('[data-slot="combobox-option"]')];
+    },
     focus(direction) {
-        const options = [...this.$root.querySelectorAll('[data-slot="combobox-option"]')]
+        const options = this.optionElements()
             .filter((option) => option.dataset.disabled !== 'true' && this.matches(option));
 
         if (options.length === 0) {
@@ -178,7 +183,7 @@ export default (value = '', disabled = false) => ({
         this.close();
     },
     selectedLabel() {
-        return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')]
+        return this.optionElements()
             .map((option) => ({
                 option,
                 label: (option.innerText ?? option.textContent ?? '').trim(),

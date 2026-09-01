@@ -20,6 +20,9 @@ Each option is a child component because a combobox can contain multiple options
 
 The selected value is submitted under the `name` attribute. The component dispatches `value-change` with `{ detail: { value } }`; the existing `change` event remains available.
 
+The panel stays in the component flow by default. Use `x-teleport="body"` when the panel must escape an overflow or
+stacking context, just like the other April overlay components.
+
 Use `value` for the initial selection or `wire:model` for a Livewire-bound value. Values are compared as strings so numeric model IDs work with option values rendered in HTML. The trigger supports Enter, Space, and Arrow Down; the search field supports Arrow Up, Arrow Down, Enter, and Escape.
 
 <x-publish-command :views="['combobox', 'combobox-option']" />

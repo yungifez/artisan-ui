@@ -235,8 +235,17 @@ describe('combobox', function () {
         expect($html)
             ->toContain('x-show="open"')
             ->toContain('x-trap.noscroll="open"')
-            ->toContain('x-anchor.bottom-start.offset.2')
+            ->toContain('x-bind="content"')
             ->toContain('x-transition');
+    });
+
+    it('teleports the panel only when requested', function () {
+        $html = renderComponent('combobox', 'x-teleport="body"');
+
+        expect($html)
+            ->toContain('<template x-teleport="body">')
+            ->toContain('x-ref="content"')
+            ->not->toMatch('/<div[^>]*data-slot="combobox"[^>]*x-teleport=/');
     });
 });
 
@@ -262,6 +271,14 @@ describe('editor', function () {
             ->toContain('x-on:click="run(\'bold\')"')
             ->toContain('x-on:click="run(\'bulletList\')"')
             ->toContain('x-on:click="run(\'undo\')"');
+    });
+
+    it('renders inline icons for the toolbar controls', function () {
+        $html = renderComponent('editor');
+
+        expect(substr_count($html, 'aria-hidden="true"'))->toBeGreaterThanOrEqual(12)
+            ->and($html)->toContain('aria-label="Bold"')
+            ->toContain('aria-label="Undo"');
     });
 
     it('supports individual toolbar props', function () {
@@ -479,8 +496,16 @@ describe('date picker', function () {
 
     it('anchors the calendar to its trigger', function () {
         expect(renderComponent('date-picker'))
-            ->toContain('x-anchor.bottom-start.offset.3')
+            ->toContain('x-bind="calendar"')
             ->toContain('absolute left-0 top-full');
+    });
+
+    it('teleports the calendar only when requested', function () {
+        $html = renderComponent('date-picker', 'x-teleport="body"');
+
+        expect($html)
+            ->toContain('<template x-teleport="body">')
+            ->not->toMatch('/<div[^>]*data-slot="date-picker"[^>]*x-teleport=/');
     });
 
     it('submits its value through a hidden input', function () {

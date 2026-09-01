@@ -6,6 +6,13 @@ description: A rich text editor with a configurable toolbar.
 
 <x-component-preview component="previews.editor-demo"></x-component-preview>
 
+@push('head-scripts')
+@aprilEditorScripts
+@endpush
+
+Add `@aprilEditorScripts` after `@aprilScripts` in the layout that renders the editor. The editor bundle is optional so
+pages that do not use `<april:editor>` do not load TipTap.
+
 ## Usage
 
 The editor stores HTML. Use `name` for native form submission. Use `wire:model` or `x-model` for a controlled value. It dispatches `value-change` with the updated HTML; the existing `input` and `change` events remain available.

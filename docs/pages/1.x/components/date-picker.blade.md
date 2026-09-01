@@ -7,6 +7,9 @@ description: A date picker component.
 
 The date picker is built using the `calendar` component. Use `mode`, `required`, and `value` to configure it. Use `name`, `from-name`, and `to-name` for form field names. Other attributes are applied to the date-picker root and are not duplicated on its hidden inputs.
 
+The calendar stays in the component flow by default. Use `x-teleport="body"` when it must escape an overflow or
+stacking context.
+
 <x-callout>
 When in `range` mode, the names of the `from`/`to` hidden inputs are made by concatenating the name attribute with `['from']`/`['to']`. For example, if the name is `example`, the input names are `example['from']` and `example['to']`.
 

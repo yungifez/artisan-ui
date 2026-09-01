@@ -12,6 +12,14 @@ build({
 })
 
 build({
+    entryPoints: [`resources/js/editor-entry.js`],
+    outfile: `dist/editor.js`,
+    bundle: true,
+    platform: 'browser',
+    define: { CDN: 'true' },
+})
+
+build({
     entryPoints: [`resources/css/april.css`],
     outfile: `dist/april.css`,
     bundle: true,
@@ -30,6 +38,15 @@ build({
 
 build({
     format: 'esm',
+    entryPoints: [`resources/js/editor-entry.js`],
+    outfile: `dist/editor.esm.js`,
+    bundle: true,
+    platform: 'browser',
+    define: { CDN: 'true' },
+})
+
+build({
+    format: 'esm',
     entryPoints: [`resources/css/april.css`],
     outfile: `dist/april.esm.css`,
     bundle: true,
@@ -38,10 +55,11 @@ build({
 })
 
 let jsHash = crypto.randomBytes(4).toString('hex');
+let editorJsHash = crypto.randomBytes(4).toString('hex');
 let cssHash = crypto.randomBytes(4).toString('hex');
 
 fs.writeFileSync(__dirname + '/../dist/manifest.json', `
-{"/april.js":"${jsHash}", "/april.css":"${cssHash}"}
+{"/april.js":"${jsHash}", "/editor.js":"${editorJsHash}", "/april.css":"${cssHash}"}
 `)
 
 // Build a minified version.
@@ -55,6 +73,18 @@ build({
     define: { CDN: 'true' },
 }).then(() => {
     outputSize(`dist/april.min.js`)
+})
+
+build({
+    entryPoints: [`resources/js/editor-entry.js`],
+    outfile: `dist/editor.min.js`,
+    sourcemap: 'linked',
+    bundle: true,
+    minify: true,
+    platform: 'browser',
+    define: { CDN: 'true' },
+}).then(() => {
+    outputSize(`dist/editor.min.js`)
 })
 
 
