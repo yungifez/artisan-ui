@@ -24,7 +24,11 @@
 
 @php
     $calendarMonths = max(1, min(12, (int) $numberOfMonths));
-    $calendarWidth = $calendarMonths > 1 ? 'w-full max-w-full' : 'w-[19rem] max-w-full';
+    $calendarWidth = $calendarMonths > 1
+        ? 'w-full max-w-full sm:w-[min(38rem,100%)]'
+        : 'w-[19rem] max-w-full';
+    $calendarMonthWidth = $calendarMonths > 2 ? 'sm:min-w-[19rem]' : '';
+    $calendarMonthsOverflow = $calendarMonths > 1 ? 'sm:overflow-x-auto' : '';
 
     $calendarOptions = [
         'captionLayout' => $captionLayout,
@@ -82,9 +86,9 @@
         </button>
     </div>
 
-    <div data-slot="calendar-months" class="flex flex-col gap-4 sm:flex-row">
+    <div data-slot="calendar-months" class="flex flex-col gap-4 sm:flex-row {{ $calendarMonthsOverflow }}">
         <template x-for="monthView in monthViews" :key="monthView.key">
-            <section data-slot="calendar-month" :aria-label="monthView.label" class="min-w-0 flex-1 space-y-2">
+            <section data-slot="calendar-month" :aria-label="monthView.label" class="min-w-0 flex-1 space-y-2 {{ $calendarMonthWidth }}">
                 <h3 x-show="numberOfMonths > 1" x-text="monthView.label"
                     class="text-sm font-medium text-center text-foreground"></h3>
                 <div :class="showWeekNumber ? 'grid grid-cols-8' : 'grid grid-cols-7'" role="row">

@@ -468,7 +468,19 @@ describe('calendar', function () {
         expect(classesOf($html))
             ->toContain('w-full')
             ->toContain('max-w-full')
+            ->toContain('sm:w-[min(38rem,100%)]')
             ->not->toContain('w-[19rem]');
+    });
+
+    it('keeps multi-month layout rules in the component classes', function () {
+        $threeMonthHtml = renderComponent('calendar', ':numberOfMonths="3"');
+        $twoMonthHtml = renderComponent('calendar', ':numberOfMonths="2"');
+
+        expect($threeMonthHtml)
+            ->toContain('sm:overflow-x-auto')
+            ->toContain('sm:min-w-[19rem]');
+
+        expect($twoMonthHtml)->not->toContain('sm:min-w-[19rem]');
     });
 
 });
