@@ -12,4 +12,4 @@ default => "border-transparent bg-primary text-primary-foreground hover:bg-prima
 };
 @endphp
 
-<div data-slot="badge" {{$attributes->twMerge([$class])}}>{{$slot}}</div>
+<div data-slot="badge" {{$attributes->except('variant')->twMerge([$class])}}>{{$slot}}</div>

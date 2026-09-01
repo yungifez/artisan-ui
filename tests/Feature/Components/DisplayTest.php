@@ -23,6 +23,11 @@ describe('badge', function () {
         expect(classesOf(renderComponent('badge')))->toContain('bg-primary');
     });
 
+    it('does not leak its variant prop into rendered markup', function () {
+        expect(renderComponent('badge', 'variant="secondary"'))
+            ->not->toContain('variant="secondary"');
+    });
+
     it('drops the variant classes when the variant is none', function () {
         expect(classesOf(renderComponent('badge', 'variant="none"')))
             ->not->toContain('bg-primary');
