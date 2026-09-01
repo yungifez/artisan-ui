@@ -4387,7 +4387,7 @@ var switchInput_default = (disabled, value = false) => ({
       }
     },
     [":aria-label"]() {
-      if (this.$refs.input?.labels[0].innerText ?? false) {
+      if (this.$refs.input?.labels?.[0]?.innerText ?? false) {
         return this.$refs.input.labels[0].innerText;
       }
     }
