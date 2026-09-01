@@ -8,3 +8,5 @@ phpstan.neon
 testbench.yaml
 vendor
 node_modules
+playwright-report
+test-results

@@ -15,7 +15,9 @@ default => "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
 }
 @endphp
 
-<div data-slot="sheet" data-state="closed" x-data="dialog(false, {{$attributes->has('dismissable') ? 'true' : 'false'}})" x-bind="root" @isset($group)
+@php($rootAttributes = $attributes->except(['x-teleport', 'dismissable']))
+
+<div data-slot="sheet" data-state="closed" x-data="dialog(false, {{$attributes->has('dismissable') ? 'true' : 'false'}})" x-modelable="open" x-bind="root" {{$rootAttributes}} @isset($group)
     {{$group->attributes}} @endisset>
     <div data-slot="sheet-trigger" x-bind="trigger" @isset($trigger) {{$trigger->attributes}} @endisset>
         @isset($trigger)
@@ -26,7 +28,7 @@ default => "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
     <template @if ($attributes->has('x-teleport')) x-teleport="{{$attributes->get('x-teleport')}}"
         @else x-if="true"
         @endif>
-        <div data-slot="sheet-overlay" {{$attributes->except(['x-teleport'])->twMerge(["fixed inset-0 z-50 bg-black/80"])}}
+        <div data-slot="sheet-overlay" class="fixed inset-0 z-50 bg-black/80"
             x-bind="overlay" role="presentation">
             @isset($content)
             <div data-slot="sheet-content" role="dialog" data-state="closed" x-data="sheet('{{$content->attributes->get('side')}}')"

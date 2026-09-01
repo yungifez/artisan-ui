@@ -11,6 +11,6 @@ When the `type` attribute is set to multiple, multiple items can be opened at on
 
 <x-component-preview component="previews.accordion-multiple-demo"></x-component-preview>
 
-You can listen for the `valueChanged` event containing with the current active value in `$event.detail.value`, which is an array when type is multiple and a string when type is single. The value of an accordion item is `accordion-item-{index}`
+The component dispatches a `value-change` event with the current active value in `$event.detail.value`, which is an array when type is multiple and a string when type is single. The legacy `valueChange` event is also dispatched. The value of an accordion item is `accordion-item-{index}`.
 
 <x-publish-command :views="['accordion', 'accordion-item']"/>

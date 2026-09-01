@@ -156,3 +156,24 @@ You can now use the `warning` utility class in your components.
 ShadCN recommends using [HSL colors](https://www.smashingmagazine.com/2021/07/hsl-colors-css/) for theming but you can also use other color formats if you prefer.
 
 See the [Tailwind CSS documentation](https://tailwindcss.com/docs/customizing-colors#using-css-variables) for more information on using `rgb`, `rgba` or `hsl` colors.
+
+## Component overrides
+
+Use semantic tokens first. If a component needs a product-specific change, publish only that component and edit the
+copy in `resources/views/vendor/april/components`:
+
+<x-code-block-wrapper language="bash">
+    php artisan april:publish button
+</x-code-block-wrapper>
+
+April components also expose `data-slot` attributes on their internal elements. Use these selectors for small visual
+adjustments without replacing a component:
+
+<x-code-block-wrapper title="app.css" language="css">
+[data-slot="button"] {
+  letter-spacing: 0.01em;
+}
+</x-code-block-wrapper>
+
+The package merges component classes with passed classes. The `tailwind_merge` configuration controls this behavior
+when your application uses a custom Tailwind prefix or class groups.

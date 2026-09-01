@@ -1,6 +1,10 @@
-<div data-slot="context-menu" data-state="closed" x-data="contextMenu" x-bind="root">
+<div data-slot="context-menu" data-state="closed" x-data="contextMenu" x-bind="root" {{$attributes}}>
     <div data-slot="context-menu-trigger" x-bind="trigger">
-        {{$slot}}
+        @isset($trigger)
+            {{$trigger}}
+        @else
+            {{$slot}}
+        @endisset
     </div>
     @isset($content)
     <div data-slot="context-menu-content" x-bind="content" x-ref="content" role="menu"

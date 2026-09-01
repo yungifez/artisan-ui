@@ -1,10 +1,16 @@
 export default (show, dismissable) => ({
     show: show,
+    get open() {
+        return this.show;
+    },
+    set open(value) {
+        this.show = value;
+    },
     dismissable: dismissable,
     close() {
         this.show = false;
     },
-    open() {
+    openDialog() {
         this.show = true;
     },
     root: {
@@ -25,7 +31,7 @@ export default (show, dismissable) => ({
             return this.show ? 'open' : 'closed';
         },
         ['@click']() {
-            return this.open();
+            return this.openDialog();
         },
         [':id']() {
             return this.$id('dialog') + '-trigger';

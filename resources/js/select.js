@@ -1,7 +1,13 @@
 export default (multiple, disabled) => ({
     options: [],
     selected: [],
-    selectedValues: [],
+    value: [],
+    get selectedValues() {
+        return this.value;
+    },
+    set selectedValues(value) {
+        this.value = value;
+    },
     multiple: multiple,
     disabled: disabled,
     show: false,
@@ -74,13 +80,13 @@ export default (multiple, disabled) => ({
     init() {
         this.loadOptions();
 
-        this.$watch('selectedValues', (values) => {
+        this.$watch('value', (values) => {
             if (this.hasModelBinding()) this.syncOptionsToValues(values)
         });
 
         this.$nextTick(() => {
             if (this.hasModelBinding()) {
-                this.syncOptionsToValues(this.selectedValues)
+                this.syncOptionsToValues(this.value)
             } else {
                 this.setSelectedValues()
             }
@@ -125,7 +131,17 @@ export default (multiple, disabled) => ({
         }
     },
     dispatchChange() {
-        this.$nextTick(() => { this.$dispatch('change', { value: (this.multiple ? this.selected.map((el) => this.options[el].value) : this.options[this.selected[0]].value) }) })
+        this.$nextTick(() => {
+            const detail = {
+                value: this.multiple
+                    ? this.selected.map((el) => this.options[el].value)
+                    : this.options[this.selected[0]].value,
+            };
+
+            this.$dispatch('value-change', detail);
+            // Keep the native-style event available for existing listeners.
+            this.$dispatch('change', detail);
+        })
     },
     remove(index) {
         const idx = this.selected.indexOf(index);
@@ -195,7 +211,7 @@ export default (multiple, disabled) => ({
         });
     },
     setSelectedValues() {
-        this.selectedValues = this.multiple
+        this.value = this.multiple
             ? this.selected.map((option) => this.options[option].value)
             : (this.selected.length > 0 ? this.options[this.selected[0]].value : '');
     }

@@ -1,6 +1,6 @@
-@props(['title', 'description', "footer", "body"])
+@php($rootAttributes = $attributes->whereDoesntStartWith('header'))
 
-<div data-slot="card" {{$attributes->twMerge(["rounded-lg border bg-card text-card-foreground shadow-sm"])}}>
+<div data-slot="card" {{$rootAttributes->twMerge(["rounded-lg border bg-card text-card-foreground shadow-sm"])}}>
     <div data-slot="card-header" class="{{$attributes->get('header-class')}} flex flex-col space-y-1.5 p-6" {{$attributes->
         whereStartsWith('header')}}>
         @isset($title)

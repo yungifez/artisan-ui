@@ -6,6 +6,8 @@
 
 import './april.js';
 
-export { component, components, extend, register, replace, resolve } from './registry.js';
+export { component, components, extend, register, registerApril, replace, resolve } from './april-core.js';
+
+export { registerLivewireBridge } from './livewire.js';
 
 export * from './components.js';

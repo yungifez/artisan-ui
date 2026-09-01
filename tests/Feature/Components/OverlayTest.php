@@ -49,6 +49,13 @@ describe('dialog', function () {
     it('hides the overlay until alpine starts', function () {
         expect(renderComponent('dialog'))->toContain('x-cloak');
     });
+
+    it('keeps dismissable as a behaviour prop instead of forwarding it', function () {
+        $html = renderComponent('dialog', 'id="dialog-root" dismissable');
+
+        expect($html)->toContain('id="dialog-root"')
+            ->not->toContain('dismissable="dismissable"');
+    });
 });
 
 describe('alert dialog', function () {
@@ -98,42 +105,10 @@ describe('sheet', function () {
         expect(renderComponent('sheet'))->toContain('x-data="dialog(false,');
     });
 
-    it('uses a right-side transform by default', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/sheet.js');
-
-        expect($source)->toContain("right: 'translate-x-full'");
-    });
-
-    it('slides in from the requested side', function (string $side, string $expected) {
-        $html = render("<april:sheet><x-slot:content side=\"{$side}\">Body</x-slot:content></april:sheet>");
-
-        expect(file_get_contents(__DIR__.'/../../../resources/js/sheet.js'))->toContain($expected);
-    })->with([
-        ['top', "top: '-translate-y-full'"],
-        ['bottom', "bottom: 'translate-y-full'"],
-        ['left', "left: '-translate-x-full'"],
-        ['right', "right: 'translate-x-full'"],
-    ]);
-
     it('passes the side to the sheet behaviour', function () {
         $html = render('<april:sheet><x-slot:content side="left">Body</x-slot:content></april:sheet>');
 
         expect($html)->toContain("x-data=\"sheet('left'");
-    });
-
-    it('uses transform transitions for panel movement', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/sheet.js');
-
-        expect($source)
-            ->toContain('transition-transform ease-in-out duration-500')
-            ->toContain('transition-transform ease-in-out duration-300')
-            ->not->toContain('transition-opacity');
-    });
-
-    it('keeps the overlay mounted for the shadcn close animation', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/dialog.js');
-
-        expect($source)->toContain('x-transition.opacity.duration.300ms');
     });
 
     it('renders the trigger slot', function () {
@@ -168,10 +143,22 @@ describe('popover', function () {
         expect($html)->toContain('Pick a date');
     });
 
+    it('accepts the canonical trigger slot name', function () {
+        $html = render('<april:popover><x-slot:trigger>Canonical trigger</x-slot:trigger></april:popover>');
+
+        expect($html)->toContain('Canonical trigger');
+    });
+
     it('renders the content slot', function () {
         $html = render('<april:popover><x-slot:popoverContent>Body</x-slot:popoverContent></april:popover>');
 
         expect($html)->toContain('Body')->toContain('bg-popover');
+    });
+
+    it('accepts the canonical content slot name', function () {
+        $html = render('<april:popover><x-slot:content>Canonical body</x-slot:content></april:popover>');
+
+        expect($html)->toContain('Canonical body')->toContain('bg-popover');
     });
 
     it('hides the content until alpine starts', function () {

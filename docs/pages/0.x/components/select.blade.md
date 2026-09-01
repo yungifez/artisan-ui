@@ -6,6 +6,8 @@ description: Displays a list of options for the user to pick from—triggered by
 
 <x-component-preview component="previews.select-demo"></x-component-preview>
 
+Use `x-model` for the selected value. The component dispatches `value-change` with `{ detail: { value } }` when the selection changes. The legacy `change` event remains available. The optional `trigger` slot customizes the trigger content and its attributes; the default trigger remains available when the slot is omitted.
+
 For a single select, an empty bound value defaults to the first enabled option. This keeps the submitted field populated without requiring the user to open the picker first.
 
 ## Multiple Select

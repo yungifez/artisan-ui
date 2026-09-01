@@ -10,14 +10,22 @@
             "default": "./dist/april.js"
         },
         "./dist/*": "./dist/*",
-        "./resources/*": "./resources/*"
+        "./resources/*": "./resources/*",
+        "./core": "./resources/js/april-core.js",
+        "./livewire": "./resources/js/livewire.js"
     },
     "author": "yungifez",
     "scripts": {
         "build": "node ./scripts/build.js",
-        "watch": "node ./scripts/build.js --watch"
+        "watch": "node ./scripts/build.js --watch",
+        "test:browser": "playwright test"
     },
     "devDependencies": {
+        "@alpinejs/anchor": "^3.17.1",
+        "@alpinejs/collapse": "^3.17.1",
+        "@alpinejs/focus": "^3.17.1",
+        "@playwright/test": "^1.62.1",
+        "alpinejs": "^3.17.1",
         "autoprefixer": "^10.4.19",
         "brotli-size": "^4.0.0",
         "esbuild": "^0.14.49",

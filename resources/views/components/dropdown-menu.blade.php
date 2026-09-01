@@ -1,5 +1,4 @@
-@props(['trigger', 'content'])
-<div data-slot="dropdown-menu" data-state="closed" x-data="dropdownMenu" x-bind="root">
+<div data-slot="dropdown-menu" data-state="closed" x-data="dropdownMenu" x-bind="root" {{$attributes->except('x-teleport')}}>
     @isset($trigger)
     <div data-slot="dropdown-menu-trigger" {{$trigger->attributes->twMerge(['w-fit inline-block'])}} x-bind="trigger" x-ref="trigger"
         aria-haspopup="menu">

@@ -1,7 +1,6 @@
 @props(
 [
 'name' => '',
-'labelClass' => '',
 'errorBag' => 'default',
 'errorName',
 'oldName',

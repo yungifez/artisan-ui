@@ -1,9 +1,37 @@
 # April UI
-This is still a work in progress
 
-## Introudction
+April UI is a Laravel Blade component library with Tailwind CSS and Alpine JS. It keeps the Laravel component workflow:
+use package views by default and publish application overrides only when you need to change markup.
 
-April UI is a component library that aims to bring the elegance of ShadCN to laravel. It is built using tailwind, alpine JS, and laravel blade.
+## Install
+
+```sh
+composer require yungifez/april-ui
+```
+
+Add `@aprilStyles` and `@aprilScripts` to your layout, then use the components:
+
+```blade
+<april:button>Save changes</april:button>
+```
+
+April UI keeps components in `vendor/` by default. Use the package commands when you need more control:
+
+```sh
+php artisan april:list
+php artisan april:publish button
+php artisan april:update --diff
+php artisan april:doctor
+```
+
+`april:publish` delegates to Laravel's vendor publishing system. Published views go to
+`resources/views/vendor/april/components`, where Laravel loads them as overrides. Use `php artisan april:publish --all`
+to publish every component.
+
+## MCP server
+
+Run `php artisan april:mcp` as a local MCP server. It exposes component listing, search, source resources, and
+vendor-path publishing over newline-delimited JSON-RPC.
 
 ## Official website
 

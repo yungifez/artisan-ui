@@ -14,6 +14,9 @@ $variantClass = match ($variant) {
     default => 'bg-primary text-primary-foreground',
 };
 $alignClass = $align === 'end' ? 'ml-auto' : 'mr-auto';
+$slotAttributes = static fn ($slot) => $slot instanceof \Illuminate\View\ComponentSlot
+    ? $slot->attributes
+    : new \Illuminate\View\ComponentAttributeBag;
 @endphp
 
 <div data-slot="bubble" data-variant="{{$variant}}" data-align="{{$align}}"
@@ -22,7 +25,7 @@ $alignClass = $align === 'end' ? 'ml-auto' : 'mr-auto';
         {{$slot}}
     </div>
     @isset($reactions)
-    <div data-slot="bubble-reactions" {{$reactions->attributes->twMerge(['ml-2 flex shrink-0 items-center gap-1'])}}>
+    <div data-slot="bubble-reactions" {{$slotAttributes($reactions)->twMerge(['ml-2 flex shrink-0 items-center gap-1'])}}>
         {{$reactions}}
     </div>
     @endisset

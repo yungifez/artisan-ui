@@ -6,12 +6,12 @@ description: Displays a menu of actions at the user's pointer position.
 
 <x-component-preview component="previews.context-menu-demo"></x-component-preview>
 
-The default slot is the area that receives the context-menu gesture. Put the repeatable menu items in the named `content` slot.
+Put the context-menu target in the named `trigger` slot. Put the repeatable menu items in the named `content` slot. The default slot remains supported for existing code.
 
 <x-code-block-wrapper language="blade">
 @verbatim
 <april:context-menu>
-    <div class="p-8">Right-click here</div>
+    <slot:trigger><div class="p-8">Right-click here</div></slot:trigger>
     <slot:content>
         <april:context-menu-item>Copy</april:context-menu-item>
         <april:context-menu-item>Paste</april:context-menu-item>

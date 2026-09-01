@@ -169,7 +169,7 @@ export default (data = [], config = {}, type = 'bar', xKey = '', height = 240) =
         if (this.type === 'bar') {
             return this.bars.map((bar) => `
                 <rect x="${bar.x}" y="${bar.y}" width="${bar.width}" height="${bar.height}" rx="4" fill="${escape(bar.color)}">
-                    <title>${escape(`${bar.label}: ${this.formatValue(bar.value)}`)}</title>
+                    <title>${escape(`${this.category(bar.itemIndex)} — ${bar.label}: ${this.formatValue(bar.value)}`)}</title>
                 </rect>
             `).join('');
         }

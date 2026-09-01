@@ -317,6 +317,12 @@ describe('breadcrumb', function () {
         expect($html)->toContain('<ol')->toContain('items');
     });
 
+    it('keeps list attributes on the list instead of duplicating them on the nav', function () {
+        $html = render('<april:breadcrumb><x-slot:list id="breadcrumb-list">items</x-slot:list></april:breadcrumb>');
+
+        expect(substr_count($html, 'id="breadcrumb-list"'))->toBe(1);
+    });
+
     it('renders an item as a list item', function () {
         expect(renderComponent('breadcrumb-item', '', 'Home'))
             ->toContain('<li')

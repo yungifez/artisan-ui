@@ -38,7 +38,7 @@ The default calendar keeps the original April UI appearance. These options add c
 | `fromYear` / `toYear` | `int` | Bounds for the year dropdown. |
 | `hideNavigation` | `boolean` | Hide previous/next controls. |
 
-The component emits both `change` and `select` with `{ detail: { value } }`, so existing Alpine listeners continue to work:
+The component dispatches `value-change` with `{ detail: { value } }`. The existing `change` and `select` events remain available:
 
 ```blade
 <april:calendar
@@ -47,7 +47,7 @@ The component emits both `change` and `select` with `{ detail: { value } }`, so 
     :showOutsideDays="false"
     :fromYear="now()->subYears(2)->year"
     :toYear="now()->addYears(2)->year"
-    @select="console.log($event.detail.value)"
+    @value-change="console.log($event.detail.value)"
 />
 ```
 

@@ -1,5 +1,11 @@
-export default (disabled) => ({
-    switchOn: false,
+export default (disabled, value = false) => ({
+    value: Boolean(value),
+    get switchOn() {
+        return this.value;
+    },
+    set switchOn(value) {
+        this.value = value;
+    },
     disabled: disabled,
     root: {
         [':data-state']() {
@@ -23,9 +29,7 @@ export default (disabled) => ({
         },
     },
     input: {
-        ['x-model.boolean']() {
-            return "switchOn";
-        },
+        ['x-model.boolean']: 'switchOn',
         ['x-ref']() {
             return "input";
         },
@@ -39,6 +43,12 @@ export default (disabled) => ({
         },
         [':data-disabled']() {
             return this.disabled || null;
+        },
+        [':aria-disabled']() {
+            return this.disabled;
+        },
+        [':disabled']() {
+            return this.disabled;
         },
         ['@click']() {
             return this.toggle()
@@ -54,7 +64,11 @@ export default (disabled) => ({
 
         this.switchOn = value;
         this.$refs.input.checked = value;
-        this.$dispatch('checkedChange');
+        const detail = { value };
+
+        this.$dispatch('checked-change', detail);
+        // Keep the original event name available for existing listeners.
+        this.$dispatch('checkedChange', detail);
     },
     toggle() {
         this.setSwitchState(!this.switchOn);

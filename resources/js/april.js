@@ -1,8 +1,9 @@
-import factories from './components.js';
-import { component, components, extend, register, replace, resolve } from './registry.js';
+import { component, components, extend, registerApril, replace, resolve } from './april-core.js';
+import { registerLivewireBridge } from './livewire.js';
 
-Object.keys(factories).forEach((name) => component(name, factories[name]));
+window.April = { components, component, extend, replace, resolve, register: registerApril };
 
-window.April = { components, component, extend, replace, resolve, register };
-
-document.addEventListener('alpine:init', () => register(window.Alpine));
+document.addEventListener('alpine:init', () => {
+    registerApril(window.Alpine);
+    registerLivewireBridge(window.Alpine);
+});

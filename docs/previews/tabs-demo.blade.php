@@ -1,8 +1,8 @@
 <april:tabs defaultValue="account" class="w-[400px]">
-    <slot:tabs-list class="w-full">
+    <slot:list class="w-full">
         <april:tabs-trigger value="account" class="w-full">Account</april:tabs-trigger>
         <april:tabs-trigger value="password" class="w-full">Password</april:tabs-trigger>
-    </slot:tabs-list>
+    </slot:list>
     <april:tabs-content value="account">
         <april:card>
             <slot:title>Account</slot:title>
@@ -15,7 +15,7 @@
                     <april:input id="name" value="Pedro Duarte" class="w-full" />
                 </div>
                 <div class="space-y-1">
-                    <april:label htmlFor="username">Username</april:label>
+            <april:label for="username">Username</april:label>
                     <april:input id="username" value="@peduarte" class="w-full" />
                 </div>
             </slot:content>
@@ -32,11 +32,11 @@
             </slot:description>
             <slot:content class="space-y-2">
                 <div class="space-y-1">
-                    <april:label htmlFor="current">Current password</april:label>
+                    <april:label for="current">Current password</april:label>
                     <april:input id="current" type="password" class="w-full" />
                 </div>
                 <div class="space-y-1">
-                    <april:label htmlFor="new">New password</april:label>
+                    <april:label for="new">New password</april:label>
                     <april:input id="new" type="password" class="w-full" />
                 </div>
             </slot:content>

@@ -1,7 +1,11 @@
-import { weeksToDays } from "date-fns";
-
 export default (value) => ({
-    keyword: value,
+    value,
+    get keyword() {
+        return this.value;
+    },
+    set keyword(value) {
+        this.value = value;
+    },
     focusedItem: null,
     root: {
         ["@keydown"]($event) {
@@ -35,7 +39,11 @@ export default (value) => ({
             this.$nextTick(() => {
                 this.selectOption(0, false);
             });
-            this.$dispatch("valueChange", { value: this.keyword });
+            const detail = { value: this.value };
+
+            this.$dispatch('value-change', detail);
+            // Keep the original event name available for existing listeners.
+            this.$dispatch('valueChange', detail);
         },
         [":id"]() {
             return this.$id("command") + "-input";

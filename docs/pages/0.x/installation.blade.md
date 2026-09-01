@@ -84,3 +84,63 @@ The `tailwind_merge` section controls how a component merges its own classes wit
     'classGroups' => [],
 ],
 </x-code-block-wrapper>
+
+## Package views and publishing
+
+April UI uses the package views by default. This keeps upgrades simple and follows Laravel's package conventions.
+
+List the available components and their dependencies:
+
+<x-code-block-wrapper language="bash">
+    php artisan april:list
+</x-code-block-wrapper>
+
+If you need to change a component, publish it to Laravel's normal vendor override path:
+
+<x-code-block-wrapper language="bash">
+    php artisan april:publish button
+</x-code-block-wrapper>
+
+The published file is copied to `resources/views/vendor/april/components/button.blade.php`. Laravel loads this copy
+before the package view. Publish every component with `php artisan april:publish --all`.
+
+Review published components against the package version with:
+
+<x-code-block-wrapper language="bash">
+    php artisan april:update --diff
+</x-code-block-wrapper>
+
+Use `--dry-run` to inspect changes without writing files. Use `php artisan april:doctor` to find common Blade issues,
+such as a typeless button inside a form.
+
+## Optional JavaScript entry points
+
+The `@aprilScripts` directive is the easiest setup. If you manage your JavaScript bundle yourself, the package exposes
+separate entry points:
+
+<x-code-block-wrapper title="resources/js/app.js" language="js">
+import { registerApril } from 'april-ui/core'
+import { registerLivewireBridge } from 'april-ui/livewire'
+
+document.addEventListener('alpine:init', () => {
+    registerApril(window.Alpine)
+    registerLivewireBridge(window.Alpine)
+})
+</x-code-block-wrapper>
+
+The default April UI bundle includes both entry points and keeps the existing `window.April` API.
+
+## MCP server
+
+April UI includes a small local MCP server for component discovery and publishing. Start it over standard input and
+output when your MCP client launches it:
+
+<x-code-block-wrapper language="json">
+{
+  "command": "php",
+  "args": ["artisan", "april:mcp"]
+}
+</x-code-block-wrapper>
+
+The server can list, search, and publish components. Publishing still writes to Laravel's normal
+`resources/views/vendor/april/components` path.

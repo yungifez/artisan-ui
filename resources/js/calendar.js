@@ -40,6 +40,17 @@ export default (selected, mode, disabled, min, max, required, options = {}) => (
     preBlankDaysInMonth: [],
     postBlankDaysInMonth: [],
     modeHandler: null,
+    pendingValue: undefined,
+    get value() {
+        return this.modeHandler?.value ?? this.pendingValue ?? null
+    },
+    set value(value) {
+        if (this.modeHandler) {
+            this.modeHandler.value = value
+        } else {
+            this.pendingValue = value
+        }
+    },
     disabled: [],
     monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -87,6 +98,11 @@ export default (selected, mode, disabled, min, max, required, options = {}) => (
             this.modeHandler = new RangeModeHandler(selected || {}, required, min, max)
         }
 
+        if (this.pendingValue !== undefined) {
+            this.modeHandler.value = this.pendingValue
+            this.pendingValue = undefined
+        }
+
         const rules = Array.isArray(disabled) ? disabled : (disabled == null ? [] : [disabled])
         this.disabled = rules.map((rule) => new Matcher(rule))
 
@@ -109,6 +125,7 @@ export default (selected, mode, disabled, min, max, required, options = {}) => (
     dispatchChange() {
         this.$nextTick(() => {
             const detail = { value: this.modeHandler.value }
+            this.$dispatch('value-change', detail)
             this.$dispatch('change', detail)
             this.$dispatch('select', detail)
         })

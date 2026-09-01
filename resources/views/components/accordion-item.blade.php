@@ -1,7 +1,7 @@
 <div data-slot="accordion-item" data-state="closed" x-data="accordionItem()" x-bind="root" {{ $attributes->twMerge(["w-full border-b"]) }}>
     @isset($trigger)
     <h3>
-        <button data-slot="accordion-trigger" data-state="closed" {{$trigger->attributes->twMerge(['flex flex-1 text-left items-center justify-between px-2 py-4
+        <button type="button" data-slot="accordion-trigger" data-state="closed" {{$trigger->attributes->twMerge(['flex flex-1 text-left items-center justify-between px-2 py-4
             font-medium
             transition-all
             hover:underline w-full'])}}

@@ -8,6 +8,11 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use TalesFromADev\TailwindMerge\TailwindMerge;
 use TalesFromADev\TailwindMerge\TailwindMergeInterface;
+use Yungifez\AprilUI\Console\Commands\DoctorCommand;
+use Yungifez\AprilUI\Console\Commands\ListCommand;
+use Yungifez\AprilUI\Console\Commands\McpCommand;
+use Yungifez\AprilUI\Console\Commands\PublishCommand;
+use Yungifez\AprilUI\Console\Commands\UpdateCommand;
 use Yungifez\AprilUI\Handlers\FrontendAssetsHandler;
 use Yungifez\AprilUI\Handlers\TailwindMergeHandler;
 use Yungifez\AprilUI\Support\TailwindMerger;
@@ -53,6 +58,16 @@ class AprilUIServiceProvider extends PackageServiceProvider
         Blade::precompiler(function ($str) {
             return app(AprilBladeCompiler::class)->compile($str);
         });
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ListCommand::class,
+                PublishCommand::class,
+                UpdateCommand::class,
+                DoctorCommand::class,
+                McpCommand::class,
+            ]);
+        }
     }
 
     /**

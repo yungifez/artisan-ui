@@ -163,11 +163,11 @@ describe('switch', function () {
     });
 
     it('tells the behaviour that the switch is disabled', function () {
-        expect(renderComponent('switch', 'disabled'))->toContain('switchInput(true)');
+        expect(renderComponent('switch', 'disabled'))->toContain('switchInput(true, false)');
     });
 
     it('tells the behaviour that the switch is enabled', function () {
-        expect(renderComponent('switch'))->toContain('switchInput(false)');
+        expect(renderComponent('switch'))->toContain('switchInput(false, false)');
     });
 });
 

@@ -8,7 +8,7 @@ description: A rich text editor with a configurable toolbar.
 
 ## Usage
 
-The editor stores HTML. Use `name` for native form submission. Use `wire:model` or `x-model` for a controlled value.
+The editor stores HTML. Use `name` for native form submission. Use `wire:model` or `x-model` for a controlled value. It dispatches `value-change` with the updated HTML; the existing `input` and `change` events remain available.
 
 <x-code-block-wrapper language="blade">
 @verbatim

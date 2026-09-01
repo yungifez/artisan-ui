@@ -2,7 +2,7 @@
     <slot:trigger>
         <april:button variant="outline">Open popover</april:button>
     </slot:trigger>
-    <slot:popover-content class="w-80">
+    <slot:content class="w-80">
         <div class="grid gap-4">
             <div class="space-y-2">
                 <h4 class="font-medium leading-none">Dimensions</h4>
@@ -29,5 +29,5 @@
                 </div>
             </div>
         </div>
-    </slot:popover-content>
+    </slot:content>
 </april:popover>

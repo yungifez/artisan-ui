@@ -1,8 +1,8 @@
-@props(['input', 'label' => '', 'list', 'icon', 'value' => '', 'empty' => ''])
+@props(['label' => '', 'value' => '', 'empty' => ''])
 <div data-slot="command" x-data='command(@json($value))' x-bind="root" cmd-root {{$attributes->twMerge(['flex flex-col overflow-hidden
     rounded-md
     bg-popover
-    text-popover-foreground'])}} x-modelable="keyword">
+    text-popover-foreground'])}} x-modelable="value">
     <div data-slot="command-input-wrapper" cmd-input-wrapper class="flex items-center border-b px-3">
         @isset($icon)
         {{$icon}}

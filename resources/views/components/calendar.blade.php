@@ -1,7 +1,6 @@
 @props([
     'selected' => '',
     'mode' => 'single',
-    'onselect' => '',
     'max' => null,
     'min' => null,
     'disabled' => null,
@@ -48,7 +47,7 @@
     x-data="calendar({{ \Illuminate\Support\Js::from($selected) }}, {{ \Illuminate\Support\Js::from($mode) }}, {{ \Illuminate\Support\Js::from($disabled) }}, {{ \Illuminate\Support\Js::from($min) }}, {{ \Illuminate\Support\Js::from($max) }}, {{ \Illuminate\Support\Js::from($required) }}, {{ \Illuminate\Support\Js::from($calendarOptions) }})"
     x-bind="root" {{ $attributes->except('tabindex')->twMerge([
         "p-4 antialiased bg-background border-input border rounded-lg shadow {$calendarWidth} min-h-[19rem]",
-    ]) }} x-modelable="modeHandler.value">
+    ]) }} x-modelable="value">
     <div data-slot="calendar-caption" class="flex items-center justify-between mb-3">
         <button x-bind="previousMonthTrigger" x-show="!hideNavigation" type="button" aria-label="Previous month"
             class="border dark:border-input inline-flex p-3 transition duration-100 ease-in-out rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent disabled:pointer-events-none disabled:opacity-50">

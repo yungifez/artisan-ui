@@ -1,5 +1,11 @@
 export default (show = false, dismissable = false) => ({
     show,
+    get open() {
+        return this.show;
+    },
+    set open(value) {
+        this.show = value;
+    },
     dismissable,
     root: {
         [':data-state']() {
@@ -19,7 +25,7 @@ export default (show = false, dismissable = false) => ({
             return this.show ? 'open' : 'closed';
         },
         ['@click']() {
-            this.open();
+            this.openDialog();
         },
         [':id']() {
             return this.$id('alert-dialog') + '-trigger';
@@ -96,7 +102,7 @@ export default (show = false, dismissable = false) => ({
             this.close();
         },
     },
-    open() {
+    openDialog() {
         this.show = true;
     },
     close() {

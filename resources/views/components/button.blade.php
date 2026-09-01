@@ -1,3 +1,5 @@
+@props(['type' => 'button'])
+
 @php
 $class = "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium
 ring-offset-background
@@ -22,7 +24,7 @@ default => "h-10 px-4 py-2",
 };
 @endphp
 
-<button {{$attributes->merge(["data-slot" => "button"])->except(['size', 'variant'])->twMerge([$class])}}
+<button type="{{$type}}" {{$attributes->merge(["data-slot" => "button"])->except(['size', 'variant'])->twMerge([$class])}}
     >
     {{$slot}}
 </button>

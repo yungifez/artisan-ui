@@ -71,7 +71,9 @@ var accordionItem_default = () => ({
       }
     }
     this.$nextTick(() => {
-      this.$dispatch("valueChange", { value: this.$data.value });
+      const detail = { value: this.$data.value };
+      this.$dispatch("value-change", detail);
+      this.$dispatch("valueChange", detail);
     });
   },
   collapse() {
@@ -84,7 +86,9 @@ var accordionItem_default = () => ({
       }
     }
     this.$nextTick(() => {
-      this.$dispatch("valueChange", { value: this.$data.value });
+      const detail = { value: this.$data.value };
+      this.$dispatch("value-change", detail);
+      this.$dispatch("valueChange", detail);
     });
   },
   toggle() {
@@ -139,6 +143,12 @@ var alert_default = (dismissOnTimeout, timeout, startTimeoutOnIntersect) => ({
 // resources/js/alertDialog.js
 var alertDialog_default = (show = false, dismissable = false) => ({
   show,
+  get open() {
+    return this.show;
+  },
+  set open(value) {
+    this.show = value;
+  },
   dismissable,
   root: {
     [":data-state"]() {
@@ -158,7 +168,7 @@ var alertDialog_default = (show = false, dismissable = false) => ({
       return this.show ? "open" : "closed";
     },
     ["@click"]() {
-      this.open();
+      this.openDialog();
     },
     [":id"]() {
       return this.$id("alert-dialog") + "-trigger";
@@ -235,7 +245,7 @@ var alertDialog_default = (show = false, dismissable = false) => ({
       this.close();
     }
   },
-  open() {
+  openDialog() {
     this.show = true;
   },
   close() {
@@ -499,7 +509,6 @@ var RangeModeHandler = class {
     }
     this._value.to = date;
     return true;
-    console.log(this.value);
   }
   isSelectedDay(date) {
     if (this._value.from == null) {
@@ -644,6 +653,17 @@ var calendar_default = (selected, mode, disabled, min, max, required, options = 
   preBlankDaysInMonth: [],
   postBlankDaysInMonth: [],
   modeHandler: null,
+  pendingValue: void 0,
+  get value() {
+    return this.modeHandler?.value ?? this.pendingValue ?? null;
+  },
+  set value(value) {
+    if (this.modeHandler) {
+      this.modeHandler.value = value;
+    } else {
+      this.pendingValue = value;
+    }
+  },
   disabled: [],
   monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
   dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -720,6 +740,10 @@ var calendar_default = (selected, mode, disabled, min, max, required, options = 
     } else {
       this.modeHandler = new RangeModeHandler(selected || {}, required, min, max);
     }
+    if (this.pendingValue !== void 0) {
+      this.modeHandler.value = this.pendingValue;
+      this.pendingValue = void 0;
+    }
     const rules = Array.isArray(disabled) ? disabled : disabled == null ? [] : [disabled];
     this.disabled = rules.map((rule) => new Matcher(rule));
     const initialDate = this.initialDate();
@@ -743,6 +767,7 @@ var calendar_default = (selected, mode, disabled, min, max, required, options = 
   dispatchChange() {
     this.$nextTick(() => {
       const detail = { value: this.modeHandler.value };
+      this.$dispatch("value-change", detail);
       this.$dispatch("change", detail);
       this.$dispatch("select", detail);
     });
@@ -1048,7 +1073,7 @@ var chart_default = (data = [], config = {}, type = "bar", xKey = "", height = 2
     if (this.type === "bar") {
       return this.bars.map((bar) => `
                 <rect x="${bar.x}" y="${bar.y}" width="${bar.width}" height="${bar.height}" rx="4" fill="${escape(bar.color)}">
-                    <title>${escape(`${bar.label}: ${this.formatValue(bar.value)}`)}</title>
+                    <title>${escape(`${this.category(bar.itemIndex)} \u2014 ${bar.label}: ${this.formatValue(bar.value)}`)}</title>
                 </rect>
             `).join("");
     }
@@ -1219,6 +1244,706 @@ var carousel_default = (orientation = "horizontal", loop = true) => ({
   },
   nextSlide() {
     this.goTo(this.current + 1);
+  }
+});
+
+// resources/js/command.js
+var command_default = (value) => ({
+  value,
+  get keyword() {
+    return this.value;
+  },
+  set keyword(value2) {
+    this.value = value2;
+  },
+  focusedItem: null,
+  root: {
+    ["@keydown"]($event) {
+      if ($event.key == "Home") {
+        this.selectOption(1, false);
+      }
+      if ($event.key == "End") {
+        this.selectOption(-1, false);
+      }
+    },
+    ["@keydown.capture.down.prevent"]() {
+      this.selectOption(1);
+    },
+    ["@keydown.capture.up.prevent"]() {
+      this.selectOption(-1);
+    },
+    ["@keydown.capture.enter.prevent"]() {
+      if (this.focusedItem != null) {
+        this.focusedItem.click();
+      }
+    }
+  },
+  init() {
+    this.$nextTick(() => {
+      this.selectOption(0, false, false);
+    });
+  },
+  commandInput: {
+    ["@input"]() {
+      this.keyword = this.$el.value;
+      this.$nextTick(() => {
+        this.selectOption(0, false);
+      });
+      const detail = { value: this.value };
+      this.$dispatch("value-change", detail);
+      this.$dispatch("valueChange", detail);
+    },
+    [":id"]() {
+      return this.$id("command") + "-input";
+    },
+    [":aria-controls"]() {
+      return this.$id("command") + "-list";
+    }
+  },
+  commandList: {
+    [":id"]() {
+      return this.$id("command") + "-list";
+    }
+  },
+  commandItem: {
+    [":data-cmd-item"]() {
+      return true;
+    },
+    [":data-selected"]() {
+      return this.$el.contains(this.focusedItem);
+    },
+    [":aria-selected"]() {
+      return this.$el.contains(this.focusedItem);
+    },
+    [":tabindex"]() {
+      return this.$el.contains(this.focusedItem) ? 0 : -1;
+    },
+    ["x-effect"]() {
+      const searchText = this.$el.dataset.search ?? this.$el.innerText;
+      if (this.keyword == "" || this.fuzzySearch(this.keyword, searchText)) {
+        this.$el.dataset.active = true;
+        this.$el.style.display = "flex";
+      } else {
+        this.$el.dataset.active = false;
+        this.$el.style.display = "none";
+      }
+    },
+    ["@mouseenter"]() {
+      return this.focusedItem = this.$el;
+    }
+  },
+  commandGroupHeading: {
+    [":id"]() {
+      return this.$id("command") + "-group-heading";
+    }
+  },
+  commandGroup: {
+    [":id"]() {
+      return this.$id("command") + "-group";
+    },
+    [":aria-labelledby"]() {
+      return this.$id("command") + "-group-heading";
+    }
+  },
+  commandGroupContainer: {
+    ["x-effect"]() {
+      this.keyword == "";
+      this.$nextTick(() => {
+        this.$el.style.display = this.$el.querySelectorAll("[data-active=true]").length > 0 ? "block" : "none";
+      });
+    }
+  },
+  commandEmpty: {
+    ["x-effect"]() {
+      this.keyword == "";
+      this.$nextTick(() => {
+        this.$el.style.display = this.$refs.list.querySelectorAll("[data-active=true]").length > 0 ? "none" : "block";
+      });
+    }
+  },
+  selectOption(index, relative = true, scroll = true) {
+    let nodeList = this.$refs.list.querySelectorAll("[data-active=true]");
+    let nodeListArray = Array.from(nodeList);
+    let initialIndex = index;
+    if (nodeList.length == 0 || !nodeListArray.some(
+      (node) => JSON.parse(node.dataset.disabled) == false
+    )) {
+      return;
+    }
+    if (relative) {
+      let previousIndex = Array.from(nodeList).findIndex(
+        (node) => node.isEqualNode(this.focusedItem)
+      ) ?? 0;
+      index += previousIndex;
+    }
+    index += index < 0 ? nodeList.length : 0;
+    index = index % nodeList.length;
+    while (JSON.parse(nodeList[index].dataset.disabled)) {
+      index += initialIndex < 0 ? -1 : 1;
+      index = index % nodeList.length;
+    }
+    this.focusedItem = nodeList[index];
+    if (scroll) {
+      this.focusedItem.scrollIntoView({ block: "nearest" });
+    }
+  },
+  fuzzySearch(keyword, text) {
+    const keywordLower = keyword.toLowerCase();
+    const textLower = text.toLowerCase();
+    let keywordIndex = 0;
+    for (let i = 0; i < textLower.length; i++) {
+      if (textLower[i] === keywordLower[keywordIndex]) {
+        keywordIndex++;
+      }
+      if (keywordIndex === keywordLower.length) {
+        return true;
+      }
+    }
+    return false;
+  }
+});
+
+// resources/js/collapsible.js
+var collapsible_default = (open = false, disabled = false) => ({
+  open,
+  disabled,
+  root: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":data-disabled"]() {
+      return this.disabled || null;
+    },
+    ["x-id"]() {
+      return ["collapsible"];
+    }
+  },
+  trigger: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":aria-expanded"]() {
+      return this.open;
+    },
+    [":aria-controls"]() {
+      return this.$id("collapsible") + "-content";
+    },
+    [":aria-disabled"]() {
+      return this.disabled;
+    },
+    [":disabled"]() {
+      return this.disabled;
+    },
+    ["@click"]() {
+      if (!this.disabled) {
+        this.open = !this.open;
+      }
+    },
+    ["@keydown.enter.prevent"]() {
+      if (!this.disabled) {
+        this.open = !this.open;
+      }
+    },
+    ["@keydown.space.prevent"]() {
+      if (!this.disabled) {
+        this.open = !this.open;
+      }
+    },
+    [":id"]() {
+      return this.$id("collapsible") + "-trigger";
+    }
+  },
+  content: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":id"]() {
+      return this.$id("collapsible") + "-content";
+    },
+    [":aria-labelledby"]() {
+      return this.$id("collapsible") + "-trigger";
+    },
+    ["x-show"]() {
+      return this.open;
+    },
+    ["x-collapse.duration.200ms"]() {
+      return true;
+    }
+  }
+});
+
+// resources/js/combobox.js
+var combobox_default = (value = "", disabled = false) => ({
+  keyword: "",
+  value,
+  get selectedValue() {
+    return this.value;
+  },
+  set selectedValue(value2) {
+    this.value = value2;
+  },
+  disabled,
+  open: false,
+  focusedOption: null,
+  root: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":data-disabled"]() {
+      return this.disabled || null;
+    },
+    [":aria-disabled"]() {
+      return this.disabled;
+    },
+    ["x-id"]() {
+      return ["combobox"];
+    },
+    ["@click.outside"]() {
+      this.close();
+    },
+    ["@keydown.escape"]() {
+      this.close();
+    }
+  },
+  trigger: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":aria-expanded"]() {
+      return this.open;
+    },
+    [":aria-controls"]() {
+      return this.$id("combobox") + "-list";
+    },
+    [":aria-haspopup"]() {
+      return "listbox";
+    },
+    [":disabled"]() {
+      return this.disabled;
+    },
+    ["@click"]() {
+      this.toggle();
+    },
+    [":id"]() {
+      return this.$id("combobox") + "-trigger";
+    },
+    ["@keydown.enter.prevent"]() {
+      this.openMenu();
+    },
+    ["@keydown.space.prevent"]() {
+      this.openMenu();
+    },
+    ["@keydown.down.prevent"]() {
+      this.openMenu();
+    }
+  },
+  input: {
+    [":id"]() {
+      return this.$id("combobox") + "-input";
+    },
+    [":aria-controls"]() {
+      return this.$id("combobox") + "-list";
+    },
+    [":aria-activedescendant"]() {
+      return this.focusedOption?.id ?? null;
+    },
+    [":aria-expanded"]() {
+      return this.open;
+    },
+    ["x-model"]: "keyword",
+    ["@input"]() {
+      this.focusedOption = null;
+    },
+    ["@keydown.down.prevent"]() {
+      this.focus(1);
+    },
+    ["@keydown.up.prevent"]() {
+      this.focus(-1);
+    },
+    ["@keydown.enter.prevent"]() {
+      if (this.focusedOption) {
+        this.select(this.focusedOption.dataset.value);
+      }
+    },
+    ["@keydown.escape.stop.prevent"]() {
+      this.close();
+      this.$nextTick(() => this.$refs.trigger?.focus());
+    }
+  },
+  content: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":id"]() {
+      return this.$id("combobox") + "-content";
+    }
+  },
+  list: {
+    [":id"]() {
+      return this.$id("combobox") + "-list";
+    },
+    [":aria-labelledby"]() {
+      return this.$id("combobox") + "-trigger";
+    }
+  },
+  option: {
+    ["x-show"]() {
+      return this.matches(this.$el);
+    },
+    [":aria-selected"]() {
+      return this.isSelectedValue(this.$el.dataset.value);
+    },
+    [":aria-disabled"]() {
+      return this.$el.dataset.disabled === "true";
+    },
+    [":data-selected"]() {
+      return this.isSelectedValue(this.$el.dataset.value);
+    },
+    [":data-active"]() {
+      return this.focusedOption === this.$el;
+    },
+    [":id"]() {
+      return this.$id("combobox") + "-option-" + encodeURIComponent(this.$el.dataset.value);
+    },
+    ["@click"]() {
+      if (this.$el.dataset.disabled !== "true") {
+        this.select(this.$el.dataset.value);
+      }
+    }
+  },
+  init() {
+    this.$watch("value", () => this.$nextTick(() => this.focusedOption = null));
+  },
+  matches(option) {
+    const label = option.innerText ?? option.textContent ?? "";
+    return this.keyword === "" || label.toLowerCase().includes(this.keyword.toLowerCase());
+  },
+  isSelectedValue(value2) {
+    return String(this.value ?? "") === String(value2 ?? "");
+  },
+  noMatches() {
+    return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].every((option) => !this.matches(option));
+  },
+  focus(direction) {
+    const options = [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].filter((option) => option.dataset.disabled !== "true" && this.matches(option));
+    if (options.length === 0) {
+      this.focusedOption = null;
+      return;
+    }
+    const current = options.indexOf(this.focusedOption);
+    const index = current < 0 ? direction > 0 ? 0 : options.length - 1 : (current + direction + options.length) % options.length;
+    this.focusedOption = options[index];
+    this.focusedOption.scrollIntoView({ block: "nearest" });
+  },
+  select(value2) {
+    this.value = value2;
+    const detail = { value: value2 };
+    this.$dispatch("value-change", detail);
+    this.$dispatch("change", detail);
+    this.close();
+  },
+  selectedLabel() {
+    return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].map((option) => ({
+      option,
+      label: (option.innerText ?? option.textContent ?? "").trim()
+    })).find(({ option }) => this.isSelectedValue(option.dataset.value))?.label ?? "";
+  },
+  openMenu() {
+    if (this.disabled) {
+      return;
+    }
+    this.open = true;
+    this.$nextTick(() => {
+      this.$refs.input?.focus();
+      this.focus(1);
+    });
+  },
+  close() {
+    this.open = false;
+    this.keyword = "";
+    this.focusedOption = null;
+  },
+  toggle() {
+    if (!this.disabled) {
+      this.open ? this.close() : this.openMenu();
+    }
+  }
+});
+
+// resources/js/contextMenu.js
+var contextMenu_default = () => ({
+  open: false,
+  x: 0,
+  y: 0,
+  root: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    ["x-id"]() {
+      return ["context-menu"];
+    },
+    ["@click.outside"]() {
+      this.close();
+    },
+    ["@keydown.escape.window"]() {
+      this.close();
+    }
+  },
+  trigger: {
+    [":aria-expanded"]() {
+      return this.open;
+    },
+    [":aria-haspopup"]() {
+      return "menu";
+    },
+    [":aria-controls"]() {
+      return this.$id("context-menu") + "-content";
+    },
+    ["@contextmenu.prevent"]($event) {
+      this.openAt($event);
+    }
+  },
+  content: {
+    [":data-state"]() {
+      return this.open ? "open" : "closed";
+    },
+    [":id"]() {
+      return this.$id("context-menu") + "-content";
+    },
+    [":style"]() {
+      return {
+        left: `${this.x}px`,
+        top: `${this.y}px`
+      };
+    },
+    ["x-show"]() {
+      return this.open;
+    },
+    ["x-trap.noscroll"]() {
+      return this.open;
+    },
+    ["x-transition"]() {
+      return true;
+    },
+    ["@keydown.down.prevent"]() {
+      this.$focus.within(this.$el).wrap().next();
+    },
+    ["@keydown.up.prevent"]() {
+      this.$focus.within(this.$el).wrap().previous();
+    }
+  },
+  menuItem: {
+    ["@click"]() {
+      this.close();
+    },
+    ["@mouseenter"]() {
+      this.$focus.focus(this.$el);
+    }
+  },
+  openAt(event) {
+    this.x = Math.min(event.clientX, window.innerWidth - 220);
+    this.y = Math.min(event.clientY, window.innerHeight - 180);
+    this.open = true;
+    this.$nextTick(() => this.$focus.focus(this.$refs.content?.querySelector('[role="menuitem"]')));
+    this.$nextTick(() => setTimeout(() => {
+      const content = this.$refs.content;
+      if (content) {
+        content.style.left = `${this.x}px`;
+        content.style.top = `${this.y}px`;
+      }
+    }, 200));
+  },
+  close() {
+    this.open = false;
+  }
+});
+
+// resources/js/dataTable.js
+var normalize = (value) => String(value ?? "").toLocaleLowerCase();
+var number2 = (value) => Number(value);
+var dataTable_default = (data = [], columns = [], options = {}) => ({
+  data: Array.isArray(data) ? data : [],
+  columns: Array.isArray(columns) ? columns : [],
+  controlled: options.pagination?.mode === "controlled",
+  tableId: options.id || "",
+  searchable: Boolean(options.searchable),
+  selectable: Boolean(options.selectable),
+  paginated: Boolean(options.paginated || options.pagination),
+  rowKey: options.rowKey || "id",
+  perPage: Math.max(1, number2(options.pagination?.perPage ?? options.perPage) || 10),
+  perPageOptions: [.../* @__PURE__ */ new Set([...Array.isArray(options.perPageOptions) ? options.perPageOptions : [10, 20, 50], number2(options.pagination?.perPage ?? options.perPage) || 10])],
+  total: Math.max(0, number2(options.pagination?.total)),
+  search: options.pagination?.search || "",
+  page: Math.max(1, number2(options.pagination?.page) || 1),
+  sortKey: options.pagination?.sort?.key || null,
+  sortDirection: options.pagination?.sort?.direction === "desc" ? "desc" : "asc",
+  selected: [],
+  init() {
+    this.$watch("search", () => {
+      this.page = 1;
+      this.emitQueryChange();
+    });
+  },
+  get filteredRows() {
+    if (this.controlled) {
+      return this.data;
+    }
+    const query = normalize(this.search).trim();
+    if (!query || !this.searchable) {
+      return this.data;
+    }
+    const keys2 = this.columns.filter((column) => column.searchable !== false).map((column) => column.key);
+    return this.data.filter((row) => keys2.some((key) => normalize(this.value(row, key)).includes(query)));
+  },
+  get sortedRows() {
+    if (this.controlled) {
+      return this.filteredRows;
+    }
+    if (!this.sortKey) {
+      return this.filteredRows;
+    }
+    return [...this.filteredRows].sort((left, right) => {
+      const leftValue = this.value(left, this.sortKey);
+      const rightValue = this.value(right, this.sortKey);
+      const leftNumber = number2(leftValue);
+      const rightNumber = number2(rightValue);
+      let comparison;
+      if (Number.isFinite(leftNumber) && Number.isFinite(rightNumber)) {
+        comparison = leftNumber - rightNumber;
+      } else {
+        comparison = String(leftValue ?? "").localeCompare(String(rightValue ?? ""), void 0, {
+          numeric: true,
+          sensitivity: "base"
+        });
+      }
+      return this.sortDirection === "asc" ? comparison : -comparison;
+    });
+  },
+  get totalPages() {
+    return Math.max(1, Math.ceil(this.totalRows / this.perPage));
+  },
+  get totalRows() {
+    return this.controlled ? this.total : this.sortedRows.length;
+  },
+  get visibleRows() {
+    if (this.controlled) {
+      return this.data;
+    }
+    if (!this.paginated) {
+      return this.sortedRows;
+    }
+    const page = Math.min(this.page, this.totalPages);
+    const offset = (page - 1) * this.perPage;
+    return this.sortedRows.slice(offset, offset + this.perPage);
+  },
+  get pageStart() {
+    return this.totalRows ? (Math.min(this.page, this.totalPages) - 1) * this.perPage + 1 : 0;
+  },
+  get pageEnd() {
+    if (this.controlled) {
+      return this.data.length ? Math.min(this.pageStart + this.data.length - 1, this.totalRows) : 0;
+    }
+    return Math.min(this.pageStart + this.perPage - 1, this.totalRows);
+  },
+  value(row, key) {
+    return String(key ?? "").split(".").reduce((value, segment) => value?.[segment], row);
+  },
+  display(row, key) {
+    const value = this.value(row, key);
+    return value == null ? "" : String(value);
+  },
+  identity(row) {
+    const value = this.value(row, this.rowKey);
+    return String(value ?? this.data.indexOf(row));
+  },
+  rowDomKey(row) {
+    return this.identity(row);
+  },
+  isSelected(row) {
+    return this.selected.includes(this.identity(row));
+  },
+  get allVisibleSelected() {
+    return this.visibleRows.length > 0 && this.visibleRows.every((row) => this.isSelected(row));
+  },
+  toggleRow(row) {
+    const id = this.identity(row);
+    this.selected = this.selected.includes(id) ? this.selected.filter((selected) => selected !== id) : [...this.selected, id];
+    this.emitSelectionChange();
+  },
+  toggleVisibleRows() {
+    const ids = this.visibleRows.map((row) => this.identity(row));
+    this.selected = this.allVisibleSelected ? this.selected.filter((selected) => !ids.includes(selected)) : [.../* @__PURE__ */ new Set([...this.selected, ...ids])];
+    this.emitSelectionChange();
+  },
+  toggleSort(key) {
+    const column = this.columns.find((column2) => column2.key === key);
+    if (!column?.sortable) {
+      return;
+    }
+    if (this.sortKey === key) {
+      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
+    } else {
+      this.sortKey = key;
+      this.sortDirection = "asc";
+    }
+    this.page = 1;
+    this.emitQueryChange();
+  },
+  sortState(key) {
+    if (this.sortKey !== key) {
+      return "none";
+    }
+    return this.sortDirection === "asc" ? "ascending" : "descending";
+  },
+  sortIndicator(key) {
+    if (this.sortKey !== key) {
+      return "\u2195";
+    }
+    return this.sortDirection === "asc" ? "\u2191" : "\u2193";
+  },
+  setPage(page) {
+    this.page = Math.min(Math.max(1, number2(page) || 1), this.totalPages);
+    this.emitQueryChange();
+  },
+  setPerPage(perPage) {
+    this.perPage = Math.max(1, number2(perPage) || this.perPage);
+    this.page = 1;
+    this.emitQueryChange();
+  },
+  sync(payload = {}) {
+    if (payload.id && payload.id !== this.tableId) {
+      return;
+    }
+    if (Array.isArray(payload.data)) {
+      this.data = payload.data;
+    }
+    if (!payload.pagination) {
+      return;
+    }
+    const pagination = payload.pagination;
+    this.controlled = pagination.mode === "controlled" || this.controlled;
+    this.page = Math.max(1, number2(pagination.page) || this.page);
+    this.perPage = Math.max(1, number2(pagination.perPage) || this.perPage);
+    this.total = Math.max(0, number2(pagination.total));
+    this.search = pagination.search ?? this.search;
+    this.sortKey = pagination.sort?.key ?? this.sortKey;
+    this.sortDirection = pagination.sort?.direction === "desc" ? "desc" : "asc";
+  },
+  emitQueryChange() {
+    this.$dispatch("query-change", {
+      search: this.search,
+      sort: this.sortKey ? { key: this.sortKey, direction: this.sortDirection } : null,
+      page: this.page,
+      perPage: this.perPage
+    });
+  },
+  emitSelectionChange() {
+    this.$dispatch("selection-change", { selected: this.selected });
+  },
+  root: {
+    ["@data-table:sync.window"](event) {
+      this.sync(event.detail);
+    }
   }
 });
 
@@ -2671,678 +3396,6 @@ function cleanEscapedString(input) {
   return matched[1].replace(doubleQuoteRegExp, "'");
 }
 
-// resources/js/command.js
-var command_default = (value) => ({
-  keyword: value,
-  focusedItem: null,
-  root: {
-    ["@keydown"]($event) {
-      if ($event.key == "Home") {
-        this.selectOption(1, false);
-      }
-      if ($event.key == "End") {
-        this.selectOption(-1, false);
-      }
-    },
-    ["@keydown.capture.down.prevent"]() {
-      this.selectOption(1);
-    },
-    ["@keydown.capture.up.prevent"]() {
-      this.selectOption(-1);
-    },
-    ["@keydown.capture.enter.prevent"]() {
-      if (this.focusedItem != null) {
-        this.focusedItem.click();
-      }
-    }
-  },
-  init() {
-    this.$nextTick(() => {
-      this.selectOption(0, false, false);
-    });
-  },
-  commandInput: {
-    ["@input"]() {
-      this.keyword = this.$el.value;
-      this.$nextTick(() => {
-        this.selectOption(0, false);
-      });
-      this.$dispatch("valueChange", { value: this.keyword });
-    },
-    [":id"]() {
-      return this.$id("command") + "-input";
-    },
-    [":aria-controls"]() {
-      return this.$id("command") + "-list";
-    }
-  },
-  commandList: {
-    [":id"]() {
-      return this.$id("command") + "-list";
-    }
-  },
-  commandItem: {
-    [":data-cmd-item"]() {
-      return true;
-    },
-    [":data-selected"]() {
-      return this.$el.contains(this.focusedItem);
-    },
-    [":aria-selected"]() {
-      return this.$el.contains(this.focusedItem);
-    },
-    [":tabindex"]() {
-      return this.$el.contains(this.focusedItem) ? 0 : -1;
-    },
-    ["x-effect"]() {
-      const searchText = this.$el.dataset.search ?? this.$el.innerText;
-      if (this.keyword == "" || this.fuzzySearch(this.keyword, searchText)) {
-        this.$el.dataset.active = true;
-        this.$el.style.display = "flex";
-      } else {
-        this.$el.dataset.active = false;
-        this.$el.style.display = "none";
-      }
-    },
-    ["@mouseenter"]() {
-      return this.focusedItem = this.$el;
-    }
-  },
-  commandGroupHeading: {
-    [":id"]() {
-      return this.$id("command") + "-group-heading";
-    }
-  },
-  commandGroup: {
-    [":id"]() {
-      return this.$id("command") + "-group";
-    },
-    [":aria-labelledby"]() {
-      return this.$id("command") + "-group-heading";
-    }
-  },
-  commandGroupContainer: {
-    ["x-effect"]() {
-      this.keyword == "";
-      this.$nextTick(() => {
-        this.$el.style.display = this.$el.querySelectorAll("[data-active=true]").length > 0 ? "block" : "none";
-      });
-    }
-  },
-  commandEmpty: {
-    ["x-effect"]() {
-      this.keyword == "";
-      this.$nextTick(() => {
-        this.$el.style.display = this.$refs.list.querySelectorAll("[data-active=true]").length > 0 ? "none" : "block";
-      });
-    }
-  },
-  selectOption(index, relative = true, scroll = true) {
-    let nodeList = this.$refs.list.querySelectorAll("[data-active=true]");
-    let nodeListArray = Array.from(nodeList);
-    let initialIndex = index;
-    if (nodeList.length == 0 || !nodeListArray.some(
-      (node) => JSON.parse(node.dataset.disabled) == false
-    )) {
-      return;
-    }
-    if (relative) {
-      let previousIndex = Array.from(nodeList).findIndex(
-        (node) => node.isEqualNode(this.focusedItem)
-      ) ?? 0;
-      index += previousIndex;
-    }
-    index += index < 0 ? nodeList.length : 0;
-    index = index % nodeList.length;
-    while (JSON.parse(nodeList[index].dataset.disabled)) {
-      index += initialIndex < 0 ? -1 : 1;
-      index = index % nodeList.length;
-    }
-    this.focusedItem = nodeList[index];
-    if (scroll) {
-      this.focusedItem.scrollIntoView({ block: "nearest" });
-    }
-  },
-  fuzzySearch(keyword, text) {
-    const keywordLower = keyword.toLowerCase();
-    const textLower = text.toLowerCase();
-    let keywordIndex = 0;
-    for (let i = 0; i < textLower.length; i++) {
-      if (textLower[i] === keywordLower[keywordIndex]) {
-        keywordIndex++;
-      }
-      if (keywordIndex === keywordLower.length) {
-        return true;
-      }
-    }
-    return false;
-  }
-});
-
-// resources/js/collapsible.js
-var collapsible_default = (open = false, disabled = false) => ({
-  open,
-  disabled,
-  root: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":data-disabled"]() {
-      return this.disabled || null;
-    },
-    ["x-id"]() {
-      return ["collapsible"];
-    }
-  },
-  trigger: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":aria-expanded"]() {
-      return this.open;
-    },
-    [":aria-controls"]() {
-      return this.$id("collapsible") + "-content";
-    },
-    [":aria-disabled"]() {
-      return this.disabled;
-    },
-    [":disabled"]() {
-      return this.disabled;
-    },
-    ["@click"]() {
-      if (!this.disabled) {
-        this.open = !this.open;
-      }
-    },
-    ["@keydown.enter.prevent"]() {
-      if (!this.disabled) {
-        this.open = !this.open;
-      }
-    },
-    ["@keydown.space.prevent"]() {
-      if (!this.disabled) {
-        this.open = !this.open;
-      }
-    },
-    [":id"]() {
-      return this.$id("collapsible") + "-trigger";
-    }
-  },
-  content: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":id"]() {
-      return this.$id("collapsible") + "-content";
-    },
-    [":aria-labelledby"]() {
-      return this.$id("collapsible") + "-trigger";
-    },
-    ["x-show"]() {
-      return this.open;
-    },
-    ["x-collapse.duration.200ms"]() {
-      return true;
-    }
-  }
-});
-
-// resources/js/combobox.js
-var combobox_default = (value = "", disabled = false) => ({
-  keyword: "",
-  selectedValue: value,
-  disabled,
-  open: false,
-  focusedOption: null,
-  root: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":data-disabled"]() {
-      return this.disabled || null;
-    },
-    [":aria-disabled"]() {
-      return this.disabled;
-    },
-    ["x-id"]() {
-      return ["combobox"];
-    },
-    ["@click.outside"]() {
-      this.close();
-    },
-    ["@keydown.escape"]() {
-      this.close();
-    }
-  },
-  trigger: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":aria-expanded"]() {
-      return this.open;
-    },
-    [":aria-controls"]() {
-      return this.$id("combobox") + "-list";
-    },
-    [":aria-haspopup"]() {
-      return "listbox";
-    },
-    [":disabled"]() {
-      return this.disabled;
-    },
-    ["@click"]() {
-      this.toggle();
-    },
-    [":id"]() {
-      return this.$id("combobox") + "-trigger";
-    },
-    ["@keydown.enter.prevent"]() {
-      this.openMenu();
-    },
-    ["@keydown.space.prevent"]() {
-      this.openMenu();
-    },
-    ["@keydown.down.prevent"]() {
-      this.openMenu();
-    }
-  },
-  input: {
-    [":id"]() {
-      return this.$id("combobox") + "-input";
-    },
-    [":aria-controls"]() {
-      return this.$id("combobox") + "-list";
-    },
-    [":aria-activedescendant"]() {
-      return this.focusedOption?.id ?? null;
-    },
-    [":aria-expanded"]() {
-      return this.open;
-    },
-    ["x-model"]: "keyword",
-    ["@input"]() {
-      this.focusedOption = null;
-    },
-    ["@keydown.down.prevent"]() {
-      this.focus(1);
-    },
-    ["@keydown.up.prevent"]() {
-      this.focus(-1);
-    },
-    ["@keydown.enter.prevent"]() {
-      this.focusedOption?.click();
-    },
-    ["@keydown.escape.stop.prevent"]() {
-      this.close();
-      this.$nextTick(() => this.$refs.trigger?.focus());
-    }
-  },
-  content: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":id"]() {
-      return this.$id("combobox") + "-content";
-    }
-  },
-  list: {
-    [":id"]() {
-      return this.$id("combobox") + "-list";
-    },
-    [":aria-labelledby"]() {
-      return this.$id("combobox") + "-trigger";
-    }
-  },
-  option: {
-    ["x-show"]() {
-      return this.matches(this.$el);
-    },
-    [":aria-selected"]() {
-      return this.isSelectedValue(this.$el.dataset.value);
-    },
-    [":aria-disabled"]() {
-      return this.$el.dataset.disabled === "true";
-    },
-    [":data-selected"]() {
-      return this.isSelectedValue(this.$el.dataset.value);
-    },
-    [":data-active"]() {
-      return this.focusedOption === this.$el;
-    },
-    [":id"]() {
-      return this.$id("combobox") + "-option-" + encodeURIComponent(this.$el.dataset.value);
-    },
-    ["@click"]() {
-      if (this.$el.dataset.disabled !== "true") {
-        this.select(this.$el.dataset.value);
-      }
-    }
-  },
-  init() {
-    this.$watch("selectedValue", () => this.$nextTick(() => this.focusedOption = null));
-  },
-  matches(option) {
-    const label = option.innerText ?? option.textContent ?? "";
-    return this.keyword === "" || label.toLowerCase().includes(this.keyword.toLowerCase());
-  },
-  isSelectedValue(value2) {
-    return String(this.selectedValue ?? "") === String(value2 ?? "");
-  },
-  noMatches() {
-    return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].every((option) => !this.matches(option));
-  },
-  focus(direction) {
-    const options = [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].filter((option) => option.dataset.disabled !== "true" && this.matches(option));
-    if (options.length === 0) {
-      this.focusedOption = null;
-      return;
-    }
-    const current = options.indexOf(this.focusedOption);
-    const index = current < 0 ? direction > 0 ? 0 : options.length - 1 : (current + direction + options.length) % options.length;
-    this.focusedOption = options[index];
-    this.focusedOption.scrollIntoView({ block: "nearest" });
-  },
-  select(value2) {
-    this.selectedValue = value2;
-    this.$dispatch("change", { value: value2 });
-    this.close();
-  },
-  selectedLabel() {
-    return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')].map((option) => ({
-      option,
-      label: (option.innerText ?? option.textContent ?? "").trim()
-    })).find(({ option }) => this.isSelectedValue(option.dataset.value))?.label ?? "";
-  },
-  openMenu() {
-    if (this.disabled) {
-      return;
-    }
-    this.open = true;
-    this.$nextTick(() => {
-      this.$refs.input?.focus();
-      this.focus(1);
-    });
-  },
-  close() {
-    this.open = false;
-    this.keyword = "";
-    this.focusedOption = null;
-  },
-  toggle() {
-    if (!this.disabled) {
-      this.open ? this.close() : this.openMenu();
-    }
-  }
-});
-
-// resources/js/contextMenu.js
-var contextMenu_default = () => ({
-  open: false,
-  x: 0,
-  y: 0,
-  root: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    ["x-id"]() {
-      return ["context-menu"];
-    },
-    ["@click.outside"]() {
-      this.close();
-    },
-    ["@keydown.escape.window"]() {
-      this.close();
-    }
-  },
-  trigger: {
-    [":aria-expanded"]() {
-      return this.open;
-    },
-    [":aria-haspopup"]() {
-      return "menu";
-    },
-    [":aria-controls"]() {
-      return this.$id("context-menu") + "-content";
-    },
-    ["@contextmenu.prevent"]($event) {
-      this.openAt($event);
-    }
-  },
-  content: {
-    [":data-state"]() {
-      return this.open ? "open" : "closed";
-    },
-    [":id"]() {
-      return this.$id("context-menu") + "-content";
-    },
-    [":style"]() {
-      return `left: ${this.x}px; top: ${this.y}px`;
-    },
-    ["x-show"]() {
-      return this.open;
-    },
-    ["x-trap.noscroll"]() {
-      return this.open;
-    },
-    ["x-transition"]() {
-      return true;
-    },
-    ["@keydown.down.prevent"]() {
-      this.$focus.within(this.$el).wrap().next();
-    },
-    ["@keydown.up.prevent"]() {
-      this.$focus.within(this.$el).wrap().previous();
-    }
-  },
-  menuItem: {
-    ["@click"]() {
-      this.close();
-    },
-    ["@mouseenter"]() {
-      this.$focus.focus(this.$el);
-    }
-  },
-  openAt(event) {
-    this.x = Math.min(event.clientX, window.innerWidth - 220);
-    this.y = Math.min(event.clientY, window.innerHeight - 180);
-    this.open = true;
-    this.$nextTick(() => this.$focus.focus(this.$refs.content?.querySelector('[role="menuitem"]')));
-  },
-  close() {
-    this.open = false;
-  }
-});
-
-// resources/js/dataTable.js
-var normalize = (value) => String(value ?? "").toLocaleLowerCase();
-var number2 = (value) => Number(value);
-var dataTable_default = (data = [], columns = [], options = {}) => ({
-  data: Array.isArray(data) ? data : [],
-  columns: Array.isArray(columns) ? columns : [],
-  controlled: options.pagination?.mode === "controlled",
-  tableId: options.id || "",
-  searchable: Boolean(options.searchable),
-  selectable: Boolean(options.selectable),
-  paginated: Boolean(options.paginated || options.pagination),
-  rowKey: options.rowKey || "id",
-  perPage: Math.max(1, number2(options.pagination?.perPage ?? options.perPage) || 10),
-  perPageOptions: [.../* @__PURE__ */ new Set([...Array.isArray(options.perPageOptions) ? options.perPageOptions : [10, 20, 50], number2(options.pagination?.perPage ?? options.perPage) || 10])],
-  total: Math.max(0, number2(options.pagination?.total)),
-  search: options.pagination?.search || "",
-  page: Math.max(1, number2(options.pagination?.page) || 1),
-  sortKey: options.pagination?.sort?.key || null,
-  sortDirection: options.pagination?.sort?.direction === "desc" ? "desc" : "asc",
-  selected: [],
-  init() {
-    this.$watch("search", () => {
-      this.page = 1;
-      this.emitQueryChange();
-    });
-  },
-  get filteredRows() {
-    if (this.controlled) {
-      return this.data;
-    }
-    const query = normalize(this.search).trim();
-    if (!query || !this.searchable) {
-      return this.data;
-    }
-    const keys2 = this.columns.filter((column) => column.searchable !== false).map((column) => column.key);
-    return this.data.filter((row) => keys2.some((key) => normalize(this.value(row, key)).includes(query)));
-  },
-  get sortedRows() {
-    if (this.controlled) {
-      return this.filteredRows;
-    }
-    if (!this.sortKey) {
-      return this.filteredRows;
-    }
-    return [...this.filteredRows].sort((left, right) => {
-      const leftValue = this.value(left, this.sortKey);
-      const rightValue = this.value(right, this.sortKey);
-      const leftNumber = number2(leftValue);
-      const rightNumber = number2(rightValue);
-      let comparison;
-      if (Number.isFinite(leftNumber) && Number.isFinite(rightNumber)) {
-        comparison = leftNumber - rightNumber;
-      } else {
-        comparison = String(leftValue ?? "").localeCompare(String(rightValue ?? ""), void 0, {
-          numeric: true,
-          sensitivity: "base"
-        });
-      }
-      return this.sortDirection === "asc" ? comparison : -comparison;
-    });
-  },
-  get totalPages() {
-    return Math.max(1, Math.ceil(this.totalRows / this.perPage));
-  },
-  get totalRows() {
-    return this.controlled ? this.total : this.sortedRows.length;
-  },
-  get visibleRows() {
-    if (this.controlled) {
-      return this.data;
-    }
-    if (!this.paginated) {
-      return this.sortedRows;
-    }
-    const page = Math.min(this.page, this.totalPages);
-    const offset = (page - 1) * this.perPage;
-    return this.sortedRows.slice(offset, offset + this.perPage);
-  },
-  get pageStart() {
-    return this.totalRows ? (Math.min(this.page, this.totalPages) - 1) * this.perPage + 1 : 0;
-  },
-  get pageEnd() {
-    if (this.controlled) {
-      return this.data.length ? Math.min(this.pageStart + this.data.length - 1, this.totalRows) : 0;
-    }
-    return Math.min(this.pageStart + this.perPage - 1, this.totalRows);
-  },
-  value(row, key) {
-    return String(key ?? "").split(".").reduce((value, segment) => value?.[segment], row);
-  },
-  display(row, key) {
-    const value = this.value(row, key);
-    return value == null ? "" : String(value);
-  },
-  identity(row) {
-    const value = this.value(row, this.rowKey);
-    return String(value ?? this.data.indexOf(row));
-  },
-  rowDomKey(row) {
-    return this.identity(row);
-  },
-  isSelected(row) {
-    return this.selected.includes(this.identity(row));
-  },
-  get allVisibleSelected() {
-    return this.visibleRows.length > 0 && this.visibleRows.every((row) => this.isSelected(row));
-  },
-  toggleRow(row) {
-    const id = this.identity(row);
-    this.selected = this.selected.includes(id) ? this.selected.filter((selected) => selected !== id) : [...this.selected, id];
-    this.emitSelectionChange();
-  },
-  toggleVisibleRows() {
-    const ids = this.visibleRows.map((row) => this.identity(row));
-    this.selected = this.allVisibleSelected ? this.selected.filter((selected) => !ids.includes(selected)) : [.../* @__PURE__ */ new Set([...this.selected, ...ids])];
-    this.emitSelectionChange();
-  },
-  toggleSort(key) {
-    const column = this.columns.find((column2) => column2.key === key);
-    if (!column?.sortable) {
-      return;
-    }
-    if (this.sortKey === key) {
-      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
-    } else {
-      this.sortKey = key;
-      this.sortDirection = "asc";
-    }
-    this.page = 1;
-    this.emitQueryChange();
-  },
-  sortState(key) {
-    if (this.sortKey !== key) {
-      return "none";
-    }
-    return this.sortDirection === "asc" ? "ascending" : "descending";
-  },
-  sortIndicator(key) {
-    if (this.sortKey !== key) {
-      return "\u2195";
-    }
-    return this.sortDirection === "asc" ? "\u2191" : "\u2193";
-  },
-  setPage(page) {
-    this.page = Math.min(Math.max(1, number2(page) || 1), this.totalPages);
-    this.emitQueryChange();
-  },
-  setPerPage(perPage) {
-    this.perPage = Math.max(1, number2(perPage) || this.perPage);
-    this.page = 1;
-    this.emitQueryChange();
-  },
-  sync(payload = {}) {
-    if (payload.id && payload.id !== this.tableId) {
-      return;
-    }
-    if (Array.isArray(payload.data)) {
-      this.data = payload.data;
-    }
-    if (!payload.pagination) {
-      return;
-    }
-    const pagination = payload.pagination;
-    this.controlled = pagination.mode === "controlled" || this.controlled;
-    this.page = Math.max(1, number2(pagination.page) || this.page);
-    this.perPage = Math.max(1, number2(pagination.perPage) || this.perPage);
-    this.total = Math.max(0, number2(pagination.total));
-    this.search = pagination.search ?? this.search;
-    this.sortKey = pagination.sort?.key ?? this.sortKey;
-    this.sortDirection = pagination.sort?.direction === "desc" ? "desc" : "asc";
-  },
-  emitQueryChange() {
-    this.$dispatch("query-change", {
-      search: this.search,
-      sort: this.sortKey ? { key: this.sortKey, direction: this.sortDirection } : null,
-      page: this.page,
-      perPage: this.perPage
-    });
-  },
-  emitSelectionChange() {
-    this.$dispatch("selection-change", { selected: this.selected });
-  },
-  root: {
-    ["@data-table:sync.window"](event) {
-      this.sync(event.detail);
-    }
-  }
-});
-
 // resources/js/datePicker.js
 var datePicker_default = (open, value, mode, format2) => ({
   open,
@@ -3423,11 +3476,17 @@ var datePicker_default = (open, value, mode, format2) => ({
 // resources/js/dialog.js
 var dialog_default = (show, dismissable) => ({
   show,
+  get open() {
+    return this.show;
+  },
+  set open(value) {
+    this.show = value;
+  },
   dismissable,
   close() {
     this.show = false;
   },
-  open() {
+  openDialog() {
     this.show = true;
   },
   root: {
@@ -3448,7 +3507,7 @@ var dialog_default = (show, dismissable) => ({
       return this.show ? "open" : "closed";
     },
     ["@click"]() {
-      return this.open();
+      return this.openDialog();
     },
     [":id"]() {
       return this.$id("dialog") + "-trigger";
@@ -24729,7 +24788,6 @@ var commandNames = {
 var editor_default = (value = "", options = {}) => ({
   value: value ?? "",
   options,
-  editor: null,
   disabled: Boolean(options.disabled),
   root: {
     [":data-disabled"]() {
@@ -24746,9 +24804,6 @@ var editor_default = (value = "", options = {}) => ({
     [":data-placeholder"]() {
       return options.placeholder ?? "";
     },
-    [":contenteditable"]() {
-      return !this.disabled;
-    },
     ["@keydown"](event) {
       if (this.disabled) {
         event.preventDefault();
@@ -24756,7 +24811,7 @@ var editor_default = (value = "", options = {}) => ({
     }
   },
   init() {
-    this.editor = new Editor({
+    const editor = new Editor({
       element: this.$refs.content,
       extensions: [
         src_default2.configure({
@@ -24766,55 +24821,62 @@ var editor_default = (value = "", options = {}) => ({
       ],
       content: this.value || "",
       editable: !this.disabled,
-      onUpdate: ({ editor }) => {
-        this.value = editor.getHTML();
+      onUpdate: ({ editor: editor2 }) => {
+        this.value = editor2.getHTML();
+        this.$dispatch("value-change", { value: this.value });
         this.$dispatch("input", { value: this.value });
         this.$dispatch("change", { value: this.value });
       }
     });
+    this.$refs.content._aprilEditor = editor;
     this.$watch("value", (value2) => {
-      if (this.editor && value2 !== this.editor.getHTML()) {
-        this.editor.commands.setContent(value2 || "", false);
+      if (this.getEditor() && value2 !== this.getEditor().getHTML()) {
+        this.getEditor().commands.setContent(value2 || "", false);
       }
     });
     this.$watch("disabled", (disabled) => {
-      this.editor?.setEditable(!disabled);
+      this.getEditor()?.setEditable(!disabled);
     });
   },
   destroy() {
-    this.editor?.destroy();
+    this.getEditor()?.destroy();
+    delete this.$refs.content._aprilEditor;
+  },
+  getEditor() {
+    const editor = this.$refs.content?._aprilEditor ?? null;
+    return window.Alpine?.raw ? window.Alpine.raw(editor) : editor;
   },
   isActive(button) {
-    if (!this.editor) {
+    if (!this.getEditor()) {
       return false;
     }
     if (button === "heading") {
-      return this.editor.isActive("heading");
+      return this.getEditor().isActive("heading");
     }
-    return this.editor.isActive(button);
+    return this.getEditor().isActive(button);
   },
   can(button) {
-    if (!this.editor) {
+    if (!this.getEditor()) {
       return false;
     }
     if (button === "undo") {
-      return this.editor.can().undo();
+      return this.getEditor().can().undo();
     }
     if (button === "redo") {
-      return this.editor.can().redo();
+      return this.getEditor().can().redo();
     }
     return true;
   },
   run(button) {
-    if (!this.editor || this.disabled) {
+    if (!this.getEditor() || this.disabled) {
       return;
     }
     if (button === "undo") {
-      this.editor.chain().focus().undo().run();
+      this.getEditor().chain().focus().undo().run();
       return;
     }
     if (button === "redo") {
-      this.editor.chain().focus().redo().run();
+      this.getEditor().chain().focus().redo().run();
       return;
     }
     if (button === "link") {
@@ -24822,11 +24884,11 @@ var editor_default = (value = "", options = {}) => ({
       return;
     }
     if (button === "horizontalRule") {
-      this.editor.chain().focus().setHorizontalRule().run();
+      this.getEditor().chain().focus().setHorizontalRule().run();
       return;
     }
     const command2 = commandNames[button];
-    const chain = this.editor.chain().focus();
+    const chain = this.getEditor().chain().focus();
     if (!command2 || typeof chain[command2] !== "function") {
       return;
     }
@@ -24837,16 +24899,16 @@ var editor_default = (value = "", options = {}) => ({
     chain[command2]().run();
   },
   toggleLink() {
-    if (!this.editor) {
+    if (!this.getEditor()) {
       return;
     }
-    if (this.editor.isActive("link")) {
-      this.editor.chain().focus().unsetLink().run();
+    if (this.getEditor().isActive("link")) {
+      this.getEditor().chain().focus().unsetLink().run();
       return;
     }
     const url = window.prompt("Enter a URL");
     if (url) {
-      this.editor.chain().focus().setLink({ href: url }).run();
+      this.getEditor().chain().focus().setLink({ href: url }).run();
     }
   }
 });
@@ -24928,7 +24990,13 @@ var popover_default = () => ({
 var select_default = (multiple, disabled) => ({
   options: [],
   selected: [],
-  selectedValues: [],
+  value: [],
+  get selectedValues() {
+    return this.value;
+  },
+  set selectedValues(value) {
+    this.value = value;
+  },
   multiple,
   disabled,
   show: false,
@@ -25000,13 +25068,13 @@ var select_default = (multiple, disabled) => ({
   },
   init() {
     this.loadOptions();
-    this.$watch("selectedValues", (values) => {
+    this.$watch("value", (values) => {
       if (this.hasModelBinding())
         this.syncOptionsToValues(values);
     });
     this.$nextTick(() => {
       if (this.hasModelBinding()) {
-        this.syncOptionsToValues(this.selectedValues);
+        this.syncOptionsToValues(this.value);
       } else {
         this.setSelectedValues();
       }
@@ -25051,7 +25119,11 @@ var select_default = (multiple, disabled) => ({
   },
   dispatchChange() {
     this.$nextTick(() => {
-      this.$dispatch("change", { value: this.multiple ? this.selected.map((el) => this.options[el].value) : this.options[this.selected[0]].value });
+      const detail = {
+        value: this.multiple ? this.selected.map((el) => this.options[el].value) : this.options[this.selected[0]].value
+      };
+      this.$dispatch("value-change", detail);
+      this.$dispatch("change", detail);
     });
   },
   remove(index) {
@@ -25109,7 +25181,7 @@ var select_default = (multiple, disabled) => ({
     });
   },
   setSelectedValues() {
-    this.selectedValues = this.multiple ? this.selected.map((option) => this.options[option].value) : this.selected.length > 0 ? this.options[this.selected[0]].value : "";
+    this.value = this.multiple ? this.selected.map((option) => this.options[option].value) : this.selected.length > 0 ? this.options[this.selected[0]].value : "";
   }
 });
 
@@ -25237,8 +25309,14 @@ var sidebar_default = (defaultOpen = true) => ({
 });
 
 // resources/js/switchInput.js
-var switchInput_default = (disabled) => ({
-  switchOn: false,
+var switchInput_default = (disabled, value = false) => ({
+  value: Boolean(value),
+  get switchOn() {
+    return this.value;
+  },
+  set switchOn(value2) {
+    this.value = value2;
+  },
   disabled,
   root: {
     [":data-state"]() {
@@ -25262,9 +25340,7 @@ var switchInput_default = (disabled) => ({
     }
   },
   input: {
-    ["x-model.boolean"]() {
-      return "switchOn";
-    },
+    ["x-model.boolean"]: "switchOn",
     ["x-ref"]() {
       return "input";
     },
@@ -25279,6 +25355,12 @@ var switchInput_default = (disabled) => ({
     [":data-disabled"]() {
       return this.disabled || null;
     },
+    [":aria-disabled"]() {
+      return this.disabled;
+    },
+    [":disabled"]() {
+      return this.disabled;
+    },
     ["@click"]() {
       return this.toggle();
     },
@@ -25286,13 +25368,15 @@ var switchInput_default = (disabled) => ({
       return true;
     }
   },
-  setSwitchState(value) {
+  setSwitchState(value2) {
     if (this.disabled) {
       return;
     }
-    this.switchOn = value;
-    this.$refs.input.checked = value;
-    this.$dispatch("checkedChange");
+    this.switchOn = value2;
+    this.$refs.input.checked = value2;
+    const detail = { value: value2 };
+    this.$dispatch("checked-change", detail);
+    this.$dispatch("checkedChange", detail);
   },
   toggle() {
     this.setSwitchState(!this.switchOn);
@@ -25519,10 +25603,88 @@ function refresh(name) {
   alpine.data(name, resolve(name));
 }
 
-// resources/js/april.js
+// resources/js/livewire.js
+function registerLivewireBridge(Alpine) {
+  if (!Alpine || Alpine.__aprilLivewireBridgeRegistered) {
+    return Alpine;
+  }
+  Alpine.__aprilLivewireBridgeRegistered = true;
+  const isModelElement = (element) => [...element.attributes].some(({ name }) => name.startsWith("wire:model"));
+  const bind2 = (root = document) => {
+    if (!window.Livewire) {
+      return;
+    }
+    const elements = root instanceof Element && isModelElement(root) ? [root] : [...root.querySelectorAll("*")].filter(isModelElement);
+    elements.forEach((element) => {
+      if (element.dataset.aprilWireModelBound === "true") {
+        return;
+      }
+      const modelable = element.getAttribute("x-modelable");
+      const model = element._x_model || (modelable ? {
+        get: () => Alpine.evaluate(element, modelable),
+        set: (value) => Alpine.evaluate(element, modelable + " = __aprilWireValue", {
+          scope: { __aprilWireValue: value }
+        })
+      } : null);
+      if (!model) {
+        return;
+      }
+      const attribute = [...element.attributes].find(({ name }) => name.startsWith("wire:model"));
+      const componentElement = element.closest("[wire\\:id]");
+      const property = attribute?.value;
+      const componentId = componentElement?.getAttribute("wire:id");
+      const component2 = componentId ? window.Livewire.find(componentId) : null;
+      if (!attribute || !property || !component2 || !component2.$wire) {
+        return;
+      }
+      const live = /\.live|\.blur|\.change|\.lazy|\.debounce|\.throttle/.test(attribute.name);
+      let syncing = false;
+      let lastSent;
+      const syncFromLivewire = () => {
+        const value = component2.$wire.get(property);
+        const encoded = JSON.stringify(value);
+        if (encoded === JSON.stringify(model.get())) {
+          return;
+        }
+        syncing = true;
+        model.set(value);
+        syncing = false;
+      };
+      Alpine.effect(() => {
+        const value = model.get();
+        const encoded = JSON.stringify(value);
+        if (syncing || encoded === lastSent) {
+          return;
+        }
+        lastSent = encoded;
+        component2.$wire.set(property, value, live);
+      });
+      element.dataset.aprilWireModelBound = "true";
+      syncFromLivewire();
+    });
+  };
+  document.addEventListener("alpine:initialized", () => bind2());
+  document.addEventListener("livewire:init", () => bind2());
+  document.addEventListener("livewire:navigated", () => bind2());
+  if (window.Livewire?.hook) {
+    window.Livewire.hook("morph.updated", ({ el }) => bind2(el));
+  }
+  return Alpine;
+}
+
+// resources/js/april-core.js
 Object.keys(components_default).forEach((name) => component(name, components_default[name]));
-window.April = { components, component, extend, replace: replace2, resolve, register };
-document.addEventListener("alpine:init", () => register(window.Alpine));
+function registerApril(Alpine) {
+  register(Alpine);
+  return Alpine;
+}
+
+// resources/js/april.js
+window.April = { components, component, extend, replace: replace2, resolve, register: registerApril };
+document.addEventListener("alpine:init", () => {
+  registerApril(window.Alpine);
+  registerLivewireBridge(window.Alpine);
+});
 export {
   accordion_default as accordion,
   accordionItem_default as accordionItem,
@@ -25548,6 +25710,8 @@ export {
   extend,
   popover_default as popover,
   register,
+  registerApril,
+  registerLivewireBridge,
   replace2 as replace,
   resolve,
   select_default as select,

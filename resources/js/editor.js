@@ -16,7 +16,6 @@ const commandNames = {
 export default (value = '', options = {}) => ({
     value: value ?? '',
     options,
-    editor: null,
     disabled: Boolean(options.disabled),
     root: {
         [':data-disabled']() {
@@ -33,9 +32,6 @@ export default (value = '', options = {}) => ({
         [':data-placeholder']() {
             return options.placeholder ?? '';
         },
-        [':contenteditable']() {
-            return !this.disabled;
-        },
         ['@keydown'](event) {
             if (this.disabled) {
                 event.preventDefault();
@@ -43,7 +39,7 @@ export default (value = '', options = {}) => ({
         },
     },
     init() {
-        this.editor = new Editor({
+        const editor = new Editor({
             element: this.$refs.content,
             extensions: [
                 StarterKit.configure({
@@ -55,62 +51,73 @@ export default (value = '', options = {}) => ({
             editable: !this.disabled,
             onUpdate: ({ editor }) => {
                 this.value = editor.getHTML();
+                this.$dispatch('value-change', { value: this.value });
                 this.$dispatch('input', { value: this.value });
                 this.$dispatch('change', { value: this.value });
             },
         });
 
+        // Tiptap owns mutable ProseMirror state. Keep it on the DOM node so
+        // Alpine does not wrap it in a reactive Proxy.
+        this.$refs.content._aprilEditor = editor;
+
         this.$watch('value', (value) => {
-            if (this.editor && value !== this.editor.getHTML()) {
-                this.editor.commands.setContent(value || '', false);
+            if (this.getEditor() && value !== this.getEditor().getHTML()) {
+                this.getEditor().commands.setContent(value || '', false);
             }
         });
 
         this.$watch('disabled', (disabled) => {
-            this.editor?.setEditable(!disabled);
+            this.getEditor()?.setEditable(!disabled);
         });
     },
     destroy() {
-        this.editor?.destroy();
+        this.getEditor()?.destroy();
+        delete this.$refs.content._aprilEditor;
+    },
+    getEditor() {
+        const editor = this.$refs.content?._aprilEditor ?? null;
+
+        return window.Alpine?.raw ? window.Alpine.raw(editor) : editor;
     },
     isActive(button) {
-        if (!this.editor) {
+        if (!this.getEditor()) {
             return false;
         }
 
         if (button === 'heading') {
-            return this.editor.isActive('heading');
+            return this.getEditor().isActive('heading');
         }
 
-        return this.editor.isActive(button);
+        return this.getEditor().isActive(button);
     },
     can(button) {
-        if (!this.editor) {
+        if (!this.getEditor()) {
             return false;
         }
 
         if (button === 'undo') {
-            return this.editor.can().undo();
+            return this.getEditor().can().undo();
         }
 
         if (button === 'redo') {
-            return this.editor.can().redo();
+            return this.getEditor().can().redo();
         }
 
         return true;
     },
     run(button) {
-        if (!this.editor || this.disabled) {
+        if (!this.getEditor() || this.disabled) {
             return;
         }
 
         if (button === 'undo') {
-            this.editor.chain().focus().undo().run();
+            this.getEditor().chain().focus().undo().run();
             return;
         }
 
         if (button === 'redo') {
-            this.editor.chain().focus().redo().run();
+            this.getEditor().chain().focus().redo().run();
             return;
         }
 
@@ -120,13 +127,13 @@ export default (value = '', options = {}) => ({
         }
 
         if (button === 'horizontalRule') {
-            this.editor.chain().focus().setHorizontalRule().run();
+            this.getEditor().chain().focus().setHorizontalRule().run();
             return;
         }
 
         const command = commandNames[button];
 
-        const chain = this.editor.chain().focus();
+        const chain = this.getEditor().chain().focus();
 
         if (!command || typeof chain[command] !== 'function') {
             return;
@@ -140,19 +147,19 @@ export default (value = '', options = {}) => ({
         chain[command]().run();
     },
     toggleLink() {
-        if (!this.editor) {
+        if (!this.getEditor()) {
             return;
         }
 
-        if (this.editor.isActive('link')) {
-            this.editor.chain().focus().unsetLink().run();
+        if (this.getEditor().isActive('link')) {
+            this.getEditor().chain().focus().unsetLink().run();
             return;
         }
 
         const url = window.prompt('Enter a URL');
 
         if (url) {
-            this.editor.chain().focus().setLink({ href: url }).run();
+            this.getEditor().chain().focus().setLink({ href: url }).run();
         }
     },
 });

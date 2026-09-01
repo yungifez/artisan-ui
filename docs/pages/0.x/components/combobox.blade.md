@@ -18,7 +18,7 @@ Each option is a child component because a combobox can contain multiple options
 @endverbatim
 </x-code-block-wrapper>
 
-The selected value is submitted under the `name` attribute and a `change` event is dispatched with the selected value.
+The selected value is submitted under the `name` attribute. The component dispatches `value-change` with `{ detail: { value } }`; the existing `change` event remains available.
 
 Use `value` for the initial selection or `wire:model` for a Livewire-bound value. Values are compared as strings so numeric model IDs work with option values rendered in HTML. The trigger supports Enter, Space, and Arrow Down; the search field supports Arrow Up, Arrow Down, Enter, and Escape.
 

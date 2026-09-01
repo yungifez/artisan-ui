@@ -36,7 +36,6 @@ export default class RangeModeHandler {
 
         this._value.to = date
         return true;
-        console.log(this.value)
     }
 
     isSelectedDay(date) {

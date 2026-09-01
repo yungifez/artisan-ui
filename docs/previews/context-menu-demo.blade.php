@@ -1,7 +1,9 @@
 <april:context-menu>
-    <div class="flex min-h-32 max-w-md items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-        Right-click this area
-    </div>
+    <slot:trigger>
+        <div class="flex min-h-32 max-w-md items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+            Right-click this area
+        </div>
+    </slot:trigger>
     <slot:content class="w-48">
         <april:context-menu-label>Actions</april:context-menu-label>
         <april:context-menu-separator />

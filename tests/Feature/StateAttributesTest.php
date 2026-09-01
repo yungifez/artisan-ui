@@ -16,14 +16,6 @@
 |
 */
 
-/**
- * The source of one Alpine behaviour.
- */
-function behaviourSource(string $name): string
-{
-    return file_get_contents(__DIR__."/../../resources/js/{$name}.js");
-}
-
 describe('the starting state in the markup', function () {
     it('marks an overlay closed until it opens', function (string $name) {
         expect(renderComponent($name))->toContain('data-state="closed"');
@@ -81,55 +73,7 @@ describe('the starting state in the markup', function () {
     });
 });
 
-describe('the state updates that alpine applies', function () {
-    it('keeps the state current while the component is open', function (string $behaviour) {
-        expect(behaviourSource($behaviour))->toContain("[':data-state']()");
-    })->with([
-        'dialog',
-        'sheet',
-        'popover',
-        'dropdownMenu',
-        'dropdownMenuSub',
-        'tooltip',
-        'datePicker',
-        'banner',
-        'alert',
-        'select',
-        'switchInput',
-        'accordionItem',
-        'tabsTrigger',
-        'tabsContent',
-    ]);
-
-    it('uses open and closed for something that opens', function (string $behaviour) {
-        expect(behaviourSource($behaviour))->toContain("'open' : 'closed'");
-    })->with(['dialog', 'sheet', 'popover', 'dropdownMenu', 'tooltip', 'datePicker', 'select']);
-
-    it('uses checked and unchecked for a switch, as radix does', function () {
-        expect(behaviourSource('switchInput'))->toContain("'checked' : 'unchecked'");
-    });
-
-    it('uses active and inactive for a tab, as radix does', function (string $behaviour) {
-        expect(behaviourSource($behaviour))->toContain("'active' : 'inactive'");
-    })->with(['tabsTrigger', 'tabsContent']);
-
-    it('reports a disabled control', function (string $behaviour) {
-        expect(behaviourSource($behaviour))->toContain("[':data-disabled']()");
-    })->with(['switchInput', 'select', 'accordionItem']);
-
-    it('ships the state bindings in the built bundle', function () {
-        expect(file_get_contents(__DIR__.'/../../dist/april.js'))
-            ->toContain('":data-state"');
-    });
-});
-
 describe('what the state attributes unlock', function () {
-    it('uses the requested side for sheet transforms', function () {
-        $source = file_get_contents(__DIR__.'/../../resources/js/sheet.js');
-
-        expect($source)->toContain("left: '-translate-x-full'");
-    });
-
     it('lets a stylesheet target a part without knowing the markup', function () {
         expect(renderComponent('card'))->toContain('data-slot="card-header"');
     });

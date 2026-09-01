@@ -1,6 +1,6 @@
 <div x-data="{value: []}" class="max-w-72">
     <april:calendar class="rounded-md border" mode="range" :selected="['from' => now(), 'to' => now()->addDays(14)]"
-        @change="
+        @value-change="
             value = []
             value['from'] = $event.detail.value.from
             value['to'] = $event.detail.value.to

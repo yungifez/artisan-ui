@@ -4,6 +4,24 @@
 return [
     /*
     |--------------------------------------------------------------------------
+    | Component registry
+    |--------------------------------------------------------------------------
+    |
+    | These values power the optional April UI Artisan commands. Components
+    | remain package views until you publish them.
+    */
+    'registry' => [
+        'path' => __DIR__.'/../resources/registry.json',
+        'source' => __DIR__.'/../resources/views/components',
+        'publish_path' => 'resources/views/vendor/april/components',
+    ],
+
+    'mcp' => [
+        'name' => 'april-ui',
+        'version' => '1.0.0',
+    ],
+    /*
+    |--------------------------------------------------------------------------
     | Tailwind merge
     |--------------------------------------------------------------------------
     |

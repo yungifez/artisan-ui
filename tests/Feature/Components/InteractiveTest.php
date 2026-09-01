@@ -88,6 +88,12 @@ describe('tabs', function () {
         expect($html)->toContain('role="tablist"')->toContain('triggers');
     });
 
+    it('accepts the canonical list slot name', function () {
+        $html = render('<april:tabs><x-slot:list>canonical triggers</x-slot:list></april:tabs>');
+
+        expect($html)->toContain('role="tablist"')->toContain('canonical triggers');
+    });
+
     it('renders its slot', function () {
         expect(renderComponent('tabs', '', 'panels'))->toContain('panels');
     });
@@ -158,12 +164,6 @@ describe('command', function () {
         expect(renderComponent('command-item', '', 'Calendar'))->toContain('Calendar');
     });
 
-    it('supports separate text for searching an item', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/command.js');
-
-        expect($source)->toContain('this.$el.dataset.search ?? this.$el.innerText');
-    });
-
     it('renders a shortcut', function () {
         expect(renderComponent('command-shortcut', '', 'Ctrl+K'))->toContain('Ctrl+K');
     });
@@ -209,7 +209,7 @@ describe('combobox', function () {
         $html = renderComponent('combobox', 'name="framework" :value="\'laravel\'"');
 
         expect($html)
-            ->toContain('x-modelable="selectedValue"')
+            ->toContain('x-modelable="value"')
             ->toContain('type="hidden"')
             ->toContain('name="framework"')
             ->toContain('x-cloak');
@@ -229,26 +229,13 @@ describe('combobox', function () {
             ->toContain('Laravel');
     });
 
-    it('keeps only the focused option active', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/combobox.js');
-
-        expect($source)
-            ->toContain("['x-model']: 'keyword'")
-            ->not->toContain("['x-model']()")
-            ->toContain('return this.focusedOption === this.$el;')
-            ->toContain('String(this.selectedValue ?? \'\') === String(value ?? \'\')');
-    });
-
-    it('uses static Alpine visibility and transition directives for the panel', function () {
+    it('renders visibility, focus, and transition directives for the panel', function () {
         $html = renderComponent('combobox');
-        $source = file_get_contents(__DIR__.'/../../../resources/js/combobox.js');
 
         expect($html)
             ->toContain('x-show="open"')
             ->toContain('x-trap.noscroll="open"')
             ->toContain('x-transition');
-
-        expect($source)->not->toContain("['x-transition']");
     });
 });
 
@@ -317,6 +304,13 @@ describe('select', function () {
         expect(renderComponent('select', 'disabled'))->toContain('select(false, true)');
     });
 
+    it('does not leak behaviour flags onto the root element', function () {
+        $html = renderComponent('select', 'multiple disabled');
+
+        expect($html)->not->toMatch('/<div[^>]*data-slot="select"[^>]*(multiple|disabled)/')
+            ->toContain('<select class="hidden" multiple disabled>');
+    });
+
     it('submits its value through a hidden input', function () {
         expect(renderComponent('select', 'name="country"'))
             ->toContain('type="hidden"')
@@ -331,29 +325,18 @@ describe('select', function () {
         expect(renderComponent('select'))->toContain('x-bind="trigger"');
     });
 
+    it('renders custom trigger content', function () {
+        $html = render('<april:select><x-slot:trigger><span data-test="select-label">Choose a country</span></x-slot:trigger></april:select>');
+
+        expect($html)->toContain('data-test="select-label"')->toContain('Choose a country');
+    });
+
     it('renders its options into the hidden native select', function () {
         $html = render('<april:select><april:select-option value="ng">Nigeria</april:select-option></april:select>');
 
         expect($html)->toContain('<option')->toContain('value="ng"')->toContain('Nigeria');
     });
 
-    it('initializes from the bound model before option defaults', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/select.js');
-
-        expect($source)
-            ->toContain('if (this.hasModelBinding()) this.syncOptionsToValues(values)')
-            ->toContain('if (this.hasModelBinding()) {')
-            ->toContain('this.setSelectedValues()');
-    });
-
-    it('uses the first enabled option when a bound value is empty', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/select.js');
-
-        expect($source)
-            ->toContain('if (!this.multiple && selectedValues.length === 0)')
-            ->toContain('const firstAvailable = this.options.findIndex((option) => !option.disabled);')
-            ->toContain('this.setSelectedValues();');
-    });
 });
 
 describe('select option', function () {
@@ -461,13 +444,6 @@ describe('calendar', function () {
             ->not->toContain('w-[19rem]');
     });
 
-    it('keeps a selected date within a multi-month view anchored', function () {
-        $source = file_get_contents(__DIR__.'/../../../resources/js/calendar.js');
-
-        expect($source)
-            ->toContain('if (!this.isDateInView(selectedDate))')
-            ->toContain('isDateInView(date)');
-    });
 });
 
 describe('date picker', function () {
@@ -495,6 +471,13 @@ describe('date picker', function () {
         expect(renderComponent('date-picker', 'name="due_at"'))
             ->toContain('type="hidden"')
             ->toContain('name="due_at"');
+    });
+
+    it('does not duplicate root attributes on hidden inputs', function () {
+        $html = renderComponent('date-picker', 'id="due-date" class="w-full" data-testid="date-picker"');
+
+        expect(substr_count($html, 'id="due-date"'))->toBe(1)
+            ->and(substr_count($html, 'data-testid="date-picker"'))->toBe(1);
     });
 });
 

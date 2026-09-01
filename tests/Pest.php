@@ -11,9 +11,8 @@ uses(TestCase::class)->in(__DIR__);
 | The component registry
 |--------------------------------------------------------------------------
 |
-| April UI has no registry file. The Blade views in resources/views/components
-| are the registry. These helpers read that directory so a new component is
-| covered by the registry tests as soon as you add the file.
+| The Blade views remain the source of truth. The registry test checks that
+| resources/registry.json stays in sync with that directory.
 |
 */
 

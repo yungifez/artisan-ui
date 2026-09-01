@@ -1,6 +1,6 @@
 <div x-data="{value: []}" class="max-w-72">
     <april:calendar class="rounded-md border" mode="multiple" max="5"
-        :selected="[now(), now()->addDays(2),  now()->addDays(14)]" @change="
+        :selected="[now(), now()->addDays(2),  now()->addDays(14)]" @value-change="
             value = []
             $event.detail.value.forEach(
                 element => value.push(element)

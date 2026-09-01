@@ -38,7 +38,10 @@ export default () => ({
             return this.$id('context-menu') + '-content';
         },
         [':style']() {
-            return `left: ${this.x}px; top: ${this.y}px`;
+            return {
+                left: `${this.x}px`,
+                top: `${this.y}px`,
+            };
         },
         ['x-show']() {
             return this.open;
@@ -69,6 +72,14 @@ export default () => ({
         this.y = Math.min(event.clientY, window.innerHeight - 180);
         this.open = true;
         this.$nextTick(() => this.$focus.focus(this.$refs.content?.querySelector('[role="menuitem"]')));
+        this.$nextTick(() => setTimeout(() => {
+            const content = this.$refs.content;
+
+            if (content) {
+                content.style.left = `${this.x}px`;
+                content.style.top = `${this.y}px`;
+            }
+        }, 200));
     },
     close() {
         this.open = false;

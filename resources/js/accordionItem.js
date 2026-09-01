@@ -61,7 +61,13 @@ export default () => ({
                 this.$data.value.push(this.$id('accordion-item'))
             }
         }
-        this.$nextTick(() => { this.$dispatch('valueChange', { value: this.$data.value }) })
+        this.$nextTick(() => {
+            const detail = { value: this.$data.value };
+
+            this.$dispatch('value-change', detail);
+            // Keep the original event name available for existing listeners.
+            this.$dispatch('valueChange', detail);
+        })
     },
     collapse() {
         if (this.type == 'single' && this.collapsible) {
@@ -72,7 +78,13 @@ export default () => ({
                 this.$data.value.splice(index, 1)
             }
         }
-        this.$nextTick(() => { this.$dispatch('valueChange', { value: this.$data.value }) })
+        this.$nextTick(() => {
+            const detail = { value: this.$data.value };
+
+            this.$dispatch('value-change', detail);
+            // Keep the original event name available for existing listeners.
+            this.$dispatch('valueChange', detail);
+        })
     },
     toggle() {
         this.$data.value.includes(this.$id('accordion-item')) ? this.collapse() : this.expand()

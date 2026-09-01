@@ -1,28 +1,40 @@
 @props([
-'name' => '',
-'trigger'
+    'name' => '',
+    'multiple' => false,
+    'disabled' => false,
 ])
 
-<div data-slot="select" data-state="closed" x-data="select({{$attributes->has('multiple') ? 'true' : 'false'}}, {{$attributes->has('disabled') ? 'true' : 'false'}})"
-    x-bind="root" x-modelable="selectedValues" {{$attributes->twMerge(['relative'])}}>
-    <select class="hidden">
+@php
+$hasTriggerContent = isset($trigger) && trim((string) $trigger) !== '';
+$triggerAttributes = isset($trigger)
+    ? $trigger->attributes
+    : new \Illuminate\View\ComponentAttributeBag;
+$nativeAttributes = ($multiple ? ' multiple' : '').($disabled ? ' disabled' : '');
+@endphp
+
+<div data-slot="select" data-state="closed" x-data="select({{$multiple ? 'true' : 'false'}}, {{$disabled ? 'true' : 'false'}})"
+    x-bind="root" x-modelable="value" {{$attributes->twMerge(['relative'])}}>
+    <select class="hidden"{{$nativeAttributes}}>
         {{$slot}}
     </select>
     {{--secretly use inputs for form submission--}}
     <template x-if="!multiple">
-        <input type="hidden" name="{{$name}}" :value="selectedValues">
+        <input type="hidden" @if ($name !== '') name="{{$name}}" @endif :value="value">
     </template>
     <template x-if="multiple">
-        <template x-for="selectedItem in selectedValues">
-            <input type="hidden" name="{{$name}}" :value="selectedItem">
+        <template x-for="selectedItem in value">
+            <input type="hidden" @if ($name !== '') name="{{$name}}" @endif :value="selectedItem">
         </template>
     </template>
     <div class="grid grid-cols-1 grid-rows-1">
         <button x-bind="trigger" x-ref="select" type="button" :class="{'border-muted' : disabled}" class="flex min-h-10 row-start-1 col-start-1
         w-full h-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm ring-offset-background
         placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed
-        disabled:opacity-50 {{(isset($trigger) ? $trigger?->attributes?->get('class') : '' )}}">
+        disabled:opacity-50 {{$triggerAttributes->get('class')}}">
             <div class=" flex flex-auto gap-y-1">
+                @if ($hasTriggerContent)
+                    {{$trigger}}
+                @else
                 {{--display selected single items--}}
                 <template x-if="!multiple && selected.length > 0">
                     <p class="cursor-default" x-text="options[selected[selected.length - 1]].text">
@@ -36,6 +48,7 @@
                     {{$attributes->get('placeholder') ?? "Select Options"}}
                     @endisset
                 </p>
+                @endif
             </div>
             <div class="w-6 pl-3 flex items-center">
                 <april:angle-down class="w-8/12 transition text-center fill-foreground"

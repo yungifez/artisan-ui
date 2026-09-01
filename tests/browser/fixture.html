@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>April UI browser behavior fixture</title>
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body>
+    <main>
+        <section id="accordion" x-data="accordion('single', true, false)"
+            @value-change="document.body.dataset.accordionValue = JSON.stringify($event.detail.value)">
+            <div data-test="accordion-first" x-data="accordionItem()" x-bind="root">
+                <button data-test="accordion-first-trigger" type="button" x-bind="trigger">First</button>
+                <div data-test="accordion-first-content" x-bind="content" x-cloak>First answer</div>
+            </div>
+            <div data-test="accordion-second" x-data="accordionItem()" x-bind="root">
+                <button data-test="accordion-second-trigger" type="button" x-bind="trigger">Second</button>
+                <div data-test="accordion-second-content" x-bind="content" x-cloak>Second answer</div>
+            </div>
+        </section>
+
+        <section id="tabs" x-data="tabs('account', 'automatic')">
+            <div x-bind="tabsList">
+                <button data-test="tab-account" type="button" x-data="tabsTrigger('account')" x-bind="root">Account</button>
+                <button data-test="tab-billing" type="button" x-data="tabsTrigger('billing')" x-bind="root">Billing</button>
+            </div>
+            <div data-test="panel-account" x-data="tabsContent('account')" x-bind="root">Account panel</div>
+            <div data-test="panel-billing" x-data="tabsContent('billing')" x-bind="root" x-cloak>Billing panel</div>
+        </section>
+
+        <section id="switch" x-data="switchInput(false)" x-bind="root" x-modelable="value"
+            @checked-change="document.body.dataset.switchValue = String($event.detail.value)">
+            <input data-test="switch-input" type="checkbox" name="alerts" x-ref="input" x-bind="input">
+            <button data-test="switch-trigger" type="button" x-bind="trigger">Alerts</button>
+        </section>
+
+        <section id="disabled-switch" x-data="switchInput(true)" x-bind="root">
+            <input data-test="disabled-switch-input" type="checkbox" x-ref="input" x-bind="input">
+            <button data-test="disabled-switch-trigger" type="button" x-bind="trigger">Disabled alerts</button>
+        </section>
+
+        <form id="preferences" x-data="combobox('', false)" x-bind="root" x-modelable="value"
+            @submit.prevent="document.body.dataset.submittedFramework = new FormData($el).get('framework')">
+            <button data-test="combobox-trigger" type="button" x-bind="trigger">
+                <span data-test="combobox-label" x-text="selectedLabel() || 'Choose a framework'"></span>
+            </button>
+            <div data-test="combobox-content" x-bind="content" x-show="open" x-cloak>
+                <input data-test="combobox-input" type="text" x-ref="input" x-bind="input">
+                <input data-test="combobox-value" type="hidden" name="framework" :value="value">
+                <div x-bind="list" role="listbox">
+                    <div data-slot="combobox-option" data-value="laravel" data-disabled="false" x-bind="option">Laravel</div>
+                    <div data-slot="combobox-option" data-value="livewire" data-disabled="false" x-bind="option">Livewire</div>
+                </div>
+            </div>
+            <button data-test="preferences-submit" type="submit">Save preferences</button>
+        </form>
+
+        <section id="disabled-combobox" x-data="combobox('', true)" x-bind="root">
+            <button data-test="disabled-combobox-trigger" type="button" x-bind="trigger">Disabled framework</button>
+            <div data-test="disabled-combobox-content" x-bind="content" x-show="open" x-cloak>
+                <input data-test="disabled-combobox-input" type="text" x-ref="input" x-bind="input">
+            </div>
+        </section>
+
+        <section id="collapsible" x-data="collapsible(false, false)" x-bind="root">
+            <button data-test="collapsible-trigger" type="button" x-bind="trigger">More details</button>
+            <div data-test="collapsible-content" x-bind="content" x-cloak>Additional details</div>
+        </section>
+
+        <section id="disabled-collapsible" x-data="collapsible(false, true)" x-bind="root">
+            <button data-test="disabled-collapsible-trigger" type="button" x-bind="trigger">Disabled details</button>
+            <div data-test="disabled-collapsible-content" x-bind="content" x-cloak>Unavailable details</div>
+        </section>
+
+        <section id="dialog" x-data="dialog(false, true)" x-bind="root">
+            <button data-test="dialog-trigger" type="button" x-bind="trigger">Open dialog</button>
+            <div data-test="dialog-overlay" x-bind="overlay" role="presentation">
+                <div data-test="dialog-content" role="dialog" x-bind="dialog">
+                    <h2 data-test="dialog-title" x-bind="title">Confirm action</h2>
+                    <p data-test="dialog-description" x-bind="description">This action changes your settings.</p>
+                    <button data-test="dialog-close" type="button" x-bind="closeButton">Cancel</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="popover" x-data="popover" x-bind="root">
+            <button data-test="popover-trigger" type="button" x-bind="trigger" x-ref="trigger">Show help</button>
+            <div data-test="popover-content" role="dialog" x-bind="content" x-show="popover" x-cloak>Helpful information</div>
+        </section>
+
+        <section id="date-picker" x-data="datePicker(false, null, 'single', 'yyyy-MM-dd')" x-ref="datePickerInput" x-bind="root">
+            <button data-test="date-picker-trigger" type="button" x-bind="trigger">Pick a date</button>
+            <div data-test="date-picker-calendar" x-bind="calendar" x-cloak>Calendar popup</div>
+        </section>
+
+        <section id="calendar" x-data="calendar('2024-01-15', 'single', ['2024-01-20'], null, null, false, {defaultMonth: '2024-01-01', fixedWeeks: false})" x-bind="root"
+            x-modelable="value" role="grid">
+            <button data-test="calendar-previous" type="button" x-bind="previousMonthTrigger">Previous</button>
+            <span data-test="calendar-month" x-bind="monthLabel"></span>
+            <button data-test="calendar-next" type="button" x-bind="nextMonthTrigger">Next</button>
+            <div data-test="calendar-days">
+                <template x-for="day in daysInMonth" :key="day">
+                    <button type="button" role="gridcell" data-test="calendar-day" :data-day="day"
+                        :aria-selected="isSelectedDay(day)" :disabled="isDisabled(new Date(year, month, day))"
+                        @click="dayClicked(new Date(year, month, day))" x-text="day"></button>
+                </template>
+            </div>
+            <output data-test="calendar-value" x-text="value?.toISOString().slice(0, 10) || 'none'"></output>
+        </section>
+
+        <section id="alert" x-data="alert(false, 5000, false)" x-bind="root">
+            <span data-test="alert-message">Saved successfully</span>
+            <button data-test="alert-dismiss" type="button" x-bind="dismissTrigger">Dismiss</button>
+        </section>
+
+        <section id="alert-dialog" x-data="alertDialog(false, true)" x-bind="root">
+            <button data-test="alert-dialog-trigger" type="button" x-bind="trigger">Delete account</button>
+            <div data-test="alert-dialog-overlay" x-bind="overlay" role="presentation">
+                <div data-test="alert-dialog-content" role="alertdialog" x-bind="dialog">
+                    <h2 x-bind="title">Delete account?</h2>
+                    <p x-bind="description">This cannot be undone.</p>
+                    <button data-test="alert-dialog-cancel" type="button" x-bind="closeButton">Cancel</button>
+                    <button data-test="alert-dialog-action" type="button" x-bind="action">Delete</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="carousel" x-data="carousel('horizontal', false)" x-bind="root" tabindex="0">
+            <div data-test="carousel-track" x-bind="track">
+                <div data-slot="carousel-item" data-test="carousel-first">First slide</div>
+                <div data-slot="carousel-item" data-test="carousel-second">Second slide</div>
+                <div data-slot="carousel-item" data-test="carousel-third">Third slide</div>
+            </div>
+            <button data-test="carousel-previous" type="button" x-bind="previous">Previous</button>
+            <button data-test="carousel-next" type="button" x-bind="next">Next</button>
+        </section>
+
+        <section id="command" x-data="command('')" x-bind="root" x-modelable="value"
+            @value-change="document.body.dataset.commandValue = $event.detail.value">
+            <input data-test="command-input" type="text" x-ref="input" x-bind="commandInput" role="combobox">
+            <div data-test="command-list" x-ref="list" x-bind="commandList" role="listbox">
+                <button data-test="command-first" type="button" x-bind="commandItem" data-disabled="false">Calendar</button>
+                <button data-test="command-second" type="button" x-bind="commandItem" data-disabled="false">Settings</button>
+            </div>
+            <div data-test="command-empty" x-ref="empty" x-bind="commandEmpty">No commands</div>
+        </section>
+
+        <section id="context-menu" x-data="contextMenu" x-bind="root">
+            <div data-test="context-trigger" x-bind="trigger">Right click here</div>
+            <div data-test="context-content" x-ref="content" x-bind="content" x-show="open" x-cloak role="menu">
+                <button data-test="context-first" type="button" x-bind="menuItem" role="menuitem">Copy</button>
+                <button data-test="context-second" type="button" x-bind="menuItem" role="menuitem">Paste</button>
+            </div>
+        </section>
+
+        <section id="data-table" x-data="dataTable([{id: 1, name: 'Ada', score: 20}, {id: 2, name: 'Grace', score: 10}, {id: 3, name: 'Linus', score: 30}], [{key: 'name', label: 'Name', sortable: true}, {key: 'score', label: 'Score', sortable: true}], {searchable: true, selectable: true, paginated: true, perPage: 2, rowKey: 'id'})" x-bind="root">
+            <input data-test="table-search" type="search" x-model="search" aria-label="Search rows">
+            <table>
+                <thead><tr>
+                    <th><input data-test="table-select-all" type="checkbox" :checked="allVisibleSelected" @change="toggleVisibleRows()"></th>
+                    <th><button data-test="table-sort-name" type="button" @click="toggleSort('name')">Name <span x-text="sortIndicator('name')"></span></button></th>
+                    <th><button data-test="table-sort-score" type="button" @click="toggleSort('score')">Score <span x-text="sortIndicator('score')"></span></button></th>
+                </tr></thead>
+                <tbody>
+                    <template x-for="row in visibleRows" :key="rowDomKey(row)">
+                        <tr data-test="table-row" :data-state="isSelected(row) ? 'selected' : null">
+                            <td><input type="checkbox" data-test="table-row-select" :checked="isSelected(row)" @change="toggleRow(row)"></td>
+                            <td data-test="table-name" x-text="display(row, 'name')"></td>
+                            <td data-test="table-score" x-text="display(row, 'score')"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <button data-test="table-previous" type="button" @click="setPage(page - 1)" :disabled="page <= 1">Previous</button>
+            <button data-test="table-next" type="button" @click="setPage(page + 1)" :disabled="page >= totalPages">Next</button>
+            <output data-test="table-page" x-text="page"></output>
+        </section>
+
+        <section id="editor" x-data="editor('<p>Hello</p>', {placeholder: 'Write notes', disabled: false})" x-bind="root">
+            <div role="toolbar" @mousedown.prevent>
+                <button data-test="editor-bold" type="button" @click="run('bold')">Bold</button>
+            </div>
+            <div data-test="editor-content" x-ref="content" x-bind="content" role="group">
+            </div>
+        </section>
+
+        <section id="select" x-data="select(false, false)" x-bind="root" x-modelable="value">
+            <select hidden><option value="one">One</option><option value="two">Two</option><option value="disabled" disabled>Unavailable</option></select>
+            <button data-test="select-trigger" type="button" x-ref="select" x-bind="trigger"><span x-text="selected.length ? options[selected[0]].text : 'Select option'"></span></button>
+            <div data-test="select-options" x-bind="optionList" x-show="show" x-cloak>
+                <template x-for="(option, index) in options" :key="index">
+                    <button type="button" role="option" data-test="select-option" :disabled="option.disabled" :aria-selected="option.selected" @click="select(index)" x-text="option.text"></button>
+                </template>
+            </div>
+        </section>
+
+        <section id="sidebar" x-data="sidebar(true)" x-bind="root">
+            <button data-test="sidebar-toggle" type="button" @click="toggle">Toggle sidebar</button>
+            <aside data-test="sidebar-panel" :data-state="state" x-text="isOpen() ? 'Expanded' : 'Collapsed'"></aside>
+        </section>
+
+        <section id="tooltip" x-data="tooltip(10, 20, false)" x-bind="root">
+            <button data-test="tooltip-trigger" type="button" x-ref="trigger" x-bind="trigger">More information</button>
+            <div data-test="tooltip-content" x-ref="content" x-bind="content" x-show="tooltipOpened" x-cloak>Helpful description</div>
+        </section>
+
+        <section id="avatar" x-data="avatar()">
+            <img data-test="avatar-image" x-bind="image" x-cloak alt="User" src="data:image/gif;base64,R0lGODlhAQABAAD/ACw=">
+            <div data-test="avatar-fallback" x-bind="fallback" x-cloak>AB</div>
+        </section>
+
+        <section id="banner" x-data="banner(0, '-translate-y-10', 'translate-y-0', 'translate-y-0', '-translate-y-10')" x-bind="root">
+            <span data-test="banner-content">Maintenance notice</span>
+            <button data-test="banner-dismiss" type="button" x-bind="dismissTrigger">Dismiss</button>
+        </section>
+
+        <section id="chart" x-data="chart([{month: 'Jan', sales: 10}, {month: 'Feb', sales: 20}], {sales: {label: 'Sales', color: 'red'}}, 'bar', 'month', 240)" x-bind="root" tabindex="0">
+            <div data-test="chart-content" x-ref="chartContent">
+                <svg data-test="chart-svg" x-ref="chart" x-bind="svg" role="img">
+                    <g x-html="gridMarkup"></g>
+                    <g x-html="labelsMarkup"></g>
+                    <g x-html="geometryMarkup"></g>
+                </svg>
+            </div>
+            <output data-test="chart-label" x-text="accessibleLabel"></output>
+        </section>
+
+        <section id="dropdown-menu" x-data="dropdownMenu" x-bind="root">
+            <button data-test="dropdown-trigger" type="button" x-ref="trigger" x-bind="trigger">Actions</button>
+            <div data-test="dropdown-content" x-ref="content" x-bind="content" x-show="dropdownMenu" x-cloak role="menu">
+                <button data-test="dropdown-first" type="button" x-bind="menuItem" role="menuitem">Edit</button>
+                <button data-test="dropdown-second" type="button" x-bind="menuItem" role="menuitem">Archive</button>
+            </div>
+        </section>
+
+        <section id="dropdown-submenu" x-data="dropdownMenuSub" x-bind="root" role="menuitem">
+            <button data-test="submenu-trigger" type="button" x-ref="subTrigger" x-bind="trigger">More actions</button>
+            <div data-test="submenu-content" x-ref="content" x-bind="content" x-show="subOpen" x-cloak role="menu">
+                <button data-test="submenu-item" type="button" x-bind="menuItem" role="menuitem">Duplicate</button>
+            </div>
+        </section>
+
+        <section id="sheet" x-data="{show: false, behavior: sheet('right')}" >
+            <button data-test="sheet-trigger" type="button" @click="show = true">Open sheet</button>
+            <div x-bind="behavior.root" x-show="show" x-cloak>
+                <div data-test="sheet-content" x-bind="behavior.root" x-cloak>
+                    <h2 x-bind="behavior.title">Settings</h2>
+                    <button data-test="sheet-close" type="button" @click="show = false">Close</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="calendar-multiple" x-data="calendar([], 'multiple', null, null, 2, false, {defaultMonth: '2024-01-01', fixedWeeks: false})" x-bind="root" role="grid">
+            <template x-for="day in daysInMonth" :key="day">
+                <button type="button" data-test="multiple-day" :data-day="day" :aria-selected="isSelectedDay(day)" :disabled="isDisabled(new Date(year, month, day))" @click="dayClicked(new Date(year, month, day))" x-text="day"></button>
+            </template>
+            <output data-test="multiple-value" x-text="modeHandler?.value?.length || 0"></output>
+        </section>
+
+        <section id="calendar-range" x-data="calendar({}, 'range', null, null, null, false, {defaultMonth: '2024-01-01', fixedWeeks: false})" x-bind="root" role="grid">
+            <template x-for="day in daysInMonth" :key="day">
+                <button type="button" data-test="range-day" :data-day="day" :aria-selected="isSelectedDay(day)" @click="dayClicked(new Date(year, month, day))" x-text="day"></button>
+            </template>
+            <output data-test="range-value" x-text="modeHandler?.value?.from && modeHandler?.value?.to ? 'complete' : 'incomplete'"></output>
+        </section>
+
+        <section id="livewire-bridge" wire:id="browser-test" x-data="collapsible(false, false)" x-modelable="open" wire:model.live="open" x-bind="root">
+            <button data-test="bridge-trigger" type="button" x-bind="trigger">Toggle remotely</button>
+            <div data-test="bridge-content" x-bind="content" x-cloak>Remote content</div>
+        </section>
+    </main>
+
+    <script type="module">
+        import Alpine from '/node_modules/alpinejs/dist/module.esm.js';
+        import anchor from '/node_modules/@alpinejs/anchor/dist/module.esm.js';
+        import collapse from '/node_modules/@alpinejs/collapse/dist/module.esm.js';
+        import focus from '/node_modules/@alpinejs/focus/dist/module.esm.js';
+
+        const state = { open: false };
+        const hooks = {};
+        const wire = {
+            get(property) {
+                return state[property];
+            },
+            set(property, value) {
+                state[property] = value;
+                document.body.dataset.wireValue = String(value);
+            },
+        };
+
+        window.Livewire = {
+            find() {
+                return { $wire: wire };
+            },
+            hook(name, callback) {
+                hooks[name] = callback;
+            },
+            __state: state,
+            __hooks: hooks,
+        };
+        window.Alpine = Alpine;
+        Alpine.plugin(anchor);
+        Alpine.plugin(collapse);
+        Alpine.plugin(focus);
+        await import('/dist/april.esm.js');
+        Alpine.start();
+        document.body.dataset.ready = 'true';
+    </script>
+</body>
+</html>

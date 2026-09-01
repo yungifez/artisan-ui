@@ -1,13 +1,18 @@
 @props([
-'label' => '',
 'open' => false,
 'value' => null,
 'mode' => 'single',
 'format' => 'MM/dd/yyyy',
+'name' => '',
+'required' => false,
 'fromName',
-'toName',
-'parentClass' => ''
+'toName'
 ])
+@php
+$hiddenInputAttributes = new \Illuminate\View\ComponentAttributeBag;
+$fromInputName = $fromName ?? ($name !== '' ? $name."['from']" : null);
+$toInputName = $toName ?? ($name !== '' ? $name."['to']" : null);
+@endphp
 <div data-slot="date-picker" data-state="{{$open ? 'open' : 'closed'}}" x-ref="datePickerInput" x-modelable="value"
     x-data='datePicker(@json($open), @json($value), @json($mode), @json($format))' x-bind="root" {{$attributes->
     class(['relative'])}}>
@@ -20,7 +25,7 @@
         <template x-if="mode != 'multiple' && mode != 'range'">
             <span>
                 <span x-text="value == null ? 'Pick a date' : formatDate(value)"></span>
-                <input type="hidden" {{$attributes}} :value="value" />
+                <input type="hidden" {{$hiddenInputAttributes}} @if ($name !== '') name="{{$name}}" @endif :value="value" />
             </span>
         </template>
         <template x-if="mode == 'multiple'">
@@ -32,7 +37,7 @@
                     <template x-for="(item, index) in value">
                         <span>
                             <span x-text="formatDate(item)" class="text-sm border-border mr-1"></span>
-                            <input type="hidden" {{$attributes}}
+                            <input type="hidden" {{$hiddenInputAttributes}} @if ($name !== '') name="{{$name}}" @endif
                                 :value="(new Date(item))?.toISOString().split('T')[0]" />
                         </span>
                     </template>
@@ -50,15 +55,15 @@
                 <template x-if="value?.to">
                     <span x-text="' - ' + formatDate(value.to)"></span>
                 </template>
-                <input type="hidden" name="{{$fromName ??  $attributes->get('name').'[\'from\']'}}" {{$attributes}}
+                <input type="hidden" @if ($fromInputName !== null) name="{{$fromInputName}}" @endif {{$hiddenInputAttributes}}
                     :value="(new Date(value))?.from?.toISOString().split('T')[0]" />
-                <input type="hidden" name="{{$toName ??  $attributes->get('name').'[\'to\']'}}" {{$attributes}}
+                <input type="hidden" @if ($toInputName !== null) name="{{$toInputName}}" @endif {{$hiddenInputAttributes}}
                     :value="(new Date(value))?.to?.toISOString().split('T')[0]" />
             </span>
         </template>
     </april:button>
     <div x-bind="calendar" x-cloak class="z-10">
-        <april:calendar :required="$attributes->get('required')" :mode="$mode" :selected="$value" x-model="value"
+        <april:calendar :required="$required" :mode="$mode" :selected="$value" x-model="value"
             tabindex="0" class="outline-none" />
     </div>
 </div>

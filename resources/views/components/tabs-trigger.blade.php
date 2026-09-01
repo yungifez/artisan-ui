@@ -1,5 +1,5 @@
 @php($tabId = 'tab-'.substr(md5((string) $attributes->get('value')), 0, 12))
-<button data-slot="tabs-trigger" id="{{$tabId}}-trigger" aria-controls="{{$tabId}}-panel"
+<button type="button" data-slot="tabs-trigger" id="{{$tabId}}-trigger" aria-controls="{{$tabId}}-panel"
     x-data="tabsTrigger('{{$attributes->get('value')}}')" role="tab" x-bind="root"
     {{$attributes->twMerge(['inline-flex
     items-center

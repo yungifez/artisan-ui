@@ -6,10 +6,10 @@
 ])
 
 <div data-slot="combobox" data-state="closed"
-    x-data="combobox(@js($value), @js($disabled))" x-bind="root" x-modelable="selectedValue"
+    x-data="combobox(@js($value), @js($disabled))" x-bind="root" x-modelable="value"
     {{$attributes->twMerge(['relative w-full'])}}>
     @if ($name !== '')
-    <input type="hidden" name="{{$name}}" x-model="selectedValue">
+    <input type="hidden" name="{{$name}}" x-model="value">
     @endif
     @isset($trigger)
     <div data-slot="combobox-trigger" x-bind="trigger" x-ref="trigger" {{$trigger->attributes}}>

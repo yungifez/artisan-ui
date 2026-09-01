@@ -1,6 +1,12 @@
 export default (value = '', disabled = false) => ({
     keyword: '',
-    selectedValue: value,
+    value,
+    get selectedValue() {
+        return this.value;
+    },
+    set selectedValue(value) {
+        this.value = value;
+    },
     disabled,
     open: false,
     focusedOption: null,
@@ -80,7 +86,9 @@ export default (value = '', disabled = false) => ({
             this.focus(-1);
         },
         ['@keydown.enter.prevent']() {
-            this.focusedOption?.click();
+            if (this.focusedOption) {
+                this.select(this.focusedOption.dataset.value);
+            }
         },
         ['@keydown.escape.stop.prevent']() {
             this.close();
@@ -129,7 +137,7 @@ export default (value = '', disabled = false) => ({
         },
     },
     init() {
-        this.$watch('selectedValue', () => this.$nextTick(() => this.focusedOption = null));
+        this.$watch('value', () => this.$nextTick(() => this.focusedOption = null));
     },
     matches(option) {
         const label = option.innerText ?? option.textContent ?? '';
@@ -137,7 +145,7 @@ export default (value = '', disabled = false) => ({
         return this.keyword === '' || label.toLowerCase().includes(this.keyword.toLowerCase());
     },
     isSelectedValue(value) {
-        return String(this.selectedValue ?? '') === String(value ?? '');
+        return String(this.value ?? '') === String(value ?? '');
     },
     noMatches() {
         return [...this.$root.querySelectorAll('[data-slot="combobox-option"]')]
@@ -158,8 +166,12 @@ export default (value = '', disabled = false) => ({
         this.focusedOption.scrollIntoView({ block: 'nearest' });
     },
     select(value) {
-        this.selectedValue = value;
-        this.$dispatch('change', { value });
+        this.value = value;
+        const detail = { value };
+
+        this.$dispatch('value-change', detail);
+        // Keep the native-style event available for existing listeners.
+        this.$dispatch('change', detail);
         this.close();
     },
     selectedLabel() {

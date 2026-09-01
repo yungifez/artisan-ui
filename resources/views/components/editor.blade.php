@@ -80,7 +80,7 @@
     @endif
 
     <div data-slot="editor-toolbar" role="toolbar" aria-label="Text formatting"
-        class="flex flex-wrap items-center gap-1 border-b border-input p-1">
+        class="flex flex-wrap items-center gap-1 border-b border-input p-1" x-on:mousedown.prevent>
         @foreach (['bold' => 'B', 'italic' => 'I', 'strike' => 'S'] as $button => $label)
             @if ($availableButtons[$button])
                 <april:button type="button" variant="ghost" size="sm" aria-label="{{ ucfirst($button) }}"
@@ -136,6 +136,6 @@
         @endforeach
     </div>
 
-    <div data-slot="editor-content" role="textbox" aria-multiline="true" x-ref="content" x-bind="content" data-placeholder="{{ $placeholder }}"
+    <div data-slot="editor-content" role="group" aria-label="Editable content" x-ref="content" x-bind="content" data-placeholder="{{ $placeholder }}"
         class="min-h-32 w-full px-3 py-2 text-sm outline-none"></div>
 </div>

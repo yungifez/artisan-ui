@@ -1,0 +1,1321 @@
+{
+    "accordion": {
+        "name": "accordion",
+        "files": [
+            "accordion.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "accordion-item": {
+        "name": "accordion-item",
+        "files": [
+            "accordion-item.blade.php"
+        ],
+        "dependencies": [
+            "angle-down"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "alert": {
+        "name": "alert",
+        "files": [
+            "alert.blade.php"
+        ],
+        "dependencies": [
+            "x"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "alert-dialog": {
+        "name": "alert-dialog",
+        "files": [
+            "alert-dialog.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "alert-dialog-action": {
+        "name": "alert-dialog-action",
+        "files": [
+            "alert-dialog-action.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "alert-dialog-cancel": {
+        "name": "alert-dialog-cancel",
+        "files": [
+            "alert-dialog-cancel.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "alert-dialog-footer": {
+        "name": "alert-dialog-footer",
+        "files": [
+            "alert-dialog-footer.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "alert-dialog-header": {
+        "name": "alert-dialog-header",
+        "files": [
+            "alert-dialog-header.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "angle-down": {
+        "name": "angle-down",
+        "files": [
+            "angle-down.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "aspect-ratio": {
+        "name": "aspect-ratio",
+        "files": [
+            "aspect-ratio.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "attachment": {
+        "name": "attachment",
+        "files": [
+            "attachment.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "attachment-action": {
+        "name": "attachment-action",
+        "files": [
+            "attachment-action.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "attachment-group": {
+        "name": "attachment-group",
+        "files": [
+            "attachment-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "avatar": {
+        "name": "avatar",
+        "files": [
+            "avatar.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "badge": {
+        "name": "badge",
+        "files": [
+            "badge.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "banner": {
+        "name": "banner",
+        "files": [
+            "banner.blade.php"
+        ],
+        "dependencies": [
+            "button",
+            "x"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "breadcrumb": {
+        "name": "breadcrumb",
+        "files": [
+            "breadcrumb.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "breadcrumb-elipsis": {
+        "name": "breadcrumb-elipsis",
+        "files": [
+            "breadcrumb-elipsis.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "breadcrumb-item": {
+        "name": "breadcrumb-item",
+        "files": [
+            "breadcrumb-item.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "breadcrumb-link": {
+        "name": "breadcrumb-link",
+        "files": [
+            "breadcrumb-link.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "breadcrumb-page": {
+        "name": "breadcrumb-page",
+        "files": [
+            "breadcrumb-page.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "breadcrumb-separator": {
+        "name": "breadcrumb-separator",
+        "files": [
+            "breadcrumb-separator.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "bubble": {
+        "name": "bubble",
+        "files": [
+            "bubble.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "bubble-group": {
+        "name": "bubble-group",
+        "files": [
+            "bubble-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "bubble-reactions": {
+        "name": "bubble-reactions",
+        "files": [
+            "bubble-reactions.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "button": {
+        "name": "button",
+        "files": [
+            "button.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "button-group": {
+        "name": "button-group",
+        "files": [
+            "button-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "button-group-separator": {
+        "name": "button-group-separator",
+        "files": [
+            "button-group-separator.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "button-group-text": {
+        "name": "button-group-text",
+        "files": [
+            "button-group-text.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "button-link": {
+        "name": "button-link",
+        "files": [
+            "button-link.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "calendar": {
+        "name": "calendar",
+        "files": [
+            "calendar.blade.php"
+        ],
+        "dependencies": [
+            "angle-down"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "card": {
+        "name": "card",
+        "files": [
+            "card.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "carousel": {
+        "name": "carousel",
+        "files": [
+            "carousel.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "carousel-item": {
+        "name": "carousel-item",
+        "files": [
+            "carousel-item.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "chart": {
+        "name": "chart",
+        "files": [
+            "chart.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "chart-bar": {
+        "name": "chart-bar",
+        "files": [
+            "chart-bar.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "checkbox": {
+        "name": "checkbox",
+        "files": [
+            "checkbox.blade.php"
+        ],
+        "dependencies": [
+            "input"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "collapsible": {
+        "name": "collapsible",
+        "files": [
+            "collapsible.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "combobox": {
+        "name": "combobox",
+        "files": [
+            "combobox.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "combobox-option": {
+        "name": "combobox-option",
+        "files": [
+            "combobox-option.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "command": {
+        "name": "command",
+        "files": [
+            "command.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "command-dialog": {
+        "name": "command-dialog",
+        "files": [
+            "command-dialog.blade.php"
+        ],
+        "dependencies": [
+            "x"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "command-group": {
+        "name": "command-group",
+        "files": [
+            "command-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "command-item": {
+        "name": "command-item",
+        "files": [
+            "command-item.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "command-separator": {
+        "name": "command-separator",
+        "files": [
+            "command-separator.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "command-shortcut": {
+        "name": "command-shortcut",
+        "files": [
+            "command-shortcut.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "context-menu": {
+        "name": "context-menu",
+        "files": [
+            "context-menu.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "context-menu-item": {
+        "name": "context-menu-item",
+        "files": [
+            "context-menu-item.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "context-menu-label": {
+        "name": "context-menu-label",
+        "files": [
+            "context-menu-label.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "context-menu-separator": {
+        "name": "context-menu-separator",
+        "files": [
+            "context-menu-separator.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "data-table": {
+        "name": "data-table",
+        "files": [
+            "data-table.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "data-table-cell": {
+        "name": "data-table-cell",
+        "files": [
+            "data-table-cell.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "data-table-head": {
+        "name": "data-table-head",
+        "files": [
+            "data-table-head.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "data-table-row": {
+        "name": "data-table-row",
+        "files": [
+            "data-table-row.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "date-picker": {
+        "name": "date-picker",
+        "files": [
+            "date-picker.blade.php"
+        ],
+        "dependencies": [
+            "button",
+            "calendar"
+        ],
+        "packages": {
+            "npm": [
+                "date-fns"
+            ]
+        }
+    },
+    "dialog": {
+        "name": "dialog",
+        "files": [
+            "dialog.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dialog-footer": {
+        "name": "dialog-footer",
+        "files": [
+            "dialog-footer.blade.php"
+        ],
+        "dependencies": [
+            "x"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dialog-header": {
+        "name": "dialog-header",
+        "files": [
+            "dialog-header.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dropdown-menu": {
+        "name": "dropdown-menu",
+        "files": [
+            "dropdown-menu.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dropdown-menu-group": {
+        "name": "dropdown-menu-group",
+        "files": [
+            "dropdown-menu-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "dropdown-menu-item": {
+        "name": "dropdown-menu-item",
+        "files": [
+            "dropdown-menu-item.blade.php"
+        ],
+        "dependencies": [
+            "button"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dropdown-menu-label": {
+        "name": "dropdown-menu-label",
+        "files": [
+            "dropdown-menu-label.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dropdown-menu-separator": {
+        "name": "dropdown-menu-separator",
+        "files": [
+            "dropdown-menu-separator.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dropdown-menu-shortcut": {
+        "name": "dropdown-menu-shortcut",
+        "files": [
+            "dropdown-menu-shortcut.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "dropdown-menu-sub": {
+        "name": "dropdown-menu-sub",
+        "files": [
+            "dropdown-menu-sub.blade.php"
+        ],
+        "dependencies": [
+            "button"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "editor": {
+        "name": "editor",
+        "files": [
+            "editor.blade.php"
+        ],
+        "dependencies": [
+            "button"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ],
+            "npm": [
+                "@tiptap/core",
+                "@tiptap/extension-placeholder",
+                "@tiptap/starter-kit"
+            ]
+        }
+    },
+    "input": {
+        "name": "input",
+        "files": [
+            "input.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "input-group": {
+        "name": "input-group",
+        "files": [
+            "input-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "label": {
+        "name": "label",
+        "files": [
+            "label.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "loading-spinner": {
+        "name": "loading-spinner",
+        "files": [
+            "loading-spinner.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "native-select": {
+        "name": "native-select",
+        "files": [
+            "native-select.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "popover": {
+        "name": "popover",
+        "files": [
+            "popover.blade.php"
+        ],
+        "dependencies": [
+            "button"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "select": {
+        "name": "select",
+        "files": [
+            "select.blade.php"
+        ],
+        "dependencies": [
+            "angle-down",
+            "x"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "select-option": {
+        "name": "select-option",
+        "files": [
+            "select-option.blade.php"
+        ],
+        "dependencies": [],
+        "packages": []
+    },
+    "separator": {
+        "name": "separator",
+        "files": [
+            "separator.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sheet": {
+        "name": "sheet",
+        "files": [
+            "sheet.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sheet-footer": {
+        "name": "sheet-footer",
+        "files": [
+            "sheet-footer.blade.php"
+        ],
+        "dependencies": [
+            "x"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sheet-header": {
+        "name": "sheet-header",
+        "files": [
+            "sheet-header.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar": {
+        "name": "sidebar",
+        "files": [
+            "sidebar.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-group": {
+        "name": "sidebar-group",
+        "files": [
+            "sidebar-group.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-group-action": {
+        "name": "sidebar-group-action",
+        "files": [
+            "sidebar-group-action.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-group-content": {
+        "name": "sidebar-group-content",
+        "files": [
+            "sidebar-group-content.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-group-label": {
+        "name": "sidebar-group-label",
+        "files": [
+            "sidebar-group-label.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-input": {
+        "name": "sidebar-input",
+        "files": [
+            "sidebar-input.blade.php"
+        ],
+        "dependencies": [
+            "input"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-inset": {
+        "name": "sidebar-inset",
+        "files": [
+            "sidebar-inset.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-layout": {
+        "name": "sidebar-layout",
+        "files": [
+            "sidebar-layout.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu": {
+        "name": "sidebar-menu",
+        "files": [
+            "sidebar-menu.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-action": {
+        "name": "sidebar-menu-action",
+        "files": [
+            "sidebar-menu-action.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-badge": {
+        "name": "sidebar-menu-badge",
+        "files": [
+            "sidebar-menu-badge.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-button": {
+        "name": "sidebar-menu-button",
+        "files": [
+            "sidebar-menu-button.blade.php"
+        ],
+        "dependencies": [
+            "button"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-button-link": {
+        "name": "sidebar-menu-button-link",
+        "files": [
+            "sidebar-menu-button-link.blade.php"
+        ],
+        "dependencies": [
+            "button-link"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-item": {
+        "name": "sidebar-menu-item",
+        "files": [
+            "sidebar-menu-item.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-skeleton": {
+        "name": "sidebar-menu-skeleton",
+        "files": [
+            "sidebar-menu-skeleton.blade.php"
+        ],
+        "dependencies": [
+            "skeleton"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-sub": {
+        "name": "sidebar-menu-sub",
+        "files": [
+            "sidebar-menu-sub.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-sub-button": {
+        "name": "sidebar-menu-sub-button",
+        "files": [
+            "sidebar-menu-sub-button.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-menu-sub-item": {
+        "name": "sidebar-menu-sub-item",
+        "files": [
+            "sidebar-menu-sub-item.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-rail": {
+        "name": "sidebar-rail",
+        "files": [
+            "sidebar-rail.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-separator": {
+        "name": "sidebar-separator",
+        "files": [
+            "sidebar-separator.blade.php"
+        ],
+        "dependencies": [
+            "separator"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "sidebar-trigger": {
+        "name": "sidebar-trigger",
+        "files": [
+            "sidebar-trigger.blade.php"
+        ],
+        "dependencies": [
+            "button"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "skeleton": {
+        "name": "skeleton",
+        "files": [
+            "skeleton.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "slider": {
+        "name": "slider",
+        "files": [
+            "slider.blade.php"
+        ],
+        "dependencies": [
+            "input"
+        ],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "steps": {
+        "name": "steps",
+        "files": [
+            "steps.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php",
+                "mallardduck/blade-lucide-icons"
+            ]
+        }
+    },
+    "switch": {
+        "name": "switch",
+        "files": [
+            "switch.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "tabs": {
+        "name": "tabs",
+        "files": [
+            "tabs.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "tabs-content": {
+        "name": "tabs-content",
+        "files": [
+            "tabs-content.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "tabs-trigger": {
+        "name": "tabs-trigger",
+        "files": [
+            "tabs-trigger.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "textarea": {
+        "name": "textarea",
+        "files": [
+            "textarea.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "tooltip": {
+        "name": "tooltip",
+        "files": [
+            "tooltip.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    },
+    "x": {
+        "name": "x",
+        "files": [
+            "x.blade.php"
+        ],
+        "dependencies": [],
+        "packages": {
+            "composer": [
+                "tales-from-a-dev/tailwind-merge-php"
+            ]
+        }
+    }
+}

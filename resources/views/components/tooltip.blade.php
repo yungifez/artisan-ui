@@ -2,9 +2,6 @@
 'delayDuration' => 50,
 'skipDelayDuration' => 100,
 'defaultOpen' => false,
-'trigger',
-'content',
-'svg'
 ])
 <div data-slot="tooltip" x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen))" x-bind="root" {{$attributes->
     whereDoesntStartWith('x-teleport')->twMerge(['w-fit'])}}>
