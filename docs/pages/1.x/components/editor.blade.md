@@ -6,7 +6,7 @@ description: A rich text editor with a configurable toolbar.
 
 <x-component-preview component="previews.editor-demo"></x-component-preview>
 
-@push('head-scripts')
+@push('body-scripts')
 @aprilEditorScripts
 @endpush
 

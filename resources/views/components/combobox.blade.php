@@ -27,7 +27,7 @@
     <template x-teleport="{{$attributes->get('x-teleport')}}">
     @endif
     <div data-slot="combobox-content" x-bind="content" x-ref="content" x-show="open" x-trap.noscroll="open" x-transition x-cloak
-        class="absolute left-0 top-full z-50 mt-2 w-full rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+        class="absolute left-0 top-full z-50 mt-2 w-max min-w-[var(--combobox-trigger-width)] max-w-[calc(100vw-2rem)] rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
         <input data-slot="combobox-input" x-bind="input" type="text" autocomplete="off"
             x-ref="input"
             placeholder="Search..."

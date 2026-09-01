@@ -56,9 +56,9 @@
 
         <div class="flex min-w-0 flex-1 items-center justify-center gap-1 max-[360px]:col-span-3 max-[360px]:row-start-1 max-[360px]:w-full">
             <span x-show="numberOfMonths === 1 && (captionLayout === 'label' || captionLayout === 'dropdown-years')" x-bind="monthLabel"
-                class="text-lg font-bold text-gray-800 dark:text-gray-100"></span>
+                class="cursor-default select-none text-lg font-bold text-gray-800 dark:text-gray-100"></span>
             <span x-show="numberOfMonths === 1 && (captionLayout === 'label' || captionLayout === 'dropdown-months')" x-bind="yearLabel"
-                class="ml-1 text-lg font-normal text-gray-600 dark:text-gray-100"></span>
+                class="ml-1 cursor-default select-none text-lg font-normal text-gray-600 dark:text-gray-100"></span>
 
             <select x-show="captionLayout === 'dropdown' || captionLayout === 'dropdown-months'"
                 :value="month" @change="setViewMonth($event.target.value)" aria-label="Select month"

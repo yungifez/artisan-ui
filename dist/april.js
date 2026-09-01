@@ -1559,6 +1559,10 @@
       [":data-state"]() {
         return this.open ? "open" : "closed";
       },
+      [":style"]() {
+        const width = this.$refs.trigger?.getBoundingClientRect().width;
+        return width ? { "--combobox-trigger-width": `${width}px` } : {};
+      },
       ["x-anchor.bottom-start.offset.2"]() {
         return this.$refs.trigger;
       },
@@ -1603,7 +1607,7 @@
       this.$watch("value", () => this.$nextTick(() => this.focusedOption = null));
     },
     matches(option) {
-      const label = option.innerText ?? option.textContent ?? "";
+      const label = option.textContent ?? option.innerText ?? "";
       return this.keyword === "" || label.toLowerCase().includes(this.keyword.toLowerCase());
     },
     isSelectedValue(value2) {
@@ -1636,7 +1640,7 @@
     selectedLabel() {
       return this.optionElements().map((option) => ({
         option,
-        label: (option.innerText ?? option.textContent ?? "").trim()
+        label: (option.textContent ?? option.innerText ?? "").trim()
       })).find(({ option }) => this.isSelectedValue(option.dataset.value))?.label ?? "";
     },
     openMenu() {

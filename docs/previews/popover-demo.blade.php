@@ -1,4 +1,4 @@
-<april:popover>
+<april:popover x-teleport="body">
     <slot:trigger>
         <april:button variant="outline">Open popover</april:button>
     </slot:trigger>

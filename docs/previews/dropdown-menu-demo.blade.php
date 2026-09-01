@@ -1,4 +1,4 @@
-<april:dropdown-menu>
+<april:dropdown-menu x-teleport="body">
     <slot:trigger>
         <april:button variant="outline">
             Open
