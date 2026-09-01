@@ -1,4 +1,4 @@
-<april:sidebar-layout class="">
+<april:sidebar-layout class="min-w-[64rem] flex-nowrap">
     <april:sidebar variant="floating" collapsible="icon">
         <slot:header>
             <april:dropdown-menu x-teleport="body" class="w-full">
