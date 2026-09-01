@@ -43,9 +43,22 @@ export function registerLivewireBridge(Alpine) {
             const componentElement = element.closest('[wire\\:id]');
             const property = attribute?.value;
             const componentId = componentElement?.getAttribute('wire:id');
-            const component = componentId ? window.Livewire.find(componentId) : null;
+            const found = componentId ? window.Livewire.find(componentId) : null;
+            const wire = found && (typeof found.$get === 'function' || typeof found.$set === 'function')
+                ? found
+                : found?.$wire;
+            const get = typeof wire?.$get === 'function'
+                ? wire.$get.bind(wire)
+                : typeof wire?.get === 'function'
+                    ? wire.get.bind(wire)
+                    : null;
+            const set = typeof wire?.$set === 'function'
+                ? wire.$set.bind(wire)
+                : typeof wire?.set === 'function'
+                    ? wire.set.bind(wire)
+                    : null;
 
-            if (!attribute || !property || !component || !component.$wire) {
+            if (!attribute || !property || !get || !set) {
                 return;
             }
 
@@ -54,7 +67,7 @@ export function registerLivewireBridge(Alpine) {
             let lastSent;
 
             const syncFromLivewire = () => {
-                const value = component.$wire.get(property);
+                const value = get(property);
                 const encoded = JSON.stringify(value);
                 if (encoded === JSON.stringify(model.get())) {
                     return;
@@ -74,7 +87,7 @@ export function registerLivewireBridge(Alpine) {
                 }
 
                 lastSent = encoded;
-                component.$wire.set(property, value, live);
+                set(property, value, live);
             });
 
             element.dataset.aprilWireModelBound = 'true';

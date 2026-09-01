@@ -279,10 +279,10 @@
         const state = { open: false };
         const hooks = {};
         const wire = {
-            get(property) {
+            $get(property) {
                 return state[property];
             },
-            set(property, value) {
+            $set(property, value) {
                 state[property] = value;
                 document.body.dataset.wireValue = String(value);
             },
@@ -290,7 +290,7 @@
 
         window.Livewire = {
             find() {
-                return { $wire: wire };
+                return wire;
             },
             hook(name, callback) {
                 hooks[name] = callback;

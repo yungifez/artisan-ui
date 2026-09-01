@@ -25634,15 +25634,18 @@ ${prefix}
         const componentElement = element.closest("[wire\\:id]");
         const property = attribute?.value;
         const componentId = componentElement?.getAttribute("wire:id");
-        const component2 = componentId ? window.Livewire.find(componentId) : null;
-        if (!attribute || !property || !component2 || !component2.$wire) {
+        const found2 = componentId ? window.Livewire.find(componentId) : null;
+        const wire = found2 && (typeof found2.$get === "function" || typeof found2.$set === "function") ? found2 : found2?.$wire;
+        const get2 = typeof wire?.$get === "function" ? wire.$get.bind(wire) : typeof wire?.get === "function" ? wire.get.bind(wire) : null;
+        const set = typeof wire?.$set === "function" ? wire.$set.bind(wire) : typeof wire?.set === "function" ? wire.set.bind(wire) : null;
+        if (!attribute || !property || !get2 || !set) {
           return;
         }
         const live = /\.live|\.blur|\.change|\.lazy|\.debounce|\.throttle/.test(attribute.name);
         let syncing = false;
         let lastSent;
         const syncFromLivewire = () => {
-          const value = component2.$wire.get(property);
+          const value = get2(property);
           const encoded = JSON.stringify(value);
           if (encoded === JSON.stringify(model.get())) {
             return;
@@ -25658,7 +25661,7 @@ ${prefix}
             return;
           }
           lastSent = encoded;
-          component2.$wire.set(property, value, live);
+          set(property, value, live);
         });
         element.dataset.aprilWireModelBound = "true";
         syncFromLivewire();
