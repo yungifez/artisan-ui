@@ -506,3 +506,10 @@ test('modelable controls synchronize with the Livewire wire contract', async ({ 
     await expect(page.locator('[data-test="bridge-content"]')).toBeHidden();
     await expect(bridge).toHaveAttribute('data-state', 'closed');
 });
+
+test('the Livewire bridge ignores native wire model controls', async ({ page }) => {
+    const input = page.locator('[data-test="native-model-input"]');
+
+    await expect(input).not.toHaveAttribute('data-april-wire-model-bound', 'true');
+    await expect.poll(() => page.evaluate(() => window.Livewire.__setCalls.native || 0)).toBe(0);
+});
