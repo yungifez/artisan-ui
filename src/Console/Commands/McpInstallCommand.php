@@ -9,6 +9,7 @@ class McpInstallCommand extends Command
 {
     protected $signature = 'april:mcp:install
         {--config=.mcp.json : The MCP configuration file to update}
+        {--codex : Update Codex\'s project configuration at .codex/config.toml}
         {--force : Replace an existing April UI server definition}';
 
     protected $description = 'Add the April UI MCP server to an MCP client configuration';
@@ -17,6 +18,15 @@ class McpInstallCommand extends Command
     {
         $path = $this->resolveConfigPath();
 
+        if ($this->isCodexConfiguration($path)) {
+            return $this->installCodexConfiguration($path);
+        }
+
+        return $this->installJsonConfiguration($path);
+    }
+
+    protected function installJsonConfiguration(string $path): int
+    {
         try {
             $configuration = $this->readConfiguration($path);
         } catch (JsonException $exception) {
@@ -43,7 +53,44 @@ class McpInstallCommand extends Command
 
         $configuration[$serversKey]['april-ui'] = $this->serverDefinition();
 
-        if (! $this->writeConfiguration($path, $configuration)) {
+        if (! $this->writeFile($path, $this->encodeJson($configuration))) {
+            $this->error("Unable to write the MCP configuration at {$path}.");
+
+            return self::FAILURE;
+        }
+
+        $this->components->info("April UI MCP server added to {$path}.");
+
+        return self::SUCCESS;
+    }
+
+    protected function installCodexConfiguration(string $path): int
+    {
+        $configuration = is_file($path) ? (string) file_get_contents($path) : '';
+        $section = '[mcp_servers.april-ui]';
+
+        if (preg_match('/^\[mcp_servers\.april-ui\]\s*$/m', $configuration) === 1 && ! $this->option('force')) {
+            $this->components->warn("April UI is already configured in {$path}. Use --force to replace it.");
+
+            return self::SUCCESS;
+        }
+
+        $definition = $this->codexServerDefinition();
+
+        if (str_contains($configuration, $section)) {
+            $configuration = (string) preg_replace(
+                '/^\[mcp_servers\.april-ui\]\s*\R.*?(?=^\[[^\]\r\n]+\]\s*$|\z)/ms',
+                $definition,
+                $configuration,
+                1,
+            );
+        } else {
+            $configuration = trim($configuration) === ''
+                ? $definition
+                : rtrim($configuration).PHP_EOL.PHP_EOL.$definition;
+        }
+
+        if (! $this->writeFile($path, $configuration)) {
             $this->error("Unable to write the MCP configuration at {$path}.");
 
             return self::FAILURE;
@@ -101,20 +148,32 @@ class McpInstallCommand extends Command
     }
 
     /** @param array<string, mixed> $configuration */
-    protected function writeConfiguration(string $path, array $configuration): bool
+    protected function encodeJson(array $configuration): string
     {
-        $directory = dirname($path);
-
-        if (! is_dir($directory) && ! mkdir($directory, 0755, true) && ! is_dir($directory)) {
-            return false;
-        }
-
         try {
-            $contents = json_encode(
+            return json_encode(
                 $configuration,
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
             ).PHP_EOL;
         } catch (JsonException) {
+            return '';
+        }
+    }
+
+    protected function codexServerDefinition(): string
+    {
+        $command = is_file(base_path('vendor/bin/sail')) ? 'vendor/bin/sail' : 'php';
+
+        return '[mcp_servers.april-ui]'.PHP_EOL
+            .'command = '.json_encode($command).PHP_EOL
+            .'args = ["artisan", "april:mcp"]'.PHP_EOL;
+    }
+
+    protected function writeFile(string $path, string $contents): bool
+    {
+        $directory = dirname($path);
+
+        if (! is_dir($directory) && ! mkdir($directory, 0755, true) && ! is_dir($directory)) {
             return false;
         }
 
@@ -125,6 +184,10 @@ class McpInstallCommand extends Command
     {
         $path = (string) $this->option('config');
 
+        if ($this->option('codex') && $path === '.mcp.json') {
+            $path = '.codex/config.toml';
+        }
+
         if ($path === '') {
             $path = '.mcp.json';
         }
@@ -134,5 +197,10 @@ class McpInstallCommand extends Command
         }
 
         return base_path($path);
+    }
+
+    protected function isCodexConfiguration(string $path): bool
+    {
+        return strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'toml';
     }
 }

@@ -42,8 +42,9 @@ to publish every component.
 Run `php artisan april:mcp` as a local MCP server. It exposes component listing, search, source resources, and
 vendor-path publishing over newline-delimited JSON-RPC.
 
-Use `php artisan april:mcp:install` to add the server to the project's `.mcp.json` beside Laravel Boost. The command
-is safe to run more than once. Pass `--config=path/to/mcp.json` to update another MCP client configuration.
+Use `php artisan april:mcp:install` to add the server to the project's `.mcp.json` beside Laravel Boost. For Codex,
+use `php artisan april:mcp:install --codex` to update the project-scoped `.codex/config.toml`. The command is safe to
+run more than once. A `.toml` path passed to `--config` is also handled as a Codex configuration.
 
 ## Official website
 
