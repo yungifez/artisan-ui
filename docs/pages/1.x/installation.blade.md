@@ -149,9 +149,16 @@ configuration with:
     php artisan april:mcp:install
 </x-code-block-wrapper>
 
-The installer adds an `april-ui` server to `.mcp.json` and preserves an existing `laravel-boost` server. You can
-pass `--config=path/to/mcp.json` when your client stores its configuration elsewhere. The generated server entry
-starts April UI over standard input and output:
+The installer adds an `april-ui` server to `.mcp.json` and preserves an existing `laravel-boost` server. For Codex,
+use `--codex` to update the project-scoped `.codex/config.toml` instead:
+
+<x-code-block-wrapper language="bash">
+    php artisan april:mcp:install --codex
+</x-code-block-wrapper>
+
+You can also pass `--config=path/to/mcp.json` when your client stores its configuration elsewhere. A `.toml` path is
+handled as a Codex configuration. Restart Codex after changing its configuration. The generated server entry starts
+April UI over standard input and output:
 
 <x-code-block-wrapper language="json">
 {

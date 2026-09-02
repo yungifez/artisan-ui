@@ -302,4 +302,29 @@ describe('the April UI MCP installer', function () {
             File::delete($path);
         }
     });
+
+    it('adds April UI to a Codex project configuration', function () {
+        $relativePath = '.codex-test-'.uniqid('', true).'.toml';
+        $path = base_path($relativePath);
+
+        File::put($path, <<<'TOML'
+[mcp_servers.laravel-boost]
+command = "vendor/bin/sail"
+args = ["artisan", "boost:mcp"]
+TOML
+        );
+
+        try {
+            expect(Artisan::call('april:mcp:install', ['--config' => $relativePath]))->toBe(0);
+
+            $configuration = File::get($path);
+
+            expect($configuration)
+                ->toContain('[mcp_servers.laravel-boost]', '[mcp_servers.april-ui]')
+                ->and(substr_count($configuration, '[mcp_servers.april-ui]'))->toBe(1)
+                ->and($configuration)->toContain('args = ["artisan", "april:mcp"]');
+        } finally {
+            File::delete($path);
+        }
+    });
 });
