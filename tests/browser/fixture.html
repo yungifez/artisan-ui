@@ -281,6 +281,10 @@
             <button data-test="bridge-trigger" type="button" x-bind="trigger">Toggle remotely</button>
             <div data-test="bridge-content" x-bind="content" x-cloak>Remote content</div>
         </section>
+
+        <section id="livewire-native-model" wire:id="native-model-test" x-data="{ value: 'native' }">
+            <input data-test="native-model-input" x-model="value" wire:model.live="native" value="native">
+        </section>
     </main>
 
     <script type="module">
@@ -289,13 +293,15 @@
         import collapse from '/node_modules/@alpinejs/collapse/dist/module.esm.js';
         import focus from '/node_modules/@alpinejs/focus/dist/module.esm.js';
 
-        const state = { open: false };
+        const state = { open: false, native: 'native' };
+        const setCalls = {};
         const hooks = {};
         const wire = {
             $get(property) {
                 return state[property];
             },
             $set(property, value) {
+                setCalls[property] = (setCalls[property] || 0) + 1;
                 state[property] = value;
                 document.body.dataset.wireValue = String(value);
             },
@@ -309,6 +315,7 @@
                 hooks[name] = callback;
             },
             __state: state,
+            __setCalls: setCalls,
             __hooks: hooks,
         };
         window.Alpine = Alpine;

@@ -11,7 +11,8 @@ export function registerLivewireBridge(Alpine) {
 
     Alpine.__aprilLivewireBridgeRegistered = true;
 
-    const isModelElement = (element) => [...element.attributes].some(({ name }) => name.startsWith('wire:model'));
+    const isModelElement = (element) => element.hasAttribute('x-modelable')
+        && [...element.attributes].some(({ name }) => name.startsWith('wire:model'));
 
     const bind = (root = document) => {
         if (!window.Livewire) {
