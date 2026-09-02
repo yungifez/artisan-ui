@@ -541,6 +541,17 @@ describe('input group', function () {
         expect($html)->toContain('<label')->toContain('Email')->toContain('<input');
     });
 
+    it('renders when no validation error bag is shared', function () {
+        View::share('errors', null);
+
+        try {
+            expect(renderComponent('input-group', 'name="email"'))
+                ->toContain('name="email"');
+        } finally {
+            View::share('errors', new ViewErrorBag);
+        }
+    });
+
     it('names the input', function () {
         expect(renderComponent('input-group', 'name="email"'))->toContain('name="email"');
     });
