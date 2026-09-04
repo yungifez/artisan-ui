@@ -1,6 +1,7 @@
 @props([
 'active' => false,
 'size' => 'default',
+'expandSidebar' => true,
 ])
 
 @php
@@ -28,10 +29,15 @@ default => "h-8 text-sm",
 'lg' => "h-12 text-sm group-data-[collapsible=icon]:p-0!",
 'none' => "",
 };
+
+$buttonAttributes = $attributes->except("variant")->twMerge([$class]);
+
+if ($expandSidebar) {
+    $buttonAttributes = $buttonAttributes->merge(['x-on:click' => 'show()']);
+}
 @endphp
 
-<april:button :attributes='$attributes->except("variant")->twMerge([$class])' data-sidebar="menu-button"
-    x-on:click="show()"
+<april:button :attributes="$buttonAttributes" data-sidebar="menu-button"
     data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}" type="button"
     variant="none" size="none">
     {{$slot}}

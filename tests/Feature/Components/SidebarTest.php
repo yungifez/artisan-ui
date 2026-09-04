@@ -337,6 +337,11 @@ describe('sidebar menu button', function () {
         expect(renderComponent('sidebar-menu-button'))->toContain('x-on:click="show()"');
     });
 
+    it('can leave sidebar expansion to a parent interactive component', function () {
+        expect(renderComponent('sidebar-menu-button', ':expand-sidebar="false"'))
+            ->not->toContain('x-on:click="show()"');
+    });
+
     it('applies the outline variant', function () {
         expect(renderComponent('sidebar-menu-button', 'variant="outline"'))->toContain('bg-background');
     });

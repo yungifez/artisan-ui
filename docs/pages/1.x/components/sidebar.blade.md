@@ -60,6 +60,23 @@ data loads.
 
 <x-component-preview component="previews.sidebar-menu-demo"></x-component-preview>
 
+When another interactive component owns a button's click, set `:expand-sidebar="false"` so the menu button does not
+also try to open the sidebar:
+
+<x-code-block-wrapper language="blade">
+@verbatim
+<april:collapsible>
+    <slot:trigger>
+        <april:sidebar-menu-button :expand-sidebar="false">
+            <x-lucide-bed-double />
+            <span>Boarding</span>
+        </april:sidebar-menu-button>
+    </slot:trigger>
+    <slot:content>...</slot:content>
+</april:collapsible>
+@endverbatim
+</x-code-block-wrapper>
+
 <x-callout>
 `sidebar-menu-action` is hidden until you hover the row when you pass `:show-on-hover="true"`.
 </x-callout>
