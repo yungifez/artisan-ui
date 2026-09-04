@@ -4140,13 +4140,9 @@
       this.$watch("value", (values) => {
         if (this.hasModelBinding()) this.syncOptionsToValues(values);
       });
-      this.$nextTick(() => {
-        if (this.hasModelBinding()) {
-          this.syncOptionsToValues(this.value);
-        } else {
-          this.setSelectedValues();
-        }
-      });
+      if (!this.hasModelBinding()) {
+        this.setSelectedValues();
+      }
     },
     open() {
       if (!this.disabled) {
@@ -4712,17 +4708,18 @@
         }
         const live = /\.live|\.blur|\.change|\.lazy|\.debounce|\.throttle/.test(attribute.name);
         let syncing = false;
-        let lastSent;
         const syncFromLivewire = () => {
           const value = get(property);
           const encoded = JSON.stringify(value);
           if (encoded === JSON.stringify(model.get())) {
-            return;
+            return encoded;
           }
           syncing = true;
           model.set(value);
           syncing = false;
+          return JSON.stringify(model.get());
         };
+        let lastSent = syncFromLivewire();
         Alpine.effect(() => {
           const value = model.get();
           const encoded = JSON.stringify(value);
@@ -4733,7 +4730,6 @@
           set(property, value, live);
         });
         element.dataset.aprilWireModelBound = "true";
-        syncFromLivewire();
       });
     };
     document.addEventListener("alpine:initialized", () => bind());

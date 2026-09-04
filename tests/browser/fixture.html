@@ -285,6 +285,20 @@
         <section id="livewire-native-model" wire:id="native-model-test" x-data="{ value: 'native' }">
             <input data-test="native-model-input" x-model="value" wire:model.live="native" value="native">
         </section>
+
+        <section id="livewire-select" wire:id="select-test" x-data="select(false, false)" x-modelable="value" wire:model.live="select">
+            <select class="hidden">
+                <option value="first">First</option>
+                <option value="second">Second</option>
+            </select>
+            <button data-test="livewire-select-trigger" type="button" x-ref="select" x-bind="trigger">Select</button>
+            <div x-bind="optionList" x-show="show" x-cloak>
+                <template x-for="(option, index) in options" :key="index">
+                    <button type="button" role="option" @click="select(index)" x-text="option.text"></button>
+                </template>
+            </div>
+            <output data-test="livewire-select-value" x-text="value"></output>
+        </section>
     </main>
 
     <script type="module">
@@ -293,7 +307,7 @@
         import collapse from '/node_modules/@alpinejs/collapse/dist/module.esm.js';
         import focus from '/node_modules/@alpinejs/focus/dist/module.esm.js';
 
-        const state = { open: false, native: 'native' };
+        const state = { open: false, native: 'native', select: 'second' };
         const setCalls = {};
         const hooks = {};
         const wire = {

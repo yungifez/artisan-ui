@@ -65,19 +65,26 @@ export function registerLivewireBridge(Alpine) {
 
             const live = /\.live|\.blur|\.change|\.lazy|\.debounce|\.throttle/.test(attribute.name);
             let syncing = false;
-            let lastSent;
 
             const syncFromLivewire = () => {
                 const value = get(property);
                 const encoded = JSON.stringify(value);
+
                 if (encoded === JSON.stringify(model.get())) {
-                    return;
+                    return encoded;
                 }
 
                 syncing = true;
                 model.set(value);
                 syncing = false;
+
+                return JSON.stringify(model.get());
             };
+
+            // Hydrate the Alpine model before creating the reactive effect.
+            // Otherwise the effect can send the component's initial browser
+            // value back to Livewire as a new .live update during startup.
+            let lastSent = syncFromLivewire();
 
             Alpine.effect(() => {
                 const value = model.get();
@@ -92,7 +99,6 @@ export function registerLivewireBridge(Alpine) {
             });
 
             element.dataset.aprilWireModelBound = 'true';
-            syncFromLivewire();
         });
     };
 

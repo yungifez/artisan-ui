@@ -513,3 +513,16 @@ test('the Livewire bridge ignores native wire model controls', async ({ page }) 
     await expect(input).not.toHaveAttribute('data-april-wire-model-bound', 'true');
     await expect.poll(() => page.evaluate(() => window.Livewire.__setCalls.native || 0)).toBe(0);
 });
+
+test('the Livewire bridge hydrates custom selects before syncing changes', async ({ page }) => {
+    const select = page.locator('#livewire-select');
+
+    await expect(page.locator('[data-test="livewire-select-value"]')).toHaveText('second');
+    await expect.poll(() => page.evaluate(() => window.Livewire.__setCalls.select || 0)).toBe(0);
+
+    await select.locator('[data-test="livewire-select-trigger"]').click();
+    await select.locator('[role="option"]').first().click();
+
+    await expect(page.locator('[data-test="livewire-select-value"]')).toHaveText('first');
+    await expect.poll(() => page.evaluate(() => window.Livewire.__setCalls.select || 0)).toBe(1);
+});

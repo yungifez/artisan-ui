@@ -84,13 +84,9 @@ export default (multiple, disabled) => ({
             if (this.hasModelBinding()) this.syncOptionsToValues(values)
         });
 
-        this.$nextTick(() => {
-            if (this.hasModelBinding()) {
-                this.syncOptionsToValues(this.value)
-            } else {
-                this.setSelectedValues()
-            }
-        });
+        if (!this.hasModelBinding()) {
+            this.setSelectedValues()
+        }
     },
     open() {
         if (!this.disabled) {

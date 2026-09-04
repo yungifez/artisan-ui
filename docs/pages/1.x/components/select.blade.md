@@ -8,6 +8,8 @@ description: Displays a list of options for the user to pick from—triggered by
 
 Use `x-model` for the selected value. The component dispatches `value-change` with `{ detail: { value } }` when the selection changes. The legacy `change` event remains available. The optional `trigger` slot customizes the trigger content and its attributes; the default trigger remains available when the slot is omitted.
 
+Use `wire:model` or `wire:model.live` when Livewire owns the selected value. The value is synchronized from Livewire before browser changes are sent back, so bound selects do not issue an update during initialization.
+
 For a single select, an empty bound value defaults to the first enabled option. This keeps the submitted field populated without requiring the user to open the picker first.
 
 ## Multiple Select
