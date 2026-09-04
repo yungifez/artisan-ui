@@ -20,6 +20,13 @@ The first stable release of April UI. Includes Laravel Blade components with Alp
 - Support opt-in x-teleport for combobox and date-picker panels.
 - Keep data-table pagination readable on narrow screens.
 
+## [1.2.4](https://github.com/yungifez/april-ui/compare/v1.2.3...v1.2.4) (2026-09-04)
+
+
+### Bug Fixes
+
+* sync Livewire select state ([d000655](https://github.com/yungifez/april-ui/commit/d00065500121052e73a3db72f9a7fe556e4c3d3d))
+
 ## [1.2.3](https://github.com/yungifez/april-ui/compare/v1.2.2...v1.2.3) (2026-09-02)
 
 
