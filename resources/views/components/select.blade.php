@@ -27,7 +27,7 @@ $nativeAttributes = ($multiple ? ' multiple' : '').($disabled ? ' disabled' : ''
         </template>
     </template>
     <div class="grid grid-cols-1 grid-rows-1">
-        <button x-bind="trigger" x-ref="select" type="button" :class="{'border-muted' : disabled}" class="flex min-h-10 row-start-1 col-start-1
+        <button x-bind="trigger" x-ref="select" type="button" role="combobox" :class="{'border-muted' : disabled}" class="flex min-h-10 row-start-1 col-start-1
         w-full h-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm ring-offset-background
         placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed
         disabled:opacity-50 {{$triggerAttributes->get('class')}}">

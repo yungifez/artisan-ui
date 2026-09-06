@@ -30,4 +30,13 @@ You can optionally use the native brwoser select
 
 <x-component-preview component="previews.native-select-demo"></x-component-preview>
 
+## Accessibility
+
+The trigger carries `role="combobox"` with `aria-haspopup="listbox"`, so a
+screen reader announces a select rather than a button. It reports its state
+through `aria-expanded` and names its list through `aria-controls`. The list
+carries `role="listbox"`, points back at the trigger with `aria-labelledby`,
+and reports `aria-multiselectable` when `multiple` is set. Each option carries
+`role="option"` with `aria-selected` and `aria-disabled`.
+
 <x-publish-command :views="[ 'select', 'select-option', 'native-select' ]" />

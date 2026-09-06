@@ -22,6 +22,18 @@ describe('component accessibility contracts', function () {
         '<april:sheet-header><x-slot:title>Menu</x-slot:title></april:sheet-header>',
     ]);
 
+    it('announces a custom select as a select, not a button', function () {
+        // Without role="combobox" a screen reader reads "button" and never
+        // says a list of options is behind it.
+        expect(render('<april:select><april:select-option value="one">One</april:select-option></april:select>'))
+            ->toContain('role="combobox"')
+            ->toContain('role="listbox"');
+
+        expect(render('<april:combobox><april:combobox-option value="one">One</april:combobox-option></april:combobox>'))
+            ->toContain('role="combobox"')
+            ->toContain('role="listbox"');
+    });
+
     it('keeps semantic roles and labels on composite controls', function () {
         expect(render('<april:switch aria-label="Enable alerts" />'))
             ->toContain('role="switch"')

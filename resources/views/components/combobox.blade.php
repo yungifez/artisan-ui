@@ -28,7 +28,7 @@
     @endif
     <div data-slot="combobox-content" x-bind="content" x-ref="content" x-show="open" x-trap.noscroll="open" x-transition x-cloak
         class="absolute left-0 top-full z-50 mt-2 w-max min-w-[var(--combobox-trigger-width)] max-w-[calc(100vw-2rem)] rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
-        <input data-slot="combobox-input" x-bind="input" type="text" autocomplete="off"
+        <input data-slot="combobox-input" x-bind="input" type="text" role="combobox" autocomplete="off"
             x-ref="input"
             placeholder="Search..."
             class="flex h-9 w-full rounded-sm bg-transparent px-2 py-1 text-sm outline-none placeholder:text-muted-foreground">

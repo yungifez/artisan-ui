@@ -53,6 +53,9 @@ export default (multiple, disabled) => ({
         [':aria-controls']() {
             return this.$id('select') + '-list';
         },
+        [':id']() {
+            return this.$id('select') + '-trigger';
+        },
     },
     optionList: {
         [':data-state']() {
@@ -75,6 +78,14 @@ export default (multiple, disabled) => ({
         },
         [':id']() {
             return this.$id('select') + '-list';
+        },
+        [':aria-labelledby']() {
+            return this.$id('select') + '-trigger';
+        },
+        [':aria-multiselectable']() {
+            // Alpine drops a falsy attribute unless it is one it keeps by
+            // name, so state this one as a string either way.
+            return this.multiple ? 'true' : 'false';
         },
     },
     init() {

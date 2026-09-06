@@ -368,6 +368,23 @@ test('select opens, commits an option, and keeps disabled options unavailable', 
     await expect.poll(() => page.locator('#select').evaluate((element) => Alpine.$data(element).value)).toBe('two');
 });
 
+test('select tells a screen reader it is a select and which list it opens', async ({ page }) => {
+    const trigger = page.locator('[data-test="select-trigger"]');
+    const options = page.locator('[data-test="select-options"]');
+
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await expect(trigger).toHaveAttribute('aria-haspopup', 'listbox');
+
+    const controls = await trigger.getAttribute('aria-controls');
+    expect(controls).toBeTruthy();
+    await expect(options).toHaveAttribute('id', controls);
+    await expect(options).toHaveAttribute('aria-labelledby', await trigger.getAttribute('id'));
+    await expect(options).toHaveAttribute('aria-multiselectable', 'false');
+
+    await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+});
+
 test('sidebar toggles its public state and responds to the keyboard shortcut', async ({ page }) => {
     const panel = page.locator('[data-test="sidebar-panel"]');
 

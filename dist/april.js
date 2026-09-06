@@ -4110,6 +4110,9 @@
       },
       [":aria-controls"]() {
         return this.$id("select") + "-list";
+      },
+      [":id"]() {
+        return this.$id("select") + "-trigger";
       }
     },
     optionList: {
@@ -4133,6 +4136,12 @@
       },
       [":id"]() {
         return this.$id("select") + "-list";
+      },
+      [":aria-labelledby"]() {
+        return this.$id("select") + "-trigger";
+      },
+      [":aria-multiselectable"]() {
+        return this.multiple ? "true" : "false";
       }
     },
     init() {
