@@ -52,7 +52,19 @@ describe('alert', function () {
     it('renders the title slot in a heading', function () {
         $html = render('<april:alert><x-slot:title>Heads up</x-slot:title></april:alert>');
 
-        expect($html)->toContain('<h5')->toContain('Heads up');
+        expect($html)->toContain('<h2')->toContain('Heads up');
+    });
+
+    it('lets the page place the title in its heading order', function () {
+        $html = render('<april:alert level="3"><x-slot:title>Heads up</x-slot:title></april:alert>');
+
+        expect($html)->toContain('<h3')->not->toContain('<h2');
+    });
+
+    it('ignores a level a document cannot hold', function () {
+        $html = render('<april:alert level="9"><x-slot:title>Heads up</x-slot:title></april:alert>');
+
+        expect($html)->toContain('<h2');
     });
 
     it('renders the description slot', function () {
@@ -200,7 +212,19 @@ describe('card', function () {
     it('renders the title slot in a heading', function () {
         $html = render('<april:card><x-slot:title>Billing</x-slot:title></april:card>');
 
-        expect($html)->toContain('<h3')->toContain('Billing');
+        expect($html)->toContain('<h2')->toContain('Billing');
+    });
+
+    it('lets the page place the title in its heading order', function () {
+        $html = render('<april:card level="3"><x-slot:title>Billing</x-slot:title></april:card>');
+
+        expect($html)->toContain('<h3')->not->toContain('<h2');
+    });
+
+    it('keeps the level out of the card markup', function () {
+        $html = render('<april:card level="3"><x-slot:title>Billing</x-slot:title></april:card>');
+
+        expect($html)->not->toContain('level="3"');
     });
 
     it('renders the description slot in a paragraph', function () {

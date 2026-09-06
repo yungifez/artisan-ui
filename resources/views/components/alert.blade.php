@@ -1,4 +1,5 @@
 @props([
+'level' => 2,
 'title',
 'icon',
 'class' => '',
@@ -9,6 +10,8 @@
 ])
 
 @php
+$titleLevel = aprilHeadingLevel($level);
+
 $class = $class." "."relative w-full rounded-lg border p-4 flex gap-x-3 ";
 
 // Wrapper components may provide text props instead of ComponentSlot instances.
@@ -38,9 +41,9 @@ fill-destructive",
 
     <div class="w-full">
         @isset($title)
-        <h5 data-slot="alert-title" {{$slotAttributes($title)->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
+        <h{{$titleLevel}} data-slot="alert-title" {{$slotAttributes($title)->twMerge(["mb-1 font-medium leading-none tracking-tight"])}}>
             {{$title}}
-        </h5>
+        </h{{$titleLevel}}>
         @endisset
         @isset($description)
         <div data-slot="alert-description" {{$slotAttributes($description)->twMerge(["text-sm"])}}>

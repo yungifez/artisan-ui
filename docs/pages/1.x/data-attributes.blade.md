@@ -17,7 +17,7 @@ each one:
 <x-code-block-wrapper title="Rendered card" language="html">
 <div data-slot="card">
     <div data-slot="card-header">
-        <h3 data-slot="card-title">Billing</h3>
+        <h2 data-slot="card-title">Billing</h2>
         <p data-slot="card-description">Your plan renews monthly.</p>
     </div>
     <div data-slot="card-content">...</div>

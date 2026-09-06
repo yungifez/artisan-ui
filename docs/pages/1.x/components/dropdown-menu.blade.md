@@ -12,4 +12,9 @@ To avoid Z-Index and other bizarre CSS issues, the component supports x-teleport
 
 <x-component-preview component="previews.dropdown-menu-teleport-demo"></x-component-preview>
 
+## Menu labels
+
+`dropdown-menu-label` names a group of items inside the menu. It renders as a
+`div`, not a heading, so it stays out of the page heading order.
+
 <x-publish-command :views="[ 'dropdown-menu', 'dropdown-menu-group', 'dropdown-menu-item', 'dropdown-menu-label', 'dropdown-menu-separator', 'dropdown-menu-shortcut', 'dropdown-menu-sub' ]" />

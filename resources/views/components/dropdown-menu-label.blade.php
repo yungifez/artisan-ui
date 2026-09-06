@@ -1,3 +1,3 @@
-<h6 data-slot="dropdown-menu-label" {{$attributes->twMerge(['px-2 py-1.5 text-sm font-semibold'])}}>
+<div data-slot="dropdown-menu-label" {{$attributes->twMerge(['px-2 py-1.5 text-sm font-semibold'])}}>
     {{$slot}}
-</h6>
+</div>

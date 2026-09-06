@@ -11,6 +11,17 @@ describe('component accessibility contracts', function () {
         }
     })->with(['button', 'calendar', 'combobox', 'select', 'switch', 'tabs-trigger']);
 
+    it('places a component title one level under the page heading', function (string $markup) {
+        // A page heading is an h1. A title that starts lower skips a level, so
+        // a reader moving by heading cannot tell whether a section is missing.
+        expect(render($markup))->toContain('<h2');
+    })->with([
+        '<april:card><x-slot:title>Billing</x-slot:title></april:card>',
+        '<april:alert><x-slot:title>Heads up</x-slot:title></april:alert>',
+        '<april:dialog-header><x-slot:title>Confirm</x-slot:title></april:dialog-header>',
+        '<april:sheet-header><x-slot:title>Menu</x-slot:title></april:sheet-header>',
+    ]);
+
     it('keeps semantic roles and labels on composite controls', function () {
         expect(render('<april:switch aria-label="Enable alerts" />'))
             ->toContain('role="switch"')

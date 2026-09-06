@@ -78,7 +78,13 @@ describe('dialog header and footer', function () {
     it('renders the header title slot', function () {
         $html = render('<april:dialog-header><x-slot:title>Confirm</x-slot:title></april:dialog-header>');
 
-        expect($html)->toContain('<h4')->toContain('Confirm');
+        expect($html)->toContain('<h2')->toContain('Confirm');
+    });
+
+    it('lets the page place the header title in its heading order', function () {
+        $html = render('<april:dialog-header level="3"><x-slot:title>Confirm</x-slot:title></april:dialog-header>');
+
+        expect($html)->toContain('<h3')->not->toContain('<h2');
     });
 
     it('renders the header description slot', function () {
@@ -120,7 +126,13 @@ describe('sheet', function () {
     it('renders the header title slot', function () {
         $html = render('<april:sheet-header><x-slot:title>Menu</x-slot:title></april:sheet-header>');
 
-        expect($html)->toContain('<h4')->toContain('Menu');
+        expect($html)->toContain('<h2')->toContain('Menu');
+    });
+
+    it('lets the page place the header title in its heading order', function () {
+        $html = render('<april:sheet-header level="3"><x-slot:title>Menu</x-slot:title></april:sheet-header>');
+
+        expect($html)->toContain('<h3')->not->toContain('<h2');
     });
 
     it('renders the footer slot', function () {
@@ -209,6 +221,14 @@ describe('dropdown menu', function () {
 
     it('renders a menu label', function () {
         expect(renderComponent('dropdown-menu-label', '', 'Account'))->toContain('Account');
+    });
+
+    it('does not put a menu label in the page heading order', function () {
+        // A label inside role="menu" names a group of items. As a heading it
+        // landed four levels under the page heading and skipped every one.
+        expect(renderComponent('dropdown-menu-label', '', 'Account'))
+            ->toContain('<div data-slot="dropdown-menu-label"')
+            ->not->toContain('<h6');
     });
 
     it('renders a menu separator', function () {

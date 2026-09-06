@@ -18,3 +18,18 @@ if (! function_exists('twMerge')) {
         return app(TailwindMerger::class)->merge(...$args);
     }
 }
+
+if (! function_exists('aprilHeadingLevel')) {
+    /**
+     * Read the heading level a component renders its title as.
+     *
+     * A document may only hold levels 1 to 6. Anything else falls back to the
+     * component default.
+     */
+    function aprilHeadingLevel(mixed $level, int $default = 2): int
+    {
+        $level = is_numeric($level) ? (int) $level : 0;
+
+        return $level >= 1 && $level <= 6 ? $level : $default;
+    }
+}
