@@ -1,7 +1,11 @@
-export default (delayDuration, skipDelayDuration, defaultOpen) => ({
+export default (delayDuration, skipDelayDuration, defaultOpen, disabled = false) => ({
     delayDuration: delayDuration,
     skipDelayDuration: skipDelayDuration,
     tooltipOpened: defaultOpen,
+    // A silenced tooltip keeps its markup and its trigger. Bind this to turn
+    // a tooltip off for part of the time, such as a sidebar label that only
+    // helps while the sidebar shows icons.
+    tooltipDisabled: disabled,
     debounceTimeout: null,
     root: {
         ['x-id']() {
@@ -39,7 +43,7 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
     },
     svg: {
         ['x-show']() {
-            return this.tooltipOpened
+            return this.tooltipOpened && ! this.tooltipDisabled
         },
         ['x-anchor.bottom.center.offset.-6']() {
             return this.$refs.content
@@ -56,7 +60,7 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
             return this.$id('tooltip') + '-content';
         },
         ['x-show']() {
-            return this.tooltipOpened
+            return this.tooltipOpened && ! this.tooltipDisabled
         },
         ['x-anchor.top.center.offset.10']() {
             return this.$refs.trigger
@@ -66,6 +70,10 @@ export default (delayDuration, skipDelayDuration, defaultOpen) => ({
         },
     },
     open() {
+        if (this.tooltipDisabled) {
+            return;
+        }
+
         this.tooltipOpened = true;
     },
     close() {

@@ -207,10 +207,25 @@
             </div>
         </section>
 
-        <section id="sidebar" x-data="sidebar(true)" x-bind="root">
-            <button data-test="sidebar-toggle" type="button" @click="toggle">Toggle sidebar</button>
-            <aside data-test="sidebar-panel" :data-state="state" x-text="isOpen() ? 'Expanded' : 'Collapsed'"></aside>
+        <div id="sidebar-owner" x-data="{ appOpen: true }">
+        <span data-test="sidebar-model-value" x-text="appOpen ? 'Expanded' : 'Collapsed'"></span>
+        <section id="sidebar" x-data="sidebar(true)" x-bind="sidebar.root"
+            x-modelable="sidebar.open" x-model="appOpen">
+            <button data-test="sidebar-toggle" type="button" @click="sidebar.toggle()">Toggle sidebar</button>
+            <aside data-test="sidebar-panel" :data-state="sidebar.state" x-text="sidebar.isOpen() ? 'Expanded' : 'Collapsed'"></aside>
+            <div data-test="sidebar-submenu" x-data="collapsible(false, false)" x-bind="root">
+                <div data-test="sidebar-submenu-trigger" x-bind="trigger">
+                    <button data-test="sidebar-submenu-button" type="button" @click="sidebar.show()">Group</button>
+                </div>
+                <div data-test="sidebar-submenu-content" x-bind="content" x-cloak>Group links</div>
+            </div>
+            <div data-test="sidebar-tooltip" x-data="tooltip(0, 0, false, false)" x-bind="root"
+                x-effect="tooltipDisabled = sidebar.state !== 'collapsed' || sidebar.isMobile">
+                <div data-test="sidebar-tooltip-trigger" x-ref="trigger" x-bind="trigger">Boarding</div>
+                <div data-test="sidebar-tooltip-content" x-ref="content" x-bind="content" x-cloak>Boarding</div>
+            </div>
         </section>
+        </div>
 
         <section id="tooltip" x-data="tooltip(10, 20, false)" x-bind="root">
             <button data-test="tooltip-trigger" type="button" x-ref="trigger" x-bind="trigger">More information</button>
@@ -256,7 +271,7 @@
         <section id="dropdown-nested" x-data="dropdownMenu" x-bind="root">
             <button data-test="nested-trigger" type="button" x-ref="trigger" x-bind="trigger">Actions</button>
             <div data-test="nested-content" x-ref="content" x-bind="content" x-show="dropdownMenu" x-cloak role="menu">
-                <div x-data="tooltip(0, 0, false)" x-bind="root">
+                <div x-data="tooltip(0, 0, false, false)" x-bind="root">
                     <div x-ref="trigger" x-bind="trigger">
                         <div x-data="dropdownMenuSub" x-bind="root" role="menuitem">
                             <button data-test="nested-sub-trigger" type="button" x-ref="subTrigger" x-bind="trigger">More</button>
