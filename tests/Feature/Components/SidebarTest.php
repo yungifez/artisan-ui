@@ -12,8 +12,8 @@ describe('sidebar layout', function () {
 
     it('binds the keyboard shortcut through the root binding', function () {
         expect(renderComponent('sidebar-layout'))
-            ->toContain('x-bind="root"')
-            ->toContain('x-modelable="open"');
+            ->toContain('x-bind="sidebar.root"')
+            ->toContain('x-modelable="sidebar.open"');
     });
 
     it('fills the viewport height', function () {
@@ -56,7 +56,7 @@ describe('sidebar', function () {
     })->with(['sidebar', 'floating', 'inset']);
 
     it('reads its state from the layout', function () {
-        expect(renderComponent('sidebar'))->toContain(':data-state="state"');
+        expect(renderComponent('sidebar'))->toContain(':data-state="sidebar.state"');
     });
 
     it('paints expanded before alpine starts', function () {
@@ -124,11 +124,11 @@ describe('sidebar', function () {
     });
 
     it('closes the mobile panel when the overlay is clicked', function () {
-        expect(renderComponent('sidebar'))->toContain('x-on:click="close()"');
+        expect(renderComponent('sidebar'))->toContain('x-on:click="sidebar.close()"');
     });
 
     it('closes the mobile panel on escape', function () {
-        expect(renderComponent('sidebar'))->toContain('x-on:keydown.esc.window="close()"');
+        expect(renderComponent('sidebar'))->toContain('x-on:keydown.esc.window="sidebar.close()"');
     });
 
     it('renders its slot on desktop and on mobile', function () {
@@ -170,7 +170,7 @@ describe('sidebar', function () {
 
 describe('sidebar trigger', function () {
     it('toggles the sidebar', function () {
-        expect(renderComponent('sidebar-trigger'))->toContain('x-on:click="toggle()"');
+        expect(renderComponent('sidebar-trigger'))->toContain('x-on:click="sidebar.toggle()"');
     });
 
     it('is labelled for screen readers', function () {
@@ -203,7 +203,7 @@ describe('sidebar trigger', function () {
 
 describe('sidebar rail', function () {
     it('toggles the sidebar', function () {
-        expect(renderComponent('sidebar-rail'))->toContain('x-on:click="toggle()"');
+        expect(renderComponent('sidebar-rail'))->toContain('x-on:click="sidebar.toggle()"');
     });
 
     it('sits on the outer edge of the side it is on', function () {
@@ -333,13 +333,26 @@ describe('sidebar menu button', function () {
         expect(classesOf(renderComponent('sidebar-menu-button')))->toContain('h-8');
     });
 
-    it('opens the sidebar when used as a submenu trigger', function () {
-        expect(renderComponent('sidebar-menu-button'))->toContain('x-on:click="show()"');
+    it('opens the sidebar through the sidebar receiver', function () {
+        expect(renderComponent('sidebar-menu-button'))->toContain('x-on:click="sidebar.show()"');
     });
 
     it('can leave sidebar expansion to a parent interactive component', function () {
         expect(renderComponent('sidebar-menu-button', ':expand-sidebar="false"'))
-            ->not->toContain('x-on:click="show()"');
+            ->not->toContain('x-on:click');
+    });
+
+    it('carries no tooltip by default', function () {
+        expect(renderComponent('sidebar-menu-button'))->not->toContain('data-slot="tooltip"');
+    });
+
+    it('labels itself with a tooltip while the sidebar shows icons', function () {
+        $html = renderComponent('sidebar-menu-button', 'tooltip="Boarding"');
+
+        expect($html)
+            ->toContain('data-slot="tooltip"')
+            ->toContain('Boarding')
+            ->toContain("x-effect=\"tooltipDisabled = sidebar.state !== 'collapsed' || sidebar.isMobile\"");
     });
 
     it('applies the outline variant', function () {

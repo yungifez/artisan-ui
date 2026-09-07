@@ -1,6 +1,7 @@
 @props([
 'active' => false,
 'size' => 'default',
+'tooltip' => null,
 'expandSidebar' => true,
 ])
 
@@ -33,12 +34,30 @@ default => "h-8 text-sm",
 $buttonAttributes = $attributes->except("variant")->twMerge([$class]);
 
 if ($expandSidebar) {
-    $buttonAttributes = $buttonAttributes->merge(['x-on:click' => 'show()']);
+    $buttonAttributes = $buttonAttributes->merge(['x-on:click' => 'sidebar.show()']);
 }
 @endphp
 
-<april:button :attributes="$buttonAttributes" data-sidebar="menu-button"
-    data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}" type="button"
-    variant="none" size="none">
+{{-- Opening the sidebar reads `sidebar.show()`, so the call cannot land in a
+component the reader wrapped this button in. A submenu trigger opens the
+sidebar and its own children on the same click. Pass `:expand-sidebar="false"`
+for a button that must leave the sidebar alone. --}}
+@if ($tooltip === null)
+<april:button :attributes="$buttonAttributes" data-sidebar="menu-button" data-slot="sidebar-menu-button"
+    data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}" type="button" variant="none" size="none">
     {{$slot}}
 </april:button>
+@else
+{{-- The label a reader needs while the sidebar shows icons only. The tooltip
+stays silent for the rest of the time, because the button already says it. --}}
+<april:tooltip class="w-full"
+    x-effect="tooltipDisabled = sidebar.state !== 'collapsed' || sidebar.isMobile">
+    <slot:trigger class="block w-full">
+        <april:button :attributes="$buttonAttributes" data-sidebar="menu-button" data-slot="sidebar-menu-button"
+            data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}" type="button" variant="none" size="none">
+            {{$slot}}
+        </april:button>
+    </slot:trigger>
+    <slot:content>{{$tooltip}}</slot:content>
+</april:tooltip>
+@endif

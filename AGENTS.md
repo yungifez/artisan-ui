@@ -12,6 +12,12 @@ preserve Laravel conventions.
 - Put static layout and visual styles in Tailwind classes in the component view.
 - Keep CSS selectors for generated markup, pseudo-elements, or behavior that Tailwind cannot express clearly.
 - Preserve attribute forwarding and `twMerge` behavior.
+- Give a unique name to anything one component reaches for in another scope. Alpine resolves a bare name to the
+  nearest scope that owns it, so `close()` reaches whichever of the eight owners sits closest, not the one you meant.
+  `subOpen`, `closeSub` and `closeDropdownMenu` are named this way on purpose. Set the state in such a method rather
+  than calling a shorter one, or the second call lands in the nearest scope all over again.
+- Keep a component's own expressions on its own elements. The sidebar is the exception, because the reader places its
+  trigger, rail and menu buttons anywhere on the page, so it keeps everything behind a `sidebar` receiver.
 - Do not edit `vendor/` files in the docs repository.
 
 ## Contribution workflow

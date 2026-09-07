@@ -395,6 +395,44 @@ test('sidebar toggles its public state and responds to the keyboard shortcut', a
     await expect(panel).toHaveAttribute('data-state', 'expanded');
 });
 
+test('a menu button inside a collapsible opens the sidebar and the submenu', async ({ page }) => {
+    const panel = page.locator('[data-test="sidebar-panel"]');
+    const button = page.locator('[data-test="sidebar-submenu-button"]');
+    const content = page.locator('[data-test="sidebar-submenu-content"]');
+
+    await page.locator('[data-test="sidebar-toggle"]').click();
+    await expect(panel).toHaveAttribute('data-state', 'collapsed');
+
+    await button.click();
+    await expect(panel).toHaveAttribute('data-state', 'expanded');
+    await expect(content).toBeVisible();
+
+    await button.click();
+    await expect(content).toBeHidden();
+    await expect(panel).toHaveAttribute('data-state', 'expanded');
+});
+
+test('the sidebar reports its state through x-modelable', async ({ page }) => {
+    const owner = page.locator('[data-test="sidebar-model-value"]');
+
+    await expect(owner).toHaveText('Expanded');
+    await page.locator('[data-test="sidebar-toggle"]').click();
+    await expect(owner).toHaveText('Collapsed');
+});
+
+test('a sidebar tooltip stays silent until the sidebar collapses to icons', async ({ page }) => {
+    const trigger = page.locator('[data-test="sidebar-tooltip-trigger"]');
+    const content = page.locator('[data-test="sidebar-tooltip-content"]');
+
+    await trigger.hover();
+    await expect(content).toBeHidden();
+
+    await page.locator('[data-test="sidebar-toggle"]').click();
+    await page.mouse.move(0, 0);
+    await trigger.hover();
+    await expect(content).toBeVisible();
+});
+
 test('tooltips open on focus and close on blur', async ({ page }) => {
     const trigger = page.locator('[data-test="tooltip-trigger"]');
     const content = page.locator('[data-test="tooltip-content"]');
@@ -461,6 +499,19 @@ test('dropdown submenus open and close their nested menu', async ({ page }) => {
     await expect(page.locator('#dropdown-submenu')).toHaveAttribute('data-state', 'open');
     await page.locator('[data-test="submenu-item"]').click();
     await expect(content).toBeHidden();
+});
+
+test('choosing a submenu item closes the dropdown it belongs to', async ({ page }) => {
+    const menu = page.locator('[data-test="nested-content"]');
+
+    await page.locator('[data-test="nested-trigger"]').click();
+    await expect(menu).toBeVisible();
+
+    await page.locator('[data-test="nested-sub-trigger"]').click();
+    await expect(page.locator('[data-test="nested-sub-content"]')).toBeVisible();
+
+    await page.locator('[data-test="nested-sub-item"]').click();
+    await expect(menu).toBeHidden();
 });
 
 test('sheets expose the configured side and follow their open state', async ({ page }) => {

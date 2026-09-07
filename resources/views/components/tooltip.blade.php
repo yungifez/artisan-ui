@@ -2,8 +2,9 @@
 'delayDuration' => 50,
 'skipDelayDuration' => 100,
 'defaultOpen' => false,
+'disabled' => false,
 ])
-<div data-slot="tooltip" x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen))" x-bind="root" {{$attributes->
+<div data-slot="tooltip" x-data="tooltip({{$delayDuration}}, {{$skipDelayDuration}}, @js($defaultOpen), @js($disabled))" x-bind="root" {{$attributes->
     whereDoesntStartWith('x-teleport')->twMerge(['w-fit'])}}>
     @isset($trigger)
     <div data-slot="tooltip-trigger" data-state="{{$defaultOpen ? 'open' : 'closed'}}" x-bind="trigger" x-ref="trigger" {{$trigger->attributes->twMerge('w-fit inline-block')}}>

@@ -55,7 +55,7 @@ $attributes = $attributes->except('x-persist');
 <div class="group peer hidden text-sidebar-foreground md:block relative min-h-0 self-stretch shrink-0"
     data-slot="sidebar" data-side="{{ $side }}" data-variant="{{ $variant }}"
     data-state="{{ $defaultOpen ? 'expanded' : 'collapsed' }}" data-collapsible="{{ $defaultOpen ? '' : $collapsible }}"
-    :data-state="state" :data-collapsible="open ? '' : '{{ $collapsible }}'" @if ($persist)
+    :data-state="sidebar.state" :data-collapsible="sidebar.open ? '' : '{{ $collapsible }}'" @if ($persist)
     x-persist="{{ $persist }}-desktop" @endif>
     <div data-slot="sidebar-gap" class="relative h-full w-[var(--sidebar-width)] shrink-0 bg-transparent transition-[width]
                 duration-200 ease-linear group-data-[collapsible=offcanvas]:w-0
@@ -78,9 +78,9 @@ $attributes = $attributes->except('x-persist');
 </div>
 
 <div class="md:hidden" x-cloak>
-    <div x-show="openMobile" x-transition.opacity x-on:click="close()" class="fixed inset-0 z-40 bg-black/80"></div>
+    <div x-show="sidebar.openMobile" x-transition.opacity x-on:click="sidebar.close()" class="fixed inset-0 z-40 bg-black/80"></div>
 
-    <div x-show="openMobile" x-cloak x-on:keydown.esc.window="close()" data-sidebar="sidebar" data-slot="sidebar"
+    <div x-show="sidebar.openMobile" x-cloak x-on:keydown.esc.window="sidebar.close()" data-sidebar="sidebar" data-slot="sidebar"
         data-mobile="true" data-side="{{ $side }}" x-transition:enter="transition ease-in-out duration-300"
         x-transition:enter-start="{{ $offscreen }}" x-transition:enter-end="translate-x-0"
         x-transition:leave="transition ease-in-out duration-300" x-transition:leave-start="translate-x-0"

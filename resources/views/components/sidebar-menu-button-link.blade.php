@@ -1,6 +1,7 @@
 @props([
 'active' => false,
 'size' => 'default',
+'tooltip' => null,
 ])
 
 @php
@@ -29,11 +30,28 @@ default => "h-8 text-sm",
 'lg' => "h-12 text-sm group-data-[collapsible=icon]:p-0!",
 'none' => "",
 };
+
+$linkAttributes = $attributes->except("variant")->twMerge([$class]);
 @endphp
 
 {{-- The anchor form of april:sidebar-menu-button. Use it for a link. --}}
-<april:button-link :attributes='$attributes->except("variant")->twMerge([$class])' data-sidebar="menu-button"
+@if ($tooltip === null)
+<april:button-link :attributes="$linkAttributes" data-sidebar="menu-button"
     data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}"
     :aria-current="$active ? 'page' : null" variant="none" size="none">
     {{$slot}}
 </april:button-link>
+@else
+{{-- The label a reader needs while the sidebar shows icons only. --}}
+<april:tooltip class="w-full"
+    x-effect="tooltipDisabled = sidebar.state !== 'collapsed' || sidebar.isMobile">
+    <slot:trigger class="block w-full">
+        <april:button-link :attributes="$linkAttributes" data-sidebar="menu-button"
+            data-slot="sidebar-menu-button" data-size="{{$size}}" data-active="{{$active ? 'true' : 'false'}}"
+            :aria-current="$active ? 'page' : null" variant="none" size="none">
+            {{$slot}}
+        </april:button-link>
+    </slot:trigger>
+    <slot:content>{{$tooltip}}</slot:content>
+</april:tooltip>
+@endif

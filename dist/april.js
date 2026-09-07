@@ -3840,6 +3840,14 @@
     close() {
       this.dropdownMenu = false;
     },
+    // A submenu closes the menu it belongs to across two scopes, so this name
+    // has to be one no other component owns. `close` is owned by eight of
+    // them, and the nearest one wins. Set the state here rather than call
+    // `close`, because that call would land in the nearest scope all over
+    // again. `dropdownMenu` is a name only this component owns.
+    closeDropdownMenu() {
+      this.dropdownMenu = false;
+    },
     open() {
       this.dropdownMenu = true;
     },
@@ -3944,7 +3952,7 @@
     menuItem: {
       ["@click"]() {
         this.closeSub();
-        this.$data.close();
+        this.$data.closeDropdownMenu();
       },
       ["@mouseover"]() {
         return this.$focus.focus(this.$el);
@@ -4331,56 +4339,58 @@
   var SIDEBAR_STATE_COOKIE = "sidebar_state";
   var ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
   var sidebar_default = (defaultOpen = true) => ({
-    open: defaultOpen,
-    openMobile: false,
-    isMobile: false,
-    root: {
-      ["@keydown.ctrl.b.window.prevent"]() {
-        return this.toggle();
+    sidebar: {
+      open: defaultOpen,
+      openMobile: false,
+      isMobile: false,
+      root: {
+        ["@keydown.ctrl.b.window.prevent"]() {
+          return this.sidebar.toggle();
+        },
+        ["@keydown.meta.b.window.prevent"]() {
+          return this.sidebar.toggle();
+        },
+        ["@resize.window.debounce"]() {
+          return this.sidebar.readViewport();
+        }
       },
-      ["@keydown.meta.b.window.prevent"]() {
-        return this.toggle();
+      readViewport() {
+        this.isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+        if (!this.isMobile) {
+          this.openMobile = false;
+        }
       },
-      ["@resize.window.debounce"]() {
-        return this.readViewport();
+      // The state that the components read to pick their classes.
+      get state() {
+        return this.open ? "expanded" : "collapsed";
+      },
+      isOpen() {
+        return this.isMobile ? this.openMobile : this.open;
+      },
+      toggle() {
+        this.isMobile ? this.openMobile = !this.openMobile : this.setOpen(!this.open);
+      },
+      show() {
+        this.isMobile ? this.openMobile = true : this.setOpen(true);
+      },
+      close() {
+        this.isMobile ? this.openMobile = false : this.setOpen(false);
+      },
+      // The mobile panel is deliberately not stored. It is a drawer, not a
+      // layout choice, and it must never come back open on the next page.
+      setOpen(open) {
+        this.open = open;
+        this.persist();
+      },
+      persist() {
+        try {
+          document.cookie = SIDEBAR_STATE_COOKIE + "=" + (this.open ? "true" : "false") + "; path=/; max-age=" + ONE_YEAR_IN_SECONDS + "; samesite=lax";
+        } catch (error) {
+        }
       }
     },
     init() {
-      this.readViewport();
-    },
-    readViewport() {
-      this.isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-      if (!this.isMobile) {
-        this.openMobile = false;
-      }
-    },
-    // The state that the components read to pick their classes.
-    get state() {
-      return this.open ? "expanded" : "collapsed";
-    },
-    isOpen() {
-      return this.isMobile ? this.openMobile : this.open;
-    },
-    toggle() {
-      this.isMobile ? this.openMobile = !this.openMobile : this.setOpen(!this.open);
-    },
-    show() {
-      this.isMobile ? this.openMobile = true : this.setOpen(true);
-    },
-    close() {
-      this.isMobile ? this.openMobile = false : this.setOpen(false);
-    },
-    // The mobile panel is deliberately not stored. It is a drawer, not a layout
-    // choice, and it must never come back open on the next page.
-    setOpen(open) {
-      this.open = open;
-      this.persist();
-    },
-    persist() {
-      try {
-        document.cookie = SIDEBAR_STATE_COOKIE + "=" + (this.open ? "true" : "false") + "; path=/; max-age=" + ONE_YEAR_IN_SECONDS + "; samesite=lax";
-      } catch (error) {
-      }
+      this.sidebar.readViewport();
     }
   });
 
@@ -4526,10 +4536,14 @@
   });
 
   // resources/js/tooltip.js
-  var tooltip_default = (delayDuration, skipDelayDuration, defaultOpen) => ({
+  var tooltip_default = (delayDuration, skipDelayDuration, defaultOpen, disabled = false) => ({
     delayDuration,
     skipDelayDuration,
     tooltipOpened: defaultOpen,
+    // A silenced tooltip keeps its markup and its trigger. Bind this to turn
+    // a tooltip off for part of the time, such as a sidebar label that only
+    // helps while the sidebar shows icons.
+    tooltipDisabled: disabled,
     debounceTimeout: null,
     root: {
       ["x-id"]() {
@@ -4566,7 +4580,7 @@
     },
     svg: {
       ["x-show"]() {
-        return this.tooltipOpened;
+        return this.tooltipOpened && !this.tooltipDisabled;
       },
       ["x-anchor.bottom.center.offset.-6"]() {
         return this.$refs.content;
@@ -4583,7 +4597,7 @@
         return this.$id("tooltip") + "-content";
       },
       ["x-show"]() {
-        return this.tooltipOpened;
+        return this.tooltipOpened && !this.tooltipDisabled;
       },
       ["x-anchor.top.center.offset.10"]() {
         return this.$refs.trigger;
@@ -4593,6 +4607,9 @@
       }
     },
     open() {
+      if (this.tooltipDisabled) {
+        return;
+      }
       this.tooltipOpened = true;
     },
     close() {

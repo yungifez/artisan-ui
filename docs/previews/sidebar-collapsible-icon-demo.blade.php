@@ -9,13 +9,13 @@
                 <april:sidebar-group-content>
                     <april:sidebar-menu>
                         <april:sidebar-menu-item>
-                            <april:sidebar-menu-button-link href="#" :active="true">
+                            <april:sidebar-menu-button-link href="#" :active="true" tooltip="Inbox">
                                 <x-lucide-inbox />
                                 <span>Inbox</span>
                             </april:sidebar-menu-button-link>
                         </april:sidebar-menu-item>
                         <april:sidebar-menu-item>
-                            <april:sidebar-menu-button-link href="#">
+                            <april:sidebar-menu-button-link href="#" tooltip="Calendar">
                                 <x-lucide-calendar />
                                 <span>Calendar</span>
                             </april:sidebar-menu-button-link>
@@ -28,6 +28,6 @@
     </april:sidebar>
     <april:sidebar-inset class="p-4">
         <april:sidebar-trigger />
-        <p class="mt-4 text-sm text-muted-foreground">Collapse the sidebar to see it shrink to icon width.</p>
+        <p class="mt-4 text-sm text-muted-foreground">Collapse the sidebar to see it shrink to icon width. Point at an icon to read its label.</p>
     </april:sidebar-inset>
 </april:sidebar-layout>

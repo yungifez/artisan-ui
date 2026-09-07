@@ -5,7 +5,7 @@
 ])
 
 {{-- Holds the sidebar state. Put the sidebar and the page content in the slot. --}}
-<div x-data="sidebar(@js($defaultOpen))" x-modelable="open" x-bind="root" data-slot="sidebar-wrapper" @if ($width || $widthIcon)
+<div x-data="sidebar(@js($defaultOpen))" x-modelable="sidebar.open" x-bind="sidebar.root" data-slot="sidebar-wrapper" @if ($width || $widthIcon)
     @style([
     "--sidebar-width: $width" => $width,
     "--sidebar-width-icon: $widthIcon" => $widthIcon,

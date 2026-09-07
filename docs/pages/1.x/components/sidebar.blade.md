@@ -60,14 +60,27 @@ data loads.
 
 <x-component-preview component="previews.sidebar-menu-demo"></x-component-preview>
 
-When another interactive component owns a button's click, set `:expand-sidebar="false"` so the menu button does not
-also try to open the sidebar:
+While the sidebar shows icons only, a menu button has no room for its label. Pass `tooltip` to give it one. The
+tooltip stays silent while the sidebar is open, because the button already says the same words.
+
+<x-code-block-wrapper language="blade">
+@verbatim
+<april:sidebar-menu-button tooltip="Boarding">
+    <x-lucide-bed-double />
+    <span>Boarding</span>
+</april:sidebar-menu-button>
+@endverbatim
+</x-code-block-wrapper>
+
+A menu button opens the sidebar when you click it. This is safe inside another component, because the button reaches
+the sidebar by name: a submenu trigger opens the sidebar and its own children on the same click. Pass
+`:expand-sidebar="false"` when a button must leave the sidebar alone:
 
 <x-code-block-wrapper language="blade">
 @verbatim
 <april:collapsible>
     <slot:trigger>
-        <april:sidebar-menu-button :expand-sidebar="false">
+        <april:sidebar-menu-button tooltip="Boarding">
             <x-lucide-bed-double />
             <span>Boarding</span>
         </april:sidebar-menu-button>
@@ -152,6 +165,8 @@ Three things toggle the sidebar:
 - `sidebar-rail`, the thin strip along the sidebar edge
 - <kbd>Ctrl</kbd> + <kbd>B</kbd>, or <kbd>Cmd</kbd> + <kbd>B</kbd> on a Mac
 
+A menu button opens the sidebar as well, unless you pass `:expand-sidebar="false"`.
+
 On a screen narrower than `768px` the sidebar becomes a panel that slides in over the page. The same three things
 still open it.
 
@@ -162,6 +177,35 @@ Start the sidebar closed with `:default-open="false"`.
 <april:sidebar-layout :default-open="false">...</april:sidebar-layout>
 @endverbatim
 </x-code-block-wrapper>
+
+---
+
+## Reading the sidebar state
+
+The layout keeps the whole sidebar under one `sidebar` name. Reach for it with that receiver, the way you would call a
+hook:
+
+<x-code-block-wrapper language="blade">
+@verbatim
+<button type="button" x-on:click="sidebar.toggle()">Toggle</button>
+<span x-show="sidebar.state === 'collapsed'">Icons only</span>
+@endverbatim
+</x-code-block-wrapper>
+
+| Name | What it holds |
+| --- | --- |
+| `sidebar.open` | The desktop state. `sidebar-layout` binds it with `x-modelable`. |
+| `sidebar.openMobile` | The mobile panel. It is never stored. |
+| `sidebar.isMobile` | True below `768px`. |
+| `sidebar.state` | `expanded` or `collapsed`. |
+| `sidebar.isOpen()` | The state of whichever panel the screen width uses. |
+| `sidebar.toggle()` | Flip the state. |
+| `sidebar.show()` | Open it. |
+| `sidebar.close()` | Close it. |
+
+The name is the point. Alpine reads a bare name against the scopes of the element that holds the expression, so `open`
+inside a collapsible means the collapsible, not the sidebar. The sidebar wraps your whole page, so a bare name would
+sooner or later meet a component that owns the same one.
 
 ---
 

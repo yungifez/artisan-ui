@@ -69,7 +69,7 @@ describe('the starting state in the markup', function () {
     });
 
     it('gives the sidebar its state from the layout', function () {
-        expect(renderComponent('sidebar'))->toContain(':data-state="state"');
+        expect(renderComponent('sidebar'))->toContain(':data-state="sidebar.state"');
     });
 });
 
