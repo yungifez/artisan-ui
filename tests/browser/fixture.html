@@ -253,6 +253,23 @@
             </div>
         </section>
 
+        <section id="dropdown-nested" x-data="dropdownMenu" x-bind="root">
+            <button data-test="nested-trigger" type="button" x-ref="trigger" x-bind="trigger">Actions</button>
+            <div data-test="nested-content" x-ref="content" x-bind="content" x-show="dropdownMenu" x-cloak role="menu">
+                <div x-data="tooltip(0, 0, false)" x-bind="root">
+                    <div x-ref="trigger" x-bind="trigger">
+                        <div x-data="dropdownMenuSub" x-bind="root" role="menuitem">
+                            <button data-test="nested-sub-trigger" type="button" x-ref="subTrigger" x-bind="trigger">More</button>
+                            <div data-test="nested-sub-content" x-ref="content" x-bind="content" x-show="subOpen" x-cloak role="menu">
+                                <button data-test="nested-sub-item" type="button" x-bind="menuItem" role="menuitem">Duplicate</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div x-ref="content" x-bind="content" x-cloak>Tip</div>
+                </div>
+            </div>
+        </section>
+
         <section id="sheet" x-data="{show: false, behavior: sheet('right')}" >
             <button data-test="sheet-trigger" type="button" @click="show = true">Open sheet</button>
             <div x-bind="behavior.root" x-show="show" x-cloak>

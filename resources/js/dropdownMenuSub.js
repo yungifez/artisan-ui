@@ -94,7 +94,7 @@ export default () => ({
     menuItem: {
         ['@click']() {
             this.closeSub();
-            this.$data.close()
+            this.$data.closeDropdownMenu()
         },
         ['@mouseover']() {
             return this.$focus.focus(this.$el);

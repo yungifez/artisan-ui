@@ -463,6 +463,19 @@ test('dropdown submenus open and close their nested menu', async ({ page }) => {
     await expect(content).toBeHidden();
 });
 
+test('choosing a submenu item closes the dropdown it belongs to', async ({ page }) => {
+    const menu = page.locator('[data-test="nested-content"]');
+
+    await page.locator('[data-test="nested-trigger"]').click();
+    await expect(menu).toBeVisible();
+
+    await page.locator('[data-test="nested-sub-trigger"]').click();
+    await expect(page.locator('[data-test="nested-sub-content"]')).toBeVisible();
+
+    await page.locator('[data-test="nested-sub-item"]').click();
+    await expect(menu).toBeHidden();
+});
+
 test('sheets expose the configured side and follow their open state', async ({ page }) => {
     const content = page.locator('[data-test="sheet-content"]');
 

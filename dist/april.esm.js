@@ -3839,6 +3839,14 @@ var dropdownMenu_default = () => ({
   close() {
     this.dropdownMenu = false;
   },
+  // A submenu closes the menu it belongs to across two scopes, so this name
+  // has to be one no other component owns. `close` is owned by eight of
+  // them, and the nearest one wins. Set the state here rather than call
+  // `close`, because that call would land in the nearest scope all over
+  // again. `dropdownMenu` is a name only this component owns.
+  closeDropdownMenu() {
+    this.dropdownMenu = false;
+  },
   open() {
     this.dropdownMenu = true;
   },
@@ -3943,7 +3951,7 @@ var dropdownMenuSub_default = () => ({
   menuItem: {
     ["@click"]() {
       this.closeSub();
-      this.$data.close();
+      this.$data.closeDropdownMenu();
     },
     ["@mouseover"]() {
       return this.$focus.focus(this.$el);
